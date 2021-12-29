@@ -25,14 +25,5 @@
         $(this).toggleClass("is-active");
     });
 
-    // add option tags in .datalist, for user to input stockName easily.
-    for (var i in stockdata) {
-        var stockId = stockdata[i][0];
-        var stockName = stockdata[i][1];
-        // console.log(stockID);
-        // console.log(stockName);
-        document.getElementById("stocklist").innerHTML += `<option value="${stockName}">${stockId}<option>`;
-    }
-
 
 })(jQuery);
