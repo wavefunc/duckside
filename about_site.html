@@ -5,21 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Duckside</title>
-    <link rel="icon" href="assets/images/duck_shadow_right.png" type="image/png" sizes="16x16">
-    <link href="css/style.css" rel="stylesheet">
     <!-- focus premium -->
     <link href="css/sidebar.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <!-- font-awesome icon -->
+    <link href="css/chartist.min.css" rel="stylesheet">
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <!-- font-awesome icon -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-
-    <link type="text/css" rel="stylesheet" href="plugin/jsgrid-1.5.3/jsgrid.min.css" />
-    <link type="text/css" rel="stylesheet" href="plugin/jsgrid-1.5.3/jsgrid-theme.min.css" />
-
     <script src="js/jquery.min.js"></script>
     <script src="js/popper.min.js"></script>
-    <script type="text/javascript" src="plugin/jsgrid-1.5.3/jsgrid.min.js"></script>
 
 </head>
 
@@ -267,71 +262,51 @@
     <div class="content-wrap">
         <div class="main">
             <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-8 p-r-0 title-margin-right">
-                        <div class="page-header">
-                            <div class="page-title">
-                                <h1>Hello, <span>Welcome Here</span></h1>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /# column -->
-                    <div class="col-lg-4 p-l-0 title-margin-left">
-                        <div class="page-header">
-                            <div class="page-title">
-                                <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="dashboard.html">總覽</a></li>
-                                    <li class="breadcrumb-item">小工具</li>
-                                    <li class="breadcrumb-item active">圓餅圖: 成本</li>
-                                </ol>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /# column -->
-                </div>
-                <!-- /# row -->
                 <section id="main-content">
                     <div class="row">
-                        <div class="col-lg-8">
-                            <div class="card" style="height: 600px;">
-                                <div class="card-title">
-                                    <h4>交易紀錄</h4>
-                                </div>
-                                <div class="card-body">
-                                    <div id="jsGrid">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-title">
-                                    <h4>庫存預覽</h4>
-                                </div>
-                                <div class="card-body">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <input class="mr-sm-2" type="number" id="myCash">
-                                            <button class="btn btn-warning" onclick="myPieCost()" type="button" id="btnPie">送出</button>
-                                        </div>
-                                    </div>
+                        <div class="col-lg-8 p-r-0 title-margin-right">
+                            <div class="page-header">
+                                <div class="page-title">
+                                    <h1>Hello, <span>Welcome Here</span></h1>
                                 </div>
                             </div>
                         </div>
+                        <!-- /# column -->
+                        <div class="col-lg-4 p-l-0 title-margin-left">
+                            <div class="page-header">
+                                <div class="page-title">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="dashboard.html">總覽</a></li>
+                                        <li class="breadcrumb-item">小工具</li>
+                                        <li class="breadcrumb-item active">圓餅圖: 成本</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /# column -->
+                    </div>
+                    <!-- /# row -->
+
+                    <div class="row">
+                        <div class="col-lg-8">
+                        </div>
+
                         <div class="col-lg-4">
                             <div class="card">
                                 <div class="card-title">
-                                    <h4>現在庫存</h4>
+                                    <h4></h4>
                                 </div>
                                 <div class="card-body">
-                                    <div class="ct-chart-pie"></div>
+                                    <div></div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
+                    </div>
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="footer">
-                                <p>2021 © Duckside. - <a href="#">duckside.com</a></p>
+                                <p>2018 © Admin Board. - <a href="#">example.com</a></p>
                             </div>
                         </div>
                     </div>
@@ -350,108 +325,11 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/scripts.js"></script>
 
-    <script>
-        $(function() {
-            var txn = [{
-                "txn_date": "2021/1/30",
-                "securities_id": "2002",
-                "securities_name": "中鋼",
-                "txn_number": 1,
-                "txn_position": "建倉",
-                "txn_price": 25,
-                "txn_amount": 2000,
-                "txn_note": "隔壁老王推薦"
-            }, {
-                "txn_date": "2021/2/25",
-                "securities_id": "2002",
-                "securities_name": "中鋼",
-                "txn_number": 1,
-                "txn_position": "加碼",
-                "txn_price": 26,
-                "txn_amount": 3000,
-                "txn_note": ""
-            }, {
-                "txn_date": "2021/3/5",
-                "securities_id": "2002",
-                "securities_name": "中鋼",
-                "txn_number": 1,
-                "txn_position": "加碼",
-                "txn_price": 30,
-                "txn_amount": 5000,
-                "txn_note": ""
-            }, {
-                "txn_date": "2021/3/20",
-                "securities_id": "2002",
-                "securities_name": "中鋼",
-                "txn_number": 1,
-                "txn_position": "減碼",
-                "txn_price": 36,
-                "txn_amount": -5000,
-                "txn_note": ""
-            }, {
-                "txn_date": "2021/3/28",
-                "securities_id": "2002",
-                "securities_name": "中鋼",
-                "txn_number": 1,
-                "txn_position": "停利",
-                "txn_price": 34,
-                "txn_amount": -5000,
-                "txn_note": ""
-            }, ];
-
-            $("#jsGrid").jsGrid({
-                height: "90%",
-                width: "100%",
-                sorting: true,
-                paging: true,
-                data: txn,
-                fields: [{
-                    name: "txn_date",
-                    type: "text",
-                    width: 100,
-                    title: "日期"
-                }, {
-                    name: "securities_id",
-                    type: "text",
-                    width: 50,
-                    title: "代號"
-                }, {
-                    name: "securities_name",
-                    type: "text",
-                    width: 100,
-                    title: "商品名稱"
-                }, {
-                    name: "txn_number",
-                    type: "number",
-                    width: 50,
-                    title: "自訂編號"
-                }, {
-                    name: "txn_position",
-                    type: "text",
-                    width: 50,
-                    title: "交易類別"
-                }, {
-                    name: "txn_price",
-                    type: "number",
-                    width: 50,
-                    title: "價格",
-                }, {
-                    name: "txn_amount",
-                    type: "number",
-                    width: 50,
-                    title: "數量",
-                }, {
-                    name: "txn_note",
-                    type: "text",
-                    width: 100,
-                    title: "備註",
-                }, {
-                    type: "control"
-                }]
-            });
-
-        });
-    </script>
+    <script src="js/chartist/chartist.min.js"></script>
+    <script src="js/owl-carousel/owl.carousel.min.js"></script>
+    <script src="js/owl-carousel/owl.carousel-init.js"></script>
+    <!-- <script src="js/dashboard.js"></script> -->
+    <!-- 假總覽 -->
 
 </body>
 
