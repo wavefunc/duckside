@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Duckside</title>
+    <%- include('./layout_link.ejs') %>
+
+</head>
+
+<style>
+
+</style>
+
+<body>
+
+    <%- include('./layout_sidebar.ejs') %>
+
+    <%- include('./layout_header.ejs') %>
+
+    <div class="content-wrap">
+        <div class="main">
+            <div class="container-fluid">
+                <section id="main-content">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="card">
+                                <div class="card-title">
+                                    <H4>#myCarousel</H4>
+                                </div>
+                                <div class="card-body">
+                                    <div id="myCarousel" data-interval="3000" class="carousel slide" data-ride="carousel">
+                                        <!-- Indicators -->
+                                        <ul class="carousel-indicators">
+                                            <li data-target="#playList" data-slide-to="0" class="active"></li>
+                                            <li data-target="#playList" data-slide-to="1"></li>
+                                            <li data-target="#playList" data-slide-to="2"></li>
+                                        </ul>
+                                        <!-- The slideshow -->
+                                        <div class="carousel-inner">
+                                            <div class="carousel-item active">
+                                                <!-- 輪播項目，編號: 零 -->
+                                                <picture>
+                                                    <source srcset="" media="(min-width: 1400px)">
+                                                    <source srcset="" media="(min-width: 768px)">
+                                                    <source srcset="" media="(min-width: 576px)">
+                                                    <img srcset="https://dummyimage.com/400x400/007aeb/dcdcdc" class="d-block img-fluid">
+                                                </picture>
+                                                <div class="carousel-caption">
+                                                    <h3>項目1 - 標題</h3>
+                                                    <p>項目1 - 描述 ...</p>
+                                                </div>
+                                            </div>
+                                            <div class="carousel-item">
+                                                <!-- 輪播項目，編號: 壹 -->
+                                                <picture>
+                                                    <source srcset="" media="(min-width: 1400px)">
+                                                    <source srcset="" media="(min-width: 768px)">
+                                                    <source srcset="" media="(min-width: 576px)">
+                                                    <img srcset="https://dummyimage.com/400x400/3d82ab/dcdcdc" class="d-block img-fluid">
+                                                </picture>
+                                                <div class="carousel-caption">
+                                                    <h3>項目2 - 標題</h3>
+                                                    <p>項目2 - 描述 ...</p>
+                                                </div>
+                                            </div>
+                                            <div class="carousel-item">
+                                                <!-- 輪播項目，編號: 貳 -->
+                                                <picture>
+                                                    <source srcset="" media="(min-width: 1400px)">
+                                                    <source srcset="" media="(min-width: 768px)">
+                                                    <source srcset="" media="(min-width: 576px)">
+                                                    <img srcset="https://dummyimage.com/400x400/45bb89/dcdcdc" class="d-block img-fluid">
+                                                </picture>
+                                                <div class="carousel-caption">
+                                                    <h3>項目3 - 標題</h3>
+                                                    <p>項目3 - 描述 ...</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Left and right controls -->
+                                        <a class="carousel-control-prev" href="#playList" data-slide="prev">
+                                            <span class="carousel-control-prev-icon"></span>
+                                        </a>
+                                        <a class="carousel-control-next" href="#playList" data-slide="next">
+                                            <span class="carousel-control-next-icon"></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>.label-switch label-switch-input label-switch-circle</h4>
+                                </div>
+                                <div class="card-body">
+                                    <label class="switch-label">
+                                        <input type="checkbox" class="switch-input">
+                                        <span class="switch-circle"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="footer">
+                                <p>2018 © Admin Board. - <a href="#">example.com</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <%- include('./layout_script.ejs') %>
+
+</body>
+
+</html>
