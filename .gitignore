@@ -1,4 +1,8 @@
+# MAC 自動產生的檔案
 .DS_Store
 assets/.DS_Store
 plugin/.DS_Store
-public/assets/
+
+# 避免 .git 檔案太肥，而不做版本管理的檔案
+node_modules
+public/plugin/
