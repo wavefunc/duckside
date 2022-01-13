@@ -4,5 +4,3 @@ assets/.DS_Store
 plugin/.DS_Store
 
 # 避免 .git 檔案太肥，而不做版本管理的檔案
-node_modules
-public/plugin/
