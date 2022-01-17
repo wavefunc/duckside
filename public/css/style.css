@@ -470,7 +470,7 @@ a.dt-button.active:not(.disabled) {
 ---------------*/
 
 .header {
-    background: hsl(36, 60%, 95%);
+    background: #E9E37C;
     z-index: 990;
     margin-left: 250px;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
@@ -479,7 +479,7 @@ a.dt-button.active:not(.disabled) {
 }
 
 .logo {
-    background: hsl(36, 41%, 65%);
+    background: #E5CC4D;
     /* width: 250px; */
     height: 60px;
     transition: width 300ms ease-in-out;
@@ -487,9 +487,11 @@ a.dt-button.active:not(.disabled) {
 
 .logo span {
     vertical-align: text-bottom;
-    color: #454545;
-    font-size: 20px;
+    /* color: #454545; */
+    color: #418FAC;
+    font-size: 30px;
     font-weight: 700;
+    line-height: 40px;
     margin-left: -12px;
 }
 
@@ -516,14 +518,15 @@ a.dt-button.active:not(.disabled) {
 }
 
 .header-icon {
-    font-size: 18px;
+    font-size: 20px;
     padding: 12px 15px;
-    color: #252525;
+    color: hsl(36, 25%, 50%);
     position: relative;
     transition: all 0.4s ease-in-out;
     display: inline-block;
     vertical-align: middle;
-    float: left;
+    border-radius: 40px;
+    /* float: left; */
 }
 
 .header-icon i,
@@ -536,6 +539,7 @@ a.dt-button.active:not(.disabled) {
 .header-icon:focus,
 .header-icon:hover {
     background: rgba(255, 255, 255, 0.3);
+    color: white;
 }
 
 .header-icon.active .drop-down {
