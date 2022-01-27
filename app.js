@@ -45,6 +45,26 @@ app.get('/', function (req, res) {
     });
 })
 
+app.get('/ma_dashboard', function (req, res) {
+    res.render('ma_dashboard.ejs', {
+        pageTitle: '總覽',
+        pageURL: '/ma_dashboard'
+    });
+})
+
+app.get('/ma_plan', function (req, res) {
+    res.render('ma_plan.ejs', {
+        pageTitle: '進出策略',
+        pageURL: '/ma_plan'
+    });
+})
+
+app.get('/ma_transaction', function (req, res) {
+    res.render('ma_transaction.ejs', {
+        pageTitle: '交易紀錄',
+        pageURL: '/ma_transaction'
+    });
+})
 
 app.get('/ma_asset', function (req, res) {
     res.render('ma_asset.ejs', {
@@ -57,26 +77,5 @@ app.get('/ma_check', function (req, res) {
     res.render('ma_check.ejs', {
         pageTitle: '投資結算',
         pageURL: '/ma_check'
-    });
-})
-
-app.get('/ma_dashboard', function (req, res) {
-    res.render('ma_dashboard.ejs', {
-        pageTitle: '總覽',
-        pageURL: '/ma_dashboard'
-    });
-})
-
-app.get('/ma_transaction', function (req, res) {
-    res.render('ma_transaction.ejs', {
-        pageTitle: '交易紀錄',
-        pageURL: '/ma_transaction'
-    });
-})
-
-app.get('/ma_plan', function (req, res) {
-    res.render('ma_plan.ejs', {
-        pageTitle: '進出策略',
-        pageURL: '/ma_plan'
     });
 })
