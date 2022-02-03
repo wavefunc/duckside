@@ -7,3 +7,4 @@ plugin/.DS_Store
 
 # heroku 網站託管服務會用到的檔案
 Procfile
+demo/candlestick.mp4
