@@ -3,10 +3,10 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import ManageRoutes from './Routes/ManageRoutes.jsx';
-import MemberRoutes from './Routes/MemberRoutes.jsx';
-import GameRoutes from './Routes/GameRoutes.jsx';
-import AboutRoutes from './Routes/AboutRoutes.jsx';
+import ManageRoutes from './routes/ManageRoutes.jsx';
+import MemberRoutes from './routes/MemberRoutes.jsx';
+import GameRoutes from './routes/GameRoutes.jsx';
+import AboutRoutes from './routes/AboutRoutes.jsx';
 
 import Layout from './pages/Layout.jsx';
 import Homepage from './pages/Homepage.jsx';
