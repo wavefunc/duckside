@@ -1,7 +1,9 @@
+// ----- 巧琳 ----- //
+
 import React, { Component } from 'react';
 import $ from 'jquery';
 
-class AddMember extends Component {
+class MemberAdd extends Component {
 
    state = {};
 
@@ -18,4 +20,4 @@ class AddMember extends Component {
    }
 }
 
-export default AddMember;
+export default MemberAdd;

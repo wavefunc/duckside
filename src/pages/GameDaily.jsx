@@ -1,3 +1,5 @@
+// ----- 晴暄、鎧洋 ----- //
+
 import React, { Component } from 'react';
 
 class GameDaily extends Component {

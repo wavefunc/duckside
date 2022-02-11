@@ -1,3 +1,5 @@
+// ----- 沛珊 ----- //
+
 import React, { Component } from 'react';
 import { Outlet } from 'react-router-dom';
 
@@ -8,32 +10,6 @@ import PageTitle from '../components/PageTitle';
 
 class Layout extends Component {
    state = {}
-
-   // componentDidMount() {
-   //    const strScripts = [
-   //       // nanoscroller
-   //       "/js/jquery.nanoscroller.min.js",
-
-   //       // sidebar
-   //       "/js/sidebar.js",
-   //       "/js/pace.min.js",
-
-   //       // other
-   //       "/js/bootstrap.min.js",
-   //       "/js/scripts.js",
-   //       // "/js/chartist/chartist.min.js",
-   //       // "/js/owl-carousel/owl.carousel.min.js",
-   //       // "/js/owl-carousel/owl.carousel-init.js",
-   //       // "/js/dashboard.js"
-   //    ];
-
-   //    strScripts.forEach(function (val) {
-   //       let script = document.createElement('script');
-   //       script.src = val;
-   //       script.defer = true;
-   //       document.body.appendChild(script);
-   //    });
-   // }
 
    render() {
       return (

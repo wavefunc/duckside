@@ -1,3 +1,5 @@
+// ----- 人豪 ----- //
+
 import React, { Component } from 'react';
 
 class ManageAsset extends Component {

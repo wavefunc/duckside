@@ -1,6 +1,8 @@
+// ----- 巧琳 ----- //
+
 import React from 'react';
 import $ from 'jquery';
-import AddMember from '../components/AddMember.jsx';
+import MemberAdd from '../components/MemberAdd.jsx';
 
 class MemberInfo extends React.Component {
     constructor(props) {
@@ -48,7 +50,7 @@ class MemberInfo extends React.Component {
                                 )}
                             </tbody>
                         </table>
-                        <AddMember onAddMember={this.handleAddMember} />
+                        <MemberAdd onAddMember={this.handleAddMember} />
                     </div>
                 </div>
             </div>
