@@ -13,7 +13,7 @@
     DATABASE_PASSWORD = root
     ```
     
-5. 用 VS Code 開啟終端機，執行 `npm start`
+6. 用 VS Code 開啟終端機，執行 `npm start`
 
 # 使用套件
 
