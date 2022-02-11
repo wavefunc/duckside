@@ -1,5 +1,5 @@
 # 環境安裝
-1. 將你電腦原本的 duckside 改名成 duckside_backup
+1. 將你電腦原本的 duckside 改名成 duckside_backup 做為備份
 2. 從 github 將專案再次 git clone 下來
 `git clone https://github.com/wavefunc/duckside.git`
 3. 用 VS Code 開啟終端機，執行 `npm install`
