@@ -369,7 +369,7 @@
             
                 $("#changeRange").on("click", function(){
                     let dataMinDate = date.parse( myChart.data.labels[0] , "YYYY-MM-DD")
-                    let dataMaxDate = date.parse( myChart.data.labels[ myChart.data.labels.length-1 ] , "YYYY-MM-DD");
+                    let dataMaxDate = date.parse( [...myChart.data.labels].reverse()[0] , "YYYY-MM-DD");
                     let changeMinDate = dataMinDate;
                     let changeMaxDate = dataMaxDate;
                     if( $("#changeRange1").val() ){
