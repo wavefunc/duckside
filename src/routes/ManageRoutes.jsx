@@ -11,10 +11,10 @@ import ManageTransaction from '../pages/ManageTransaction.jsx';
 
 export default (
    <React.Fragment>
-      <Route path='manage/asset' element={<ManageAsset />} />
-      <Route path='manage/check' element={<ManageCheck />} />
       <Route path='manage/dashboard' element={<ManageDashboard />} />
       <Route path='manage/plan' element={<ManagePlan />} />
       <Route path='manage/transaction' element={<ManageTransaction />} />
+      <Route path='manage/asset' element={<ManageAsset />} />
+      <Route path='manage/check' element={<ManageCheck />} />
    </React.Fragment>
 )
