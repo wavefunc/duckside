@@ -10,15 +10,14 @@ import "../css/member_style.css";
 let MemberInfo = () => {
   //轉址
   let navigate = useNavigate();
-  // let dbData = [
-  //   { account: "test", password: "test123" },
-  //   { account: "test1", password: "test123" },
-  //   { account: "test2", password: "test123" },
-  //   { account: "test3", password: "test123" },
-  // ];
 
-  // let [memberAccount, setCount] = useState(dbData);
-  let [memberAccount, setAccount] = useState();
+  let [memberId, setCount] = useState([
+    { account: "test", password: "test123" },
+    { account: "test1", password: "test123" },
+    { account: "test2", password: "test123" },
+    { account: "test3", password: "test123" },
+  ]);
+  let [memberAccount, setAccount] = useState("test");
   let [memberPassword, setPassword] = useState();
 
   useEffect(() => {
@@ -30,10 +29,13 @@ let MemberInfo = () => {
       $("#register, #formContainer").toggleClass("toggle");
     });
   });
-
+  //帳號input
+  let accountInpButton = async (e) => {
+    await memberAccount(e.target.value);
+    // console.log(e.target.value)
+  };
+  //登入_button
   let memberCheckHandler = async () => {
-    // console.log(item.account);
-    //登入_確認按鈕
     await Axios.post("http://localhost:5000/member/add", "edward123").then(
       (result) => {
         console.log(result.data);
@@ -54,11 +56,11 @@ let MemberInfo = () => {
 
   return (
     <div>
-      {/* <div>
+      <div>
         {memberId.map((item, index) => {
-          return <div key={index}>{item.name}</div>;
+          return <div key={index}>{item.account}</div>;
         })}
-      </div> */}
+      </div>
       <div id="formContainer_body">
         <div id="formContainer" className="dwo">
           <div className="formLeft">
@@ -100,7 +102,11 @@ let MemberInfo = () => {
               <section>
                 <label>
                   <p>帳號</p>
-                  <input type="text" placeholder=" " />
+                  <input
+                    type="text"
+                    placeholder=" "
+                    onChange={accountInpButton}
+                  />
                   <div className="border"></div>
                 </label>
                 <label>
@@ -165,3 +171,33 @@ let MemberInfo = () => {
 };
 
 export default MemberInfo;
+
+// // ******************************************
+// //註冊_button轉址
+// let registerClickHandle = async () => {
+//   navigate("/register");
+// };
+// //忘記密碼_button轉址
+// let changepassClickHandle = async () => {
+//   navigate("/changePass");
+// };
+// //登入_button轉址
+// let loginClickHandle = async () => {
+//   navigate("/login");
+// };
+
+// // ******************************************
+
+// //帳號input
+// let accountInpButton = async (e) => {
+//   await setEmail(e.target.value);
+// };
+// //密碼input
+// let passwordInpButton = async (e) => {
+//   await setPassword(e.target.value);
+// };
+// // 密碼檢查input
+// let passwordCheckInpButton = async (e) => {
+//   await setCheckPassword(e.target.value);
+// };
+// // ******************************************
