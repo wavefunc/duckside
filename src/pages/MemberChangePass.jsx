@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
+import $ from "jquery";
 import "../css/member_style.css";
 
 let MemberChangePass = () => {
@@ -14,17 +15,33 @@ let MemberChangePass = () => {
 
   //信箱input
   let emailInpButton = async (e) => {
-   //   await console.log(e.target.value)
+    //   await console.log(e.target.value)
     await setEmail(e.target.value);
     // console.log(e.target.value)
   };
   //登入_button
-  let memberChangeHandler = async () => {
-    //  await Axios.post("http://localhost:5000/member/add", "edward123").then(
+  let memberChangeHandler = () => {
+    //  await Axios.post("http://localhost:5000/member/add", {title:'123'}).then(
     //    (result) => {
     //      console.log(result.data);
     //    }
     //  );
+    let dataToServer = {
+      name: 'Fred',
+    }
+    let url= "/member/add";
+    Axios.post(url,dataToServer,{
+      baseURL: 'http://localhost:5000'
+    })
+    // console.log(`req send: ${JSON.stringify(dataToServer)}`)
+    // await $.ajax({
+    //   type:"post",
+    //   url:"http://localhost:5000/member/add",
+    //   data:{name:"123"},
+    //   success: function(){
+    //     console.log("yes!")
+    //   }
+    // })
   };
   //登入_button轉址
   let loginClickHandle = async () => {
@@ -33,7 +50,7 @@ let MemberChangePass = () => {
 
   return (
     <div>
-       <div>
+      <div>
         {/* 完成後刪除 */}
         <h1>test</h1>
         <p>{memberEmail}</p>
@@ -55,12 +72,20 @@ let MemberChangePass = () => {
               <section>
                 <label>
                   <p>新密碼</p>
-                  <input type="password" placeholder=" " onChange={emailInpButton}/>
+                  <input
+                    type="password"
+                    placeholder=" "
+                    onChange={emailInpButton}
+                  />
                   <div className="border"></div>
                 </label>
                 <label>
                   <p>請再次輸入密碼</p>
-                  <input type="password" placeholder=" " onChange={emailInpButton}/>
+                  <input
+                    type="password"
+                    placeholder=" "
+                    onChange={emailInpButton}
+                  />
                   <div className="border"></div>
                 </label>
                 <button type="button" onClick={memberChangeHandler}>

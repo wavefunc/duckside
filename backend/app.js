@@ -9,6 +9,7 @@ var app = express();
 app.listen(process.env.BACKEND_PORT);
 
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(cors());
 
 var conn = mysql.createConnection({
@@ -40,5 +41,5 @@ app.post('/member/add', function (req, res) {
     conn.query('INSERT INTO members (name) VALUES (?)', [req.body.name], function (err, rows) {
         res.send('ok');
     })
-    // console.log(req.body.name);
+    console.log(req.body);
 })
