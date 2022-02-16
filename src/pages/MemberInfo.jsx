@@ -36,7 +36,7 @@ let MemberInfo = () => {
     //登入_確認按鈕
     await Axios.post("http://localhost:5000/member/add", "edward123").then(
       (result) => {
-        console.log(result.data);
+        console.log(typeof result.data);
       }
     );
 
