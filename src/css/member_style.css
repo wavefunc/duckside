@@ -4,7 +4,7 @@
 }
 
 #formContainer_body {
-  height: 40vw;
+  height: 50vw;
   width: 100%;
   background: url("https://images.unsplash.com/photo-1623721949492-88c84f98175e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2670&q=80")
     center/cover fixed;
@@ -212,13 +212,15 @@
   border-left: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.formRight form.otherForm header {
+.formRight form.otherForm header  {
   color: #000;
   opacity: 0;
   transition: 0.2s ease;
   transition-delay: 0s;
 }
-
+.formRight form.otherForm header h1{
+  color: #000;
+}
 .formRight form.otherForm p {
   color: #000;
 }
