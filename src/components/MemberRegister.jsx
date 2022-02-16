@@ -1,12 +1,11 @@
 // ----- 巧琳 ----- //
 
-import React, { useState } from "react"
+import React, { useState } from "react";
 import Axios from "axios";
 import "../css/member_style.css";
 import Modal from "react-bootstrap/Modal";
 
 let MemberRegister = (props) => {
-
   //State
   let [memberEmail, setEmail] = useState();
   let [memberPassword, setPassword] = useState();
@@ -45,14 +44,14 @@ let MemberRegister = (props) => {
         </p>
         {/* 完成後刪除 */}
       </div>
+
       <Modal
-      {...props}
-      size="lg"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
-    />
-      <Modal show={props.show} animation={true}>
-        
+        size="lg"
+        show={props.show}
+        animation={true}
+        aria-labelledby="example-modal-sizes-title-lg"
+      >
+        <Modal id="example-modal-sizes-title-lg"></Modal>
         <div id="formContainer_body">
           {/* 加toggle變長(註冊功能)，改高度用此選擇器 */}
           <div id="formContainer" className="dwo toggle">
@@ -73,7 +72,7 @@ let MemberRegister = (props) => {
                   <p>註冊後享受更多服務</p>
                 </header>
                 <section>
-                <label>
+                  <label>
                     <p>暱稱</p>
                     <input
                       type="text"

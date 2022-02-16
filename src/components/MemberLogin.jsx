@@ -1,11 +1,10 @@
 // ----- 巧琳 ----- //
 
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Axios from "axios";
 import "../css/member_style.css";
 import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
+
 
 let MemberLogin = (props) => {
   
@@ -31,6 +30,7 @@ let MemberLogin = (props) => {
     // );
   };
 
+    
 
   return (
     <div>
