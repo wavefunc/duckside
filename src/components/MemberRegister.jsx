@@ -1,18 +1,11 @@
 // ----- 巧琳 ----- //
 
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react"
 import Axios from "axios";
 import "../css/member_style.css";
 import Modal from "react-bootstrap/Modal";
 
 let MemberRegister = (props) => {
-  //render後執行
-  useEffect(() => {
-    setShow(props.register);
-  });
-  //model
-  const [show, setShow] = useState(false);
 
   //State
   let [memberEmail, setEmail] = useState();
@@ -40,10 +33,6 @@ let MemberRegister = (props) => {
       console.log(result);
     });
   };
-  //註冊component_close
-  let registerCloseHandle = async () => {
-    props.registerSet(false);
-  };
 
   return (
     <div>
@@ -56,7 +45,14 @@ let MemberRegister = (props) => {
         </p>
         {/* 完成後刪除 */}
       </div>
-      <Modal show={show} animation={true}>
+      <Modal
+      {...props}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    />
+      <Modal show={props.show} animation={true}>
+        
         <div id="formContainer_body">
           {/* 加toggle變長(註冊功能)，改高度用此選擇器 */}
           <div id="formContainer" className="dwo toggle">
@@ -77,6 +73,15 @@ let MemberRegister = (props) => {
                   <p>註冊後享受更多服務</p>
                 </header>
                 <section>
+                <label>
+                    <p>暱稱</p>
+                    <input
+                      type="text"
+                      placeholder=" "
+                      onChange={emailInpButton}
+                    />
+                    <div className="border"></div>
+                  </label>
                   <label>
                     <p>信箱</p>
                     <input
@@ -112,7 +117,7 @@ let MemberRegister = (props) => {
                   <button
                     type="button"
                     className="registerBtn"
-                    onClick={registerCloseHandle}
+                    onClick={props.showtoggle}
                   >
                     返回
                   </button>
