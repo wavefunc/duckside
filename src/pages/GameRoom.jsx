@@ -1,18 +1,25 @@
-// ----- 晴暄、鎧洋 ----- //
+// ----- 晴暄----- //
 
-import React, { Component } from 'react';
+import React, { useState, createContext } from "react";
+import GameRoomHeader from "../components/GameRoomHeader";
+import GameRoomFirstPage from "../components/GameRoomFirstPage";
+import GameRoomSecondPage from "../components/GameRoomSecondPage";
 
-class GameRoom extends Component {
-   state = {}
-   render() {
-      return (
-         <div className="row">
-            <div className="col-lg-12">
-               <h1>This is GameRoom!</h1>
-            </div>
-         </div>
-      );
+let GameRoomPage = () => {
+   const [showFirst, setshowFirst] = useState(true);
+   const [showSecond, setshowSecond] = useState(false);
+   function showtoggle(){
+      setshowFirst(!showFirst);
+      setshowSecond(!showSecond);
    }
+
+   return(
+      <React.Fragment>
+         <GameRoomHeader></GameRoomHeader>
+         <GameRoomFirstPage show={showFirst} showtoggle={showtoggle}></GameRoomFirstPage>
+         <GameRoomSecondPage show={showSecond} showtoggle={showtoggle}></GameRoomSecondPage>
+      </React.Fragment>
+   );
 }
 
-export default GameRoom;
+export default GameRoomPage;

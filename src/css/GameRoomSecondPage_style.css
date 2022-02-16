@@ -1,0 +1,23 @@
+#container{
+    margin: 0px;
+    padding: 0px;
+    background-color: #F5F5CC;
+}
+#container{
+    padding: 0px;
+}
+#container .col-lg-12{
+    display: flex;
+    align-items: center;
+}
+#container #rightSide{
+    flex-grow: 1;
+}
+#container #centerSide{
+    flex-grow: 10;
+}
+
+#container ul{    
+    display: flex;
+    flex-wrap: wrap;
+}
