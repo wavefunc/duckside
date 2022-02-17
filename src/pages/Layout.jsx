@@ -260,7 +260,7 @@ function showOpen() {
                 </Paper>
               </Grid>
             </Grid>
-            <Copyright sx={{ pt: 60 }} />
+            <Copyright sx={{ pt: 5 }} />
           </Container>
         </Box>
       </Box>
