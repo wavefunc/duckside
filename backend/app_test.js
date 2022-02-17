@@ -23,8 +23,8 @@ var conn = mysql.createConnection({
     // user: 'root',
     // password: 'root',
     // database: 'duckside_react',
-    port: 3306,
-    ssl:true
+    port: 3306
+    // ssl:true
 });
 
 conn.connect(function (err) {
