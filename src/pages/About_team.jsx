@@ -1,17 +1,24 @@
 // ----- 冠樺 ----- //
 
 import React, { Component } from 'react';
-import { Card } from 'react-bootstrap';
+import { Row, Col, Container, Card } from 'react-bootstrap';
 
 class About_team extends Component {
    state = {}
    render() {
       return (
-         <div className="row">
-            <div className="col-lg-12">
-               <h1>This is About_team!</h1>
-            </div>
-         </div>
+         <Container>
+            <Row>
+               <Col>1 of 2</Col>
+               <Col>2 of 2</Col>
+               <Col>2 of 2</Col>
+            </Row>
+            <Row>
+               <Col>1 of 3</Col>
+               <Col>2 of 3</Col>
+               <Col>3 of 3</Col>
+            </Row>
+         </Container>
       );
    }
 }
