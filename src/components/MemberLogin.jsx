@@ -5,9 +5,7 @@ import Axios from "axios";
 import "../css/member_style.css";
 import Modal from "react-bootstrap/Modal";
 
-
 let MemberLogin = (props) => {
-  
   //State
   let [memberEmail, setEmail] = useState();
   let [memberPassword, setPassword] = useState();
@@ -30,85 +28,77 @@ let MemberLogin = (props) => {
     // );
   };
 
-    
-
   return (
-    <div>
-      <div>
-        {/* 完成後刪除 */}
-        <h1>test</h1>
-        <p>{memberEmail}</p>
-        <p>{memberPassword}|</p>
-        {/* 完成後刪除 */}
-      </div>
-
-      <Modal show={props.show} animation={true}>
-        <div>
-          <div id="formContainer_body">
-            <div id="formContainer" className="dwo">
-              <div className="formLeft">
-                <img src="/assets/images/member_testimg.png" />
-              </div>
-              <div className="formRight">
-                {/* <!-- Login form --> */}
-                <form id="login">
-                  <header>
-                    <h1>歡迎回來</h1>
-                    <p>請先登入</p>
-                  </header>
-                  <section>
-                    <label>
-                      <p>信箱</p>
-                      <input
-                        type="text"
-                        placeholder=" "
-                        onChange={emailInpButton}
-                      />
-                      <div className="border"></div>
-                    </label>
-                    <label>
-                      <p>密碼</p>
-                      <input
-                        type="password"
-                        placeholder=" "
-                        onChange={passwordInpButton}
-                      />
-                      <div className="border"></div>
-                    </label>
-                    <button type="button" onClick={memberCheckHandler}>
-                      登 入
-                    </button>
-                  </section>
-                  <footer>
-                    {/* <button
+    <Modal
+      size="lg"
+      show={props.show}
+      animation={true}
+      aria-labelledby="example-modal-sizes-title-lg"
+    >
+      <Modal id="example-modal-sizes-title-lg"></Modal>
+      <div id="formContainer_body">
+        <div id="formContainer" className="dwo">
+          <div className="formLeft">
+            <img src="/assets/images/member_testimg.png" />
+          </div>
+          <div className="formRight">
+            {/* <!-- Login form --> */}
+            <form id="login">
+              <header>
+                <h1>歡迎回來</h1>
+                <p>請先登入</p>
+              </header>
+              <section>
+                <label>
+                  <p>信箱</p>
+                  <input
+                    type="text"
+                    placeholder=" "
+                    onChange={emailInpButton}
+                  />
+                  <div className="border"></div>
+                </label>
+                <label>
+                  <p>密碼</p>
+                  <input
+                    type="password"
+                    placeholder=" "
+                    onChange={passwordInpButton}
+                  />
+                  <div className="border"></div>
+                </label>
+                <button type="button" onClick={memberCheckHandler}>
+                  登 入
+                </button>
+              </section>
+              <footer>
+                {/* <button
                   type="button"
                   className="forgotBtn"
                  
                 >
                   忘記密碼?
                 </button> */}
-                    <button
-                      type="button"
-                      className="registerBtn"
-                      onClick={props.showtoggle}
-                    >
-                      新用戶?
-                    </button>
-                    <button
-                      type="button"
-                      className="registerBtn"
-                      onClick={props.close}
-                    >
-                      回首頁
-                    </button>
-                  </footer>
-                </form>
-              </div>
-            </div>
+                <button
+                  type="button"
+                  className="registerBtn"
+                  onClick={props.showtoggle}
+                >
+                  新用戶?
+                </button>
+                <button
+                  type="button"
+                  className="registerBtn"
+                  onClick={props.close}
+                >
+                  回首頁
+                </button>
+              </footer>
+            </form>
           </div>
         </div>
-      </Modal>
-    </div>
+      </div>
+    </Modal>
   );
 };
 

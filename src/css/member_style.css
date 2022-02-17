@@ -16,12 +16,12 @@
 #formContainer {
   display: flex;
   transition: 0.2s ease;
-  height: 342.5px;
+  height: 400px;
   transition-delay: 0.3s;
 }
 
 #formContainer.toggle {
-  height: 480px;
+  height: 550px;
   transition-delay: 0s;
 }
 

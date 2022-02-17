@@ -28,8 +28,9 @@ import PageTitle from '../components/PageTitle';
 import Breadcrumb from '../components/Breadcrumb';
 import { Outlet } from 'react-router-dom';
 // login component
-// import MemberLogin from "../components/MemberLogin";
-// import MemberRegister from "../components/MemberRegister";
+import MemberLogin from "../components/MemberLogin";
+import MemberRegister from "../components/MemberRegister";
+import "../css/bootstrap.min.css";
 // login component
 
 
@@ -108,6 +109,23 @@ function Layout() {
     setOpen(!open);
   };
 
+// login component
+const [showLogin, setShowLogin] = React.useState(false);
+const [showregister, setShowRegister] = React.useState(false);
+function showtoggle() {
+  setShowLogin(!showLogin);
+  setShowRegister(!showregister);
+}
+function showClose() {
+  setShowLogin(false);
+  setShowRegister(false);
+}
+function showOpen() {
+  setShowLogin(!showLogin);
+}
+// login component
+
+
   return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex' }}>
@@ -158,11 +176,11 @@ function Layout() {
                 <NotificationsNoneIcon />
               </Badge>
             </IconButton>
-            <IconButton color="inherit">
+            <IconButton color="inherit" onClick={showOpen}>
               <PersonOutlineIcon />
               {/* login component */}        
-              {/* <MemberLogin show={showLogin} showtoggle={showtoggle} close={showClose}></MemberLogin>
-              <MemberRegister show={showregister} showtoggle={showtoggle}></MemberRegister> */}
+              <MemberLogin show={showLogin} showtoggle={showtoggle} close={showClose}></MemberLogin>
+              <MemberRegister show={showregister} showtoggle={showtoggle}></MemberRegister>
               {/* login component */}
             </IconButton>
           </Toolbar>
