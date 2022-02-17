@@ -93,7 +93,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const mdTheme = createTheme({
   typography: {
     "fontFamily": `"Roboto", "Helvetica", "Arial", sans-serif`,
-    "fontSize": 15,
+    "fontSize": 14,
     "fontWeight": 'bold',
   },
 
