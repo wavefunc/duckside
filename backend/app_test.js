@@ -14,17 +14,24 @@ app.use(cors());
 
 var conn = mysql.createConnection({
     // host: 'localhost',
-    user: 'root',
-    password: 'root',
-    database: 'duckside_react',
+    host: '184.168.115.208',
+    // host: 'duckside.com',
+    // host: 'wavefunc.com',
+    user: 'duckside',
+    password: 'iii23265860',
+    database: 'duckside',
+    // user: 'root',
+    // password: 'root',
+    // database: 'duckside_react',
     port: 3306,
+    ssl:true
 });
 
 conn.connect(function (err) {
     if (err) {
         console.log(err);
     } else {
-        console.log(`database duckside_react connection ok`);
+        console.log(`database duckside connection ok`);
     }
 })
 

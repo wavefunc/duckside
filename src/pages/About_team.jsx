@@ -75,6 +75,7 @@ class About_team extends Component {
                      <Card.Body>
                         <Card.Title>李冠樺</Card.Title>
                         <Card.Text>
+                           為專案導入 git<br />
                            建立專案檔案架構<br />
                            架設資料庫<br />
                            資料庫銜接前端的程式
