@@ -27,7 +27,10 @@ import AccordionGame from '../components/Sidebar_game';
 import PageTitle from '../components/PageTitle';
 import Breadcrumb from '../components/Breadcrumb';
 import { Outlet } from 'react-router-dom';
-
+// login component
+// import MemberLogin from "../components/MemberLogin";
+// import MemberRegister from "../components/MemberRegister";
+// login component
 
 
 
@@ -157,6 +160,10 @@ function Layout() {
             </IconButton>
             <IconButton color="inherit">
               <PersonOutlineIcon />
+              {/* login component */}        
+              {/* <MemberLogin show={showLogin} showtoggle={showtoggle} close={showClose}></MemberLogin>
+              <MemberRegister show={showregister} showtoggle={showtoggle}></MemberRegister> */}
+              {/* login component */}
             </IconButton>
           </Toolbar>
         </AppBar>
