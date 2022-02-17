@@ -91,7 +91,7 @@ let MemberLogin = (props) => {
                   className="registerBtn"
                   onClick={props.close}
                 >
-                  回首頁
+                  返回
                 </button>
               </footer>
             </form>
