@@ -10,9 +10,8 @@ import Nav from 'react-bootstrap/Nav'
 import Card from 'react-bootstrap/Card'
 
 import ManageRecordTxn from '../components/ManageRecordTxn.jsx';
-import ManageRecentTxn from '../components/ManageRecentTxn.jsx';
 import ManageCurrentPosition from '../components/ManageCurrentPosition.jsx';
-import ManageHistoryTxn from '../components/ManageHistoryTxn.jsx';
+import ManageHistory from '../components/ManageHistory.jsx';
 
 class ManageTransaction extends Component {
    state = {
@@ -44,10 +43,10 @@ class ManageTransaction extends Component {
                            </Nav>
                            <Tab.Content>
                               <Tab.Pane eventKey="first">
-                                 <ManageRecentTxn url={this.state.urlGetTxn} dataToServer={this.state.dataToServer}></ManageRecentTxn>
+                                 <ManageHistory url={this.state.urlGetTxn} dataToServer={this.state.dataToServer} row={10}></ManageHistory>
                               </Tab.Pane>
                               <Tab.Pane eventKey="second">
-                                 <ManageHistoryTxn url={this.state.urlGetTxn} dataToServer={this.state.dataToServer}></ManageHistoryTxn>
+                                 <ManageHistory url={this.state.urlGetTxn} dataToServer={this.state.dataToServer}></ManageHistory>
                               </Tab.Pane>
                            </Tab.Content>
                         </Tab.Container>
