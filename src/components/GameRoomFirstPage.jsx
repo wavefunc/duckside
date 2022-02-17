@@ -487,7 +487,7 @@ let GameRoomFirstPage = (props) => {
          </ul>
             </div> 
 
-            <div id="rightSide" onClick={test}>
+            <div id="rightSide" onClick={props.showtoggle}>
                <div id="nextBtns">
                <svg width="63" height="63" viewBox="0 0 63 63">
                <g id="nextBtn" transform="translate(-1843 -597)">

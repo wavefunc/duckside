@@ -10,13 +10,24 @@ import MemberRegister from "../components/MemberRegister";
 
 
 let MemberLoginPage = () => {
-  
-  const [registerState, setRegisterState] = useState(false);
+  //MemberLoginPage***start
+  const [showLogin, setShowLogin] = useState(true);
+  const [showregister, setShowRegister] = useState(false);
+  function showtoggle() {
+    setShowLogin(!showLogin);
+    setShowRegister(!showregister);
+  }
+  function showClose() {
+    setShowLogin(false);
+    setShowRegister(false);
+  }
+  //MemberLoginPage***end
+
 
   return (
     <React.Fragment>
-      <MemberLogin registerSet={setRegisterState}></MemberLogin>
-      <MemberRegister register={registerState} registerSet={setRegisterState}></MemberRegister>
+      <MemberLogin show={showLogin} showtoggle={showtoggle} close={showClose}></MemberLogin>
+      <MemberRegister show={showregister} showtoggle={showtoggle}></MemberRegister>
     </React.Fragment>
   );
 };

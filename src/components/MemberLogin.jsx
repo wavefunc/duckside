@@ -1,21 +1,16 @@
 // ----- 巧琳 ----- //
 
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Axios from "axios";
 import "../css/member_style.css";
 import Modal from "react-bootstrap/Modal";
 
+
 let MemberLogin = (props) => {
-    
-
-  //model
-  const [show, setShow] = useState(true);
-
+  
   //State
   let [memberEmail, setEmail] = useState();
   let [memberPassword, setPassword] = useState();
-  let [test, setTest] = useState({ item1: "Juice" });
 
   //信箱input
   let emailInpButton = async (e) => {
@@ -35,10 +30,7 @@ let MemberLogin = (props) => {
     // );
   };
 
-  //註冊component_open
-  let registerOpenHandle = async () => {
-    props.registerSet(true)
-  };
+    
 
   return (
     <div>
@@ -50,7 +42,7 @@ let MemberLogin = (props) => {
         {/* 完成後刪除 */}
       </div>
 
-      <Modal show={show} animation={true}>
+      <Modal show={props.show} animation={true}>
         <div>
           <div id="formContainer_body">
             <div id="formContainer" className="dwo">
@@ -98,9 +90,16 @@ let MemberLogin = (props) => {
                     <button
                       type="button"
                       className="registerBtn"
-                      onClick={registerOpenHandle}
+                      onClick={props.showtoggle}
                     >
                       新用戶?
+                    </button>
+                    <button
+                      type="button"
+                      className="registerBtn"
+                      onClick={props.close}
+                    >
+                      回首頁
                     </button>
                   </footer>
                 </form>

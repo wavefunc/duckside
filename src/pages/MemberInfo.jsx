@@ -8,161 +8,134 @@ import "../css/member_style.css";
 // import "../../public/css/member_style.css"
 
 let MemberInfo = () => {
-  //轉址
-  let navigate = useNavigate();
-
-  let [memberId, setCount] = useState([
-    { account: "test", password: "test123" },
-    { account: "test1", password: "test123" },
-    { account: "test2", password: "test123" },
-    { account: "test3", password: "test123" },
-  ]);
-  let [memberAccount, setAccount] = useState("test");
-  let [memberPassword, setPassword] = useState();
-
-  useEffect(() => {
-    $(".forgotBtn").click(function () {
-      $("#forgot").toggleClass("toggle");
-    });
-
-    $(".registerBtn").click(function () {
-      $("#register, #formContainer").toggleClass("toggle");
-    });
-  });
-  //帳號input
-  let accountInpButton = async (e) => {
-    await memberAccount(e.target.value);
-    // console.log(e.target.value)
-  };
-  //登入_button
-  let memberCheckHandler = async () => {
-    await Axios.post("http://localhost:5000/member/add", "edward123").then(
-      (result) => {
-        console.log(result.data);
-      }
-    );
-
-    // $.ajax({
-    //   type: "post",
-    //   url: "http://localhost:5000/member/add ",
-    //   data: "edward123",
-    //   success: function (data, status, xhr) {
-    //     console.log(data);
-    //     //轉址
-    //     // navigate('/');
-    //   },
-    // });
-  };
-
   return (
-    <div>
-      <div>
-        {memberId.map((item, index) => {
-          return <div key={index}>{item.account}</div>;
-        })}
-      </div>
-      <div id="formContainer_body">
-        <div id="formContainer" className="dwo">
-          <div className="formLeft">
-            <img src="/assets/images/member_testimg.png" />
+    <div className="container-xl px-4 mt-4">
+      <div className="row">
+        <div className="col-xl-4">
+          {/* <!-- Profile picture card--> */}
+          <div className="card mb-4 mb-xl-0">
+            <div className="card-header">會員頭像</div>
+            <div className="card-body text-center">
+              {/* <!-- Profile picture image--> */}
+              <img
+                className="img-account-profile rounded-circle mb-2 w-100"
+                src="http://bootdey.com/img/Content/avatar/avatar1.png"
+                alt=""
+              />
+              {/* <!-- Profile picture help block--> */}
+              <div className="small font-italic text-muted mb-4">
+                JPG or PNG no larger than 5 MB
+              </div>
+              {/* <!-- Profile picture upload button--> */}
+              <button className="btn btn-primary" type="button">
+                上傳照片
+              </button>
+            </div>
           </div>
-          <div className="formRight">
-            {/* <!-- Forgot password form --> */}
-            <form id="forgot" className="otherForm">
-              <header>
-                <h1>忘記密碼</h1>
-                <p>輸入信箱找回密碼</p>
-              </header>
-              <section>
-                <label>
-                  <p>信箱</p>
-                  <input type="email" placeholder=" " />
-                  <div className="border"></div>
-                </label>
-                <label className="col-6">
-                  <p>驗證碼</p>
-                  <input type="password" placeholder=" " />
-                  <div className="border"></div>
-                </label>
-                <button type="submit">發送信件</button>
-              </section>
-              <footer>
-                <button type="button" className="forgotBtn">
-                  返回
-                </button>
-              </footer>
-            </form>
-
-            {/* <!-- Login form --> */}
-            <form id="login">
-              <header>
-                <h1>歡迎回來</h1>
-                <p>請先登入</p>
-              </header>
-              <section>
-                <label>
-                  <p>帳號</p>
+        </div>
+        <div className="col-xl-8">
+          {/* <!-- Account details card--> */}
+          <div className="card mb-4">
+            <div className="card-header">會員資訊</div>
+            <div className="card-body">
+              <form>
+                {/* <!-- Form Group (username)--> */}
+                <div className="mb-3">
+                  <label className="small mb-1" htmlFor="inputUsername">
+                    Email(帶入登入會員資料，不可更改!)
+                  </label>
                   <input
+                    className="form-control"
+                    id="inputUsername"
                     type="text"
-                    placeholder=" "
-                    onChange={accountInpButton}
+                    placeholder="Enter your username"
+                    value="username"
                   />
-                  <div className="border"></div>
-                </label>
-                <label>
-                  <p>密碼</p>
-                  <input type="password" placeholder=" " />
-                  <div className="border"></div>
-                </label>
-                <button type="button" onClick={memberCheckHandler}>
-                  登 入
-                </button>
-              </section>
-              <footer>
-                <button type="button" className="forgotBtn">
-                  忘記密碼?
-                </button>
-                <button type="button" className="registerBtn">
-                  新用戶?
-                </button>
-              </footer>
-            </form>
+                </div>
 
-            {/* <!-- Register form --> */}
-            <form id="register" className="otherForm">
-              <header>
-                <h1>用戶註冊</h1>
-                <p>註冊後享受更多服務</p>
-              </header>
-              <section>
-                <label>
-                  <p>帳號</p>
-                  <input type="text" placeholder=" " />
-                  <div className="border"></div>
-                </label>
-                <label>
-                  <p>信箱</p>
-                  <input type="email" placeholder=" " />
-                  <div className="border"></div>
-                </label>
-                <label>
-                  <p>密碼</p>
-                  <input type="password" placeholder=" " />
-                  <div className="border"></div>
-                </label>
-                <label>
-                  <p>重複密碼</p>
-                  <input type="password" placeholder=" " />
-                  <div className="border"></div>
-                </label>
-                <button type="submit">註 册</button>
-              </section>
-              <footer>
-                <button type="button" className="registerBtn">
-                  返回
+
+                {/* <!-- Form Row--> */}
+                <div className="row gx-3 mb-3">
+                  {/* <!-- Form Group (first name)--> */}
+                  <div className="col-md-6">
+                    <label className="small mb-1" htmlFor="inputFirstName">
+                      First name
+                    </label>
+                    <input
+                      className="form-control"
+                      id="inputFirstName"
+                      type="text"
+                      placeholder="Enter your first name"
+                      value="Valerie"
+                    />
+                  </div>
+                  {/* <!-- Form Group (last name)-->/*/}
+                  <div className="col-md-6">
+                    <label className="small mb-1" htmlFor="inputLastName">
+                      Last name
+                    </label>
+                    <input
+                      className="form-control"
+                      id="inputLastName"
+                      type="text"
+                      placeholder="Enter your last name"
+                      value="Luna"
+                    />
+                  </div>
+                </div>
+             
+                {/* <!-- Form Group (em/ail address)--> */}
+                <div className="mb-3">
+                  <label className="small mb-1" htmlFor="inputEmailAddress">
+                    Email address
+                  </label>
+                  <input
+                    className="form-control"
+                    id="inputEmailAddress"
+                    type="email"
+                    placeholder="Enter your email address"
+                    value="name@example.com"
+                  />
+                </div>
+                {/* <!-- Form Row--> */}
+                <div className="row gx-3 mb-3">
+                  {/* <!-- Form Group (phone number)--> */}
+                  <div className="col-md-6">
+                    <label className="small mb-1" htmlFor="inputPhone">
+                      Phone number
+                    </label>
+                    <input
+                      className="form-control"
+                      id="inputPhone"
+                      type="tel"
+                      placeholder="Enter your phone number"
+                      value="555-123-4567"
+                    />
+                  </div>
+                  {/* <!-- Form Group (birthday)--> */}
+                  <div className="col-md-6">
+                    <label className="small mb-1" htmlFor="inputBirthday">
+                      Birthday
+                    </label>
+                    <input
+                      className="form-control"
+                      id="inputBirthday"
+                      type="text"
+                      name="birthday"
+                      placeholder="Enter your birthday"
+                      value="06/10/1988"
+                    />
+                  </div>
+                </div>
+                {/* <!-- Save changes button--> */}
+                <button className="btn btn-primary" type="button">
+                  Save changes
                 </button>
-              </footer>
-            </form>
+                <button className="btn btn-primary ml-4" type="button">
+                  Save changes
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       </div>
@@ -171,33 +144,3 @@ let MemberInfo = () => {
 };
 
 export default MemberInfo;
-
-// // ******************************************
-// //註冊_button轉址
-// let registerClickHandle = async () => {
-//   navigate("/register");
-// };
-// //忘記密碼_button轉址
-// let changepassClickHandle = async () => {
-//   navigate("/changePass");
-// };
-// //登入_button轉址
-// let loginClickHandle = async () => {
-//   navigate("/login");
-// };
-
-// // ******************************************
-
-// //帳號input
-// let accountInpButton = async (e) => {
-//   await setEmail(e.target.value);
-// };
-// //密碼input
-// let passwordInpButton = async (e) => {
-//   await setPassword(e.target.value);
-// };
-// // 密碼檢查input
-// let passwordCheckInpButton = async (e) => {
-//   await setCheckPassword(e.target.value);
-// };
-// // ******************************************

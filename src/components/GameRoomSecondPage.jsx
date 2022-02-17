@@ -5,7 +5,7 @@ import "../css/GameRoomSecondPage_style.css";
 
 let GameRoomSecondPage = () =>{
    return (
-      <div id="container" className="row" style={{display:"none"}}>
+      <div id="container" className="row" >
          <div className="col-lg-12">
             <div id="leftSide">
             <svg width="63" height="63" viewBox="0 0 63 63">

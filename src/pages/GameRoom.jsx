@@ -6,11 +6,17 @@ import GameRoomFirstPage from "../components/GameRoomFirstPage";
 import GameRoomSecondPage from "../components/GameRoomSecondPage";
 
 let GameRoomPage = () => {
-   const [showFirst, setshowFirst] = useState(true);
-   const [showSecond, setshowSecond] = useState(false);
+   const [showFirst, setshowFirst] = useState("block");
+   const [showSecond, setshowSecond] = useState("none");
    function showtoggle(){
-      setshowFirst(!showFirst);
-      setshowSecond(!showSecond);
+      // setshowFirst("none");
+      // setshowSecond("block");
+      // if (showFirst == "none"){
+      //    {setshowFirst == "block"}
+      // }
+      console.log("123");
+      
+      
    }
 
    return(
