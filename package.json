@@ -23,7 +23,6 @@
     "formik": "^2.2.9",
     "gridjs": "^5.0.2",
     "gridjs-react": "^5.0.2",
-    "jquery": "^3.6.0",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.15",
     "react": "^17.0.2",
