@@ -32,6 +32,7 @@ app.get('/', function (req, res) {
 })
 
 app.get('/member/list', function (req, res) {
+    console.log('get req');
     conn.query('SELECT * FROM members', [], function (err, rows) {
         res.send(rows);
     })
@@ -43,3 +44,5 @@ app.post('/member/add', function (req, res) {
     })
     console.log(req.body);
 })
+
+// app.get('/account')

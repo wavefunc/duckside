@@ -1,6 +1,7 @@
-// ----- 沛珊 ----- //
+// ----- 冠樺 ----- //
 
 import React, { Component } from 'react';
+import { Card } from 'react-bootstrap';
 
 class About_team extends Component {
    state = {}
