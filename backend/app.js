@@ -13,13 +13,19 @@ app.use(express.json());
 app.use(cors());
 
 app.get('/', function (req, res) {
-   res.send('Welcome to backend');
+    res.send('Welcome to backend');
 })
 
 app.get('/account', function (req, res) {
-   query('SELECT * FROM account', [], function (err, rows) {
-      res.send(rows);
-   })
+    query('SELECT * FROM account', [], function (err, rows) {
+        res.send(rows);
+    })
+})
+
+app.get('/asset', function (req, res) {
+    query('SELECT * FROM asset', [], function (err, rows) {
+        res.send(rows);
+    })
 })
 
 app.get('/member/list', function (req, res) {

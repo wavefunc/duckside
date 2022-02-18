@@ -19,6 +19,7 @@ exports.query = function (strQuery, options, callback) {
    pool.getConnection(function (err, conn) {
       if (err) {
          console.log('db connection error!');
+         console.log(err);
 
       } else {
          // console.log('db connection ok!');
