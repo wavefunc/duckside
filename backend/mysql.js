@@ -13,7 +13,7 @@ var pool = mysql.createPool({
 });
 
 exports.query = function (strQuery, options, callback) {
-   console.log(strQuery, options, callback);
+   // console.log(strQuery, options, callback);
 
    // 取得連線池的連線
    pool.getConnection(function (err, conn) {
@@ -21,7 +21,7 @@ exports.query = function (strQuery, options, callback) {
          console.log('db connection error!');
 
       } else {
-         console.log('db connection ok!');
+         // console.log('db connection ok!');
          conn.query(strQuery, options, function (err, rows) {
             callback(err, rows);
          })

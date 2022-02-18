@@ -1,3 +1,5 @@
+// ----- 冠樺 ----- //
+
 import React, { useState, useEffect } from 'react';
 import { Table } from 'react-bootstrap'
 import axios from 'axios';
@@ -56,7 +58,7 @@ function MysqlTest() {
                </tr>
                <tr>
                   <td>acc_donate</td>
-                  <td>datetime</td>
+                  <td>date</td>
                   <td>{typeof (account[0].acc_donate)}</td>
                   <td>{account[0].acc_donate}</td>
                </tr>
