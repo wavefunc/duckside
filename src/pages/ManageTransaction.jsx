@@ -1,24 +1,23 @@
 // ----- 人豪 ----- //
 
 import React, { Component } from 'react';
+import Container from 'react-bootstrap/Container';
+import {Row,Col,Tab,Nav} from 'react-bootstrap';
+// import Col from 'react-bootstrap/Col'
+// import Tab from 'react-bootstrap/Tab'
+// import Nav from 'react-bootstrap/Nav'
 
-import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
-import Tab from 'react-bootstrap/Tab'
-import Nav from 'react-bootstrap/Nav'
-import Card from 'react-bootstrap/Card'
-
-import ManageRecordTxn from '../components/ManageRecordTxn.jsx';
+import ManageRecord from '../components/ManageRecord.jsx';
 import ManageCurrentPosition from '../components/ManageCurrentPosition.jsx';
 import ManageHistory from '../components/ManageHistory.jsx';
 
 class ManageTransaction extends Component {
    state = {
       urlGetTxn: 'http://localhost:5000/member/list',
-      urlPushTxn: 'http://localhost:5000/member/list',
+      urlPutTxn: 'http://localhost:5000/member/list',
       urlGetPosition: 'http://localhost:5000/member/list',
-      dataToServer: '',
+      urlGetDatalist: 'http://localhost:5000/',
+      acc_id: '', // sessions資料
    }
    render() {
       return (
@@ -27,7 +26,8 @@ class ManageTransaction extends Component {
                <Col lg={8}>
                   <Row>
                      <Col lg={12}>
-                        <ManageRecordTxn url={this.state.urlPushTxn} dataToServer={this.state.dataToServer}></ManageRecordTxn>
+                        {/* <ManageRecord url={this.state.urlGetTxn} acc_id={this.state.acc_id} row={10}></ManageRecord>
+                        <ManageRecordTxn url={this.state.urlPutTxn} acc_id={this.state.acc_id}></ManageRecordTxn> */}
                      </Col>
                   </Row>
                   <Row>
@@ -43,10 +43,10 @@ class ManageTransaction extends Component {
                            </Nav>
                            <Tab.Content>
                               <Tab.Pane eventKey="first">
-                                 <ManageHistory url={this.state.urlGetTxn} dataToServer={this.state.dataToServer} row={10}></ManageHistory>
+                                 <ManageHistory url={this.state.urlGetTxn} acc_id={this.state.acc_id} row={10}></ManageHistory>
                               </Tab.Pane>
                               <Tab.Pane eventKey="second">
-                                 <ManageHistory url={this.state.urlGetTxn} dataToServer={this.state.dataToServer}></ManageHistory>
+                                 <ManageHistory url={this.state.urlGetTxn} acc_id={this.state.acc_id}></ManageHistory>
                               </Tab.Pane>
                            </Tab.Content>
                         </Tab.Container>

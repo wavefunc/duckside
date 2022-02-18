@@ -13,7 +13,7 @@ function ManageHistory(props) {
 
     useEffect(() => {
         let didCancel = false;
-        axios(props.url, props.dataToServer).then((res) => {
+        axios(props.url, props.acc_id).then((res) => {
             if (!didCancel) {
                 setData(res.data);
             }
