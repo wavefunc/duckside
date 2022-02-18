@@ -5,18 +5,20 @@ import "gridjs/dist/theme/mermaid.min.css";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-function ManageCurrentPosition(props) {
+function ManageCurrentPosition({url, acc_id}) {
+    console.log('function ManageCurrentPosition');
     const [data, setData] = useState([
         { acc_name: 'fake John', acc_email: 'john@example.com' },
         { acc_name: 'fake Mike', acc_email: 'mike@example.com' }
     ]);
 
     useEffect(() => {
-        axios(props.url, props.dataToServer).then((res) => {
+        console.log('req ManageCurrentPosition');
+        let didCancel = false;
+        axios(url, acc_id).then((res) => {
             setData(res.data);
-            console.log(res.data);
-            console.log(typeof res.data);
         });
+        return () => { didCancel = true };
     }, []);
 
     return (
