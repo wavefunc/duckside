@@ -1,4 +1,4 @@
-#fade {
+/* #fade {
     display: none;
     position: absolute;
     top: 0%;
@@ -8,7 +8,7 @@
     background-color: black;
     z-index: 1001;
     opacity: .80;
-    /* filter: alpha(opacity=80); */
+    filter: alpha(opacity=80);
   }
 
   #light {
@@ -20,7 +20,7 @@
     height: 50%;
     z-index: 1002;
     overflow: auto;
-  }
+  } */
 
   #pagehome{
     width: 780px;
