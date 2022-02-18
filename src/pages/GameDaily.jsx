@@ -2,22 +2,19 @@
 
 import { Axios } from 'axios';
 import React, { Component } from 'react';
-import "../css/gamedaily_style.css"
-import { Button, Modal } from 'react-bootstrap';
-import { render } from '@testing-library/react';
+import { Row, Modal } from 'react-bootstrap';
 
 function MyVerticallyCenteredModal(props) {
    return (
       <Modal
          {...props}
-         size="lg"
-         aria-labelledby="contained-modal-title-vcenter"
          centered
       >
-         <Modal.Header closeButton>
-            <g id="light">
+
+         <div id="light">
+            <g>
                <svg width="700" height="345" viewBox="0 0 1033 845">
-                  <g id="關卡條件" transform="translate(-484 -157)">
+                  <g id="關卡條件" transform="translate(-727 -157)">
                      <rect id="Rectangle_118" data-name="Rectangle 118" width="1033" height="845" rx="30"
                         transform="translate(484 157)" fill="#faf3e2" />
                      <text id="關卡條件-2" data-name="關卡條件" transform="translate(526 274)" fill="#520707" fontSize="80"
@@ -50,20 +47,18 @@ function MyVerticallyCenteredModal(props) {
                            <g id="關閉_按鈕" data-name="關閉 按鈕" transform="translate(-511 41)">
                               <rect id="Rectangle_105" data-name="Rectangle 105" width="325" height="142" rx="30"
                                  transform="translate(1109 765)" fill="#ac4c4c" />
-                              <text id="關閉" transform="translate(1172 873)" fill="#fff" fontSize="100"
-                                 fontFamily="'\.PingFangTC-Semibold', '\.PingFang TC'" fontWeight="600">
+                              <text id="關閉" transform="translate(1172 873)" fill="#fff" font-size="100"
+                                 font-family="'\.PingFangTC-Semibold', '\.PingFang TC'" font-weight="600">
                                  <tspan x="0" y="0">關閉</tspan>
                               </text>
                            </g>
                         </a>
                      </g>
+
                   </g>
                </svg>
             </g>
-
-         </Modal.Header>
-
-
+         </div>
       </Modal>
    );
 }
@@ -72,7 +67,7 @@ function GameDaily() {
    const [modalShow, setModalShow] = React.useState(false);
 
    return (
-      <>
+      <Row>
          <svg width="1020" height="500" viewBox="0 0 1920 1080">
             <defs>
                <filter id="Rectangle_102" x="40" y="46" width="519" height="162" filterUnits="userSpaceOnUse">
@@ -205,14 +200,15 @@ function GameDaily() {
                </g>
                <text id="_8" data-name="8" transform="translate(1461 860)" fontSize="200" fontFamily="Helvetica-Bold, Helvetica" fontWeight="700"><tspan x="0" y="0">8</tspan></text>
             </g>
+            <MyVerticallyCenteredModal
+               show={modalShow}
+               onHide={() => setModalShow(false)}
+            />
          </svg>
 
-         <MyVerticallyCenteredModal
-            show={modalShow}
-            onHide={() => setModalShow(false)}
-         />
 
-      </>
+
+      </Row>
    );
 }
 
