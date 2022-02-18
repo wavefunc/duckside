@@ -2,18 +2,15 @@
 1. 將你電腦原本的 duckside 改名成 duckside_backup 做為備份
 2. 從 github 將專案再次 git clone 下來
 `git clone https://github.com/wavefunc/duckside.git`
-3. 用 VS Code 開啟終端機，執行 `npm install`
-4. 開啟資料庫伺服器，將專案目錄下 `dbSetup.sql` 的檔案內容貼至資料庫執行
-5. 在專案根目錄建立一檔案，檔名為 `.env`。將下列內容貼至 `.env` 檔案內容
+3. 用 VS Code 開啟終端機，執行 `npm install` 
+4. 在專案根目錄建立一檔案，檔名為 `.env`。將下列內容貼至 `.env` 檔案內容
     
     ```html
     BACKEND_PORT = 5000
-    DATABASE_NAME = duckside_react
-    DATABASE_USER = root
-    DATABASE_PASSWORD = root
     ```
     
-6. 用 VS Code 開啟終端機，執行 `npm start`
+5. 用 VS Code 開啟終端機，執行 `npm start`
+6. 資料庫已改用直接連線雲端的資料庫，所以不需再另外設定
 
 # 使用套件
 
@@ -39,10 +36,6 @@ React 路由管理，使用套件 `react-router-dom@6`，注意是第6版，不�
 ### `/.env`
 
 環境設定變數檔案，可自訂連至資料庫的相關設定
-
-### `/dbSetup.sql`
-
-建立測試用的會員資料庫
 
 ## 前端
 
