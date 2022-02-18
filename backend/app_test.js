@@ -12,37 +12,47 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 
-var conn = mysql.createConnection({
-    // host: 'localhost',
-    host: '184.168.115.208',
-    // host: 'duckside.com',
-    // host: 'wavefunc.com',
-    user: 'duckside',
-    password: 'iii23265860',
-    database: 'duckside',
-    // user: 'root',
-    // password: 'root',
-    // database: 'duckside_react',
-    port: 3306
-    // ssl:true
+var pool = mysql.createPool({
+   host: '184.168.115.208',
+   user: 'duckside',
+   password: 'iii23265860',
+   database: 'duckside',
+   port: 3306,
+   // 無可用連線時是否等待pool連線釋放(預設為true)
+   waitForConnections: true,
+   // 連線池可建立的總連線數上限(預設最多為10個連線數)
+   connectionLimit: 10
 });
 
-conn.connect(function (err) {
-    if (err) {
-        console.log(err);
-    } else {
-        console.log(`database duckside connection ok`);
-    }
-})
+var query = function (strQuery, options, callback) {
+   console.log(strQuery, options, callback);
+
+   // 取得連線池的連線
+   pool.getConnection(function (err, conn) {
+      if (err) {
+         console.log('db connection error!');
+
+      } else {
+         console.log('db connection ok!');
+         conn.query(strQuery, options, function (err, rows) {
+            callback(err, rows);
+
+         })
+
+         // release connection。
+         conn.release();
+      }
+   });
+}
 
 app.get('/', function (req, res) {
-    res.send('Welcome to backend');
+   res.send('Welcome to backend');
 })
 
-app.get('/account', function(req, res){
-    conn.query('SELECT * FROM account', [], function (err, rows) {
-        res.send(rows);
-    })
+app.get('/account', function (req, res) {
+   query('SELECT * FROM account', [], function (err, rows) {
+      res.send(rows);
+   })
 })
 
 // app.get('/member/list', function (req, res) {
@@ -58,5 +68,3 @@ app.get('/account', function(req, res){
 //     })
 //     console.log(req.body);
 // })
-
-// app.get('/account')
