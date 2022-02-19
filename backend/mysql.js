@@ -2,6 +2,7 @@
 
 var mysql = require('mysql');
 
+// 建立 mysql 連線池
 var pool = mysql.createPool({
    host: '184.168.115.208',
    user: 'duckside',
@@ -15,8 +16,6 @@ var pool = mysql.createPool({
 });
 
 exports.query = function (strQuery, options, callback) {
-   // console.log(strQuery, options, callback);
-
    // 取得連線池的連線
    pool.getConnection(function (err, conn) {
       if (err) {
@@ -24,7 +23,7 @@ exports.query = function (strQuery, options, callback) {
          console.log(err);
 
       } else {
-         // console.log('db connection ok!');
+         console.log('db connection ok!');
          conn.query(strQuery, options, function (err, rows) {
             callback(err, rows);
          })

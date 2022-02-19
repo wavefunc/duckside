@@ -4,27 +4,27 @@
 var express = require('express');
 var app = express();
 
+// 利用 dotenv 使用環境變數
+require('dotenv').config();
+
 // 引用 cors 解決跨域問題
 var cors = require('cors');
 app.use(cors());
-
-// 利用 dotenv 使用環境變數
-require('dotenv').config();
 
 // 獲取前端的變數
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // 引用各資料表的 router
-var routerAccount = require('./routerAccount');
-var routerAsset = require('./routerAsset');
-var routerPlan = require('./routerPlan');
-var routerTransaction = require('./routerTransaction');
+var routers = [
+    './routerAccount',
+    './routerAsset',
+    './routerPlan',
+    './routerSecurities',
+    './routerTransaction'
+]
 
-app.use('/', routerAccount);
-app.use('/', routerAsset);
-app.use('/', routerPlan);
-app.use('/', routerTransaction);
+routers.forEach(val => { app.use('/', require(val)); })
 
 app.get('/', function (req, res) {
     res.send('Welcome to backend');
