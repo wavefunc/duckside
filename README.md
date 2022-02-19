@@ -3,14 +3,8 @@
 2. 從 github 將專案再次 git clone 下來
 `git clone https://github.com/wavefunc/duckside.git`
 3. 用 VS Code 開啟終端機，執行 `npm install` 
-4. 在專案根目錄建立一檔案，檔名為 `.env`。將下列內容貼至 `.env` 檔案內容
-    
-    ```html
-    BACKEND_PORT = 5000
-    ```
-    
-5. 用 VS Code 開啟終端機，執行 `npm start`
-6. 資料庫已改用直接連線雲端的資料庫，所以不需再另外設定
+4. 用 VS Code 開啟終端機，執行 `npm start`
+5. 資料庫已改用直接連線雲端的資料庫，所以不需再另外設定
 
 # 使用套件
 
