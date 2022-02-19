@@ -18,10 +18,10 @@ function BackendDatatype() {
    const [asset, setAsset] = useState([{ ast_securities: '' }]);
 
    useEffect(() => {
-      axios.get('http://localhost:5000/account').then((rows) => {
+      axios.get('http://localhost:5000/account/all').then((rows) => {
          setAccount(rows.data);
       });
-      axios.get('http://localhost:5000/asset').then((rows) => {
+      axios.get('http://localhost:5000/asset/all').then((rows) => {
          setAsset(rows.data);
       });
    }, [])
