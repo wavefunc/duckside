@@ -1,32 +1,44 @@
 // ----- 冠樺 ----- //
 
+// 以 Express 建立 Web伺服器
 var express = require('express');
+var app = express();
+
+// 引用 cors 解決跨域問題
 var cors = require('cors');
-var { query } = require('./mysql.js');
+app.use(cors());
+
+// 利用 dotenv 使用環境變數
 require('dotenv').config();
 
-var app = express();
-app.listen(process.env.BACKEND_PORT);
-
+// 獲取前端的變數
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cors());
+
+// 引用各資料表的 router
+var routerAccount = require('./routerAccount');
+var routerAsset = require('./routerAsset');
+var routerPlan = require('./routerPlan');
+var routerTransaction = require('./routerTransaction');
+
+app.use('/', routerAccount);
+app.use('/', routerAsset);
+app.use('/', routerPlan);
+app.use('/', routerTransaction);
 
 app.get('/', function (req, res) {
     res.send('Welcome to backend');
 })
 
-app.get('/account', function (req, res) {
-    query('SELECT * FROM account', [], function (err, rows) {
-        res.send(rows);
-    })
-})
+// 一切就緒，開始接受用戶端連線
+app.listen(process.env.BACKEND_PORT);
 
-app.get('/asset', function (req, res) {
-    query('SELECT * FROM asset', [], function (err, rows) {
-        res.send(rows);
-    })
-})
+
+// ------------------------------------------------------- //
+// member 為測試用的資料表，之後將會刪掉，正式名稱應為 account
+// ------------------------------------------------------- //
+
+var { query } = require('./mysql.js');
 
 app.get('/member/list', function (req, res) {
     query('SELECT * FROM members', [], function (err, rows) {
