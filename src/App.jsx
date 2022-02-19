@@ -7,10 +7,10 @@ import ManageRoutes from './routes/ManageRoutes.jsx';
 import MemberRoutes from './routes/MemberRoutes.jsx';
 import GameRoutes from './routes/GameRoutes.jsx';
 import AboutRoutes from './routes/AboutRoutes.jsx';
+import BackendRoutes from './routes/BackendRoutes.jsx';
 
 import Layout from './pages/Layout.jsx';
 import Homepage from './pages/Homepage.jsx';
-import MysqlTest from './components/MysqlTest';
 import ToolsChartpie from './pages/ToolsChartpie.jsx';
 
 function App() {
@@ -23,7 +23,7 @@ function App() {
                {MemberRoutes}
                {GameRoutes}
                {AboutRoutes}
-               <Route path='test' element={<MysqlTest />} /> 
+               {BackendRoutes}
                <Route path='tools/chartpie' element={<ToolsChartpie />} />
             </Route>
             <Route

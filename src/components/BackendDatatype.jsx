@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Table } from 'react-bootstrap'
 import axios from 'axios';
 
-function MysqlTest() {
+function BackendDatatype() {
    const [account, setAccount] = useState([
       {
          acc_id: '',
@@ -28,7 +28,7 @@ function MysqlTest() {
 
    return (
       <div>
-         <h1>資料庫取得資料範例</h1>
+         <h3>資料庫取得的資料型態</h3>
          <Table striped bordered hover>
             <tbody>
                <tr>
@@ -79,4 +79,4 @@ function MysqlTest() {
    );
 }
 
-export default MysqlTest;
+export default BackendDatatype;
