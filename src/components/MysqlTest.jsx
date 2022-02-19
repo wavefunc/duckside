@@ -15,11 +15,7 @@ function MysqlTest() {
       }
    ]);
 
-   const [asset, setAsset] = useState([
-      {
-         ast_securities: '',
-      }
-   ]);
+   const [asset, setAsset] = useState([{ ast_securities: '' }]);
 
    useEffect(() => {
       axios.get('http://localhost:5000/account').then((rows) => {
@@ -27,7 +23,6 @@ function MysqlTest() {
       });
       axios.get('http://localhost:5000/asset').then((rows) => {
          setAsset(rows.data);
-         console.log(asset[0]);
       });
    }, [])
 
@@ -76,7 +71,7 @@ function MysqlTest() {
                   <td>ast_securities</td>
                   <td>decimal(15,2)</td>
                   <td>{typeof (asset[0].ast_securities)}</td>
-                  <td>{parseFloat(account[0].ast_securities)}</td>
+                  <td>{asset[0].ast_securities}</td>
                </tr>
             </tbody>
          </Table>
