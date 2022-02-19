@@ -10,7 +10,8 @@ import AboutRoutes from './routes/AboutRoutes.jsx';
 
 import Layout from './pages/Layout.jsx';
 import Homepage from './pages/Homepage.jsx';
-import ToolsChart_pie from './pages/ToolsChart_pie.jsx';
+import MysqlTest from './components/MysqlTest';
+import ToolsChartpie from './pages/ToolsChartpie.jsx';
 
 function App() {
    return (
@@ -22,7 +23,8 @@ function App() {
                {MemberRoutes}
                {GameRoutes}
                {AboutRoutes}
-               <Route path='tools/chart_pie' element={<ToolsChart_pie />} />
+               <Route path='test' element={<MysqlTest />} /> 
+               <Route path='tools/chartpie' element={<ToolsChartpie />} />
             </Route>
             <Route
                path="*"

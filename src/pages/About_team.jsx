@@ -2,18 +2,12 @@
 
 import React, { Component } from 'react';
 import { Row, Col, Container, Card } from 'react-bootstrap';
-import MysqlTest from '../components/MysqlTest';
 
 class About_team extends Component {
    state = {}
    render() {
       return (
          <Container>
-            <Row>
-               <Col>
-                  <MysqlTest />
-               </Col>
-            </Row>
             <Row>
                <Col xs={12} md={6} lg={4}>
                   <Card>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class ToolsChart_pie extends Component {
+class ToolsChartpie extends Component {
    state = {}
    render() {
       return (
@@ -13,4 +13,4 @@ class ToolsChart_pie extends Component {
    }
 }
 
-export default ToolsChart_pie;
+export default ToolsChartpie;
