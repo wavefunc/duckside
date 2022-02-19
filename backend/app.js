@@ -32,7 +32,7 @@ routers.forEach(val => { app.use('/', require(val)); })
 // app.get('/', (req, res) => res.send('Welcome to backend'))
 
 // 一切就緒，開始接受用戶端連線
-app.listen(process.env.BACKEND_PORT || 5000);
+app.listen(process.env.BACKEND_PORT || 3000);
 
 
 // ------------------------------------------------------- //
