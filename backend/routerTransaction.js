@@ -37,4 +37,15 @@ router.post('/transaction/create', async (req, res) => {
       })
 });
 
+// 依照 txn_id 刪除一筆資產
+router.delete('/transaction/delete', async (req, res) => {
+   var strQuery = `DELETE FROM transaction WHERE transaction.txn_id = ?`
+   query(strQuery, [req.body.txn_id], (err) => {
+      err ?
+         res.send(err) :
+         res.send(`Successfully deleted transaction which txn_id is ${req.body.txn_id}`);
+   })
+});
+
+
 module.exports = router;

@@ -19,7 +19,7 @@ router.post('/asset/create', async (req, res) => {
    var strQuery =
       `INSERT INTO asset (acc_id, ast_date, ast_securities, 
          ast_cash, ast_borrowing, ast_option, ast_others, ast_adjust) 
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`; 
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
    query(
       strQuery,
       [
@@ -35,6 +35,16 @@ router.post('/asset/create', async (req, res) => {
       (err) => {
          err ? res.send(err) : res.send('Successfully added an asset!')
       })
+});
+
+// 依照 ast_id 刪除一筆資產
+router.delete('/asset/delete', async (req, res) => {
+   var strQuery = `DELETE FROM asset WHERE asset.ast_id = ?`
+   query(strQuery, [req.body.ast_id], (err) => {
+      err ?
+         res.send(err) :
+         res.send(`Successfully deleted asset which ast_id is ${req.body.ast_id}`);
+   })
 });
 
 module.exports = router;

@@ -39,4 +39,15 @@ router.post('/plan/create', async (req, res) => {
       })
 });
 
+// 依照 plan_id 刪除一筆資產
+router.delete('/plan/delete', async (req, res) => {
+   var strQuery = `DELETE FROM plan WHERE plan.plan_id = ?`
+   query(strQuery, [req.body.plan_id], (err) => {
+      err ?
+         res.send(err) :
+         res.send(`Successfully deleted plan which plan_id is ${req.body.plan_id}`);
+   })
+});
+
+
 module.exports = router;
