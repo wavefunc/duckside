@@ -7,10 +7,11 @@ import ManageRoutes from './routes/ManageRoutes.jsx';
 import MemberRoutes from './routes/MemberRoutes.jsx';
 import GameRoutes from './routes/GameRoutes.jsx';
 import AboutRoutes from './routes/AboutRoutes.jsx';
+import BackendRoutes from './routes/BackendRoutes.jsx';
 
 import Layout from './pages/Layout.jsx';
 import Homepage from './pages/Homepage.jsx';
-import ToolsChart_pie from './pages/ToolsChart_pie.jsx';
+import ToolsChartpie from './pages/ToolsChartpie.jsx';
 
 function App() {
    return (
@@ -22,7 +23,8 @@ function App() {
                {MemberRoutes}
                {GameRoutes}
                {AboutRoutes}
-               <Route path='tools/chart_pie' element={<ToolsChart_pie />} />
+               {BackendRoutes}
+               <Route path='tools/chartpie' element={<ToolsChartpie />} />
             </Route>
             <Route
                path="*"

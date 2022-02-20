@@ -1,32 +1,40 @@
 // ----- 冠樺 ----- //
 
+// 以 Express 建立 Web伺服器
 var express = require('express');
-var cors = require('cors');
-var { query } = require('./mysql.js');
-require('dotenv').config();
-
 var app = express();
-app.listen(process.env.BACKEND_PORT);
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+// 部署至 Heroku 會用到
+app.use(express.static('backend/build'));
+
+// 引用 cors 解決跨域問題
+var cors = require('cors');
 app.use(cors());
 
-app.get('/', function (req, res) {
-    res.send('Welcome to backend');
-})
+// 獲取前端的變數
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-app.get('/account', function (req, res) {
-    query('SELECT * FROM account', [], function (err, rows) {
-        res.send(rows);
-    })
-})
+// 引用各資料表的 router
+var routers = [
+    './routerAccount',
+    './routerAsset',
+    './routerPlan',
+    './routerSecurities',
+    './routerTransaction'
+]
 
-app.get('/asset', function (req, res) {
-    query('SELECT * FROM asset', [], function (err, rows) {
-        res.send(rows);
-    })
-})
+routers.forEach(val => { app.use('/', require(val)); })
+
+// 一切就緒，開始接受用戶端連線
+app.listen(process.env.PORT || 5000);
+
+
+// ------------------------------------------------------- //
+// member 為測試用的資料表，之後將會刪掉，正式名稱應為 account
+// ------------------------------------------------------- //
+
+var { query } = require('./mysql.js');
 
 app.get('/member/list', function (req, res) {
     query('SELECT * FROM members', [], function (err, rows) {

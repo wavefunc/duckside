@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Table } from 'react-bootstrap'
 import axios from 'axios';
 
-function MysqlTest() {
+function BackendDatatype() {
    const [account, setAccount] = useState([
       {
          acc_id: '',
@@ -15,25 +15,20 @@ function MysqlTest() {
       }
    ]);
 
-   const [asset, setAsset] = useState([
-      {
-         ast_securities: '',
-      }
-   ]);
+   const [asset, setAsset] = useState([{ ast_securities: '' }]);
 
    useEffect(() => {
-      axios.get('http://localhost:5000/account').then((rows) => {
+      axios.get('http://localhost:5000/account/all').then((rows) => {
          setAccount(rows.data);
       });
-      axios.get('http://localhost:5000/asset').then((rows) => {
+      axios.get('http://localhost:5000/asset/all').then((rows) => {
          setAsset(rows.data);
-         console.log(asset[0]);
       });
    }, [])
 
    return (
       <div>
-         <h1>資料庫取得資料範例</h1>
+         <h3>資料庫取得的資料型態</h3>
          <Table striped bordered hover>
             <tbody>
                <tr>
@@ -76,7 +71,7 @@ function MysqlTest() {
                   <td>ast_securities</td>
                   <td>decimal(15,2)</td>
                   <td>{typeof (asset[0].ast_securities)}</td>
-                  <td>{parseFloat(account[0].ast_securities)}</td>
+                  <td>{asset[0].ast_securities}</td>
                </tr>
             </tbody>
          </Table>
@@ -84,4 +79,4 @@ function MysqlTest() {
    );
 }
 
-export default MysqlTest;
+export default BackendDatatype;
