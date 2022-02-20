@@ -3,17 +3,19 @@
 import { useState, useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
 import { Row, Col, Tab, Nav, Button } from 'react-bootstrap';
-import { useField, Formik, Form } from 'formik';
+import { Formik, Form } from 'formik';
 import { MyInput, MySelect } from '../components/MyFormComponent';
 
 import ManageCurrentPosition from '../components/ManageCurrentPosition.jsx';
 import ManageRecent from '../components/ManageRecent.jsx';
 
 import axios from 'axios';
+
 const urlGetTxn = 'http://localhost:5000/member/list';
 const urlPutTxn = 'http://localhost:5000/member/list';
 const urlGetPosition = 'http://localhost:5000/member/list';
-const urlGetList = 'http://localhost:5000/member/list';
+const urlGetDatalist = 'http://localhost:5000/member/list';
+
 const acc_id = '';
 
 function ManageTransaction(props) {
@@ -30,9 +32,15 @@ function ManageTransaction(props) {
       sec_id: "", txn_round: 1, txn_position: "",
       txn_price: 600, txn_amount: 1000, txn_note: "",
    });
-   const [datalist, setDatalist] = useState([
-      '2330 台積電', '2002 中鋼', '2006 東和鋼鐵'
-   ]);
+   const [datalist, setDatalist] = useState([]);
+   const getDatalist = (inputValue) => {
+      axios(urlGetDatalist, inputValue).then((result) => {
+         console.log('ManageTransaction getDatalist then setDatalist');
+         setDatalist([
+            '2330 台積電', '2002 中鋼', '2006 東和鋼鐵'
+         ])
+      })
+   }
 
    useEffect(() => {
 
@@ -96,12 +104,12 @@ function ManageTransaction(props) {
                            setTimeout(() => {
                               alert(JSON.stringify(values, null, 2));
                            }, 400);
-                           let resetValues = {...values};
-                           resetValues['sec_str']="";
-                           resetValues['txn_price']="";
-                           resetValues['txn_amount']="";
-                           resetValues['txn_note']="";
-                           formikBag.setValues({...resetValues}, false);
+                           let resetValues = { ...values };
+                           resetValues['sec_str'] = "";
+                           resetValues['txn_price'] = "";
+                           resetValues['txn_amount'] = "";
+                           resetValues['txn_note'] = "";
+                           formikBag.setValues({ ...resetValues }, false);
                         }}
                      >
                         <Form>
@@ -140,8 +148,8 @@ function ManageTransaction(props) {
                               type="text"
                               placeholder=""
                               inline="true"
-                              datalist={datalist}
-                              onChange={getDatalist}
+                              list={datalist}
+                              getlist={getDatalist}
                            />
                            <MyInput
                               label="均價"

@@ -1,36 +1,55 @@
 ﻿import { useField } from 'formik';
 import { Form, InputGroup, FormControl, Button } from 'react-bootstrap';
 import axios from 'axios';
+import { useEffect, useRef } from 'react';
 
-{/* < placeholder="" inline="true" type="text" id="sec_str" datalist="2330 台積電,2002 中鋼,2006 東和鋼鐵"></input> */}
-{/* < aria-describedby="prependIdsec_str" </input> */}
+{/* < placeholder="" inline="true" type="text" id="sec_str" datalist="2330 台積電,2002 中鋼,2006 東和鋼鐵"></input> */ }
+{/* < aria-describedby="prependIdsec_str" </input> */ }
 
-export const MyInput = ({ label, datalist, ...props }) => {
+export const MyInput = ({ label, list, getlist, ...props }) => {
     const [field, meta] = useField(props);
+    let renderTimes = useRef(0);
+    useEffect(()=>{
+        if(list){
+            console.log('MyInput useEffect getlist');
+            getlist();
+            // getlist();
+        }
+        console.log(field);
+    },[field.value]);
     return (
         <Form.Group className={props.inline ? "d-inline-block ml-1 mr-2" : "ml-1 mb-2"}>
-            <Form.Label htmlFor={props.id || props.name}>{label}</Form.Label>
+            {label ? (
+                <Form.Label htmlFor={props.id || props.name}>{label}</Form.Label>
+            ) : null}
             <InputGroup hasValidation className="d-flex flex-column">
-                {props.prepend ? (
-                    <InputGroup.Prepend>
-                        <InputGroup.Text id={`prependId${props.id}`}>{props.prepend}</InputGroup.Text>
-                    </InputGroup.Prepend>
-                ) : null}
                 <Form.Control
                     {...field} {...props}
-                    list={`dataList${props.id}`}
-                    aria-describedby={`prependId${props.id}`}
+                    list={`list${props.id}`}
+                    aria-describedby={`prep${props.id} apnd${props.id}`}
                     isInvalid={meta.touched && meta.error}
                 />
-                <Form.Control.Feedback type="invalid">
-                    {meta.error}
-                </Form.Control.Feedback>
+                {props.prepend ? (
+                    <InputGroup.Prepend>
+                        <InputGroup.Text id={`prep${props.id}`}>{props.prepend}</InputGroup.Text>
+                    </InputGroup.Prepend>
+                ) : null}
+                {props.append ? (
+                    <InputGroup.Append>
+                        <InputGroup.Text id={`apnd${props.id}`}>{props.append}</InputGroup.Text>
+                    </InputGroup.Append>
+                ) : null}
+                {meta.touched && meta.error ? (
+                    <Form.Control.Feedback type="invalid">
+                        {meta.error}
+                    </Form.Control.Feedback>) : null}
             </InputGroup>
-                <datalist id={`dataList${props.id}`}>
-                { datalist? datalist.map((v, i) =>
-                        <option key={i} value={v}/>
-                ): null}
-                </datalist>
+            {list ? (
+                <datalist id={`list${props.id}`}>
+                    {list.map((v, i) =>
+                        <option key={i} value={v} />
+                    )}
+                </datalist>) : null}
         </Form.Group>
     );
 };
