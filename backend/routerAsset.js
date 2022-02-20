@@ -19,10 +19,11 @@ router.post('/asset/create', async (req, res) => {
    var strQuery =
       `INSERT INTO asset (acc_id, ast_date, ast_securities, 
          ast_cash, ast_borrowing, ast_option, ast_others, ast_adjust) 
-         VALUES (${acc_id}, ?, ?, ?, ?, ?, ?, ?)`; 
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`; 
    query(
       strQuery,
       [
+         acc_id,
          req.body.ast_date,
          req.body.ast_securities,
          req.body.ast_cash,
