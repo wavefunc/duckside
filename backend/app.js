@@ -7,9 +7,6 @@ var app = express();
 // 部署至 Heroku 會用到
 app.use(express.static('backend/build'));
 
-// 利用 dotenv 使用環境變數
-// require('dotenv').config();
-
 // 引用 cors 解決跨域問題
 var cors = require('cors');
 app.use(cors());
@@ -28,8 +25,6 @@ var routers = [
 ]
 
 routers.forEach(val => { app.use('/', require(val)); })
-
-// app.get('/', (req, res) => res.send('Welcome to backend'))
 
 // 一切就緒，開始接受用戶端連線
 app.listen(process.env.PORT || 5000);
