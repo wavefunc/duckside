@@ -11,12 +11,14 @@ class About_team extends Component {
             <Row>
                <Col xs={12} md={6} lg={4}>
                   <Card>
-                     <Card.Img variant="top" src="\assets\about_team\pokemon01.png" />
+                     <Card.Img variant="top" src="\assets\about_team\Ren.jpg" />
                      <Card.Body>
                         <Card.Title>鄭人豪</Card.Title>
                         <Card.Text>
-                           Some quick example text to build on the card title and make up the bulk of
-                           the card's content.
+                           -投資管理介面及功能<br />
+                           -抓取並整理股價資料的程式<br />
+                           -規劃網站目標客群及需求<br />
+                           -與圖表及表單相關套件應用
                         </Card.Text>
                      </Card.Body>
                   </Card>
