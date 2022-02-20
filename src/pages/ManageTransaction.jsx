@@ -14,7 +14,7 @@ import axios from 'axios';
 const urlGetTxn = 'http://localhost:5000/transaction/all';
 const urlPutTxn = 'http://localhost:5000/member/list';
 const urlGetPosition = 'http://localhost:5000/member/list';
-const urlGetDatalist = 'http://localhost:5000/securities/search/';
+const urlGetDatalist = 'http://localhost:5000/securities/datalist/';
 
 const acc_id = '';
 
@@ -26,24 +26,27 @@ function ManageTransaction(props) {
    const [recentPosition, setRecentPosition] = useState([
       { '頁面資料加載中': '請稍候' }
    ]);
-   const [inputValues, setInputValues] = useState({
-      acc_id: 1,
-      txn_date: "",
-      sec_id: "", txn_round: 1, txn_position: "",
-      txn_price: 600, txn_amount: 1000, txn_note: "",
-   });
+   // const [inputValues, setInputValues] = useState({
+   //    acc_id: 1,
+   //    txn_date: "",
+   //    sec_id: "", txn_round: 1, txn_position: "",
+   //    txn_price: 600, txn_amount: 1000, txn_note: "",
+   // });
    const [datalist, setDatalist] = useState([]);
+   var controller = new AbortController();
    const getDatalist = (inputStr) => {
-      if(inputStr.length < 2 || inputStr.length > 3 ) {
+      if (inputStr.length < 2 || inputStr.length > 4) {
          return
       } else {
-      axios(urlGetDatalist+inputStr).then((result) => {
-         let datalist = result.data.map((v)=>{
-            return `${v['sec_id']} ${v['sec_name']}`
+         controller.abort();
+         controller = new AbortController();
+         axios(urlGetDatalist + inputStr, {signal: controller.signal}).then((result) => {
+            let datalist = result.data.map((v) => {
+               return `${v['sec_id']} ${v['sec_name']}`
+            })
+            console.log(datalist);
+            setDatalist(datalist);
          })
-         console.log(datalist);
-         setDatalist(datalist);
-      })
       }
    }
    useEffect(() => {
@@ -52,6 +55,7 @@ function ManageTransaction(props) {
       axios(urlGetTxn, acc_id).then((res) => {
          if (beingMounted) {
             setRecentTxn(res.data);
+            console.log(res.data);
          }
       });
       return () => { beingMounted = false };
@@ -193,7 +197,7 @@ function ManageTransaction(props) {
                         </Nav>
                         <Tab.Content>
                            <Tab.Pane eventKey="first">
-                              <ManageRecent data={recentTxn} row={10}></ManageRecent>
+                              <ManageRecent url={urlGetTxn} row={10}></ManageRecent>
                            </Tab.Pane>
                            <Tab.Pane eventKey="second">
                               <ManageRecent data={recentTxn}></ManageRecent>
