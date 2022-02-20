@@ -11,10 +11,10 @@ import ManageRecent from '../components/ManageRecent.jsx';
 
 import axios from 'axios';
 
-const urlGetTxn = 'http://localhost:5000/member/list';
+const urlGetTxn = 'http://localhost:5000/transaction/all';
 const urlPutTxn = 'http://localhost:5000/member/list';
 const urlGetPosition = 'http://localhost:5000/member/list';
-const urlGetDatalist = 'http://localhost:5000/member/list';
+const urlGetDatalist = 'http://localhost:5000/securities/search/';
 
 const acc_id = '';
 
@@ -33,19 +33,19 @@ function ManageTransaction(props) {
       txn_price: 600, txn_amount: 1000, txn_note: "",
    });
    const [datalist, setDatalist] = useState([]);
-   const getDatalist = (inputValue) => {
-      axios(urlGetDatalist, inputValue).then((result) => {
-         console.log('ManageTransaction getDatalist then setDatalist');
-         setDatalist([
-            '2330 台積電', '2002 中鋼', '2006 東和鋼鐵'
-         ])
+   const getDatalist = (inputStr) => {
+      if(inputStr.length < 2 || inputStr.length > 3 ) {
+         return
+      } else {
+      axios(urlGetDatalist+inputStr).then((result) => {
+         let datalist = result.data.map((v)=>{
+            return `${v['sec_id']} ${v['sec_name']}`
+         })
+         console.log(datalist);
+         setDatalist(datalist);
       })
+      }
    }
-
-   useEffect(() => {
-
-   }, [])
-
    useEffect(() => {
       let beingMounted = true;
       console.log('ManageTransaction req Txn');
@@ -67,7 +67,6 @@ function ManageTransaction(props) {
       });
       return () => { beingMounted = false };
    }, []);
-
 
    return (
       <Container fluid>
@@ -149,7 +148,7 @@ function ManageTransaction(props) {
                               placeholder=""
                               inline="true"
                               list={datalist}
-                              getlist={getDatalist}
+                              getList={getDatalist}
                            />
                            <MyInput
                               label="均價"
