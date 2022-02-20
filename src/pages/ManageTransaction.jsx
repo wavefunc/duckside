@@ -1,32 +1,178 @@
 // ----- 人豪 ----- //
 
-import React, { Component, useState } from 'react';
+import { useState, useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
-import { Row, Col, Tab, Nav } from 'react-bootstrap';
+import { Row, Col, Tab, Nav, Button } from 'react-bootstrap';
+import { useField, Formik, Form } from 'formik';
+import { MyInput, MySelect } from '../components/MyFormComponent';
 
-import ManageRecordTxn from '../components/ManageRecordTxn.jsx';
 import ManageCurrentPosition from '../components/ManageCurrentPosition.jsx';
 import ManageRecent from '../components/ManageRecent.jsx';
 
+import axios from 'axios';
 const urlGetTxn = 'http://localhost:5000/member/list';
 const urlPutTxn = 'http://localhost:5000/member/list';
 const urlGetPosition = 'http://localhost:5000/member/list';
-// const urlGetSeclist = 'http://localhost:5000/member/list';
+const urlGetList = 'http://localhost:5000/member/list';
 const acc_id = '';
 
 function ManageTransaction(props) {
-   console.log('function ManageTransaction');
-   const [inputValues, setInputValues] = useState({});
-   const [recentTxn, setrecentTxn] = useState([]);
+   console.log('ManageTransaction');
+   const [recentTxn, setRecentTxn] = useState([
+      { '頁面資料加載中': '請稍候' }
+   ]);
+   const [recentPosition, setRecentPosition] = useState([
+      { '頁面資料加載中': '請稍候' }
+   ]);
+   const [inputValues, setInputValues] = useState({
+      acc_id: 1,
+      txn_date: "",
+      sec_id: "", txn_round: 1, txn_position: "",
+      txn_price: 600, txn_amount: 1000, txn_note: "",
+   });
+   const [datalist, setDatalist] = useState([
+      '2330 台積電', '2002 中鋼', '2006 東和鋼鐵'
+   ]);
+
+   useEffect(() => {
+
+   }, [])
+
+   useEffect(() => {
+      let beingMounted = true;
+      console.log('ManageTransaction req Txn');
+      axios(urlGetTxn, acc_id).then((res) => {
+         if (beingMounted) {
+            setRecentTxn(res.data);
+         }
+      });
+      return () => { beingMounted = false };
+   }, []);
+
+   useEffect(() => {
+      let beingMounted = true;
+      console.log('ManageTransaction req Position');
+      axios(urlGetPosition, acc_id).then((res) => {
+         if (beingMounted) {
+            setRecentPosition(res.data);
+         }
+      });
+      return () => { beingMounted = false };
+   }, []);
+
+
    return (
       <Container fluid>
          <Row>
             <Col lg={8}>
                <Row>
                   <Col lg={12}>
-                     <ManageRecordTxn url={urlPutTxn} acc_id={acc_id} ></ManageRecordTxn>
+                     <Formik
+                        initialValues={{
+                           txn_date: (new Date()).toISOString().split('T')[0],
+                           sec_str: "",
+                           txn_round: 1,
+                           txn_position: "建倉",
+                           txn_price: 600,
+                           txn_amount: 1000,
+                           txn_note: "",
+                        }}
+                        validate={
+                           (values) => {
+                              const errors = {};
+                              if (!values.sec_str) {
+                                 errors.sec_str = "代號及名稱不可空白";
+                              }
+                              if (!values.txn_price) {
+                                 errors.txn_price = "價格不可空白";
+                              }
+                              if (!values.txn_amount) {
+                                 errors.txn_amount = "數量不可空白";
+                              }
+                              return errors;
+                           }
+                        }
+                        onSubmit={(values, formikBag) => {
+                           setTimeout(() => {
+                              alert(JSON.stringify(values, null, 2));
+                           }, 400);
+                           let resetValues = {...values};
+                           resetValues['sec_str']="";
+                           resetValues['txn_price']="";
+                           resetValues['txn_amount']="";
+                           resetValues['txn_note']="";
+                           formikBag.setValues({...resetValues}, false);
+                        }}
+                     >
+                        <Form>
+                           <MyInput
+                              label="日期"
+                              name="txn_date"
+                              id="txn_date"
+                              type="date"
+                              inline="true"
+                              size="sm"
+                           />
+
+                           <MyInput
+                              label="自訂編號"
+                              name="txn_round"
+                              id="txn_round"
+                              type="number"
+                              placeholder="編號以分批追蹤"
+                              inline="true"
+                           />
+                           <MySelect
+                              label="類型"
+                              name="txn_position"
+                              id="txn_position"
+                              type="text"
+                              inline="true"
+                              size="sm">
+                              {['建倉', '加碼', '減碼', '停利', '停損']}
+                           </MySelect>
+
+                           <br />
+                           <MyInput
+                              label="股票代號及名稱"
+                              name="sec_str"
+                              id="sec_str"
+                              type="text"
+                              placeholder=""
+                              inline="true"
+                              datalist={datalist}
+                              onChange={getDatalist}
+                           />
+                           <MyInput
+                              label="均價"
+                              name="txn_price"
+                              id="txn_price"
+                              type="number"
+                              placeholder="單位: 新台幣"
+                              inline="true"
+                           />
+                           <MyInput
+                              label="數量"
+                              name="txn_amount"
+                              id="txn_amount"
+                              type="number"
+                              placeholder="ex. 1000股"
+                              inline="true"
+                           />
+                           <MyInput
+                              label="摘要備註"
+                              id="txn_note"
+                              name="txn_note"
+                              type="text"
+                              placeholder=""
+                              inline="true"
+                           />
+                           <Button type="submit" variant="warning" size="sm">送出</Button>
+                        </Form>
+                     </Formik>
                   </Col>
                </Row>
+               <br />
                <Row>
                   <Col lg={12}>
                      <Tab.Container id="left-tabs-example" defaultActiveKey="first" mountOnEnter={true}>
@@ -40,10 +186,10 @@ function ManageTransaction(props) {
                         </Nav>
                         <Tab.Content>
                            <Tab.Pane eventKey="first">
-                              <ManageRecent url={urlGetTxn} acc_id={acc_id} row={10}></ManageRecent>
+                              <ManageRecent data={recentTxn} row={10}></ManageRecent>
                            </Tab.Pane>
                            <Tab.Pane eventKey="second">
-                              <ManageRecent url={urlGetTxn} acc_id={acc_id}></ManageRecent>
+                              <ManageRecent data={recentTxn}></ManageRecent>
                            </Tab.Pane>
                         </Tab.Content>
                      </Tab.Container>
@@ -56,16 +202,10 @@ function ManageTransaction(props) {
                      <Nav.Item>
                         <Nav.Link eventKey="first">庫存明細</Nav.Link>
                      </Nav.Item>
-                     <Nav.Item>
-                        <Nav.Link eventKey="second">圓餅圖</Nav.Link>
-                     </Nav.Item>
                   </Nav>
                   <Tab.Content>
                      <Tab.Pane eventKey="first">
-                        <ManageCurrentPosition url={urlGetPosition} acc_id={acc_id}></ManageCurrentPosition>
-                     </Tab.Pane>
-                     <Tab.Pane eventKey="second">
-                        <ManageCurrentPosition url={urlGetPosition} acc_id={acc_id}></ManageCurrentPosition>
+                        <ManageCurrentPosition data={recentPosition}></ManageCurrentPosition>
                      </Tab.Pane>
                   </Tab.Content>
                </Tab.Container>

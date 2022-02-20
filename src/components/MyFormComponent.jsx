@@ -1,46 +1,79 @@
 ﻿import { useField } from 'formik';
-
-export const MyTextInput = ({ label, ...props }) => {
-    const [field, meta] = useField(props);
-    return (
-        <>
-            <label htmlFor={props.id || props.name}>{label}</label>
-            <input className="ipt" {...field} {...props} />
-            {meta.touched && meta.error ? (
-                <div className="error">{meta.error}</div>
-            ) : null}
-        </>
-    );
-};
-
-/*
+import { Form, InputGroup, FormControl, Button } from 'react-bootstrap';
 import axios from 'axios';
-const MySecInput = ({ label, ...props }) => {
-    const [field, meta] = useField(props);
-    return (
-        <>
-            <label htmlFor={props.id || props.name}>{label}</label>
-            <input className="text-input" {...field} {...props} />
-            {meta.touched && meta.error ? (
-                <div className="error">{meta.error}</div>
-            ) : null}
-        </>
-    );
-};
-*/
 
-export const MySelect = ({ label, ...props }) => {
+{/* < placeholder="" inline="true" type="text" id="sec_str" datalist="2330 台積電,2002 中鋼,2006 東和鋼鐵"></input> */}
+{/* < aria-describedby="prependIdsec_str" </input> */}
+
+export const MyInput = ({ label, datalist, ...props }) => {
     const [field, meta] = useField(props);
     return (
-        <div>
-            <label htmlFor={props.id || props.name}>{label}</label>
-            <select {...field} {...props} />
-            {meta.touched && meta.error ? (
-                <div className="error">{meta.error}</div>
-            ) : null}
-        </div>
+        <Form.Group className={props.inline ? "d-inline-block ml-1 mr-2" : "ml-1 mb-2"}>
+            <Form.Label htmlFor={props.id || props.name}>{label}</Form.Label>
+            <InputGroup hasValidation className="d-flex flex-column">
+                {props.prepend ? (
+                    <InputGroup.Prepend>
+                        <InputGroup.Text id={`prependId${props.id}`}>{props.prepend}</InputGroup.Text>
+                    </InputGroup.Prepend>
+                ) : null}
+                <Form.Control
+                    {...field} {...props}
+                    list={`dataList${props.id}`}
+                    aria-describedby={`prependId${props.id}`}
+                    isInvalid={meta.touched && meta.error}
+                />
+                <Form.Control.Feedback type="invalid">
+                    {meta.error}
+                </Form.Control.Feedback>
+            </InputGroup>
+                <datalist id={`dataList${props.id}`}>
+                { datalist? datalist.map((v, i) =>
+                        <option key={i} value={v}/>
+                ): null}
+                </datalist>
+        </Form.Group>
     );
 };
+
+export const MySelect = ({ children, label, ...props }) => {
+    const [field, meta] = useField(props);
+    return (
+        // <div>
+        //     <label htmlFor={props.id || props.name}>{label}</label>
+        //     <select {...field} {...props} className="custom-select" />
+        //     {meta.touched && meta.error ? (
+        //         <div className="error">{meta.error}</div>
+        //     ) : null}
+        // </div>
+        <Form.Group className={props.inline ? "d-inline-block ml-1 mr-2" : "ml-1 mb-2"}>
+            <Form.Label>{label}</Form.Label>
+            <InputGroup>
+                {props.prepend ? (
+                    <InputGroup.Prepend>
+                        <InputGroup.Text id={`prependId${props.id}`}>{props.prepend}</InputGroup.Text>
+                    </InputGroup.Prepend>
+                ) : null}
+                <Form.Control
+                    as='select'
+                    {...field} {...props}
+                    aria-describedby={`prependId${props.id}`}
+                    isInvalid={meta.touched && meta.error}
+                >
+                    {children.map((v, i) => <option key={i} value={v}>{v}</option>)}
+                </Form.Control>
+                <Form.Control.Feedback type="invalid">
+                    {meta.error}
+                </Form.Control.Feedback>
+            </InputGroup>
+        </Form.Group>
+    );
+};
+
+
+
+/***********
+
+
 
 export const MyCheckbox = ({ children, ...props }) => {
     // React treats radios and checkbox inputs differently other input types, select, and textarea.
@@ -60,3 +93,23 @@ export const MyCheckbox = ({ children, ...props }) => {
         </div>
     );
 };
+
+export const MyInputAppendSubmit = ({label, ... props}) => {
+    const [field, meta] = useField(props);
+    return (
+    <InputGroup className="ml-1 mb-2">
+        <FormControl
+            {...field} {...props}
+            placeholder={label}
+            aria-label={label}
+            aria-describedby="basic-addon2"
+        />
+        <InputGroup.Append>
+
+        </InputGroup.Append>
+    </InputGroup>
+    );
+}
+
+
+**********/
