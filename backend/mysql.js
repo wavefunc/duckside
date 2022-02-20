@@ -24,12 +24,57 @@ exports.query = function (strQuery, options, callback) {
 
       } else {
          console.log('db connection ok!');
-         conn.query(strQuery, options, function (err, rows) {
-            callback(err, rows);
-         })
+         conn.query(strQuery, options, callback);
 
          // release connection。
          conn.release();
       }
    });
 };
+
+exports.checkAccount = async function (acc_email) {
+   return new Promise((resolve, reject) => {
+      pool.getConnection((err, conn) => {
+         if (err) {
+            reject(err);
+         } else {
+            conn.query('SELECT acc_id, acc_name FROM account WHERE acc_email = ?',
+               [acc_email],
+               (_err, rows) => {
+                  err ? reject(err) : resolve(JSON.stringify(rows[0].acc_id));
+               }
+            )
+            conn.release();
+         }
+      })
+   })
+
+   // console.log('queryResult: ', queryResult)
+   // conn.release();
+   // return 1;
+
+   // console.log('beginning of checkAccount');
+   // var e = 1;
+   // await pool.getConnection(function (err, conn) {
+   //    console.log('beginning of pool.getConnection');
+   //    if (err) {
+   //       console.log('db connection error!');
+   //       console.log(err);
+   //    } else {
+   //       console.log('db connection ok!');
+   //       conn.query('SELECT acc_id, acc_name FROM account WHERE acc_email = ?',
+   //          [acc_email],
+   //          (_err, rows) => {
+   //             // console.log(rows[0].acc_id);
+   //             // return rows[0].acc_id;
+   //             e = 100;
+   //             console.log('in conn.query, e: ' + e);
+   //          }
+   //       );
+   //    }
+   //    console.log('end of pool.getConnection');
+   // })
+
+   // console.log('end of checkAccount');
+   // return e;
+}
