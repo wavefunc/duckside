@@ -15,21 +15,45 @@ var pool = mysql.createPool({
    connectionLimit: 10
 });
 
-exports.query = function (strQuery, options, callback) {
-   // 取得連線池的連線
-   pool.getConnection(function (err, conn) {
-      if (err) {
-         console.log('db connection error!');
-         console.log(err);
+exports.query = async function (strQuery, options, callback) {
+   return new Promise((resolve, reject) => {
 
-      } else {
-         console.log('db connection ok!');
-         conn.query(strQuery, options, function (err, rows) {
-            callback(err, rows);
-         })
+      // 取得連線池的連線
+      pool.getConnection((err, conn) => {
+         if (err) {
+            console.log('Database connection error!');
+            reject(err);
+         } else {
+            console.log('Database connection succeeded!');
+            conn.query(strQuery, options, callback);
 
-         // release connection。
-         conn.release();
-      }
-   });
+            // release connection。
+            conn.release();
+         }
+      });
+   })
 };
+
+// 檢查前端的會員email帳號是否正確
+// 回傳值：檢查到的 acc_id (type: string)；若錯誤則 res.send("無此帳號")
+exports.checkAccount = async function (acc_email, res) {
+   return new Promise((resolve, reject) => {
+      pool.getConnection((err, conn) => {
+         if (err) {
+            reject(err);
+         } else {
+            conn.query('SELECT acc_id, acc_name FROM account WHERE acc_email = ?',
+               [acc_email],
+               (_err, rows) => {
+                  if (err) {
+                     reject(err);
+                  } else {
+                     rows[0] ? resolve(JSON.stringify(rows[0].acc_id)) : res.send('無此帳號');
+                  }
+               }
+            )
+            conn.release();
+         }
+      })
+   })
+}
