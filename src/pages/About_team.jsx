@@ -72,7 +72,7 @@ class About_team extends Component {
                </Col>
                <Col xs={12} md={6} lg={4}>
                   <Card>
-                     <Card.Img variant="top" src="\assets\about_team\pokemon06.jpg" />
+                     <Card.Img variant="top" src="\assets\about_team\wavefunc.jpg" />
                      <Card.Body>
                         <Card.Title>李冠樺</Card.Title>
                         <Card.Text>
