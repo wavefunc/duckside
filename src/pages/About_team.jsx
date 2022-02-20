@@ -35,12 +35,13 @@ class About_team extends Component {
                </Col>
                <Col xs={12} md={6} lg={4}>
                   <Card>
-                     <Card.Img variant="top" src="\assets\about_team\pokemon03.png" />
+                     <Card.Img variant="top" src="\assets\about_team\pei.jpg" />
                      <Card.Body>
                         <Card.Title>蔡沛珊</Card.Title>
                         <Card.Text>
-                           Some quick example text to build on the card title and make up the bulk of
-                           the card's content.
+                           - 主視覺/外觀<br />
+                           - 導覽列通知功能<br />
+                           - 網站導覽頁
                         </Card.Text>
                      </Card.Body>
                   </Card>
