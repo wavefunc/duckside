@@ -2,13 +2,13 @@
 
 var express = require('express');
 var router = express.Router();
-var { query } = require('./mysql.js');
+var { query, checkAccount } = require('./mysql.js');
 
 // 列出資料表全部的資料
 router.get('/account/all', (req, res) => {
-   query('SELECT * FROM account', [], (err, rows) => {
-      res.send(rows);
-   });
+   query(`SELECT * FROM account`,
+      [],
+      (err, rows) => res.send(rows));
 });
 
 // 新增會員
@@ -28,6 +28,17 @@ router.get('/account/check/:acc_email', (req, res) => {
    let strQuery = `SELECT acc_email FROM account WHERE acc_email = ?`
    query(strQuery, [req.params.acc_email], (err, rows) => {
       err ? res.send(err) : res.send(rows[0] ? true : false);
+   });
+});
+
+// 列出某會員的會員資料
+router.get('/account/list', async (req, res) => {
+   // 檢查前端的會員email帳號是否正確
+   var acc_id = await checkAccount(req.body.acc_email, res);
+
+   let strQuery = `SELECT * FROM account WHERE acc_id = ?`;
+   query(strQuery, [acc_id], (err, rows) => {
+      err ? res.send(err) : res.send(rows[0]);
    });
 });
 

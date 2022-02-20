@@ -15,6 +15,7 @@ var pool = mysql.createPool({
    connectionLimit: 10
 });
 
+// 一般 sql query 使用的函式
 exports.query = async function (strQuery, options, callback) {
    return new Promise((resolve, reject) => {
 
