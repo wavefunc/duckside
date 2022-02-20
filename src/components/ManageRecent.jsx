@@ -1,57 +1,68 @@
 /* ***人豪***
- * 1. 從父元件接收props.data呈現在表格中
- * 2. 如果沒收到props.data, 就接受 props.url, props.acc_id 自己來axios
- * 3. 如果收到props.row = 10, 就只呈現前10筆資料（db給降冪,即是最新10筆）
- * 4. 收到的props改變時, 重新執行1跟2
+ * 1. 從父元件接收url及id, 以axios抓取資料存在fetchData後呈現在表格
+ * 2. 如果沒收到接收url及id, 可直接接受data, 呈現在表格中
+ * 3. 如果收到row, 例如10, 就只呈現前10筆資料（db給降冪, 即是最新10筆）
+ * 4. 如果fetchData為空陣列(請求失敗或資料還沒回來), 或父元件未給props, 則呈現data預設值[{'資料加載中':'請稍候'}]
  * 
  ********* */
 
 import { Grid } from 'gridjs-react';
 import "gridjs/dist/theme/mermaid.min.css";
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 
-function ManageRecent(props) {
+function ManageRecent({ data = [], url, id = "", row }) {
     console.log('ManageRecent');
-    const [data, setData] = useState([
-        {'表格接收資料中':'請稍候',}
-    ]);
+    const [fetchData, setFetchData] = useState([]);
+    const refData = useRef(data);
     useEffect(() => {
         let beingMounted = true;
+
         console.log('ManageRecent useEffect:');
-        if (props.data != []) {
-            console.log('ManageRecent useEffect setData');
-            setData(props.data);
-        } else if (props.url) {
+        if (url) {
             console.log('ManageRecent useEffect req');
-            axios(props.url, props.acc_id).then((res) => {
+            axios(url, id).then((res) => {
                 if (beingMounted) {
-                    setData(res.data);
+                    setFetchData(res.data);
                 }
             });
-        } else { console.log('ManageRecent useEffect do nothing') }
+        }
+
         return () => { beingMounted = false };
-    }, [props]);
+    }, [refData, url, id, row]);
 
     return (
         <Grid
-            columns={Object.keys(data[0])}
-            data={props.row ? data.slice(0, props.row) : data}
+            columns={[
+                { id: 'txn_date', name: '日期', formatter: (v) => v.split('T')[0] },
+                { id: 'sec_id', name: '代號' },
+                { id: 'txn_round', name: '編號' },
+                { id: 'txn_position', name: '類型' },
+                { id: 'txn_price', name: '價格' },
+                { id: 'txn_amount', name: '數量' },
+                { id: 'txn_note', name: '摘要' }
+            ]}
+            data={row ?
+                (fetchData != "" ? fetchData.slice(0, row) : data.slice(0, row)) :
+                (fetchData != "" ? fetchData : data)
+            }
             search={
-                props.row ? false : true
+                row ? false : true
             }
             sort={true}
             pagination={
-                props.row ? false : {
+                row ? false : {
                     enabled: true,
                     limit: 50
                 }
             }
+            resizable={true}
             style={{
                 th: {
                     'border-top': '1px solid #e2e2e2',
                 },
-            }}
+            }
+            }
         />
     );
 }

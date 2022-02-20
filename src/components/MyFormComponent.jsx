@@ -3,19 +3,17 @@ import { Form, InputGroup, FormControl, Button } from 'react-bootstrap';
 import axios from 'axios';
 import { useEffect, useRef } from 'react';
 
-{/* < placeholder="" inline="true" type="text" id="sec_str" datalist="2330 台積電,2002 中鋼,2006 東和鋼鐵"></input> */ }
-{/* < aria-describedby="prependIdsec_str" </input> */ }
 
-export const MyInput = ({ label, list, getlist, ...props }) => {
+export const MyInput = ({ label, list, getList, ...props }) => {
     const [field, meta] = useField(props);
-    let renderTimes = useRef(0);
+    let didChanged = useRef(false);
     useEffect(()=>{
-        if(list){
+        if(list && didChanged.current){
             console.log('MyInput useEffect getlist');
-            getlist();
-            // getlist();
+            getList(field.value);
+            return
         }
-        console.log(field);
+        didChanged.current = true;
     },[field.value]);
     return (
         <Form.Group className={props.inline ? "d-inline-block ml-1 mr-2" : "ml-1 mb-2"}>

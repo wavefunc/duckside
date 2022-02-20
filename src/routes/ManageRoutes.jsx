@@ -8,7 +8,7 @@ import ManageCheck from '../pages/ManageCheck.jsx';
 import ManageDashboard from '../pages/ManageDashboard.jsx';
 import ManagePlan from '../pages/ManagePlan.jsx';
 import ManageTransaction from '../pages/ManageTransaction.jsx';
-import ManageTransaction_test from '../pages/ManageTransaction_test.jsx';
+import ManageTransactionTest from '../pages/ManageTransaction_test.jsx';
 
 export default (
    <React.Fragment>
@@ -16,7 +16,7 @@ export default (
       <Route path='manage/transaction' element={<ManageTransaction />} />
       <Route path='manage/asset' element={<ManageAsset />} />
       <Route path='manage/check' element={<ManageCheck />} />
-      <Route path='manage/test' element={<ManageTransaction_test />} />
+      <Route path='manage/test' element={<ManageTransactionTest />} />
       <Route path='*' element={<ManageDashboard />} />
    </React.Fragment>
 )
