@@ -5,9 +5,6 @@ import React, { Component } from 'react';
 import { Row, Modal } from 'react-bootstrap';
 
 function MyVerticallyCenteredModal(props) {
-
-
-   
    return (
       <Modal
          {...props}
@@ -26,19 +23,19 @@ function MyVerticallyCenteredModal(props) {
                      </text>
                      <line id="Line_41" data-name="Line 41" x2="1032" transform="translate(485 314.5)" fill="none" stroke="#707070"
                         stroke-width="5" />
-                     <text id="時間:" transform="translate(581 517)" fill="#520707" fontSize="80"
+                     <text id="時間:" transform="translate(554 517)" fill="#520707" fontSize="80"
                         fontFamily="PingFangTC-Semibold, PingFang TC" fontWeight="600">
                         <tspan x="0" y="0">時間</tspan>
                         <tspan y="0" fontFamily="Helvetica-Bold, Helvetica" fontWeight="700">:</tspan>
                      </text>
-                     <text id="交易天數:" transform="translate(574 712)" fill="#520707" fontSize="80"
+                     <text id="交易天數:" transform="translate(554 712)" fill="#520707" fontSize="80"
                         fontFamily="PingFangTC-Semibold, PingFang TC" fontWeight="600">
                         <tspan x="0" y="0">交易天數</tspan>
                         <tspan y="0" fontFamily="Helvetica-Bold, Helvetica" fontWeight="700">:</tspan>
                      </text>
 
                      <a href="http://localhost:3000/game/dailyrun">
-                     <g id="進入關卡_按鈕" data-name="進入關卡 按鈕" transform="translate(400 41)">
+                     <g id="進入關卡_按鈕" data-name="進入關卡 按鈕" transform="translate(-33 41)">
                         <rect id="Rectangle_106" data-name="Rectangle 106" width="463" height="142" rx="30"
                            transform="translate(583 765)" fill="#3e88a8" />
                         <text id="進入關卡" transform="translate(615 878)" fill="#fff" fontSize="100"
@@ -48,10 +45,9 @@ function MyVerticallyCenteredModal(props) {
                      </g>
                      </a>
 
-
                      <g>
                         <a href="javascript:void(0)" id="closebt" onClick={props.onHide}>
-                           <g id="關閉_按鈕" data-name="關閉 按鈕" transform="translate(-511 41)">
+                           <g id="關閉_按鈕" data-name="關閉 按鈕" transform="translate(20 41)">
                               <rect id="Rectangle_105" data-name="Rectangle 105" width="325" height="142" rx="30"
                                  transform="translate(1109 765)" fill="#ac4c4c" />
                               <text id="關閉" transform="translate(1172 873)" fill="#fff" font-size="100"
@@ -212,8 +208,6 @@ function GameDaily() {
                onHide={() => setModalShow(false)}
             />
          </svg>
-
-
 
       </Row>
    );

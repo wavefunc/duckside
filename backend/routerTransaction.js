@@ -11,7 +11,7 @@ router.get('/transaction/all', function (req, res) {
    })
 })
 
-// 新增一筆交易
+// 依 acc_email，新增該會員的一筆交易
 router.post('/transaction/create', async (req, res) => {
    // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
    var acc_id = await checkAccount(req.body.acc_email, res);
@@ -37,7 +37,7 @@ router.post('/transaction/create', async (req, res) => {
       })
 });
 
-// 修改一筆交易
+// 依 acc_email，修改該會員的某一筆交易
 router.put('/transaction/update', async (req, res) => {
    // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
    var acc_id = await checkAccount(req.body.acc_email, res);
