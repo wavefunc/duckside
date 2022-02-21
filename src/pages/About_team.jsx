@@ -25,12 +25,13 @@ class About_team extends Component {
                </Col>
                <Col xs={12} md={6} lg={4}>
                   <Card>
-                     <Card.Img variant="top" src="\assets\about_team\pokemon02.png" />
+                     <Card.Img variant="top" src="\assets\about_team\lin.jpg" />
                      <Card.Body>
                         <Card.Title>李巧琳</Card.Title>
                         <Card.Text>
-                           Some quick example text to build on the card title and make up the bulk of
-                           the card's content.
+                           -會員專區動向規劃與介面設計<br />
+                           -會員資訊的建立與維護<br />
+                           -第三方會員登入
                         </Card.Text>
                      </Card.Body>
                   </Card>
