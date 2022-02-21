@@ -1,9 +1,12 @@
 // ----- 晴暄----- //
 
 import React, { Component } from 'react';
-import "../css/GameRoomHeader_style.css";
+import "../css/GameStoreHeader_style.css";
 
-let GameRoomHeader = () =>{
+let GameStoreHeader = (props) =>{
+   function test(){
+      console.log("test is working")
+   };
    return (
       <div id="container" className="row">
          <div className="col-lg-12">
@@ -31,7 +34,7 @@ let GameRoomHeader = () =>{
                </svg>
                </li>
 
-               <li id="closeBtn">
+               <li id="closeBtn" onClick={props.changePage}>
                <svg width="40" height="40" viewBox="0 0 84 84">
                   <a href="#">
                   <g id="關閉Btn" transform="translate(-1742 -29)">
@@ -64,4 +67,4 @@ let GameRoomHeader = () =>{
       
    
 
-export default GameRoomHeader;
+export default GameStoreHeader;
