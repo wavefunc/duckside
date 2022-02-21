@@ -107,12 +107,12 @@ function GameDailyRun() {
                </a>
 
                <a href="http://localhost:3000/game/daily">
-               <g id="Group_33" data-name="Group 33" transform="translate(0 5)">
-                  <g transform="matrix(1, 0, 0, 1, 1615.04, 10.5)" filter="url(#Path_753)">
-                     <path id="Path_753-2" data-name="Path 753" d="M63.153,0H220.767c34.879,0,63.153,26.191,63.153,58.5S255.646,117,220.767,117H63.153C28.275,117,0,90.809,0,58.5S28.275,0,63.153,0Z" transform="translate(9 3)" fill="#961010" />
+                  <g id="Group_33" data-name="Group 33" transform="translate(0 5)">
+                     <g transform="matrix(1, 0, 0, 1, 1615.04, 10.5)" filter="url(#Path_753)">
+                        <path id="Path_753-2" data-name="Path 753" d="M63.153,0H220.767c34.879,0,63.153,26.191,63.153,58.5S255.646,117,220.767,117H63.153C28.275,117,0,90.809,0,58.5S28.275,0,63.153,0Z" transform="translate(9 3)" fill="#ac4c4c" />
+                     </g>
+                     <text id="返回關卡" transform="translate(1646 94)" fill="#fff" font-size="60" font-family="PingFangTC-Semibold, PingFang TC" font-weight="600"><tspan x="0" y="0">返回關卡</tspan></text>
                   </g>
-                  <text id="返回關卡" transform="translate(1646 94)" fill="#fff" font-size="60" font-family="PingFangTC-Semibold, PingFang TC" font-weight="600"><tspan x="0" y="0">返回關卡</tspan></text>
-               </g>
                </a>
 
                <a onClick={() => setnextShow(true)}>
