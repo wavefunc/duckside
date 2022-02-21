@@ -37,30 +37,33 @@ let MemberInfo = () => {
           {/* <!-- Account details card--> */}
           <div className="card mb-4">
             <div className="card-header">會員資訊</div>
+
             <div className="card-body">
               <form>
-                {/* <!-- Form Group (username)--> */}
                 <div className="mb-3">
                   <label className="small mb-1" htmlFor="inputUsername">
                     Email(帶入登入會員資料，不可更改!)
                   </label>
-                  <input
-                    className="form-control"
-                    id="inputUsername"
-                    type="text"
-                    placeholder="Enter your username"
-                    value="username"
-                  />
+                  <p>123@gmail.com</p>
                 </div>
+                <div className="mb-3">
+                  <label className="small mb-1" htmlFor="inputUsername">
+                    暱稱
+                  </label>
+                  <p>皮卡丘</p>
+                </div>
+              </form>
+            </div>
+            {/* Name change*/}
+            <div className="card-header">更改暱稱</div>
 
-
-                {/* <!-- Form Row--> */}
+            <div className="card-body">
+              <form>
                 <div className="row gx-3 mb-3">
-                  {/* <!-- Form Group (first name)--> */}
-                  <div className="col-md-6">
-                    <label className="small mb-1" htmlFor="inputFirstName">
-                      First name
-                    </label>
+                  <div className="mb-3">
+                  <label className="small mb-1" htmlFor="inputUsername">
+                    請輸入新暱稱
+                  </label>
                     <input
                       className="form-control"
                       id="inputFirstName"
@@ -69,73 +72,62 @@ let MemberInfo = () => {
                       value="Valerie"
                     />
                   </div>
-                  {/* <!-- Form Group (last name)-->/*/}
-                  <div className="col-md-6">
-                    <label className="small mb-1" htmlFor="inputLastName">
-                      Last name
-                    </label>
-                    <input
-                      className="form-control"
-                      id="inputLastName"
-                      type="text"
-                      placeholder="Enter your last name"
-                      value="Luna"
-                    />
-                  </div>
+                  <button className="btn btn-primary mb-3 ml-3 mt-4" type="button">
+                    更改暱稱
+                  </button>
                 </div>
-             
-                {/* <!-- Form Group (em/ail address)--> */}
-                <div className="mb-3">
-                  <label className="small mb-1" htmlFor="inputEmailAddress">
-                    Email address
-                  </label>
-                  <input
-                    className="form-control"
-                    id="inputEmailAddress"
-                    type="email"
-                    placeholder="Enter your email address"
-                    value="name@example.com"
-                  />
-                </div>
-                {/* <!-- Form Row--> */}
-                <div className="row gx-3 mb-3">
-                  {/* <!-- Form Group (phone number)--> */}
-                  <div className="col-md-6">
-                    <label className="small mb-1" htmlFor="inputPhone">
-                      Phone number
-                    </label>
-                    <input
-                      className="form-control"
-                      id="inputPhone"
-                      type="tel"
-                      placeholder="Enter your phone number"
-                      value="555-123-4567"
-                    />
-                  </div>
-                  {/* <!-- Form Group (birthday)--> */}
-                  <div className="col-md-6">
-                    <label className="small mb-1" htmlFor="inputBirthday">
-                      Birthday
-                    </label>
-                    <input
-                      className="form-control"
-                      id="inputBirthday"
-                      type="text"
-                      name="birthday"
-                      placeholder="Enter your birthday"
-                      value="06/10/1988"
-                    />
-                  </div>
-                </div>
-                {/* <!-- Save changes button--> */}
-                <button className="btn btn-primary" type="button">
-                  Save changes
-                </button>
-                <button className="btn btn-primary ml-4" type="button">
-                  Save changes
-                </button>
               </form>
             </div>
+
+            {/* Password change */}
+            <div className="card-header">更改密碼</div>
+
+            <div className="card-body">
+              <form>
+       
+                  <div className="mb-3">
+                  <label className="small mb-1" htmlFor="inputUsername">
+                    請輸入舊密碼
+                  </label>
+                    <input
+                      className="form-control"
+                      id="inputFirstName"
+                      type="text"
+                      placeholder="Enter your first name"
+                      value="Valerie"
+                    />
+                  </div>
+                  <div className="mb-3">
+                  <label className="small mb-1" htmlFor="inputUsername">
+                    請輸入新密碼
+                  </label>
+                    <input
+                      className="form-control"
+                      id="inputFirstName"
+                      type="text"
+                      placeholder="Enter your first name"
+                      value="Valerie"
+                    />
+                  </div>
+                  <div className="mb-3">
+                  <label className="small mb-1" htmlFor="inputUsername">
+                    請再次輸入新密碼
+                  </label>
+                    <input
+                      className="form-control"
+                      id="inputFirstName"
+                      type="text"
+                      placeholder="Enter your first name"
+                      value="Valerie"
+                    />
+                  </div>
+                  <button className="btn btn-primary" type="button">
+                    更改密碼
+                  </button>
+             
+              </form>
+            </div>
+            {/* Password change */}
           </div>
         </div>
       </div>
