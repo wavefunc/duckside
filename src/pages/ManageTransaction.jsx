@@ -1,46 +1,86 @@
 // ----- 人豪 ----- //
 
-import { useState, useEffect } from 'react';
+import React, { useState, useMemo, useLayoutEffect } from 'react';
 import Container from 'react-bootstrap/Container';
 import { Row, Col, Tab, Nav, Button } from 'react-bootstrap';
 import { Formik, Form } from 'formik';
 import { MyInput, MySelect } from '../components/MyFormComponent';
+import dt from 'date-and-time';
 
 import ManageCurrentPosition from '../components/ManageCurrentPosition.jsx';
 import ManageRecent from '../components/ManageRecent.jsx';
 
 import axios from 'axios';
 
-const urlGetTxn = 'http://localhost:5000/transaction/all';
-const urlPutTxn = 'http://localhost:5000/member/list';
+const acc_id = '';
+const urlGet = 'http://localhost:5000/transaction/all';
+const urlEdit = 'http://localhost:5000/transaction/edit';
+const urlDelete = 'http://localhost:5000/transaction/edit';
 const urlGetPosition = 'http://localhost:5000/member/list';
 const urlGetDatalist = 'http://localhost:5000/securities/datalist/';
-
-const acc_id = '';
+const col = [
+   {
+      id: 'txn_date', name: '日期', formatter: (cell) => {
+         let d = new Date(cell);
+         return dt.format(d, 'YYYY-MM-DD');
+      }
+   },
+   { id: 'txn_id', name: '代號', hidden: true },
+   { id: 'sec_id', name: '代號' },
+   { id: 'txn_round', name: '編號' },
+   { id: 'txn_position', name: '類型' },
+   { id: 'txn_price', name: '價格' },
+   { id: 'txn_amount', name: '數量' },
+   { id: 'txn_note', name: '摘要' },
+];
+const resetInputs = (prevValues) => {
+   let newValues = { ...prevValues};
+   newValues['sec_str']="";
+   newValues['sec_str']="";
+   newValues['txn_amount']="";
+   newValues['txn_note']="";
+   return newValues;
+}
 
 function ManageTransaction(props) {
-   console.log('ManageTransaction');
-   const [recentTxn, setRecentTxn] = useState([
-      { '頁面資料加載中': '請稍候' }
-   ]);
-   const [recentPosition, setRecentPosition] = useState([
-      { '頁面資料加載中': '請稍候' }
-   ]);
-   // const [inputValues, setInputValues] = useState({
-   //    acc_id: 1,
-   //    txn_date: "",
-   //    sec_id: "", txn_round: 1, txn_position: "",
-   //    txn_price: 600, txn_amount: 1000, txn_note: "",
-   // });
+   console.log('--ManageTransaction--');
+   const [isDbChanged, setIsDbChanged] = useState(false);
+   const [recentData, setRecentData] = useState([]);
+   const [recentPosition, setRecentPosition] = useState([]);
    const [datalist, setDatalist] = useState([]);
-   var controller = new AbortController();
+
+   const getRecentData = () => {
+      let beingMounted = true;
+      console.log('ManageTransaction req Txn');
+      axios(urlGet, acc_id).then((res) => {
+         if (beingMounted) {
+            setRecentData(res.data);
+            console.log(res.data);
+         }
+      });
+      return () => { beingMounted = false };
+   };
+   const getRecentPosition = () => {
+      let beingMounted = true;
+      axios(urlGetPosition, acc_id).then((res) => {
+         if (beingMounted) {
+            setRecentPosition(res.data);
+            console.log(res.data);
+         }
+      });
+      return () => { beingMounted = false };
+   };
+
+   let controller = new AbortController();
    const getDatalist = (inputStr) => {
       if (inputStr.length < 2 || inputStr.length > 4) {
          return
       } else {
+         console.log(controller);
          controller.abort();
          controller = new AbortController();
-         axios(urlGetDatalist + inputStr, {signal: controller.signal}).then((result) => {
+         console.log(controller);
+         axios(urlGetDatalist + inputStr, { signal: controller.signal }).then((result) => {
             let datalist = result.data.map((v) => {
                return `${v['sec_id']} ${v['sec_name']}`
             })
@@ -49,28 +89,8 @@ function ManageTransaction(props) {
          })
       }
    }
-   useEffect(() => {
-      let beingMounted = true;
-      console.log('ManageTransaction req Txn');
-      axios(urlGetTxn, acc_id).then((res) => {
-         if (beingMounted) {
-            setRecentTxn(res.data);
-            console.log(res.data);
-         }
-      });
-      return () => { beingMounted = false };
-   }, []);
-
-   useEffect(() => {
-      let beingMounted = true;
-      console.log('ManageTransaction req Position');
-      axios(urlGetPosition, acc_id).then((res) => {
-         if (beingMounted) {
-            setRecentPosition(res.data);
-         }
-      });
-      return () => { beingMounted = false };
-   }, []);
+   useLayoutEffect(getRecentData, []);
+   useLayoutEffect(getRecentPosition, []);
 
    return (
       <Container fluid>
@@ -104,15 +124,10 @@ function ManageTransaction(props) {
                            }
                         }
                         onSubmit={(values, formikBag) => {
-                           setTimeout(() => {
-                              alert(JSON.stringify(values, null, 2));
-                           }, 400);
-                           let resetValues = { ...values };
-                           resetValues['sec_str'] = "";
-                           resetValues['txn_price'] = "";
-                           resetValues['txn_amount'] = "";
-                           resetValues['txn_note'] = "";
-                           formikBag.setValues({ ...resetValues }, false);
+                           setIsDbChanged(true);
+                           console.log(JSON.stringify(values));
+                           let newValues = resetInputs(values);
+                           formikBag.setValues({...newValues}, false);
                         }}
                      >
                         <Form>
@@ -197,10 +212,10 @@ function ManageTransaction(props) {
                         </Nav>
                         <Tab.Content>
                            <Tab.Pane eventKey="first">
-                              <ManageRecent url={urlGetTxn} row={10}></ManageRecent>
+                              <ManageRecent data={recentData} row={10} col={col}></ManageRecent>
                            </Tab.Pane>
                            <Tab.Pane eventKey="second">
-                              <ManageRecent data={recentTxn}></ManageRecent>
+                              <ManageRecent data={recentData} col={col}></ManageRecent>
                            </Tab.Pane>
                         </Tab.Content>
                      </Tab.Container>

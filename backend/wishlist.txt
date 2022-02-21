@@ -16,3 +16,16 @@ https://isin.twse.com.tw/isin/C_public.jsp?strMode=5
 前端 在輸入股票的input寫onChange函式get證券資料, 放進datalist給使用者參考輸入
 後端 res格式: sec_id (空一格) sec_name
 實作範例: https://statementdog.com/ 輸入'23' 下方會列出
+
+2. txn
+
+--以put新增或修改資料, router.put(...)
+如txn_id已存在, 就UPDATE;
+如txn_id為undefined, 就INSERT INTO
+
+--依id跟date查詢某用戶截至某天為止的庫存
+
+
+3. asset
+--依id跟date查詢某用戶某天的資產現況
+例如2022/2/21 如果當天沒資料 就往前查詢最近的資料
