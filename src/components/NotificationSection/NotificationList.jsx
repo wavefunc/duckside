@@ -20,7 +20,7 @@ const ListItemWrapper = styled('div')(({  }) => ({
     cursor: 'pointer',
     padding: 16,
     '&:hover': {
-        background: 'rgba(233, 227, 124,0.2)'
+        background: 'rgba(202, 233, 255,0.3)'
     },
     '& .MuiListItem-root': {
         padding: 0
