@@ -51,12 +51,12 @@ class About_team extends Component {
                </Col>
                <Col xs={12} md={6} lg={4}>
                   <Card>
-                     <Card.Img variant="top" src="\assets\about_team\pokemon04.png" />
+                     <Card.Img variant="top" src="\assets\about_team\kai.jpg" />
                      <Card.Body>
                         <Card.Title>陳鎧洋</Card.Title>
                         <Card.Text>
-                           Some quick example text to build on the card title and make up the bulk of
-                           the card's content.
+                           -使用React呈現遊戲跑關頁面
+                           -從後段資料庫抓去資料
                         </Card.Text>
                      </Card.Body>
                   </Card>
