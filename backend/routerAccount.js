@@ -80,6 +80,16 @@ router.put('/account/updatepassword', async(req, res)=>{
    });
 });
 
-// 修改大頭照
+// 更改大頭照
+router.put('/account/updateavatar', async(req, res)=>{
+   // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
+   var acc_id = await checkAccount(req.body.acc_email, res);
+
+   let strQuery = `UPDATE account SET acc_avatar = ? WHERE account.acc_id = ?`;
+   query(strQuery, [req.body.acc_avatar, acc_id], (err) => {
+      err ? res.send(err) : res.send(`Successfully updated account avatar`);
+   });
+});
+
 
 module.exports = router;
