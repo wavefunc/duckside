@@ -40,10 +40,10 @@ function ManageTransaction(props) {
       } else {
          controller.abort();
          controller = new AbortController();
-         axios(urlGetDatalist + inputStr, {signal: controller.signal}).then((result) => {
+         axios(urlGetDatalist + inputStr, { signal: controller.signal }).then((result) => {
             let datalist = result.data.map((v) => {
                return `${v['sec_id']} ${v['sec_name']}`
-            })
+            });
             console.log(datalist);
             setDatalist(datalist);
          })
@@ -84,8 +84,8 @@ function ManageTransaction(props) {
                            sec_str: "",
                            txn_round: 1,
                            txn_position: "建倉",
-                           txn_price: 600,
-                           txn_amount: 1000,
+                           txn_price: '',
+                           txn_amount: '',
                            txn_note: "",
                         }}
                         validate={
@@ -103,19 +103,28 @@ function ManageTransaction(props) {
                               return errors;
                            }
                         }
-                        onSubmit={(values, formikBag) => {
-                           setTimeout(() => {
-                              alert(JSON.stringify(values, null, 2));
-                           }, 400);
-                           let resetValues = { ...values };
-                           resetValues['sec_str'] = "";
-                           resetValues['txn_price'] = "";
-                           resetValues['txn_amount'] = "";
-                           resetValues['txn_note'] = "";
-                           formikBag.setValues({ ...resetValues }, false);
+                        onSubmit={(values, actions) => {
+                           alert(JSON.stringify(values, null, 2));
+                           let newInitValues = { ...values };
+                           newInitValues['sec_str'] = "";
+                           newInitValues['txn_price'] = "";
+                           newInitValues['txn_amount'] = "";
+                           newInitValues['txn_note'] = "";
+                           actions.resetForm({ values: newInitValues });
                         }}
                      >
                         <Form>
+                        {props => {
+                           return (
+                              <input
+                                 type="text"
+                                 onChange={props.handleChange}
+                                 onBlur={props.handleBlur}
+                                 value={props.values.name}
+                                 name="observer"
+                              />
+                           )
+                        }}
                            <MyInput
                               label="日期"
                               name="txn_date"
@@ -178,6 +187,7 @@ function ManageTransaction(props) {
                               placeholder=""
                               inline="true"
                            />
+
                            <Button type="submit" variant="warning" size="sm">送出</Button>
                         </Form>
                      </Formik>

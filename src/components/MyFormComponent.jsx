@@ -1,20 +1,20 @@
 ﻿import { useField } from 'formik';
 import { Form, InputGroup, FormControl, Button } from 'react-bootstrap';
 import axios from 'axios';
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 
 export const MyInput = ({ label, list, getList, ...props }) => {
     const [field, meta] = useField(props);
     let didChanged = useRef(false);
-    useEffect(()=>{
-        if(list && didChanged.current){
+    useEffect(() => {
+        if (list && didChanged.current) {
             console.log('MyInput useEffect getlist');
             getList(field.value);
             return
         }
         didChanged.current = true;
-    },[field.value]);
+    }, [field.value]);
     return (
         <Form.Group className={props.inline ? "d-inline-block ml-1 mr-2" : "ml-1 mb-2"}>
             {label ? (
