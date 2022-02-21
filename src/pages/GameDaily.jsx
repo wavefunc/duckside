@@ -5,6 +5,9 @@ import React, { Component } from 'react';
 import { Row, Modal } from 'react-bootstrap';
 
 function MyVerticallyCenteredModal(props) {
+
+
+   
    return (
       <Modal
          {...props}
@@ -33,6 +36,8 @@ function MyVerticallyCenteredModal(props) {
                         <tspan x="0" y="0">交易天數</tspan>
                         <tspan y="0" fontFamily="Helvetica-Bold, Helvetica" fontWeight="700">:</tspan>
                      </text>
+
+                     <a href="http://localhost:3000/game/dailyrun">
                      <g id="進入關卡_按鈕" data-name="進入關卡 按鈕" transform="translate(400 41)">
                         <rect id="Rectangle_106" data-name="Rectangle 106" width="463" height="142" rx="30"
                            transform="translate(583 765)" fill="#3e88a8" />
@@ -41,6 +46,8 @@ function MyVerticallyCenteredModal(props) {
                            <tspan x="0" y="0">進入關卡</tspan>
                         </text>
                      </g>
+                     </a>
+
 
                      <g>
                         <a href="javascript:void(0)" id="closebt" onClick={props.onHide}>

@@ -86,7 +86,7 @@ function MyVerticallyCenteredModal(props) {
    );
 }
 
-function GameDaily() {
+function GameDailyRun() {
    const [modalShow, setModalShow] = React.useState(false);
    const [modalShowTwo, setModalShowTwo] = React.useState(false);
 
@@ -308,4 +308,4 @@ function GameDaily() {
       </Row>
    );
 }
-export default GameDaily;
+export default GameDailyRun;
