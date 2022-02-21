@@ -18,6 +18,7 @@ router.get('/securities/search/:key', (req, res) => {
         [], (err, rows) => res.send(rows)
     )
 })
+
 // 依關鍵字找出相關的股票: input onchange使用, 降低lag情形
 router.get('/securities/datalist/:key', (req, res) => {
     query(`SELECT * FROM securities WHERE sec_id 
