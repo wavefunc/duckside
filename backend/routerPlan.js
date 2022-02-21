@@ -11,9 +11,9 @@ router.get('/plan/all', function (req, res) {
    })
 })
 
-// 新增一個計劃
+// 依 acc_email，新增該會員的一個計劃
 router.post('/plan/create', async (req, res) => {
-   // 檢查前端的會員email帳號是否正確
+   // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
    var acc_id = await checkAccount(req.body.acc_email, res);
 
    var strQuery =

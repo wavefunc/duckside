@@ -1,100 +1,25 @@
 // ----- 晴暄、鎧洋 ----- //
 
 import { Axios } from 'axios';
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import { Row, Modal } from 'react-bootstrap';
 
-function MyVerticallyCenteredModal(props) {
-   return (
-      <Modal
-         {...props}
-         centered
-      >
-         <svg  width="1220" height="380" viewBox="800 0 1920 1080">
-        <defs>
-          <filter id="Rectangle_68" x="969" y="895" width="194" height="114" filterUnits="userSpaceOnUse">
-            <feOffset dy="3" input="SourceAlpha"/>
-            <feGaussianBlur stdDeviation="3" result="blur"/>
-            <feFlood flood-opacity="0.161"/>
-            <feComposite operator="in" in2="blur"/>
-            <feComposite in="SourceGraphic"/>
-          </filter>
-          <filter id="Rectangle_68-2" x="660" y="895" width="265" height="114" filterUnits="userSpaceOnUse">
-            <feOffset dy="3" input="SourceAlpha"/>
-            <feGaussianBlur stdDeviation="3" result="blur-2"/>
-            <feFlood flood-opacity="0.161"/>
-            <feComposite operator="in" in2="blur-2"/>
-            <feComposite in="SourceGraphic"/>
-          </filter>
-          <filter id="Rectangle_72" x="731" y="43" width="389" height="149" filterUnits="userSpaceOnUse">
-            <feOffset dy="3" input="SourceAlpha"/>
-            <feGaussianBlur stdDeviation="3" result="blur-3"/>
-            <feFlood flood-opacity="0.161"/>
-            <feComposite operator="in" in2="blur-3"/>
-            <feComposite in="SourceGraphic"/>
-          </filter>
-          <clipPath id="clip-領取獎勵">
-            <rect width="1920" height="1080"/>
-          </clipPath>
-        </defs>
-        <g id="領取獎勵" clip-path="url(#clip-領取獎勵)">
-          <rect width="1920" height="1080" fill="#eddbbe"/>
-          <g id="結算">
-            <g id="內容">
-              <g id="note" transform="translate(44 61)">
-                <path id="Rectangle_67" data-name="Rectangle 67" d="M0,0H1568a0,0,0,0,1,0,0V612a212,212,0,0,1-212,212H0a0,0,0,0,1,0,0V0A0,0,0,0,1,0,0Z" transform="translate(125 130)" fill="#dec646"/>
-                <path id="Path_21" data-name="Path 21" d="M124.039,0s22.967,44.92,60.921,64.213S284.5,80.76,284.5,80.76s-65.419,60.622-136.544,60.622S0,80.76,0,80.76s26.575-2.353,59.746-21.647S124.039,0,124.039,0Z" transform="matrix(0.839, -0.545, 0.545, 0.839, 1406.035, 886.569)" fill="#cbb653"/>
-              </g>
-              <path id="Path_22" data-name="Path 22" d="M0,0H378L317.135,22.835l58.719,4.912L341.376,54.3l34.711,14.975L378,79H0S14.619,45.868,13.919,26.638C13.65,19.254-.33,11.941-.33,11.941Z" transform="translate(53.224 320.506) rotate(-34)" fill="#734d8b"/>
-              <text id="獲得積分" transform="translate(317 383)" fill="#520707" font-size="100" font-family="PingFangTC-Semibold, PingFang TC" font-weight="600"><tspan x="0" y="0">獲得積分</tspan></text>
-              <text id="獲利_數" data-name="獲利％數" transform="translate(481 579)" fill="#672424" font-size="70" font-family="PingFangTC-Semibold, PingFang TC" font-weight="600"><tspan x="0" y="0">獲利％數</tspan></text>
-              <text id="可獲得積分" transform="translate(446 715)" fill="#672424" font-size="70" font-family="PingFangTC-Semibold, PingFang TC" font-weight="600"><tspan x="0" y="0">可獲得積分</tspan></text>
-              <text id="_10_" data-name="10%" transform="translate(1016 564)" fill="#672424" font-size="70" font-family="Verdana-Bold, Verdana" font-weight="700"><tspan x="0" y="0">10%</tspan></text>
-              <text id="_200" data-name="200" transform="translate(1016 718)" fill="#672424" font-size="70" font-family="Verdana-Bold, Verdana" font-weight="700"><tspan x="0" y="0">200</tspan></text>
-            </g>
-
-
-
-            <a href="javascript:void(0)" id="closebt" onClick={props.onHide}>
-            <g id="關閉按鈕" transform="translate(218 18)">
-              <g transform="matrix(1, 0, 0, 1, -218, -18)" filter="url(#Rectangle_68)">
-                <rect id="Rectangle_68-3" data-name="Rectangle 68" width="176" height="96" rx="10" transform="translate(978 901)" fill="#50b6c2"/>
-              </g>
-              <text id="關閉" transform="translate(788 953)" fill="#fff" font-size="60" font-family="PingFangTC-Regular, PingFang TC"><tspan x="0" y="0">關閉</tspan></text>
-            </g>
-            </a>
-
-
-
-            <g id="排行榜按鈕" transform="translate(-20 18)">
-              <g transform="matrix(1, 0, 0, 1, 20, -18)" filter="url(#Rectangle_68-2)">
-                <rect id="Rectangle_68-4" data-name="Rectangle 68" width="247" height="96" rx="10" transform="translate(669 901)" fill="#50b6c2"/>
-              </g>
-              <text id="排行榜" transform="translate(723 953)" fill="#fff" font-size="60" font-family="PingFangTC-Regular, PingFang TC"><tspan x="0" y="0">排行榜</tspan></text>
-            </g>
-            <g id="結算flag">
-              <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#Rectangle_72)">
-                <rect id="Rectangle_72-2" data-name="Rectangle 72" width="371" height="131" rx="10" transform="translate(740 49)" fill="#3e88a8"/>
-              </g>
-              <text id="結算版" transform="translate(775 146)" fill="#f0f0f0" font-size="95" font-family="PingFangTC-Semibold, PingFang TC" font-weight="600"><tspan x="0" y="0">結算版</tspan></text>
-            </g>
-          </g>
-        </g>
-      </svg>
-
-      </Modal>
-   );
-}
-
-function GameDaily() {
-   const [modalShow, setModalShow] = React.useState(false);
-   const [modalShowTwo, setModalShowTwo] = React.useState(false);
+function GameDailyRun() {
+   const [findShow, setfindShow] = useState(false);
+   const [giftShow, setgiftShow] = useState(false);
+   const [nextShow, setnextShow] = useState(false);
 
    return (
-      <Row>
-
+      <>
          <svg width="1020" height="500" viewBox="0 0 1920 1080">
             <defs>
+               <filter id="Path_753" x="0" y="0" width="301.92" height="135" filterUnits="userSpaceOnUse">
+                  <feOffset dy="6" input="SourceAlpha" />
+                  <feGaussianBlur stdDeviation="3" result="blur" />
+                  <feFlood flood-opacity="0.161" />
+                  <feComposite operator="in" in2="blur" />
+                  <feComposite in="SourceGraphic" />
+               </filter>
                <filter id="Rectangle_66" x="1482" y="922" width="410" height="137" filterUnits="userSpaceOnUse">
                   <feOffset dy="3" input="SourceAlpha" />
                   <feGaussianBlur stdDeviation="3" result="blur" />
@@ -165,36 +90,49 @@ function GameDaily() {
                   <text id="現在所持有部位明細" transform="translate(1103 861)" fill="#520707" fontSize="70" fontFamily="PingFangTC-Semibold, PingFang TC" fontWeight="600"><tspan x="0" y="0">現在所持有部位明細</tspan></text>
                </g>
 
-               <a  onClick={() => setModalShow(true)}>
-               <g id="領取獎勵按鈕" transform="translate(377 13)">
-                  <g transform="matrix(1, 0, 0, 1, -377, -13)" filter="url(#Rectangle_66)">
-                     <rect id="Rectangle_66-2" data-name="Rectangle 66" width="392" height="119" rx="59.5" transform="translate(1491 928)" fill="#3e88a8" />
+               <a onClick={() => setgiftShow(true)}>
+                  <g id="領取獎勵按鈕" transform="translate(377 13)">
+                     <g transform="matrix(1, 0, 0, 1, -377, -13)" filter="url(#Rectangle_66)">
+                        <rect id="Rectangle_66-2" data-name="Rectangle 66" width="392" height="119" rx="59.5" transform="translate(1491 928)" fill="#3e88a8" />
+                     </g>
+                     <text id="領取獎勵" transform="translate(1145 997)" fill="#f0f0f0" fontSize="60" fontFamily="PingFangTC-Semibold, PingFang TC" fontWeight="600"><tspan x="0" y="0">領取獎勵</tspan></text>
+                     <g id="Icon_feather-gift" data-name="Icon feather-gift" transform="translate(1406.8 943.25)">
+                        <path id="Path_16" data-name="Path 16" d="M52,18V46.75H6V18" transform="translate(2.75 13.75)" fill="none" stroke="#f0f0f0" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" />
+                        <path id="Path_17" data-name="Path 17" d="M3,10.5H60.5V24.875H3Z" transform="translate(0 6.875)" fill="none" stroke="#f0f0f0" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" />
+                        <path id="Path_18" data-name="Path 18" d="M18,53.625V10.5" transform="translate(13.75 6.875)" fill="none" stroke="#f0f0f0" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" />
+                        <path id="Path_19" data-name="Path 19" d="M27.625,17.375H14.688A7.187,7.187,0,1,1,14.688,3C24.75,3,27.625,17.375,27.625,17.375Z" transform="translate(4.125 0)" fill="none" stroke="#f0f0f0" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" />
+                        <path id="Path_20" data-name="Path 20" d="M18,17.375H30.938A7.187,7.187,0,1,0,30.938,3C20.875,3,18,17.375,18,17.375Z" transform="translate(13.75 0)" fill="none" stroke="#f0f0f0" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" />
+                     </g>
                   </g>
-                  <text id="領取獎勵" transform="translate(1145 997)" fill="#f0f0f0" fontSize="60" fontFamily="PingFangTC-Semibold, PingFang TC" fontWeight="600"><tspan x="0" y="0">領取獎勵</tspan></text>
-                  <g id="Icon_feather-gift" data-name="Icon feather-gift" transform="translate(1406.8 943.25)">
-                     <path id="Path_16" data-name="Path 16" d="M52,18V46.75H6V18" transform="translate(2.75 13.75)" fill="none" stroke="#f0f0f0" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" />
-                     <path id="Path_17" data-name="Path 17" d="M3,10.5H60.5V24.875H3Z" transform="translate(0 6.875)" fill="none" stroke="#f0f0f0" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" />
-                     <path id="Path_18" data-name="Path 18" d="M18,53.625V10.5" transform="translate(13.75 6.875)" fill="none" stroke="#f0f0f0" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" />
-                     <path id="Path_19" data-name="Path 19" d="M27.625,17.375H14.688A7.187,7.187,0,1,1,14.688,3C24.75,3,27.625,17.375,27.625,17.375Z" transform="translate(4.125 0)" fill="none" stroke="#f0f0f0" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" />
-                     <path id="Path_20" data-name="Path 20" d="M18,17.375H30.938A7.187,7.187,0,1,0,30.938,3C20.875,3,18,17.375,18,17.375Z" transform="translate(13.75 0)" fill="none" stroke="#f0f0f0" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" />
-                  </g>
-               </g>
                </a>
 
-               <g id="下一關按鈕" transform="translate(64 -790)">
-                  <g transform="matrix(1, 0, 0, 1, -64, 790)" filter="url(#Path_33)">
-                     <path id="Path_33-2" data-name="Path 33" d="M58.5,0h146a58.5,58.5,0,0,1,0,117H58.5a58.5,58.5,0,0,1,0-117Z" transform="translate(1154 930)" fill="#3e88a8" />
+               <a href="http://localhost:3000/game/daily">
+                  <g id="Group_33" data-name="Group 33" transform="translate(0 5)">
+                     <g transform="matrix(1, 0, 0, 1, 1615.04, 10.5)" filter="url(#Path_753)">
+                        <path id="Path_753-2" data-name="Path 753" d="M63.153,0H220.767c34.879,0,63.153,26.191,63.153,58.5S255.646,117,220.767,117H63.153C28.275,117,0,90.809,0,58.5S28.275,0,63.153,0Z" transform="translate(9 3)" fill="#ac4c4c" />
+                     </g>
+                     <text id="返回關卡" transform="translate(1646 94)" fill="#fff" font-size="60" font-family="PingFangTC-Semibold, PingFang TC" font-weight="600"><tspan x="0" y="0">返回關卡</tspan></text>
                   </g>
-                  <text id="下一關" transform="translate(1132 1801)" fill="#fff" fontSize="60" fontFamily="PingFangTC-Semibold, PingFang TC" fontWeight="600"><tspan x="0" y="0">下一關</tspan></text>
-               </g>
-               <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#Path_747)">
-                  <path id="Path_747-2" data-name="Path 747" d="M57.508,0H691.5a58.5,58.5,0,0,1,0,117H58.5A58.5,58.5,0,0,1,0,58.5v-.992A57.508,57.508,0,0,1,57.508,0Z" transform="translate(16 19)" fill="#3e88a8" />
-               </g>
+               </a>
+
+               <a onClick={() => setnextShow(true)}>
+                  <g id="下一關按鈕" transform="translate(64 -790)">
+                     <g transform="matrix(1, 0, 0, 1, -64, 790)" filter="url(#Path_33)">
+                        <path id="Path_33-2" data-name="Path 33" d="M58.5,0h146a58.5,58.5,0,0,1,0,117H58.5a58.5,58.5,0,0,1,0-117Z" transform="translate(1154 930)" fill="#3e88a8" />
+                     </g>
+                     <text id="下一關" transform="translate(1132 1801)" fill="#fff" fontSize="60" fontFamily="PingFangTC-Semibold, PingFang TC" fontWeight="600"><tspan x="0" y="0">下一關</tspan></text>
+                  </g>
+                  <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#Path_747)">
+                     <path id="Path_747-2" data-name="Path 747" d="M57.508,0H691.5a58.5,58.5,0,0,1,0,117H58.5A58.5,58.5,0,0,1,0,58.5v-.992A57.508,57.508,0,0,1,57.508,0Z" transform="translate(16 19)" fill="#3e88a8" />
+                  </g>
+               </a>
+
                <text id="_2019_01_02_交易建立" data-name="2019/01/02 交易建立" transform="translate(94 94)" fill="#fff" fontSize="60" fontFamily="Helvetica-Bold, Helvetica" fontWeight="700" letterSpacing="0.05em"><tspan x="0" y="0">2019/01/02 </tspan><tspan y="0" fontFamily="PingFangTC-Semibold, PingFang TC" fontWeight="600">交易建立</tspan></text>
                <text id="證券代號 / 名稱" transform="translate(60 313)" fill="#520707" fontSize="40" fontFamily="PingFangTC-Semibold, PingFang TC" fontWeight="600"><tspan x="0" y="0">證券代號 / 名稱</tspan></text>
                <text id="買進股數" transform="translate(60 213)" fill="#520707" fontSize="40" fontFamily="PingFangTC-Semibold, PingFang TC" fontWeight="600"><tspan x="0" y="0">買進股數</tspan></text>
 
-               <a  onClick={() => setModalShowTwo(true)}>
+
+               <a onClick={() => setfindShow(true)}>
                   <g id="查詢" transform="translate(-82 35)">
                      <g transform="matrix(1, 0, 0, 1, 82, -35)" filter="url(#Rectangle_80)">
                         <rect id="Rectangle_80-2" data-name="Rectangle 80" width="163" height="70" rx="10" transform="translate(797 262)" fill="#3e88a8" />
@@ -203,6 +141,7 @@ function GameDaily() {
                      <text id="查詢-2" data-name="查詢" transform="translate(940 278)" fill="#fff" fontSize="40" fontFamily="PingFangTC-Semibold, PingFang TC" fontWeight="600"><tspan x="0" y="0">查詢</tspan></text>
                   </g>
                </a>
+
 
                <g id="買進按鈕" transform="translate(-1469 -419)" opacity="0.93">
                   <g transform="matrix(1, 0, 0, 1, 1469, 419)" filter="url(#Rectangle_58)">
@@ -291,21 +230,112 @@ function GameDaily() {
                   <line id="Line_26" data-name="Line 26" y2="206" transform="translate(103.5 0.228)" fill="none" stroke="#707070" strokeWidth="10" />
                </g>
             </g>
-            <foreignObject x="380" y="172" width="585" height="100" fontSize="30px">
-                  <input type="text"  style={{width:"400px",height:"55px"}}/>
+            <foreignObject x="380" y="172" width="410" height="100" fontSize="30px">
+               <input type="text" style={{ width: "400px", height: "55px" }} />
             </foreignObject>
 
-            <foreignObject x="380" y="271" width="585" height="100" fontSize="30px">
-                  <input type="text"  style={{width:"400px",height:"55px"}}/>
+            <foreignObject x="380" y="271" width="410" height="100" fontSize="30px">
+               <input type="text" style={{ width: "400px", height: "55px" }} />
             </foreignObject>
-            <MyVerticallyCenteredModal
-               show={modalShow}
-               onHide={() => setModalShow(false)}
-            />
          </svg>
 
 
-      </Row>
+         <Modal
+            centered
+            size="sm"
+            show={findShow}
+            onHide={() => setfindShow(false)}
+            aria-labelledby="example-modal-sizes-title-sm"
+         >
+            <Modal.Header closeButton>
+               <Modal.Title id="example-modal-sizes-title-sm">
+                  股市走勢圖
+               </Modal.Title>
+            </Modal.Header>
+         </Modal>
+
+
+         <Modal
+            size="md"
+            show={giftShow}
+            onHide={() => setgiftShow(false)}
+            aria-labelledby="example-modal-sizes-title-md"
+            centered
+         >
+
+            <svg width="1220" height="380" viewBox="800 0 1920 1080">
+               <defs>
+                  <filter id="Rectangle_68" x="969" y="895" width="194" height="114" filterUnits="userSpaceOnUse">
+                     <feOffset dy="3" input="SourceAlpha" />
+                     <feGaussianBlur stdDeviation="3" result="blur" />
+                     <feFlood flood-opacity="0.161" />
+                     <feComposite operator="in" in2="blur" />
+                     <feComposite in="SourceGraphic" />
+                  </filter>
+                  <filter id="Rectangle_68-2" x="660" y="895" width="265" height="114" filterUnits="userSpaceOnUse">
+                     <feOffset dy="3" input="SourceAlpha" />
+                     <feGaussianBlur stdDeviation="3" result="blur-2" />
+                     <feFlood flood-opacity="0.161" />
+                     <feComposite operator="in" in2="blur-2" />
+                     <feComposite in="SourceGraphic" />
+                  </filter>
+                  <filter id="Rectangle_72" x="731" y="43" width="389" height="149" filterUnits="userSpaceOnUse">
+                     <feOffset dy="3" input="SourceAlpha" />
+                     <feGaussianBlur stdDeviation="3" result="blur-3" />
+                     <feFlood flood-opacity="0.161" />
+                     <feComposite operator="in" in2="blur-3" />
+                     <feComposite in="SourceGraphic" />
+                  </filter>
+                  <clipPath id="clip-領取獎勵">
+                     <rect width="1920" height="1080" />
+                  </clipPath>
+               </defs>
+               <g id="領取獎勵" clip-path="url(#clip-領取獎勵)">
+                  <rect width="1920" height="1080" fill="#eddbbe" />
+                  <g id="結算">
+                     <g id="內容">
+                        <g id="note" transform="translate(44 61)">
+                           <path id="Rectangle_67" data-name="Rectangle 67" d="M0,0H1568a0,0,0,0,1,0,0V612a212,212,0,0,1-212,212H0a0,0,0,0,1,0,0V0A0,0,0,0,1,0,0Z" transform="translate(125 130)" fill="#dec646" />
+                           <path id="Path_21" data-name="Path 21" d="M124.039,0s22.967,44.92,60.921,64.213S284.5,80.76,284.5,80.76s-65.419,60.622-136.544,60.622S0,80.76,0,80.76s26.575-2.353,59.746-21.647S124.039,0,124.039,0Z" transform="matrix(0.839, -0.545, 0.545, 0.839, 1406.035, 886.569)" fill="#cbb653" />
+                        </g>
+                        <path id="Path_22" data-name="Path 22" d="M0,0H378L317.135,22.835l58.719,4.912L341.376,54.3l34.711,14.975L378,79H0S14.619,45.868,13.919,26.638C13.65,19.254-.33,11.941-.33,11.941Z" transform="translate(53.224 320.506) rotate(-34)" fill="#734d8b" />
+                        <text id="獲得積分" transform="translate(317 383)" fill="#520707" font-size="100" font-family="PingFangTC-Semibold, PingFang TC" font-weight="600"><tspan x="0" y="0">獲得積分</tspan></text>
+                        <text id="獲利_數" data-name="獲利％數" transform="translate(481 579)" fill="#672424" font-size="70" font-family="PingFangTC-Semibold, PingFang TC" font-weight="600"><tspan x="0" y="0">獲利％數</tspan></text>
+                        <text id="可獲得積分" transform="translate(446 715)" fill="#672424" font-size="70" font-family="PingFangTC-Semibold, PingFang TC" font-weight="600"><tspan x="0" y="0">可獲得積分</tspan></text>
+                        <text id="_10_" data-name="10%" transform="translate(1016 564)" fill="#672424" font-size="70" font-family="Verdana-Bold, Verdana" font-weight="700"><tspan x="0" y="0">10%</tspan></text>
+                        <text id="_200" data-name="200" transform="translate(1016 718)" fill="#672424" font-size="70" font-family="Verdana-Bold, Verdana" font-weight="700"><tspan x="0" y="0">200</tspan></text>
+                     </g>
+
+
+
+                     <a href="/game/dailyrun">
+                        <g id="關閉按鈕" transform="translate(218 18)">
+                           <g transform="matrix(1, 0, 0, 1, -218, -18)" filter="url(#Rectangle_68)">
+                              <rect id="Rectangle_68-3" data-name="Rectangle 68" width="176" height="96" rx="10" transform="translate(978 901)" fill="#50b6c2" />
+                           </g>
+                           <text id="關閉" transform="translate(788 953)" fill="#fff" font-size="60" font-family="PingFangTC-Regular, PingFang TC"><tspan x="0" y="0">關閉</tspan></text>
+                        </g>
+                     </a>
+
+                     <g id="排行榜按鈕" transform="translate(-20 18)">
+                        <g transform="matrix(1, 0, 0, 1, 20, -18)" filter="url(#Rectangle_68-2)">
+                           <rect id="Rectangle_68-4" data-name="Rectangle 68" width="247" height="96" rx="10" transform="translate(669 901)" fill="#50b6c2" />
+                        </g>
+                        <text id="排行榜" transform="translate(723 953)" fill="#fff" font-size="60" font-family="PingFangTC-Regular, PingFang TC"><tspan x="0" y="0">排行榜</tspan></text>
+                     </g>
+                     <g id="結算flag">
+                        <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#Rectangle_72)">
+                           <rect id="Rectangle_72-2" data-name="Rectangle 72" width="371" height="131" rx="10" transform="translate(740 49)" fill="#3e88a8" />
+                        </g>
+                        <text id="結算版" transform="translate(775 146)" fill="#f0f0f0" font-size="95" font-family="PingFangTC-Semibold, PingFang TC" font-weight="600"><tspan x="0" y="0">結算版</tspan></text>
+                     </g>
+                  </g>
+               </g>
+            </svg>
+         </Modal>
+      </>
    );
 }
-export default GameDaily;
+
+
+export default GameDailyRun;

@@ -7,64 +7,77 @@
  ********* */
 
 import { Grid } from 'gridjs-react';
+import { h } from 'gridjs';
 import "gridjs/dist/theme/mermaid.min.css";
-import { useEffect, useState, useRef } from 'react';
+import React, { useLayoutEffect, useState, useRef } from 'react';
 import axios from 'axios';
 
-function ManageRecent({ data = [], url, id = "", row }) {
-    console.log('ManageRecent');
+function ManageRecent({ data = [], url, acc, row, col = null, edit, del }) {
+    console.log(`ManageRecent: ${JSON.stringify(data)}`);
     const [fetchData, setFetchData] = useState([]);
-    const refData = useRef(data);
-    useEffect(() => {
+    useLayoutEffect(() => {
         let beingMounted = true;
-
-        console.log('ManageRecent useEffect:');
+        console.log('ManageRecent useEffect');
         if (url) {
             console.log('ManageRecent useEffect req');
-            axios(url, id).then((res) => {
-                if (beingMounted) {
-                    setFetchData(res.data);
-                }
-            });
+            if (acc) {
+                axios(url, { data: { acc_email: acc, method: 'post' } }).then((res) => {
+                    if (beingMounted) {
+                        setFetchData(res.data);
+                    }
+                });
+            } else {
+                axios(url).then((res) => {
+                    if (beingMounted) {
+                        setFetchData(res.data);
+                    }
+                });
+            }
         }
-
         return () => { beingMounted = false };
-    }, [refData, url, id, row]);
+    }, [url, acc]);
+    useLayoutEffect(() => {
+        if (edit) {
+            let apndBtnCol = {
+                name: '修改',
+                formatter: (cell, row) => {
+                    return h('button', {
+                        className: 'btn btn-outline-warning',
+                        onClick: () => alert(`Editing "${row.cells[0].data}" "${row.cells[1].data}"`)
+                    }, '編輯');
+                }
+            }
+
+        }
+    }, [edit, del])
 
     return (
-        <Grid
-            columns={[
-                { id: 'txn_date', name: '日期', formatter: (v) => v.split('T')[0] },
-                { id: 'sec_id', name: '代號' },
-                { id: 'txn_round', name: '編號' },
-                { id: 'txn_position', name: '類型' },
-                { id: 'txn_price', name: '價格' },
-                { id: 'txn_amount', name: '數量' },
-                { id: 'txn_note', name: '摘要' }
-            ]}
-            data={row ?
-                (fetchData != "" ? fetchData.slice(0, row) : data.slice(0, row)) :
-                (fetchData != "" ? fetchData : data)
-            }
-            search={
-                row ? false : true
-            }
-            sort={true}
-            pagination={
-                row ? false : {
-                    enabled: true,
-                    limit: 50
+        data != [] ? (
+            <Grid
+                columns={data != [] ? col : []}
+                data={row ?
+                    (fetchData != "" ? fetchData.slice(0, row) : data.slice(0, row)) :
+                    (fetchData != "" ? fetchData : data)
                 }
-            }
-            resizable={true}
-            style={{
-                th: {
-                    'border-top': '1px solid #e2e2e2',
-                },
-            }
-            }
-        />
+                search={
+                    row ? false : true
+                }
+                sort={true}
+                pagination={
+                    row ? false : {
+                        enabled: true,
+                        limit: 50
+                    }
+                }
+                resizable={true}
+                style={{
+                    table: {
+                        'width': '100%',
+                        'border-top': '1px solid #e2e2e2',
+                    },
+                }}
+            />) : null
     );
 }
-
-export default ManageRecent;
+// export default ManageRecent;
+export default React.memo(ManageRecent);

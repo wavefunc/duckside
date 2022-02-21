@@ -10,7 +10,7 @@ import "gridjs/dist/theme/mermaid.min.css";
 import { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 
-function ManageCurrentPosition({ data = [{ '資料加載中': '請稍候' }], url, id }) {
+function ManageCurrentPosition({ data, col=null, url, id }) {
     console.log('ManageCurrentPosition');
     const [fetchData, setFetchData] = useState([]);
     const refData = useRef(data);
@@ -32,12 +32,13 @@ function ManageCurrentPosition({ data = [{ '資料加載中': '請稍候' }], ur
 
     return (
         <Grid
-            columns={fetchData != "" ? Object.keys(fetchData[0]) : Object.keys(data[0])}
+            columns={data !=[]? col:null}
             data={fetchData != "" ? fetchData : data}
             sort={true}
             style={{
-                th: {
-                    'border-top': '1px solid #e2e2e2',
+                table: {
+                    'width': '100%',
+                    'border-top': '1px solid #e2e2e2', 
                 },
             }}
             resizable={true}

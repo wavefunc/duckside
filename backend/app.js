@@ -31,7 +31,7 @@ app.listen(process.env.PORT || 5000);
 
 
 // ------------------------------------------------------- //
-// member 為測試用的資料表，之後將會刪掉，正式名稱應為 account
+// member 為測試用的資料表，之後將會刪掉，正式名稱應為 account //
 // ------------------------------------------------------- //
 
 var { query } = require('./mysql.js');
@@ -39,7 +39,7 @@ var { query } = require('./mysql.js');
 app.get('/member/list', function (req, res) {
     query('SELECT * FROM members', [], function (err, rows) {
         res.send(rows);
-    })
+    });
 });
 
 app.post('/member/add', function (req, res) {

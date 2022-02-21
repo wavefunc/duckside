@@ -11,9 +11,9 @@ router.get('/asset/all', (req, res) => {
    });
 });
 
-// 新增一筆資產
+// 依 acc_email，新增該會員的一筆資產
 router.post('/asset/create', async (req, res) => {
-   // 檢查前端的會員email帳號是否正確
+   // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
    var acc_id = await checkAccount(req.body.acc_email, res);
 
    var strQuery =
@@ -34,6 +34,35 @@ router.post('/asset/create', async (req, res) => {
       ],
       (err) => {
          err ? res.send(err) : res.send('Successfully added an asset!')
+      })
+});
+
+// 依 acc_email，修改該會員的某一筆資產
+router.put('/asset/update', async (req, res) => {
+   // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
+   var acc_id = await checkAccount(req.body.acc_email, res);
+
+   var strQuery =
+      `UPDATE asset SET ast_date = ?, ast_securities = ?, ast_cash = ?,
+      ast_borrowing = ?, ast_option = ?, ast_others = ?, ast_adjust = ? 
+         WHERE ast_id = ? AND acc_id = ?`;
+   query(
+      strQuery,
+      [
+         req.body.ast_date,
+         req.body.ast_securities,
+         req.body.ast_cash,
+         req.body.ast_borrowing,
+         req.body.ast_option,
+         req.body.ast_others,
+         req.body.ast_adjust,
+         req.body.ast_id,
+         acc_id
+      ],
+      (err) => {
+         err ?
+            res.send(err) :
+            res.send(`Successfully updated asset which id is ${req.body.ast_id}`);
       })
 });
 
