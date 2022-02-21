@@ -19,9 +19,9 @@ https://isin.twse.com.tw/isin/C_public.jsp?strMode=5
 
 2. txn
 
---以put新增或修改資料, router.put(...)
-如txn_id已存在, 就UPDATE;
-如txn_id為undefined, 就INSERT INTO
+--table新增sec_name證券名稱欄位
+新增資料時, 股票部分, 看是要前端給sec_id 後端查表自動帶入,
+或是前端依照datalist撈到的資料, 拆出sec_id及sec_name後再送後端
 
 --依id跟date查詢某用戶截至某天為止的庫存
 
