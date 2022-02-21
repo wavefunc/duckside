@@ -11,7 +11,6 @@ import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
@@ -20,13 +19,13 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { mainListItems, secondaryListItems } from '../components/Sidebar_listItems';
 import Avatar from '@mui/material/Avatar';
-import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import AccordionTools from '../components/Sidebar_tools';
 import AccordionGame from '../components/Sidebar_game';
 import PageTitle from '../components/PageTitle';
 import Breadcrumb from '../components/Breadcrumb';
 import { Outlet } from 'react-router-dom';
+import NotificationSection from '../components/NotificationSection';
 // login component
 import MemberLogin from "../components/MemberLogin";
 import MemberRegister from "../components/MemberRegister";
@@ -171,11 +170,8 @@ function showOpen() {
             >
             </Typography>
 
-            <IconButton color="inherit" >
-              <Badge badgeContent={50} color="error">
-                <NotificationsNoneIcon />
-              </Badge>
-            </IconButton>
+            <NotificationSection />
+
             <IconButton color="inherit" onClick={showOpen}>
               <PersonOutlineIcon />
               {/* login component */}        
