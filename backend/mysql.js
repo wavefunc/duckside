@@ -49,7 +49,7 @@ exports.checkAccount = async function (acc_email, res) {
                   if (err) {
                      reject(err);
                   } else {
-                     rows[0] ? resolve(JSON.stringify(rows[0].acc_id)) : res.send('無此帳號');
+                     rows[0] ? resolve(JSON.stringify(rows[0].acc_id)) : res.send('No such account');
                   }
                }
             )
