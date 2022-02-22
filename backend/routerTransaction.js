@@ -113,10 +113,10 @@ router.post('/transaction/recent', async (req, res) => {
    var acc_id = await checkAccount(req.body.acc_email, res);
 
    var strLimit = (req.body.amount) ? `DESC LIMIT ${req.body.amount}` : ``;
-   
+
    var strQuery = `SELECT * FROM transaction WHERE acc_id = ?
    ORDER BY txn_date ${strLimit}`;
-   
+
    query(strQuery, [acc_id], (err, rows) => {
       err ? res.send(err) : res.send(rows);
    });
@@ -124,20 +124,36 @@ router.post('/transaction/recent', async (req, res) => {
 
 // *****************************************************************
 // 依 acc_email, dateQuery1, dateQuery2，查詢某會員某日期區間的交易紀錄
-// 若 dateQuery1 或 dateQuery2 任何一個沒有傳值，則回傳所有交易紀錄
+// 若 dateQuery1 無回傳值，則 send 該日期 dateQuery2 之前的所有紀錄；若 dateQuery2 無回傳值則反之
+// 若 dateQuery1, dateQuery2 皆無回傳值，則 send 所有紀錄
 // *****************************************************************
 router.post('/transaction/daterange', async (req, res) => {
    // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
    var acc_id = await checkAccount(req.body.acc_email, res);
 
-   var strDateQuery =
-      (req.body.dateQuery1 && req.body.dateQuery2) ?
-         ` AND ? <= txn_date AND txn_date <= ? ` : ``;
+   var paramsQuery = [acc_id];
+   var strDateQuery1 = '';
+   var strDateQuery2 = '';
 
-   var strQuery = `SELECT * FROM transaction WHERE acc_id = ?
-      ${strDateQuery} ORDER BY txn_date`;
+   if (req.body.dateQuery1) {
+      strDateQuery1 = ` AND ? <= txn_date `;
+      paramsQuery.push(req.body.dateQuery1);
+   }
+   if (req.body.dateQuery2) {
+      strDateQuery2 = ` AND txn_date <= ? `;
+      paramsQuery.push(req.body.dateQuery2);
+   }
 
-   query(strQuery, [acc_id, req.body.dateQuery1, req.body.dateQuery2], (err, rows) => {
+   var strQuery = `
+      SELECT * 
+      FROM transaction txn 
+      INNER JOIN securities sec
+      ON txn.sec_id = sec.sec_id 
+      WHERE acc_id = ? ${strDateQuery1} ${strDateQuery2} 
+      ORDER BY txn_date
+   `;
+
+   query(strQuery, paramsQuery, (err, rows) => {
       err ? res.send(err) : res.send(rows);
    });
 });

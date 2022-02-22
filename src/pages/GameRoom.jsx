@@ -5,8 +5,6 @@ import GameStoreHeader from "../components/GameStoreHeader";
 import GameStoreFirstPage from "../components/GameStoreFirstPage";
 import GameStoreSecondPage from "../components/GameStoreSecondPage";
 import GameRoomMain from "../components/GameRoomMain";
-import GameStorage from "../components/GameStorage";
-import GameStoreModal from "../components/GameStoreModal";
 
 let GameRoomPage = () => {
    const [showFirst, setshowFirst] = useState("block");
@@ -18,13 +16,13 @@ let GameRoomPage = () => {
 
 
    function showtoggle(){      
-      if (showFirst == "none"){
+      if (showFirst === "none"){
          setshowFirst("block");
       }else{
          setshowFirst("none");
       }
    
-      if(showSecond =="block"){
+      if(showSecond === "block"){
          setshowSecond("none");
       }else{
          setshowSecond("block");
@@ -32,13 +30,13 @@ let GameRoomPage = () => {
    }
 
    function changePage(){
-      if(showRoom =="block"){
+      if(showRoom === "block"){
         setShowRoom("none"); 
       }else{
          setShowRoom("block");
       }
 
-      if(showStore =="none"){
+      if(showStore === "none"){
          setShowStore("block");
          setshowStorage("none");
       }else{
@@ -47,7 +45,7 @@ let GameRoomPage = () => {
    }
 
    function showStoragePage(){
-      if(showStorage == "none"){
+      if(showStorage === "none"){
          setshowStorage("block");
       }else{
          setshowStorage("none")
@@ -73,7 +71,6 @@ let GameRoomPage = () => {
          <GameStoreFirstPage show={showFirst} showtoggle={showtoggle}></GameStoreFirstPage>
          <GameStoreSecondPage show={showSecond} showtoggle={showtoggle}></GameStoreSecondPage>
          </div>
-         <GameStoreModal></GameStoreModal>
       </React.Fragment>
    );
 }

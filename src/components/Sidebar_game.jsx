@@ -7,8 +7,8 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import Collapse from '@mui/material/Collapse';
 import StarBorder from '@mui/icons-material/StarBorder';
-import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
-import { Link, NavLink } from 'react-router-dom';
+import VideogameAssetOutlinedIcon from '@mui/icons-material/VideogameAssetOutlined';
+import { Link } from 'react-router-dom';
 
 
 export default function NestedList() {
@@ -22,7 +22,7 @@ export default function NestedList() {
         <React.Fragment>
             <ListItemButton onClick={handleClick}>
                 <ListItemIcon>
-                    <SportsEsportsIcon />
+                    <VideogameAssetOutlinedIcon sx={{ color: '#2A6470' }}/>
                 </ListItemIcon>
                 <ListItemText primary="模擬投資" />
                 {open ? <ExpandLess /> : <ExpandMore />}

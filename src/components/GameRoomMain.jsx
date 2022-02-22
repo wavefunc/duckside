@@ -465,7 +465,7 @@ let GameRoomMain = (props) =>{
         </g>
         </svg>
         
-        <div id="storage" style={{display:props.showStorage}}>
+        <div id="gameStorage" style={{display:props.showStorage}}>
         <div id="closeBtn" onClick={props.showStoragePage} style={{cursor:"pointer"}}>
             <svg width="50" viewBox="0 0 146 146">
             <g id="關閉按鈕" transform="translate(-1742 -29)">

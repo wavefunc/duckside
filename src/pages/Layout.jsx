@@ -104,7 +104,7 @@ function Layout() {
     setOpen(!open);
   };
 
-  
+
   return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex' }}>
@@ -150,47 +150,51 @@ function Layout() {
             >
             </Typography>
 
+            {/* 通知 */}
             <NotificationSection />
-
+            {/* 登入 */}
             <ProfileSection />
-            
+
           </Toolbar>
         </AppBar>
 
-        {/* Sidebar */}
-        <Drawer variant="permanent" open={open}>
+        <Drawer variant="permanent" open={open} >
+          {/* Logo */}
           <Toolbar
             sx={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'flex-end',
-              px: [1],
+              px: [3],
+              bgcolor: '#ecdfb1'
             }}
           >
             <Avatar sx={{ width: '60px', height: '60px' }} alt="duckside" src="/assets/images/duck_right.png" />
             <Link underline="none" color="black" href='/'>
               <Typography
                 component="h1"
-                variant="h5"
-                color="inherit"
+                variant="h1"
                 noWrap
                 sx={{
                   flexGrow: 1,
-                  color: "#53B8C5",
+                  color: "#2A6470",
                   fontWeight: 'bold',
-                  fontSize: '25px'
+                  fontSize: '24px',
+                  paddingTop: "23px",
+                  marginLeft: '-10px'
                 }}
               >
-                &nbsp;&nbsp;Duckside
+                Duckside
               </Typography>
             </Link>
 
             <IconButton onClick={toggleDrawer}>
               <ChevronLeftIcon />
             </IconButton>
-          </Toolbar>
+          </Toolbar >
 
-          <List component="nav" >
+          {/*Sidebar List*/}
+          <List component="nav" sx={{ bgcolor: '#ecdfb1',height:'100%' }}>
             {mainListItems}
             <Divider sx={{ my: 1 }} />
             <AccordionTools />
@@ -198,6 +202,8 @@ function Layout() {
             {secondaryListItems}
           </List>
         </Drawer>
+
+        {/* 頁面 */}
         <Box
           component="main"
           sx={{
@@ -235,7 +241,7 @@ function Layout() {
           </Container>
         </Box>
       </Box>
-    </ThemeProvider>
+    </ThemeProvider >
   );
 }
 
