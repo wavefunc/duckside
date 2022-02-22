@@ -1,7 +1,6 @@
 // ----- 冠樺 ----- //
 
 var express = require('express');
-const { default: reactSelect } = require('react-select');
 var router = express.Router();
 var { query, checkAccount } = require('./mysql.js');
 
@@ -74,7 +73,7 @@ router.put('/transaction/update', async (req, res) => {
 });
 
 // *************************
-// 依照 txn_id 刪除一筆資產
+// 依照 txn_id 刪除一筆交易
 // *************************
 router.delete('/transaction/delete', async (req, res) => {
    var strQuery = `DELETE FROM transaction WHERE transaction.txn_id = ?`
