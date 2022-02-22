@@ -1,48 +1,52 @@
 ﻿/* ***人豪***
- * 1. 從父元件接收data呈現在表格中
- * 2. 如果沒收到data, 就接受 url, acc_id 自己來axios
- * 3. 收到的props改變時, 重新執行1跟2
+ * 1. 從父元件接收 url [, dataToServer] 以axios抓取data呈現在表格
+ * 2. 如沒收到url, 則以props.data作為data
+ * 3. 如沒收到url, 且沒收到data或data.length=0, 則return null
+ * 4. 如有收到row=10, 則只呈現前10筆資料（db給日期降冪, 即是最新10筆）
+ * 5. 如沒收到col用來對應鍵名及欄名, 將使用原資料鍵名為欄名
  * 
  ********* */
 
 import { Grid } from 'gridjs-react';
 import "gridjs/dist/theme/mermaid.min.css";
-import { useEffect, useState, useRef } from 'react';
+import { useLayoutEffect, useState, useRef } from 'react';
 import axios from 'axios';
 
-function ManageCurrentPosition({ data, col=null, url, id }) {
+function ManageCurrentPosition({ url, dataToServer, row, col = null, ...props }) {
+    const [data, setData] = useState([]);
+    const dataToServerRef = useRef(dataToServer);
+    
     console.log(`ManageCurrentPosition: data*${data.length}`);
-    const [fetchData, setFetchData] = useState([]);
-    const refData = useRef(data);
-    useEffect(() => {
+    useLayoutEffect(() => {
         let beingMounted = true;
 
         console.log('ManageCurrentPosition useEffect:');
         if (url) {
-            console.log('ManageCurrentPosition useEffect req');
-            axios(url, id).then((res) => {
+            console.log('ManageCurrentPosition useEffect req (post)');
+            axios.post(url, dataToServer).then((res) => {
                 if (beingMounted) {
-                    setFetchData(res.data);
+                    setData(res.data);
                 }
             });
+        } else {
+            setData(props.data);
         }
-
         return () => { beingMounted = false };
-    }, [url, id, refData]);
-    // 判斷是否有資料: data && data.length
+    }, [url, dataToServerRef, props.refreshState, props.data]);
     return (
+        data && data.length ? (
         <Grid
-            columns={data && data.length? col:null}
-            data={fetchData.length? fetchData : data}
+            columns={col}
+            data={row ? data.slice(0, row) : data}
             sort={true}
             style={{
                 table: {
                     'width': '100%',
-                    'border-top': '1px solid #e2e2e2', 
+                    'border-top': '1px solid #e2e2e2',
                 },
             }}
             resizable={true}
-        />
+        />):null
     );
 }
 export default ManageCurrentPosition;

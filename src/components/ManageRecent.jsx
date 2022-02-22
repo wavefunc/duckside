@@ -1,8 +1,9 @@
 /* ***人豪***
- * 1. 從父元件接收url及id, 以axios抓取資料存在fetchData後呈現在表格
- * 2. 如果沒收到接收url及id, 可直接接受data, 呈現在表格中
- * 3. 如果收到row, 例如10, 就只呈現前10筆資料（db給降冪, 即是最新10筆）
- * 4. 如果fetchData為空陣列(請求失敗或資料還沒回來), 或父元件未給props, 則呈現data預設值[{'資料加載中':'請稍候'}]
+ * 1. 從父元件接收 url [, dataToServer] 以axios抓取data呈現在表格
+ * 2. 如沒收到url, 則以props.data作為data
+ * 3. 如沒收到url, 且沒收到data或data.length=0, 則return null
+ * 4. 如有收到row=10, 則只呈現前10筆資料（db給日期降冪, 即是最新10筆）
+ * 5. 如沒收到col用來對應鍵名及欄名, 將使用原資料鍵名為欄名
  * 
  ********* */
 
@@ -12,32 +13,41 @@ import "gridjs/dist/theme/mermaid.min.css";
 import React, { useLayoutEffect, useState, useRef } from 'react';
 import axios from 'axios';
 
-function ManageRecent({ data = [], url, acc, row, col = null, edit, del }) {
+function ManageRecent({ url, dataToServer, row, col = null, ... props }) {
+    const [data, setData] = useState([]);
+    const dataToServerRef = useRef(dataToServer);
+
     console.log(`ManageRecent: data*${data.length}`);
-    const [fetchData, setFetchData] = useState([]);
     useLayoutEffect(() => {
         let beingMounted = true;
         console.log('ManageRecent useEffect');
         if (url) {
-            console.log('ManageRecent useEffect req');
-            if (acc) {
-                axios(url, { data: { acc_email: acc, method: 'post' } }).then((res) => {
+            // 如有收到url屬性, 則以axios請求資料來呈現在表格
+            if (dataToServer) {
+                // 如有收到dataToServer(鍵值對), 以post方法請求, 否則預設以get方法請求
+                console.log('ManageRecent useEffect req (post)');
+                axios.post(url, dataToServer).then((res) => {
                     if (beingMounted) {
-                        setFetchData(res.data);
+                        setData(res.data);
                     }
                 });
             } else {
+                // 如沒收到dataToServer, 預設以get方法請求
+                console.log('ManageRecent useEffect req (get)');
                 axios(url).then((res) => {
                     if (beingMounted) {
-                        setFetchData(res.data);
+                        setData(res.data);
                     }
                 });
             }
+        } else {
+            setData(props.data);
+            console.log(`ManageRecent useEffect use props.date: ${props.data}`)
         }
         return () => { beingMounted = false };
-    }, [url, acc]);
+    }, [url, dataToServerRef, props.refreshState, props.data]);
     useLayoutEffect(() => {
-        if (edit) {
+        if (props.editHandler) {
             let apndBtnCol = {
                 name: '修改',
                 formatter: (cell, row) => {
@@ -47,38 +57,32 @@ function ManageRecent({ data = [], url, acc, row, col = null, edit, del }) {
                     }, '編輯');
                 }
             }
-
         }
-    }, [edit, del])
+        if (props.deleteHandler) {
+            let apndBtnCol = {
+                name: '修改',
+                formatter: (cell, row) => {
+                    return h('button', {
+                        className: 'btn btn-outline-warning',
+                        onClick: () => alert(`Editing "${row.cells[0].data}" "${row.cells[1].data}"`)
+                    }, '編輯');
+                }
+            }
+        }
+    }, [])
 
-    // 判斷是否有資料: data && data.length
     return (
+        // 判斷是否有資料: data && data.length
         data && data.length ? (
             <Grid
                 columns={col}
-                data={row ?
-                    (fetchData.length ? fetchData.slice(0, row) : data.slice(0, row)) :
-                    (fetchData.length ? fetchData : data)
-                }
-                search={
-                    row ? false : true
-                }
+                data={row ? data.slice(0, row) : data}
+                search={row ? false : true}
                 sort={true}
-                pagination={
-                    row ? false : {
-                        enabled: true,
-                        limit: 50
-                    }
-                }
+                pagination={row ? false : { enabled: true, limit: 50 }}
                 resizable={true}
-                style={{
-                    table: {
-                        'width': '100%',
-                        'border-top': '1px solid #e2e2e2',
-                    },
-                }}
+                style={{table: { 'width': '100%', 'border-top': '1px solid #e2e2e2', }}}
             />) : null
     );
 }
-// export default ManageRecent;
-export default React.memo(ManageRecent);
+export default ManageRecent;

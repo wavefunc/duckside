@@ -1,6 +1,5 @@
 /* * * * * 人豪 * * * * * 
- * 1. 記得修改axios(urlGet)方法加入param(acc_email)
- * 2. const acc_id = 只能來自localStorage;
+ * 1. const acc_email = 只能來自localStorage;
  * 
  * * * * * * * * * * * */
 
@@ -17,11 +16,11 @@ import ManageRecent from '../components/ManageRecent.jsx';
 import axios from 'axios';
 
 const acc_email = 'ggg@mail.com';
-const urlGet = 'http://localhost:5000/transaction/all';
-const urlPost = 'http://localhost:5000/transaction/create';
+const urlPostRecent = 'http://localhost:5000/transaction/recent';
+const urlPostCreate = 'http://localhost:5000/transaction/create';
 // const urlPut = 'http://localhost:5000/transaction/update';
 // const urlDelete = 'http://localhost:5000/transaction/edit';
-const urlPosition = 'http://localhost:5000/transaction/inventory';
+const urlGetPosition = 'http://localhost:5000/transaction/inventory';
 const urlDatalist = 'http://localhost:5000/securities/datalist/';
 const col = [
    {
@@ -30,7 +29,7 @@ const col = [
          return dt.format(d, 'YYYY-MM-DD');
       }
    },
-   { id: 'txn_id', name: '代號', hidden: true },
+   { id: 'txn_id', name: 'txn_id', hidden: true },
    { id: 'sec_id', name: '代號' },
    { id: 'txn_round', name: '編號' },
    { id: 'txn_position', name: '類型' },
@@ -57,6 +56,10 @@ function ManageTransaction(props) {
    const [recentData, setRecentData] = useState([]);
    const [currentPosition, setCurrentPosition] = useState([]);
    const [datalist, setDatalist] = useState([]);
+   const [refreshState, setRefresh] = useState(true);
+   const refresh = () => {
+      setRefresh(!refreshState);
+   }
 
    const getRecentData = () => {
       let beingMounted = true;
@@ -66,14 +69,14 @@ function ManageTransaction(props) {
          dateQuery: dt.format(new Date(), 'YYYY-MM-DD'),
       };
       console.log(dataToServer);
-      axios(urlGet).then((res) => {
+      axios.post(urlPostRecent, dataToServer).then((res) => {
          if (beingMounted) {
             console.log(res.data);
             setRecentData(res.data);
          }
       });
 
-      axios.post(urlPosition, dataToServer).then((res) => {
+      axios.post(urlGetPosition, dataToServer).then((res) => {
          if (beingMounted) {
             setCurrentPosition(res.data);
             console.log(res);
@@ -138,11 +141,11 @@ function ManageTransaction(props) {
                               ...values
                            };
                            console.log(dataToServer);
-                           axios.post(urlPost, dataToServer).then((res) => {
+                           axios.post(urlPostCreate, dataToServer).then((res) => {
                               console.log(res);
-                              getRecentData();
                               let newInitValues = resetInputs({ ...values });
                               actions.resetForm({ values: newInitValues });
+                              refresh();
                            });
                         }}
                      >
@@ -230,10 +233,14 @@ function ManageTransaction(props) {
                         </Nav>
                         <Tab.Content>
                            <Tab.Pane eventKey="first">
-                              <ManageRecent data={recentData} row={10} col={col}></ManageRecent>
+                              <ManageRecent row={10} col={col} refreshState={refreshState}
+                                 url={urlPostRecent} dataToServer={{ acc_email: acc_email, amount: 10 }}
+                              ></ManageRecent>
                            </Tab.Pane>
                            <Tab.Pane eventKey="second">
-                              <ManageRecent data={recentData} col={col}></ManageRecent>
+                              <ManageRecent row={10} col={col} refreshState={refreshState}
+                                 url={urlPostRecent} dataToServer={{ acc_email: acc_email, amount: 200 }}
+                              ></ManageRecent>
                            </Tab.Pane>
                         </Tab.Content>
                      </Tab.Container>
