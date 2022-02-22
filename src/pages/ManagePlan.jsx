@@ -1,44 +1,47 @@
 /* * * * * 人豪 * * * * * 
- * 1. 
- * 2. 
+ * 
+
+
+ * 備忘:
+ * const acc_email = ... 要換成localStorage
  * 
  * * * * * * * * * * * */
 
-import React, { useState, useEffect } from 'react';
-import Container from 'react-bootstrap/Container';
-import { Row, Col, Tab, Nav, Button } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Container, Row, Col, Tab, Nav, Button } from 'react-bootstrap';
 import { Formik, Form } from 'formik';
-import { MyInput, MySelect } from '../components/MyFormComponent';
+import axios from 'axios';
 import dt from 'date-and-time';
 
-import ManageCurrentPosition from '../components/ManageCurrentPosition.jsx';
+import { MyInput, MySelect } from '../components/MyFormComponent';
+import ManageCurrent from '../components/ManageCurrent.jsx';
 import ManageRecent from '../components/ManageRecent.jsx';
 
-import axios from 'axios';
-
 const acc_email = 'ggg@mail.com';
-const urlGet = 'http://localhost:5000/transaction/all';
-const urlPost = 'http://localhost:5000/transaction/create';
-// const urlPut = 'http://localhost:5000/transaction/update';
-// const urlDelete = 'http://localhost:5000/transaction/edit';
-const urlPosition = 'http://localhost:5000/transaction/inventory';
-const urlDatalist = 'http://localhost:5000/securities/datalist/';
+const urlPostRecent = 'http://localhost:5000/asset/recent';
+const urlPostCreate = 'http://localhost:5000/asset/create';
+// const urlPutUpdate = 'http://localhost:5000/asset/update';
+// const urlDelete = 'http://localhost:5000/asset/delete';
+const urlPostPosition = 'http://localhost:5000/transaction/inventory';
+// const urlGetDatalist = 'http://localhost:5000/securities/datalist/';
+
+// 主表使用
 const col = [
+   { id:'plan_id', name:'asd_id', hidden:'true'},
    {
-      id: 'txn_date', name: '日期', formatter: (cell) => {
-         let d = new Date(cell);
-         return dt.format(d, 'YYYY-MM-DD');
-      }
+      id: 'plan_date', name: 'asd_id', hidden: 'true',
+      formatter: (cell) => { let d = new Date(cell); return dt.format(d, 'YYYY-MM-DD'); },
    },
-   { id: 'txn_id', name: '代號', hidden: true },
-   { id: 'sec_id', name: '代號' },
-   { id: 'txn_round', name: '編號' },
-   { id: 'txn_position', name: '類型' },
-   { id: 'txn_price', name: '價格' },
-   { id: 'txn_amount', name: '數量' },
-   { id: 'txn_note', name: '摘要' },
+   { id:'', name:''},
+   { id:'', name:''},
+   { id:'', name:''},
+   { id:'', name:''},
+   { id:'', name:''},
+   { id:'', name:''},
 ];
-const colPosition = [
+
+// 副表使用
+const col2 = [
    { id: 'sec_id', name: '代號' },
    { id: 'sec_name', name: '名稱' },
    { id: 'total', name: '庫存數量' },
@@ -53,52 +56,14 @@ const resetInputs = (prevValues) => {
 }
 
 function ManagePlan(props) {
-   console.log('--ManageTransaction--');
-   const [recentData, setRecentData] = useState([]);
-   const [currentPosition, setCurrentPosition] = useState([]);
+   console.log('--ManageAsset--');
    const [datalist, setDatalist] = useState([]);
-
-   const getRecentData = () => {
-      let beingMounted = true;
-      console.log('ManageTransaction getRecentData');
-      let dataToServer = {
-         acc_email: acc_email,
-         dateQuery: dt.format(new Date(), 'YYYY-MM-DD'),
-      };
-      console.log(dataToServer);
-      axios(urlGet).then((res) => {
-         if (beingMounted) {
-            console.log(res.data);
-            setRecentData(res.data);
-         }
-      });
-
-      axios.post(urlPosition, dataToServer).then((res) => {
-         if (beingMounted) {
-            setCurrentPosition(res.data);
-            console.log(res);
-         }
-      });
-      return () => { beingMounted = false };
-   };
+   const [refreshState, setRefresh] = useState(true);
+   const refresh = () => {
+      setRefresh(!refreshState);
+   }
 
    let controller = new AbortController();
-   const getDatalist = (inputStr) => {
-      if (inputStr.length < 2 || inputStr.length > 4) {
-         return
-      } else {
-         controller.abort();
-         controller = new AbortController();
-         axios(urlDatalist + inputStr, { signal: controller.signal }).then((result) => {
-            let datalist = result.data.map((v) => {
-               return `${v['sec_id']} ${v['sec_name']}`
-            });
-            setDatalist(datalist);
-         })
-      }
-   }
-   useEffect(getRecentData, []);
-
    return (
       <Container fluid>
          <Row>
@@ -107,7 +72,7 @@ function ManagePlan(props) {
                   <Col lg={12}>
                      <Formik
                         initialValues={{
-                           txn_date: (new Date()).toISOString().split('T')[0],
+                           txn_date: dt.format(new Date(), 'YYYY-MM-DD'),
                            sec_str: "",
                            txn_round: 1,
                            txn_position: "建倉",
@@ -131,18 +96,17 @@ function ManagePlan(props) {
                            }
                         }
                         onSubmit={(values, actions) => {
-                           // 新增交易紀錄, 重新抓取資料讓元件re-render, 接著依預先定義重置部分輸入框
                            let dataToServer = {
                               sec_id: values.sec_str.split(" ")[0],
                               acc_email: acc_email,
                               ...values
                            };
-                           console.log(dataToServer);
-                           axios.post(urlPost, dataToServer).then((res) => {
-                              console.log(res);
-                              getRecentData();
+                           console.log(`dataToServer: ${JSON.stringify(dataToServer)}`);
+                           axios.post(urlPostCreate, dataToServer).then((res) => {
+                              console.log(res.data);
                               let newInitValues = resetInputs({ ...values });
                               actions.resetForm({ values: newInitValues });
+                              refresh();
                            });
                         }}
                      >
@@ -175,16 +139,6 @@ function ManagePlan(props) {
                            </MySelect>
 
                            <br />
-                           <MyInput
-                              label="股票代號及名稱"
-                              name="sec_str"
-                              id="sec_str"
-                              type="text"
-                              placeholder=""
-                              inline="true"
-                              list={datalist}
-                              getList={getDatalist}
-                           />
                            <MyInput
                               label="均價"
                               name="txn_price"
@@ -230,10 +184,14 @@ function ManagePlan(props) {
                         </Nav>
                         <Tab.Content>
                            <Tab.Pane eventKey="first">
-                              <ManageRecent data={recentData} row={10} col={col}></ManageRecent>
+                              <ManageRecent row={10} col={col} refreshState={refreshState}
+                                 url={urlPostRecent} dataToServer={{ acc_email: acc_email, amount: 10 }}
+                              ></ManageRecent>
                            </Tab.Pane>
                            <Tab.Pane eventKey="second">
-                              <ManageRecent data={recentData} col={col}></ManageRecent>
+                              <ManageRecent row={10} col={col} refreshState={refreshState}
+                                 url={urlPostRecent} dataToServer={{ acc_email: acc_email, amount: 200 }}
+                              ></ManageRecent>
                            </Tab.Pane>
                         </Tab.Content>
                      </Tab.Container>
@@ -249,7 +207,9 @@ function ManagePlan(props) {
                   </Nav>
                   <Tab.Content>
                      <Tab.Pane eventKey="first">
-                        <ManageCurrentPosition data={currentPosition} col={colPosition}></ManageCurrentPosition>
+                        <ManageCurrent col={col2}
+                           url={urlPostPosition} dataToServer={{ acc_email: acc_email, dateQuery: dt.format(new Date(), 'YYYY-MM-DD') }}
+                        ></ManageCurrent>
                      </Tab.Pane>
                   </Tab.Content>
                </Tab.Container>

@@ -1,33 +1,33 @@
 /* * * * * 人豪 * * * * * 
- * 1. const acc_email = 只能來自localStorage;
+ * 
+
+
+ * 備忘:
+ * const acc_email = ... 要換成localStorage
  * 
  * * * * * * * * * * * */
 
-import React, { useState, useEffect } from 'react';
-import Container from 'react-bootstrap/Container';
-import { Row, Col, Tab, Nav, Button } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Container, Row, Col, Tab, Nav, Button } from 'react-bootstrap';
 import { Formik, Form } from 'formik';
-import { MyInput, MySelect } from '../components/MyFormComponent';
+import axios from 'axios';
 import dt from 'date-and-time';
 
-import ManageCurrentPosition from '../components/ManageCurrentPosition.jsx';
+import { MyInput, MySelect } from '../components/MyFormComponent';
+import ManageCurrent from '../components/ManageCurrent.jsx';
 import ManageRecent from '../components/ManageRecent.jsx';
-
-import axios from 'axios';
 
 const acc_email = 'ggg@mail.com';
 const urlPostRecent = 'http://localhost:5000/transaction/recent';
 const urlPostCreate = 'http://localhost:5000/transaction/create';
 // const urlPut = 'http://localhost:5000/transaction/update';
 // const urlDelete = 'http://localhost:5000/transaction/edit';
-const urlGetPosition = 'http://localhost:5000/transaction/inventory';
-const urlDatalist = 'http://localhost:5000/securities/datalist/';
+const urlPostInventory = 'http://localhost:5000/transaction/inventory';
+const urlGetDatalist = 'http://localhost:5000/securities/datalist/';
 const col = [
    {
-      id: 'txn_date', name: '日期', formatter: (cell) => {
-         let d = new Date(cell);
-         return dt.format(d, 'YYYY-MM-DD');
-      }
+      id: 'txn_date', name: '日期',
+      formatter: (cell) => { let d = new Date(cell); return dt.format(d, 'YYYY-MM-DD'); }
    },
    { id: 'txn_id', name: 'txn_id', hidden: true },
    { id: 'sec_id', name: '代號' },
@@ -37,7 +37,7 @@ const col = [
    { id: 'txn_amount', name: '數量' },
    { id: 'txn_note', name: '摘要' },
 ];
-const colPosition = [
+const colInventory = [
    { id: 'sec_id', name: '代號' },
    { id: 'sec_name', name: '名稱' },
    { id: 'total', name: '庫存數量' },
@@ -53,37 +53,11 @@ const resetInputs = (prevValues) => {
 
 function ManageTransaction(props) {
    console.log('--ManageTransaction--');
-   const [recentData, setRecentData] = useState([]);
-   const [currentPosition, setCurrentPosition] = useState([]);
    const [datalist, setDatalist] = useState([]);
    const [refreshState, setRefresh] = useState(true);
    const refresh = () => {
       setRefresh(!refreshState);
    }
-
-   const getRecentData = () => {
-      let beingMounted = true;
-      console.log('ManageTransaction getRecentData');
-      let dataToServer = {
-         acc_email: acc_email,
-         dateQuery: dt.format(new Date(), 'YYYY-MM-DD'),
-      };
-      console.log(dataToServer);
-      axios.post(urlPostRecent, dataToServer).then((res) => {
-         if (beingMounted) {
-            console.log(res.data);
-            setRecentData(res.data);
-         }
-      });
-
-      axios.post(urlGetPosition, dataToServer).then((res) => {
-         if (beingMounted) {
-            setCurrentPosition(res.data);
-            console.log(res);
-         }
-      });
-      return () => { beingMounted = false };
-   };
 
    let controller = new AbortController();
    const getDatalist = (inputStr) => {
@@ -92,7 +66,7 @@ function ManageTransaction(props) {
       } else {
          controller.abort();
          controller = new AbortController();
-         axios(urlDatalist + inputStr, { signal: controller.signal }).then((result) => {
+         axios(urlGetDatalist + inputStr, { signal: controller.signal }).then((result) => {
             let datalist = result.data.map((v) => {
                return `${v['sec_id']} ${v['sec_name']}`
             });
@@ -100,7 +74,6 @@ function ManageTransaction(props) {
          })
       }
    }
-   useEffect(getRecentData, []);
 
    return (
       <Container fluid>
@@ -110,7 +83,7 @@ function ManageTransaction(props) {
                   <Col lg={12}>
                      <Formik
                         initialValues={{
-                           txn_date: (new Date()).toISOString().split('T')[0],
+                           txn_date: dt.format(new Date(), 'YYYY-MM-DD'),
                            sec_str: "",
                            txn_round: 1,
                            txn_position: "建倉",
@@ -134,13 +107,12 @@ function ManageTransaction(props) {
                            }
                         }
                         onSubmit={(values, actions) => {
-                           // 新增交易紀錄, 重新抓取資料讓元件re-render, 接著依預先定義重置部分輸入框
                            let dataToServer = {
                               sec_id: values.sec_str.split(" ")[0],
                               acc_email: acc_email,
                               ...values
                            };
-                           console.log(dataToServer);
+                           console.log(`dataToServer: ${JSON.stringify(dataToServer)}`);
                            axios.post(urlPostCreate, dataToServer).then((res) => {
                               console.log(res);
                               let newInitValues = resetInputs({ ...values });
@@ -228,7 +200,7 @@ function ManageTransaction(props) {
                               <Nav.Link eventKey="first" bsPrefix='btn btn-light ml-1'>最近十筆</Nav.Link>
                            </Nav.Item>
                            <Nav.Item>
-                              <Nav.Link eventKey="second" bsPrefix='btn btn-light ml-1'>最近一年</Nav.Link>
+                              <Nav.Link eventKey="second" bsPrefix='btn btn-light ml-1'>顯示更多</Nav.Link>
                            </Nav.Item>
                         </Nav>
                         <Tab.Content>
@@ -238,7 +210,7 @@ function ManageTransaction(props) {
                               ></ManageRecent>
                            </Tab.Pane>
                            <Tab.Pane eventKey="second">
-                              <ManageRecent row={10} col={col} refreshState={refreshState}
+                              <ManageRecent col={col} refreshState={refreshState}
                                  url={urlPostRecent} dataToServer={{ acc_email: acc_email, amount: 200 }}
                               ></ManageRecent>
                            </Tab.Pane>
@@ -256,7 +228,9 @@ function ManageTransaction(props) {
                   </Nav>
                   <Tab.Content>
                      <Tab.Pane eventKey="first">
-                        <ManageCurrentPosition data={currentPosition} col={colPosition}></ManageCurrentPosition>
+                        <ManageCurrent col={colInventory} 
+                           url={urlPostInventory} dataToServer={{ acc_email: acc_email, dateQuery: dt.format(new Date(), 'YYYY-MM-DD') }}
+                        ></ManageCurrent>
                      </Tab.Pane>
                   </Tab.Content>
                </Tab.Container>

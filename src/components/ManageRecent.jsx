@@ -10,15 +10,15 @@
 import { Grid } from 'gridjs-react';
 import { h } from 'gridjs';
 import "gridjs/dist/theme/mermaid.min.css";
-import React, { useLayoutEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 
-function ManageRecent({ url, dataToServer, row, col = null, ... props }) {
+function ManageRecent({ url, dataToServer, row, col = undefined, ... props }) {
     const [data, setData] = useState([]);
     const dataToServerRef = useRef(dataToServer);
 
     console.log(`ManageRecent: data*${data.length}`);
-    useLayoutEffect(() => {
+    useEffect(() => {
         let beingMounted = true;
         console.log('ManageRecent useEffect');
         if (url) {
@@ -28,6 +28,7 @@ function ManageRecent({ url, dataToServer, row, col = null, ... props }) {
                 console.log('ManageRecent useEffect req (post)');
                 axios.post(url, dataToServer).then((res) => {
                     if (beingMounted) {
+                        console.log(res.data);
                         setData(res.data);
                     }
                 });
@@ -36,17 +37,18 @@ function ManageRecent({ url, dataToServer, row, col = null, ... props }) {
                 console.log('ManageRecent useEffect req (get)');
                 axios(url).then((res) => {
                     if (beingMounted) {
+                        console.log(res.data);
                         setData(res.data);
                     }
                 });
             }
         } else {
+            console.log(`ManageRecent useEffect use props.data: ${props.data}`)
             setData(props.data);
-            console.log(`ManageRecent useEffect use props.date: ${props.data}`)
         }
         return () => { beingMounted = false };
     }, [url, dataToServerRef, props.refreshState, props.data]);
-    useLayoutEffect(() => {
+    useEffect(() => {
         if (props.editHandler) {
             let apndBtnCol = {
                 name: '修改',

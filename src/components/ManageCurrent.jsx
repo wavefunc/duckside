@@ -9,15 +9,15 @@
 
 import { Grid } from 'gridjs-react';
 import "gridjs/dist/theme/mermaid.min.css";
-import { useLayoutEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 
 function ManageCurrentPosition({ url, dataToServer, row, col = null, ...props }) {
     const [data, setData] = useState([]);
     const dataToServerRef = useRef(dataToServer);
-    
+
     console.log(`ManageCurrentPosition: data*${data.length}`);
-    useLayoutEffect(() => {
+    useEffect(() => {
         let beingMounted = true;
 
         console.log('ManageCurrentPosition useEffect:');
@@ -46,6 +46,7 @@ function ManageCurrentPosition({ url, dataToServer, row, col = null, ...props })
                 },
             }}
             resizable={true}
+            className={props.className? {...props.className}:{}}
         />):null
     );
 }
