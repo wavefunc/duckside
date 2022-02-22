@@ -1,6 +1,5 @@
 ﻿import { useField } from 'formik';
-import { Form, InputGroup, FormControl, Button } from 'react-bootstrap';
-import axios from 'axios';
+import { Form, InputGroup, Button } from 'react-bootstrap';
 import React, { useEffect, useRef } from 'react';
 
 
@@ -24,7 +23,7 @@ export const MyInput = ({ label, list, getList, ...props }) => {
                 <Form.Control
                     {...field} {...props}
                     list={`list${props.id}`}
-                    aria-describedby={`prep${props.id} apnd${props.id}`}
+                    aria-describedby={`prep${props.id} apnd${props.id} helptext${props.id}`}
                     isInvalid={meta.touched && meta.error}
                 />
                 {props.prepend ? (
@@ -41,6 +40,9 @@ export const MyInput = ({ label, list, getList, ...props }) => {
                     <Form.Control.Feedback type="invalid">
                         {meta.error}
                     </Form.Control.Feedback>) : null}
+                {props.helpText ?  <Form.Text id={`helptext${props.id}`} muted>
+                    {props.helpText}
+                </Form.Text> : null}
             </InputGroup>
             {list ? (
                 <datalist id={`list${props.id}`}>
@@ -86,6 +88,16 @@ export const MySelect = ({ children, label, ...props }) => {
     );
 };
 
+
+export const MyFormikObserver = (props) => {
+    // <Formik>(props)=>{  <Form> 使用於此處  </Form> }<Formik>
+    // 將想要監控的值傳入MyFormikObserver的value屬性
+    // 將最上層元件想在該輸入值變動時做的函式傳入onchange
+    useEffect(() => {
+        props.onChange(props.value);
+    }, typeof props.value === 'object' ? [Object.values(props.value).join(', ')] : [props.value]);
+    return null
+}
 
 
 /***********

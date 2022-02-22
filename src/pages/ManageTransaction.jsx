@@ -202,6 +202,9 @@ function ManageTransaction(props) {
                            <Nav.Item>
                               <Nav.Link eventKey="second" bsPrefix='btn btn-light ml-1'>顯示更多</Nav.Link>
                            </Nav.Item>
+                           <Nav.Item>
+                              <Nav.Link eventKey="disabled" disabled bsPrefix='btn btn-basic ml-1'>按住shift點選欄位可多重排序</Nav.Link>
+                           </Nav.Item>
                         </Nav>
                         <Tab.Content>
                            <Tab.Pane eventKey="first">

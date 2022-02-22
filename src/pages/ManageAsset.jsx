@@ -7,13 +7,13 @@
  * 
  * * * * * * * * * * * */
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Tab, Nav, Button } from 'react-bootstrap';
 import { Formik, Form } from 'formik';
 import axios from 'axios';
 import dt from 'date-and-time';
 
-import { MyInput, MySelect } from '../components/MyFormComponent';
+import { MyFormikObserver, MyInput, MyButton } from '../components/MyFormComponent';
 import ManageCurrent from '../components/ManageCurrent.jsx';
 import ManageRecent from '../components/ManageRecent.jsx';
 
@@ -39,20 +39,16 @@ const col = [
    { id: 'ast_borrowing', name: '資券調整' },
    { id: 'ast_adjust', name: '其他調整' },
 ];
-
 // 副表使用
 const col2 = [
    { id: 'sec_id', name: '代號' },
    { id: 'sec_name', name: '名稱' },
    { id: 'total', name: '庫存數量' },
 ];
-const resetInputs = (prevValues) => {
-   let newValues = { ...prevValues };
-   newValues['sec_str'] = "";
-   newValues['txn_price'] = "";
-   newValues['txn_amount'] = "";
-   newValues['txn_note'] = "";
-   return newValues;
+const noteSec = {
+   header: '庫存市值',
+   note: '當您輸入日期時, 我們會計算',
+   footer: '',
 }
 
 function ManageAsset(props) {
@@ -61,6 +57,13 @@ function ManageAsset(props) {
    const refresh = () => {
       setRefresh(!refreshState);
    }
+   const [inputDate, setInputDate] = useState();
+   const [secValue, setSecValue] = useState(750683);
+   useEffect(() => {
+      // 抓取該日庫存市價
+      let rand = Math.floor(Math.random() * 1000) + 740000;
+      setSecValue(rand.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
+   }, [inputDate])
 
    return (
       <Container fluid>
@@ -68,110 +71,119 @@ function ManageAsset(props) {
             <Col lg={8}>
                <Formik
                   initialValues={{
-                     txn_date: dt.format(new Date(), 'YYYY-MM-DD'),
-                     sec_str: "",
-                     txn_round: 1,
-                     txn_position: "建倉",
-                     txn_price: '630',
-                     txn_amount: '',
-                     txn_note: "老師說的",
+                     ast_date: dt.format(new Date(), 'YYYY-MM-DD'),
+                     ast_cash: 453000,
+                     ast_securities: 750000,
+                     ast_option: 50000,
+                     ast_others: 100000,
+                     ast_borrowing: -7000,
+                     ast_adjust: -50000,
                   }}
                   validate={
                      (values) => {
                         const errors = {};
-                        if (!values.sec_str) {
-                           errors.sec_str = "代號及名稱不可空白";
-                        }
-                        if (!values.txn_price) {
-                           errors.txn_price = "價格不可空白";
-                        }
-                        if (!values.txn_amount) {
-                           errors.txn_amount = "數量不可空白";
+                        if (values.ast_cash < 0) {
+                           errors.sec_str = "負現金請填寫於其他或調整項";
                         }
                         return errors;
                      }
                   }
                   onSubmit={(values, actions) => {
                      let dataToServer = {
-                        sec_id: values.sec_str.split(" ")[0],
                         acc_email: acc_email,
                         ...values
                      };
                      console.log(`dataToServer: ${JSON.stringify(dataToServer)}`);
-                     axios.post(urlPostCreate, dataToServer).then((res) => {
-                        console.log(res.data);
-                        let newInitValues = resetInputs({ ...values });
-                        actions.resetForm({ values: newInitValues });
-                        refresh();
-                     });
+                     // axios.post(urlPostCreate, dataToServer).then((res) => {
+                     //    console.log(res.data);
+                     //    actions.resetForm();
+                     //    refresh();
+                     // });
+                     // actions.resetForm();
                   }}
                >
-                  <Form>
-                     <MyInput
-                        label="日期"
-                        name="txn_date"
-                        id="txn_date"
-                        type="date"
-                        inline="true"
-                        size="sm"
-                     />
-
-                     <MyInput
-                        label="自訂編號"
-                        name="txn_round"
-                        id="txn_round"
-                        type="number"
-                        placeholder="編號以分批追蹤"
-                        inline="true"
-                     />
-                     <MySelect
-                        label="類型"
-                        name="txn_position"
-                        id="txn_position"
-                        type="text"
-                        inline="true"
-                        size="sm">
-                        {['建倉', '加碼', '減碼', '停利', '停損']}
-                     </MySelect>
-
-                     <br />
-                     <MyInput
-                        label="均價"
-                        name="txn_price"
-                        id="txn_price"
-                        type="number"
-                        placeholder="單位: 新台幣"
-                        inline="true"
-                     />
-                     <MyInput
-                        label="數量"
-                        name="txn_amount"
-                        id="txn_amount"
-                        type="number"
-                        step="1000"
-                        placeholder="負數為賣出或放空"
-                        inline="true"
-                     />
-                     <MyInput
-                        label="摘要備註"
-                        id="txn_note"
-                        name="txn_note"
-                        type="text"
-                        placeholder=""
-                        inline="true"
-                     />
-
-                     <Button type="submit" variant="warning" size="sm">送出</Button>
-                  </Form>
+                  {(props) => (
+                     <Form>
+                        <MyInput
+                           label="日期"
+                           name="ast_date" id="ast_date"
+                           type="date"
+                           inline="true" size="sm"
+                        />
+                        <MyInput
+                           label="現金"
+                           name="ast_cash" id="ast_cash"
+                           type="number" step="10000"
+                           placeholder="包含未入帳交割款"
+                           inline="true"
+                        />
+                        <MyInput
+                           label="證券"
+                           name="txn_round" id="txn_round"
+                           type="number" step="10000"
+                           placeholder="當時庫存現值"
+                           inline="true"
+                           helptext={`依${inputDate}紀錄及市價估計: ${secValue} 元`}
+                        />
+                        <MyFormikObserver
+                           value={props.values.ast_date}
+                           onChange={setInputDate}>
+                        </MyFormikObserver>
+                        <br />
+                        <MyInput
+                           label="期權"
+                           name="ast_option" id="ast_option"
+                           type="number" step="10000"
+                           placeholder="如: 帳戶權益數"
+                           inline="true"
+                        />
+                        <MyInput
+                           label="其他資產"
+                           name="ast_others" id="ast_others"
+                           type="number" step="10000"
+                           placeholder="如: 外幣基金債券"
+                           inline="true"
+                        />
+                        <MyInput
+                           label="資券調整"
+                           name="ast_borrowing" id="ast_borrowing"
+                           type="number" step="10000"
+                           placeholder="如: 券賣時的市值 融資保證金 "
+                           inline="true"
+                        />
+                        <MyInput
+                           label="其他調整"
+                           name="ast_adjust" id="ast_adjust"
+                           type="number" step="10000"
+                           placeholder=""
+                           inline="true"
+                        />
+                        <br />
+                        <Row>
+                           <Col lg={8}>
+                              <MyInput
+                                 label="摘要備註"
+                                 id="ast_note"
+                                 name="ast_note"
+                                 type="text"
+                              />
+                           </Col>
+                           <Col lg={1} className="d-inline-flex flex-column-reverse input-group p-2">
+                              <Button type="submit" variant="warning" size="sm">送出</Button>
+                           </Col>
+                        </Row>
+                     </Form>
+                  )}
                </Formik>
             </Col>
             <Col lg={4}>
-               <p>2022-02-22 庫存市值: 750,683 元</p>
                <ManageCurrent col={col2} className={{ table: 'table table-sm' }}
                   url={urlPostPosition} dataToServer={{ acc_email: acc_email, dateQuery: dt.format(new Date(), 'YYYY-MM-DD') }}
                ></ManageCurrent>
             </Col>
-            <br />
+         </Row>
+         <br />
+         <Row>
             <Col lg={12}>
                <Tab.Container id="left-tabs-example" defaultActiveKey="first" mountOnEnter={true}>
                   <Nav variant="pills">
@@ -196,6 +208,7 @@ function ManageAsset(props) {
                   </Tab.Content>
                </Tab.Container>
             </Col>
+
          </Row>
       </Container >
    );
