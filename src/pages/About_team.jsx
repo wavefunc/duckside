@@ -42,9 +42,9 @@ class About_team extends Component {
                      <Card.Body>
                         <Card.Title>蔡沛珊</Card.Title>
                         <Card.Text>
-                           - 主視覺/外觀<br />
-                           - 導覽列通知功能<br />
-                           - 網站導覽頁
+                           -主視覺/外觀<br />
+                           -導覽列通知功能<br />
+                           -網站導覽頁
                         </Card.Text>
                      </Card.Body>
                   </Card>

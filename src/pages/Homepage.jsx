@@ -2,7 +2,8 @@
 
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-import BackendAvatar from '../components/BackendAvatar';
+// import BackendAvatar from '../components/BackendAvatar';
+import BackendTest from '../components/BackendTest';
 
 class Homepage extends Component {
    render() {
@@ -12,7 +13,7 @@ class Homepage extends Component {
                <h1>This is Homepage!</h1>
                <Link to="/backend/datatype">資料庫取得的資料型態</Link><br />
                <hr />
-               <BackendAvatar />
+               <BackendTest />
             </div>
          </div>
       );

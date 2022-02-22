@@ -78,7 +78,7 @@ router.delete('/transaction/delete', async (req, res) => {
 
 // 依 acc_email 跟 dateQuery 兩個變數，查詢某用戶截至某天為止的庫存
 // 回傳各 securities 的合計數量
-router.get('/transaction/inventory', async (req, res) => {
+router.post('/transaction/inventory', async (req, res) => {
    // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
    var acc_id = await checkAccount(req.body.acc_email, res);
 
