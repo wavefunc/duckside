@@ -105,7 +105,17 @@ router.post('/asset/recent', async (req, res) => {
 // *********************************************************
 // 依 acc_email 跟 dateQuery 兩個變數，查詢某用戶某天的資產現況
 // *********************************************************
+router.post('/asset/someday', async (req, res) => {
+   // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
+   var acc_id = await checkAccount(req.body.acc_email, res);
 
+   var strQuery = `SELECT * FROM asset WHERE acc_id = ? 
+      AND ast_date <= ? ORDER BY ast_date DESC LIMIT 1`;
+
+   query(strQuery, [ acc_id, req.body.dateQuery], (err, rows) => {
+      err ? res.send(err) : res.send(rows[0]);
+   });
+});
 
 
 module.exports = router;
