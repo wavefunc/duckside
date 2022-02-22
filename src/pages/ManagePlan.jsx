@@ -1,26 +1,36 @@
-// ----- 人豪 ----- //
+/* * * * * 人豪 * * * * * 
+ * 1. 
+ * 2. 
+ * 
+ * * * * * * * * * * * */
 
-// ----- 人豪 ----- //
-
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
 import { Row, Col, Tab, Nav, Button } from 'react-bootstrap';
 import { Formik, Form } from 'formik';
 import { MyInput, MySelect } from '../components/MyFormComponent';
+import dt from 'date-and-time';
 
 import ManageCurrentPosition from '../components/ManageCurrentPosition.jsx';
 import ManageRecent from '../components/ManageRecent.jsx';
 
 import axios from 'axios';
 
-const acc_id = '';
-const urlGet = 'http://localhost:5000/plan/all';
-const urlEdit = 'http://localhost:5000/plan/edit';
-const urlDelete = 'http://localhost:5000/plan/delete';
-const urlGetPosition = 'http://localhost:5000/member/list';
-const urlGetDatalist = 'http://localhost:5000/securities/datalist/';
+const acc_email = 'ggg@mail.com';
+const urlGet = 'http://localhost:5000/transaction/all';
+const urlPost = 'http://localhost:5000/transaction/create';
+// const urlPut = 'http://localhost:5000/transaction/update';
+// const urlDelete = 'http://localhost:5000/transaction/edit';
+const urlPosition = 'http://localhost:5000/transaction/inventory';
+const urlDatalist = 'http://localhost:5000/securities/datalist/';
 const col = [
-   { id: 'txn_date', name: '日期', formatter: (v) => v.split('T')[0] },
+   {
+      id: 'txn_date', name: '日期', formatter: (cell) => {
+         let d = new Date(cell);
+         return dt.format(d, 'YYYY-MM-DD');
+      }
+   },
+   { id: 'txn_id', name: '代號', hidden: true },
    { id: 'sec_id', name: '代號' },
    { id: 'txn_round', name: '編號' },
    { id: 'txn_position', name: '類型' },
@@ -28,61 +38,66 @@ const col = [
    { id: 'txn_amount', name: '數量' },
    { id: 'txn_note', name: '摘要' },
 ];
+const colPosition = [
+   { id: 'sec_id', name: '代號' },
+   { id: 'sec_name', name: '名稱' },
+   { id: 'total', name: '庫存數量' },
+];
+const resetInputs = (prevValues) => {
+   let newValues = { ...prevValues };
+   newValues['sec_str'] = "";
+   newValues['txn_price'] = "";
+   newValues['txn_amount'] = "";
+   newValues['txn_note'] = "";
+   return newValues;
+}
 
 function ManagePlan(props) {
-   console.log('ManagePlan');
-   const [recentData, setRecentData] = useState([
-      { '頁面資料加載中': '請稍候' }
-   ]);
-   const [recentPosition, setRecentPosition] = useState([
-      { '頁面資料加載中': '請稍候' }
-   ]);
-   // const [inputValues, setInputValues] = useState({
-   //    acc_id: 1,
-   //    txn_date: "",
-   //    sec_id: "", txn_round: 1, txn_position: "",
-   //    txn_price: 600, txn_amount: 1000, txn_note: "",
-   // });
+   console.log('--ManageTransaction--');
+   const [recentData, setRecentData] = useState([]);
+   const [currentPosition, setCurrentPosition] = useState([]);
    const [datalist, setDatalist] = useState([]);
-   var controller = new AbortController();
+
+   const getRecentData = () => {
+      let beingMounted = true;
+      console.log('ManageTransaction getRecentData');
+      let dataToServer = {
+         acc_email: acc_email,
+         dateQuery: dt.format(new Date(), 'YYYY-MM-DD'),
+      };
+      console.log(dataToServer);
+      axios(urlGet).then((res) => {
+         if (beingMounted) {
+            console.log(res.data);
+            setRecentData(res.data);
+         }
+      });
+
+      axios.post(urlPosition, dataToServer).then((res) => {
+         if (beingMounted) {
+            setCurrentPosition(res.data);
+            console.log(res);
+         }
+      });
+      return () => { beingMounted = false };
+   };
+
+   let controller = new AbortController();
    const getDatalist = (inputStr) => {
       if (inputStr.length < 2 || inputStr.length > 4) {
          return
       } else {
          controller.abort();
          controller = new AbortController();
-         axios(urlGetDatalist + inputStr, { signal: controller.signal }).then((result) => {
+         axios(urlDatalist + inputStr, { signal: controller.signal }).then((result) => {
             let datalist = result.data.map((v) => {
                return `${v['sec_id']} ${v['sec_name']}`
-            })
-            console.log(datalist);
+            });
             setDatalist(datalist);
          })
       }
    }
-   useEffect(() => {
-      let beingMounted = true;
-      console.log('ManagePlan req Txn');
-      axios(urlGet, acc_id).then((res) => {
-         if (beingMounted) {
-            setRecentData(res.data);
-            console.log(res.data);
-         }
-      });
-      return () => { beingMounted = false };
-   }, []);
-
-   useEffect(() => {
-      let beingMounted = true;
-      console.log('ManagePlan req Position');
-      axios(urlGetPosition, acc_id).then((res) => {
-         if (beingMounted) {
-            console.log(res.data);
-            setRecentPosition(res.data);
-         }
-      });
-      return () => { beingMounted = false };
-   }, []);
+   useEffect(getRecentData, []);
 
    return (
       <Container fluid>
@@ -96,9 +111,9 @@ function ManagePlan(props) {
                            sec_str: "",
                            txn_round: 1,
                            txn_position: "建倉",
-                           txn_price: 600,
-                           txn_amount: 1000,
-                           txn_note: "",
+                           txn_price: '630',
+                           txn_amount: '',
+                           txn_note: "老師說的",
                         }}
                         validate={
                            (values) => {
@@ -115,16 +130,20 @@ function ManagePlan(props) {
                               return errors;
                            }
                         }
-                        onSubmit={(values, formikBag) => {
-                           setTimeout(() => {
-                              alert(JSON.stringify(values, null, 2));
-                           }, 400);
-                           let resetValues = { ...values };
-                           resetValues['sec_str'] = "";
-                           resetValues['txn_price'] = "";
-                           resetValues['txn_amount'] = "";
-                           resetValues['txn_note'] = "";
-                           formikBag.setValues({ ...resetValues }, false);
+                        onSubmit={(values, actions) => {
+                           // 新增交易紀錄, 重新抓取資料讓元件re-render, 接著依預先定義重置部分輸入框
+                           let dataToServer = {
+                              sec_id: values.sec_str.split(" ")[0],
+                              acc_email: acc_email,
+                              ...values
+                           };
+                           console.log(dataToServer);
+                           axios.post(urlPost, dataToServer).then((res) => {
+                              console.log(res);
+                              getRecentData();
+                              let newInitValues = resetInputs({ ...values });
+                              actions.resetForm({ values: newInitValues });
+                           });
                         }}
                      >
                         <Form>
@@ -179,7 +198,8 @@ function ManagePlan(props) {
                               name="txn_amount"
                               id="txn_amount"
                               type="number"
-                              placeholder="ex. 1000股"
+                              step="1000"
+                              placeholder="負數為賣出或放空"
                               inline="true"
                            />
                            <MyInput
@@ -190,6 +210,7 @@ function ManagePlan(props) {
                               placeholder=""
                               inline="true"
                            />
+
                            <Button type="submit" variant="warning" size="sm">送出</Button>
                         </Form>
                      </Formik>
@@ -228,7 +249,7 @@ function ManagePlan(props) {
                   </Nav>
                   <Tab.Content>
                      <Tab.Pane eventKey="first">
-                        <ManageCurrentPosition data={recentPosition}></ManageCurrentPosition>
+                        <ManageCurrentPosition data={currentPosition} col={colPosition}></ManageCurrentPosition>
                      </Tab.Pane>
                   </Tab.Content>
                </Tab.Container>
