@@ -112,7 +112,7 @@ router.post('/asset/someday', async (req, res) => {
    var strQuery = `SELECT * FROM asset WHERE acc_id = ? 
       AND ast_date <= ? ORDER BY ast_date DESC LIMIT 1`;
 
-   query(strQuery, [ acc_id, req.body.dateQuery], (err, rows) => {
+   query(strQuery, [acc_id, req.body.dateQuery], (err, rows) => {
       err ? res.send(err) : res.send(rows[0]);
    });
 });

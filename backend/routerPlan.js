@@ -99,8 +99,8 @@ router.post('/plan/recent', async (req, res) => {
 
    var strLimit = (req.body.amount) ? `DESC LIMIT ${req.body.amount}` : ``;
 
-   var strQuery = `SELECT * FROM plan WHERE acc_id = ?
-      ORDER BY plan_date ${strLimit}`;
+   var strQuery = `SELECT * FROM plan INNER JOIN securities sec 
+      ON plan.sec_id = sec.sec_id WHERE acc_id = ? ORDER BY plan_date ${strLimit}`;
 
    query(strQuery, [acc_id], (err, rows) => {
       err ? res.send(err) : res.send(rows);
