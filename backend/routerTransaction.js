@@ -1,17 +1,22 @@
 // ----- 冠樺 ----- //
 
 var express = require('express');
+const { default: reactSelect } = require('react-select');
 var router = express.Router();
 var { query, checkAccount } = require('./mysql.js');
 
+// *******************
 // 列出資料表全部的資料
+// *******************
 router.get('/transaction/all', function (req, res) {
    query('SELECT * FROM transaction', [], function (err, rows) {
       res.send(rows);
    })
 })
 
+// ********************************
 // 依 acc_email，新增該會員的一筆交易
+// ********************************
 router.post('/transaction/create', async (req, res) => {
    // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
    var acc_id = await checkAccount(req.body.acc_email, res);
@@ -37,7 +42,9 @@ router.post('/transaction/create', async (req, res) => {
       })
 });
 
+// **********************************
 // 依 acc_email，修改該會員的某一筆交易
+// **********************************
 router.put('/transaction/update', async (req, res) => {
    // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
    var acc_id = await checkAccount(req.body.acc_email, res);
@@ -66,7 +73,9 @@ router.put('/transaction/update', async (req, res) => {
       })
 });
 
+// *************************
 // 依照 txn_id 刪除一筆資產
+// *************************
 router.delete('/transaction/delete', async (req, res) => {
    var strQuery = `DELETE FROM transaction WHERE transaction.txn_id = ?`
    query(strQuery, [req.body.txn_id], (err) => {
@@ -76,8 +85,10 @@ router.delete('/transaction/delete', async (req, res) => {
    })
 });
 
-// 依 acc_email 跟 dateQuery 兩個變數，查詢某用戶截至某天為止的庫存
-// 回傳各 securities 的合計數量
+// ***************************************************************** 
+// 依 acc_email 跟 dateQuery 兩個變數，查詢某用戶截至某天為止的庫存      
+// 回傳各 securities 的合計數量                                       
+// ***************************************************************** 
 router.post('/transaction/inventory', async (req, res) => {
    // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
    var acc_id = await checkAccount(req.body.acc_email, res);
@@ -94,22 +105,40 @@ router.post('/transaction/inventory', async (req, res) => {
    });
 });
 
+// ****************************************************
 // 查詢最近交易紀錄，可利用 amount參數 自行設定要幾筆
+// ****************************************************
 router.post('/transaction/recent', async (req, res) => {
    // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
    var acc_id = await checkAccount(req.body.acc_email, res);
-
+   
    var strQuery = `SELECT * FROM transaction WHERE acc_id = ?
-      ORDER BY txn_date DESC LIMIT ${req.body.amount}`;
-
+   ORDER BY txn_date DESC LIMIT ${req.body.amount}`;
+   
    query(strQuery, [acc_id], (err, rows) => {
       err ? res.send(err) : res.send(rows);
    });
 });
 
-// 查詢某日期區間的交易紀錄
-// 若收到的日期變數為 null，則回傳所有交易紀錄
+// *****************************************************************
+// 依 acc_email, dateQuery1, dateQuery2，查詢某會員某日期區間的交易紀錄
+// 若 dateQuery1 或 dateQuery2 任何一個沒有傳值，則回傳所有交易紀錄
+// *****************************************************************
+router.post('/transaction/daterange', async (req, res) => {
+   // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
+   var acc_id = await checkAccount(req.body.acc_email, res);
 
+   var strDateQuery =
+      (req.body.dateQuery1 && req.body.dateQuery2) ?
+         ` AND ? <= txn_date AND txn_date <= ? ` : ``;
+
+   var strQuery = `SELECT * FROM transaction WHERE acc_id = ?
+      ${strDateQuery} ORDER BY txn_date`;
+
+   query(strQuery, [acc_id, req.body.dateQuery1, req.body.dateQuery2], (err, rows) => {
+      err ? res.send(err) : res.send(rows);
+   });
+});
 
 
 module.exports = router;
