@@ -11,7 +11,7 @@ import { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 
 function ManageCurrentPosition({ data, col=null, url, id }) {
-    console.log('ManageCurrentPosition');
+    console.log(`ManageCurrentPosition: data*${data.length}`);
     const [fetchData, setFetchData] = useState([]);
     const refData = useRef(data);
     useEffect(() => {
@@ -29,11 +29,11 @@ function ManageCurrentPosition({ data, col=null, url, id }) {
 
         return () => { beingMounted = false };
     }, [url, id, refData]);
-
+    // 判斷是否有資料: data && data.length
     return (
         <Grid
-            columns={data !=[]? col:null}
-            data={fetchData != "" ? fetchData : data}
+            columns={data && data.length? col:null}
+            data={fetchData.length? fetchData : data}
             sort={true}
             style={{
                 table: {

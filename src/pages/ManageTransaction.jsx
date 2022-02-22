@@ -4,7 +4,7 @@
  * 
  * * * * * * * * * * * */
 
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
 import { Row, Col, Tab, Nav, Button } from 'react-bootstrap';
 import { Formik, Form } from 'formik';
@@ -19,10 +19,10 @@ import axios from 'axios';
 const acc_email = 'ggg@mail.com';
 const urlGet = 'http://localhost:5000/transaction/all';
 const urlPost = 'http://localhost:5000/transaction/create';
-const urlPut = 'http://localhost:5000/transaction/update';
-const urlDelete = 'http://localhost:5000/transaction/edit';
-const urlGetPosition = 'http://localhost:5000/transaction/inventory';
-const urlGetDatalist = 'http://localhost:5000/securities/datalist/';
+// const urlPut = 'http://localhost:5000/transaction/update';
+// const urlDelete = 'http://localhost:5000/transaction/edit';
+const urlPosition = 'http://localhost:5000/transaction/inventory';
+const urlDatalist = 'http://localhost:5000/securities/datalist/';
 const col = [
    {
       id: 'txn_date', name: '日期', formatter: (cell) => {
@@ -37,6 +37,11 @@ const col = [
    { id: 'txn_price', name: '價格' },
    { id: 'txn_amount', name: '數量' },
    { id: 'txn_note', name: '摘要' },
+];
+const colPosition = [
+   { id: 'sec_id', name: '代號' },
+   { id: 'sec_name', name: '名稱' },
+   { id: 'total', name: '庫存數量' },
 ];
 const resetInputs = (prevValues) => {
    let newValues = { ...prevValues };
@@ -56,20 +61,21 @@ function ManageTransaction(props) {
    const getRecentData = () => {
       let beingMounted = true;
       console.log('ManageTransaction getRecentData');
+      let dataToServer = {
+         acc_email: acc_email,
+         dateQuery: dt.format(new Date(), 'YYYY-MM-DD'),
+      };
+      console.log(dataToServer);
       axios(urlGet).then((res) => {
          if (beingMounted) {
-            setRecentData(res.data);
             console.log(res.data);
+            setRecentData(res.data);
          }
       });
-      axios.post(urlGetPosition, {
-         data: {
-            'dateQuery': Date.now(),
-            'acc_email': acc_email,
-         }
-      }).then((res) => {
+
+      axios.post(urlPosition, dataToServer).then((res) => {
          if (beingMounted) {
-            // setCurrentPosition(res.data);
+            setCurrentPosition(res.data);
             console.log(res);
          }
       });
@@ -83,7 +89,7 @@ function ManageTransaction(props) {
       } else {
          controller.abort();
          controller = new AbortController();
-         axios(urlGetDatalist + inputStr, { signal: controller.signal }).then((result) => {
+         axios(urlDatalist + inputStr, { signal: controller.signal }).then((result) => {
             let datalist = result.data.map((v) => {
                return `${v['sec_id']} ${v['sec_name']}`
             });
@@ -192,7 +198,8 @@ function ManageTransaction(props) {
                               name="txn_amount"
                               id="txn_amount"
                               type="number"
-                              placeholder="ex. 1000股"
+                              step="1000"
+                              placeholder="負數為賣出或放空"
                               inline="true"
                            />
                            <MyInput
@@ -242,7 +249,7 @@ function ManageTransaction(props) {
                   </Nav>
                   <Tab.Content>
                      <Tab.Pane eventKey="first">
-                        <ManageCurrentPosition data={currentPosition}></ManageCurrentPosition>
+                        <ManageCurrentPosition data={currentPosition} col={colPosition}></ManageCurrentPosition>
                      </Tab.Pane>
                   </Tab.Content>
                </Tab.Container>

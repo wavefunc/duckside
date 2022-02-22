@@ -13,7 +13,7 @@ import React, { useLayoutEffect, useState, useRef } from 'react';
 import axios from 'axios';
 
 function ManageRecent({ data = [], url, acc, row, col = null, edit, del }) {
-    console.log(`ManageRecent: ${JSON.stringify(data)}`);
+    console.log(`ManageRecent: data*${data.length}`);
     const [fetchData, setFetchData] = useState([]);
     useLayoutEffect(() => {
         let beingMounted = true;
@@ -51,13 +51,14 @@ function ManageRecent({ data = [], url, acc, row, col = null, edit, del }) {
         }
     }, [edit, del])
 
+    // 判斷是否有資料: data && data.length
     return (
-        data != [] ? (
+        data && data.length ? (
             <Grid
-                columns={data != [] ? col : []}
+                columns={col}
                 data={row ?
-                    (fetchData != "" ? fetchData.slice(0, row) : data.slice(0, row)) :
-                    (fetchData != "" ? fetchData : data)
+                    (fetchData.length ? fetchData.slice(0, row) : data.slice(0, row)) :
+                    (fetchData.length ? fetchData : data)
                 }
                 search={
                     row ? false : true
