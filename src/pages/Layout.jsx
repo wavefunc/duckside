@@ -19,18 +19,14 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { mainListItems, secondaryListItems } from '../components/Sidebar_listItems';
 import Avatar from '@mui/material/Avatar';
-import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import AccordionTools from '../components/Sidebar_tools';
 import AccordionGame from '../components/Sidebar_game';
 import PageTitle from '../components/PageTitle';
 import Breadcrumb from '../components/Breadcrumb';
 import { Outlet } from 'react-router-dom';
-import NotificationSection from '../components/NotificationSection';
-// login component
-import MemberLogin from "../components/MemberLogin";
-import MemberRegister from "../components/MemberRegister";
-import "../css/bootstrap.min.css";
-// login component
+import NotificationSection from '../components/Header/NotificationSection';
+
+import ProfileSection from "../components/Header/ProfileSection"
 
 
 
@@ -108,23 +104,7 @@ function Layout() {
     setOpen(!open);
   };
 
-// login component
-const [showLogin, setShowLogin] = React.useState(false);
-const [showregister, setShowRegister] = React.useState(false);
-function showtoggle() {
-  setShowLogin(!showLogin);
-  setShowRegister(!showregister);
-}
-function showClose() {
-  setShowLogin(false);
-  setShowRegister(false);
-}
-function showOpen() {
-  setShowLogin(!showLogin);
-}
-// login component
-
-
+  
   return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex' }}>
@@ -172,13 +152,8 @@ function showOpen() {
 
             <NotificationSection />
 
-            <IconButton color="inherit" onClick={showOpen}>
-              <PersonOutlineIcon />
-              {/* login component */}        
-              <MemberLogin show={showLogin} showtoggle={showtoggle} close={showClose}></MemberLogin>
-              <MemberRegister show={showregister} showtoggle={showtoggle}></MemberRegister>
-              {/* login component */}
-            </IconButton>
+            <ProfileSection />
+            
           </Toolbar>
         </AppBar>
 

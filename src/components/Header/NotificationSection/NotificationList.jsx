@@ -16,7 +16,7 @@ import {
 import User1 from './duck_right.png';
 
 // styles
-const ListItemWrapper = styled('div')(({  }) => ({
+const ListItemWrapper = styled('div')(() => ({
     cursor: 'pointer',
     padding: 16,
     '&:hover': {
@@ -31,11 +31,6 @@ const ListItemWrapper = styled('div')(({  }) => ({
 
 const NotificationList = () => {
     const theme = useTheme();
-
-    const chipSX = {
-        height: 24,
-        padding: '0 6px'
-    };
 
     return (
         <List
