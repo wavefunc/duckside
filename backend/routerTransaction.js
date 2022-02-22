@@ -94,4 +94,22 @@ router.post('/transaction/inventory', async (req, res) => {
    });
 });
 
+// 查詢最近交易紀錄，可利用 amount參數 自行設定要幾筆
+router.post('/transaction/recent', async (req, res) => {
+   // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
+   var acc_id = await checkAccount(req.body.acc_email, res);
+
+   var strQuery = `SELECT * FROM transaction WHERE acc_id = ?
+      ORDER BY txn_date DESC LIMIT ${req.body.amount}`;
+
+   query(strQuery, [acc_id], (err, rows) => {
+      err ? res.send(err) : res.send(rows);
+   });
+});
+
+// 查詢某日期區間的交易紀錄
+// 若收到的日期變數為 null，則回傳所有交易紀錄
+
+
+
 module.exports = router;

@@ -76,4 +76,18 @@ router.delete('/asset/delete', async (req, res) => {
    })
 });
 
+// 查詢最近資產紀錄，可利用 amount參數 自行設定要幾筆
+router.post('/asset/recent', async (req, res) => {
+   // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
+   var acc_id = await checkAccount(req.body.acc_email, res);
+
+   var strQuery = `SELECT * FROM asset WHERE acc_id = ?
+      ORDER BY ast_date DESC LIMIT ${req.body.amount}`;
+
+   query(strQuery, [acc_id], (err, rows) => {
+      err ? res.send(err) : res.send(rows);
+   });
+});
+
+
 module.exports = router;
