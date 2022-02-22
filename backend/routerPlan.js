@@ -4,14 +4,18 @@ var express = require('express');
 var router = express.Router();
 var { query, checkAccount } = require('./mysql.js');
 
+// ********************
 // 列出資料表全部的資料
+// ********************
 router.get('/plan/all', function (req, res) {
    query('SELECT * FROM plan', [], function (err, rows) {
       res.send(rows);
    })
 })
 
+// *********************************
 // 依 acc_email，新增該會員的一個計劃
+// *********************************
 router.post('/plan/create', async (req, res) => {
    // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
    var acc_id = await checkAccount(req.body.acc_email, res);
@@ -39,7 +43,9 @@ router.post('/plan/create', async (req, res) => {
       })
 });
 
+// *************************
 // 依照 plan_id 刪除一筆資產
+// *************************
 router.delete('/plan/delete', async (req, res) => {
    var strQuery = `DELETE FROM plan WHERE plan.plan_id = ?`
    query(strQuery, [req.body.plan_id], (err) => {
