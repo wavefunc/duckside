@@ -3,12 +3,12 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
-import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import AutoGraphIcon from '@mui/icons-material/AutoGraph';
-import PaidIcon from '@mui/icons-material/Paid';
-import AssistantPhotoIcon from '@mui/icons-material/AssistantPhoto';
+import AssistantPhotoOutlinedIcon from '@mui/icons-material/AssistantPhotoOutlined';
+import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined';
+import TextSnippetOutlinedIcon from '@mui/icons-material/TextSnippetOutlined';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import HomeIcon from '@mui/icons-material/Home';
 import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import { Link } from 'react-router-dom';
@@ -24,13 +24,13 @@ export const mainListItems = (
             </ListItemButton>
         </Link> */}
 
-        <ListSubheader component="div" inset>
+        <ListSubheader component="div" inset sx={{ bgcolor: '#ecdfb1' }}>
             投資管理
         </ListSubheader>
         <Link to="/manage/dashboard" style={{ color: 'black' }}>
             <ListItemButton>
                 <ListItemIcon>
-                    <BarChartIcon />
+                    <BarChartIcon sx={{ color: '#2A6470' }} />
                 </ListItemIcon>
                 <ListItemText primary="總覽" />
             </ListItemButton>
@@ -38,7 +38,7 @@ export const mainListItems = (
         <Link to="/manage/plan" style={{ color: 'black' }}>
             <ListItemButton >
                 <ListItemIcon>
-                    <AssistantPhotoIcon />
+                    <AssistantPhotoOutlinedIcon sx={{ color: '#2A6470' }}/>
                 </ListItemIcon>
                 <ListItemText primary="進出策略" />
             </ListItemButton>
@@ -47,7 +47,7 @@ export const mainListItems = (
         <Link to="/manage/transaction" style={{ color: 'black' }}>
             <ListItemButton>
                 <ListItemIcon>
-                    <PaidIcon />
+                    <MonetizationOnOutlinedIcon sx={{ color: '#2A6470' }}/>
                 </ListItemIcon>
                 <ListItemText primary="交易紀錄" />
             </ListItemButton>
@@ -56,7 +56,7 @@ export const mainListItems = (
         <Link to="/manage/asset" style={{ color: 'black' }}>
             <ListItemButton>
                 <ListItemIcon>
-                    <TextSnippetIcon />
+                    <TextSnippetOutlinedIcon sx={{ color: '#2A6470' }}/>
                 </ListItemIcon>
                 <ListItemText primary="資產明細" />
             </ListItemButton>
@@ -66,7 +66,7 @@ export const mainListItems = (
         <Link to="/manage/check" style={{ color: 'black' }}>
             <ListItemButton>
                 <ListItemIcon>
-                    <AutoGraphIcon />
+                    <AutoGraphIcon sx={{ color: '#2A6470' }}/>
                 </ListItemIcon>
                 <ListItemText primary="投資結算" />
             </ListItemButton>
@@ -84,7 +84,7 @@ export const secondaryListItems = (
         <Link to="/about_site" style={{ color: 'black' }}>
             <ListItemButton>
                 <ListItemIcon>
-                    <HomeIcon />
+                    <HomeOutlinedIcon sx={{ color: '#2A6470' }}/>
                 </ListItemIcon>
                 <ListItemText primary="關於本站" />
             </ListItemButton>
@@ -94,7 +94,7 @@ export const secondaryListItems = (
         <Link to="/about_team" style={{ color: 'black' }}>
             <ListItemButton>
                 <ListItemIcon>
-                    <EmojiPeopleIcon />
+                    <EmojiPeopleIcon sx={{ color: '#2A6470' }}/>
                 </ListItemIcon>
                 <ListItemText primary="合作夥伴" />
             </ListItemButton>

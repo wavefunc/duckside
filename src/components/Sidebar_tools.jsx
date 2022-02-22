@@ -6,11 +6,11 @@ import ListItemText from '@mui/material/ListItemText';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import Collapse from '@mui/material/Collapse';
-import HomeRepairServiceIcon from '@mui/icons-material/HomeRepairService';
 import ListSubheader from '@mui/material/ListSubheader';
-import PieChartIcon from '@mui/icons-material/PieChart';
-import CalculateIcon from '@mui/icons-material/Calculate';
-import { Link, NavLink } from 'react-router-dom';
+import HomeRepairServiceOutlinedIcon from '@mui/icons-material/HomeRepairServiceOutlined';
+import PieChartOutlinedIcon from '@mui/icons-material/PieChartOutlined';
+import CalculateOutlinedIcon from '@mui/icons-material/CalculateOutlined';
+import { Link } from 'react-router-dom';
 
 
 
@@ -23,12 +23,12 @@ export default function NestedList() {
 
     return (
         <React.Fragment>
-            <ListSubheader component="div" inset>
+            <ListSubheader component="div" inset sx={{ bgcolor: '#ecdfb1' }}>
                 其他常用
             </ListSubheader>
             <ListItemButton onClick={handleClick}>
                 <ListItemIcon>
-                    <HomeRepairServiceIcon />
+                    <HomeRepairServiceOutlinedIcon sx={{ color: '#2A6470' }}/>
                 </ListItemIcon>
                 <ListItemText primary="小工具" />
                 {open ? <ExpandLess /> : <ExpandMore />}
@@ -39,7 +39,7 @@ export default function NestedList() {
                     <Link to="/tools/chart_pie" style={{ color: 'black' }}>
                         <ListItemButton sx={{ pl: 4 }}>
                             <ListItemIcon>
-                                <PieChartIcon />
+                                <PieChartOutlinedIcon />
                             </ListItemIcon>
                             <ListItemText primary="圓餅圖: 部位配置" />
                         </ListItemButton>
@@ -49,7 +49,7 @@ export default function NestedList() {
                     <Link to="#" style={{ color: 'black' }}>
                         <ListItemButton sx={{ pl: 4 }}>
                             <ListItemIcon>
-                                <CalculateIcon />
+                                <CalculateOutlinedIcon />
                             </ListItemIcon>
                             <ListItemText primary="計算機: 風險報酬" />
                         </ListItemButton>
