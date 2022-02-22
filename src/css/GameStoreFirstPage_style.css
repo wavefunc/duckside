@@ -25,4 +25,10 @@
     flex-wrap: wrap;
     padding: 30px;
 }
+#storeModal{
+    position: absolute;
+    width: 60%;
+    margin-left: 20%;
+
+}
 

@@ -1,9 +1,25 @@
 // ----- 晴暄----- //
 
-import React, { Component } from 'react';
+// import React, { Component } from 'react';
 import "../css/GameStoreFirstPage_style.css";
+import React, { useState } from "react";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+import "../css/GameStoreModal_style.css";
 
 let GameStoreFirstPage = (props) => {
+
+   const [modalShow, setModalShow] = useState("none");
+   
+
+   function showModal(){
+       if(modalShow=="none"){
+           setModalShow("block")
+       }else{
+           setModalShow("none")
+       }
+       console.log("showModal");
+   }
    
    return (
       <div id="container" className="row" style={{display:props.show}}>
@@ -71,12 +87,11 @@ let GameStoreFirstPage = (props) => {
                      <path id="Path_5-8" data-name="Path 5" d="M6.813,0c3.763,0,6.813,3.875,6.813,8.655,0,2.471-.489,5.658-1.868,7.32-1.15,1.388-3.127,1.335-4.945,1.335-1.678,0-3.069.829-4.772-1.335S0,11.3,0,8.655C0,3.875,3.05,0,6.813,0Z" transform="translate(13.626 30.724) rotate(180)" fill="#ffd230"/>
                      </g>
                   </g>
-                  <g id="BuyBtn">
-                     <a href="#">
+                  <g id="BuyBtn" onClick={showModal} style={{cursor:"pointer"}}>
                      <rect id="Rectangle_119" data-name="Rectangle 119" width="111" height="54" rx="20" transform="translate(307 540)" fill="#bc2121"/>
                      <text id="購買" transform="translate(333 578)" fill="#faf3e2" font-size="30" font-family="PingFangTC-Semibold, PingFang TC" font-weight="600"><tspan x="0" y="0">購買</tspan></text>
-                     </a>
                   </g>
+                  
                </g>
                </svg>
                </li>
@@ -493,7 +508,34 @@ let GameStoreFirstPage = (props) => {
                </g>
                </svg>
                </div>
-            </div>            
+            </div>  
+            
+            <div id="storeModal" style={{display:modalShow}}>
+            <svg width="100%" viewBox="0 0 1262 796">
+            <g id="modal" transform="translate(-378 -166)">
+               <rect id="Rectangle_104" data-name="Rectangle 104" width="1221" height="739" rx="30" transform="translate(378 223)" fill="#faf3e2"/>
+               <text id="確定購買燈串_" data-name="確定購買燈串？" transform="translate(652 526)" fill="#520707" font-size="100" font-family="'\.PingFangTC-Semibold', '\.PingFang TC'" font-weight="600"><tspan x="0" y="0">確定購買燈串？</tspan></text>
+               <g id="是_按鈕" data-name="是 按鈕" transform="translate(-47)">
+                  <rect id="Rectangle_106" data-name="Rectangle 106" width="325" height="142" rx="30" transform="translate(635 765)" fill="#3e88a8"/>
+                  <text id="是" transform="translate(748 865)" fill="#fff" font-size="100" font-family="'\.PingFangTC-Semibold', '\.PingFang TC'" font-weight="600"><tspan x="0" y="0">是</tspan></text>
+               </g>
+               <g id="否_按鈕" data-name="否 按鈕" transform="translate(-56)" onClick={showModal} style={{cursor:"pointer"}}>
+                  <rect id="Rectangle_105" data-name="Rectangle 105" width="325" height="142" rx="30" transform="translate(1109 765)" fill="#ac4c4c"/>
+                  <text id="否" transform="translate(1222 865)" fill="#fff" font-size="100" font-family="'\.PingFangTC-Semibold', '\.PingFang TC'" font-weight="600"><tspan x="0" y="0">否</tspan></text>
+               </g>
+               <g id="關閉按鈕" transform="translate(-248 137)" onClick={showModal} style={{cursor:"pointer"}}>
+                  <g id="Ellipse_61" data-name="Ellipse 61" transform="translate(1742 29)" fill="#256170" stroke="#707070" stroke-width="1">
+                  <circle cx="73" cy="73" r="73" stroke="none"/>
+                  <circle cx="73" cy="73" r="72.5" fill="none"/>
+                  </g>
+                  <path id="Icon_ionic-md-close" data-name="Icon ionic-md-close" d="M93.023,16.073,84.474,7.523l-34.2,34.2-34.2-34.2L7.523,16.073l34.2,34.2-34.2,34.2,8.549,8.549,34.2-34.2,34.2,34.2,8.549-8.549-34.2-34.2Z" transform="translate(1764.727 51.727)" fill="#fff"/>
+               </g>
+            </g>
+            </svg>
+
+            </div>
+
+            
 
           
             
@@ -501,6 +543,8 @@ let GameStoreFirstPage = (props) => {
          </div>
          
       </div>
+   
+   
    );
 } 
 

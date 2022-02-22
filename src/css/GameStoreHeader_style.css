@@ -1,31 +1,21 @@
 #container{
     margin: 0px;
     padding: 0px;
-    background-color: #F5F5CC;
-    
+    background-color: #F5F5CC;    
 }
 #container .col-lg-12 nav ul{
     list-style-type: none;
     margin: 0;
     padding: 0;        
 }
-#container .col-lg-12{
-    
-}
-#container #flag{
-    
-}
 #container #centerSide{
-    width: 70vh;
+    width: 65vh;
 }
 #container #my_score{
-    margin-top: 10px; 
-    
-       
+    margin-top: 10px;     
 }
 #container #closeBtn{
-    margin: 10px; 
-       
+    margin: 10px;        
 }
 
 
