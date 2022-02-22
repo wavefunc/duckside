@@ -15,14 +15,14 @@ import { Link } from 'react-router-dom';
 
 export const mainListItems = (
     <React.Fragment>
-        <Link to="/member/info" style={{ color: 'black' }}>
+        {/* <Link to="/member/info" style={{ color: 'black' }}>
             <ListItemButton>
                 <ListItemIcon>
                     <AccountCircleIcon />
                 </ListItemIcon>
                 <ListItemText primary="會員中心" />
             </ListItemButton>
-        </Link>
+        </Link> */}
 
         <ListSubheader component="div" inset>
             投資管理
