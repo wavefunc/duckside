@@ -32,7 +32,7 @@ function ManageCurrentPosition({ url, dataToServer, row, col = null, ...props })
             setData(props.data);
         }
         return () => { beingMounted = false };
-    }, [url, dataToServerRef, props.refreshState, props.data]);
+    }, [url, dataToServer.dateQuery, dataToServer.dateQuery, props.refreshState, props.data]);
     return (
         data && data.length ? (
         <Grid
