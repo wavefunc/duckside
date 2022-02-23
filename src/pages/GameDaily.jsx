@@ -9,13 +9,14 @@ function MyVerticallyCenteredModal(props) {
       <Modal
          {...props}
          centered
+         size="sm"
       >
 
          <div id="light">
             <g>
                <svg width="700" height="345" viewBox="0 0 1033 845">
-                  <g id="關卡條件" transform="translate(-727 -157)">
-                     <rect id="Rectangle_118" data-name="Rectangle 118" width="1033" height="845" rx="30"
+                  <g id="關卡條件" transform="translate(-824 -157)">
+                     <rect id="Rectangle_118" data-name="Rectangle 118" width="1033" height="845" rx="10"
                         transform="translate(484 157)" fill="#faf3e2" />
                      <text id="關卡條件-2" data-name="關卡條件" transform="translate(526 274)" fill="#520707" fontSize="80"
                         fontFamily="PingFangTC-Semibold, PingFang TC" fontWeight="600">
@@ -71,7 +72,7 @@ function GameDaily() {
 
    return (
       <Row>
-         <svg width="1020" height="500" viewBox="0 0 1920 1080">
+         <svg width="1020" height="500" viewBox="-33 0 1920 1080">
             <defs>
                <filter id="Rectangle_102" x="40" y="46" width="519" height="162" filterUnits="userSpaceOnUse">
                   <feOffset dy="6" input="SourceAlpha" />
@@ -150,9 +151,6 @@ function GameDaily() {
                </g>
 
                <a variant="primary" onClick={() => setModalShow(true)}>
-
-
-
                   <g id="關卡1">
                      <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#Rectangle_107)">
                         <rect id="Rectangle_107-2" data-name="Rectangle 107" width="311" height="311" rx="30" transform="translate(227 265)" fill="#fff" />

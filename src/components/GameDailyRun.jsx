@@ -242,16 +242,12 @@ function GameDailyRun() {
 
          <Modal
             centered
-            size="sm"
+            size="lg"
             show={findShow}
             onHide={() => setfindShow(false)}
-            aria-labelledby="example-modal-sizes-title-sm"
+            aria-labelledby="example-modal-sizes-title-lg"
          >
-            <Modal.Header closeButton>
-               <Modal.Title id="example-modal-sizes-title-sm">
-                  股市走勢圖
-               </Modal.Title>
-            </Modal.Header>
+               <img src="/assets/images/showtest.png" width="850px" />
          </Modal>
 
 
@@ -306,9 +302,7 @@ function GameDailyRun() {
                         <text id="_200" data-name="200" transform="translate(1016 718)" fill="#672424" font-size="70" font-family="Verdana-Bold, Verdana" font-weight="700"><tspan x="0" y="0">200</tspan></text>
                      </g>
 
-
-
-                     <a href="/game/dailyrun">
+                     <a  onClick={()=>setgiftShow(false)}>
                         <g id="關閉按鈕" transform="translate(218 18)">
                            <g transform="matrix(1, 0, 0, 1, -218, -18)" filter="url(#Rectangle_68)">
                               <rect id="Rectangle_68-3" data-name="Rectangle 68" width="176" height="96" rx="10" transform="translate(978 901)" fill="#50b6c2" />
