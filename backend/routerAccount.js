@@ -18,11 +18,28 @@ router.get('/account/all', (req, res) => {
 // ********
 // 新增會員
 // ********
-router.post('/account/create', (req, res) => {
+router.post('/account/create', async (req, res) => {
    let strQuery = `INSERT INTO account
         (acc_email, acc_password, acc_name) VALUES(?, ?, ?)`
+
+   var hashPassword;
+   // 將密碼加密後再存入 DB
+   const encryptPassword = () => {
+      return new Promise(resolve => {
+         bcrypt.hash(req.body.acc_password, 10, function (err, hash) {
+            if (err) {
+               res.send(err);
+            } else {
+               hashPassword = hash;
+               resolve();
+            }
+         });
+      });
+   };
+   await encryptPassword();
+
    query(strQuery,
-      [req.body.acc_email, req.body.acc_password, req.body.acc_name],
+      [req.body.acc_email, hashPassword, req.body.acc_name],
       (err) => err ? res.send(err) : res.send('Added successfully')
    );
 });
@@ -59,12 +76,16 @@ router.post('/account/login', async (req, res) => {
    var acc_id = await checkAccount(req.body.acc_email, res);
 
    let strQuery = `SELECT acc_email, acc_password FROM account WHERE acc_id = ?`;
-   query(strQuery, [acc_id], (err, rows) => {
+   await query(strQuery, [acc_id], (err, rows) => {
       if (err) {
          res.send(err);
       } else {
-         (req.body.acc_password === rows[0].acc_password) ?
-            res.send('Password correct') : res.send('Password error');
+         // 確認密碼比對是否正確，第一個參數是前端傳來的 acc_password，第二個參數是 DB 取得的加密密碼
+         bcrypt.compare(req.body.acc_password, rows[0].acc_password, (err, result) => {
+            err ?
+               res.send(err) :
+               res.send(result ? 'Password correct' : 'Password error');
+         });
       }
    });
 });
@@ -89,8 +110,24 @@ router.put('/account/updatepassword', async (req, res) => {
    // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
    var acc_id = await checkAccount(req.body.acc_email, res);
 
+   var hashPassword;
+   // 將密碼加密後再存入 DB
+   const encryptPassword = () => {
+      return new Promise(resolve => {
+         bcrypt.hash(req.body.acc_password, 10, function (err, hash) {
+            if (err) {
+               res.send(err);
+            } else {
+               hashPassword = hash;
+               resolve();
+            }
+         });
+      });
+   };
+   await encryptPassword();
+
    let strQuery = `UPDATE account SET acc_password = ? WHERE account.acc_id = ?`;
-   query(strQuery, [req.body.acc_password, acc_id], (err) => {
+   query(strQuery, [hashPassword, acc_id], (err) => {
       err ? res.send(err) : res.send(`Successfully updated account password`);
    });
 });
@@ -107,63 +144,5 @@ router.put('/account/updateavatar', async (req, res) => {
       err ? res.send(err) : res.send(`Successfully updated account avatar`);
    });
 });
-
-
-//------------------ 密碼加密測試區 -------------//
-// ********
-// 新增會員
-// ********
-router.post('/account/createEncrypt', async (req, res) => {
-   let strQuery = `INSERT INTO account
-        (acc_email, acc_password, acc_name) VALUES(?, ?, ?)`
-
-   var hashPassword;
-   const encryptPassword = () => {
-      return new Promise(resolve => {
-         bcrypt.hash(req.body.acc_password, 10, function (err, hash) {
-            if (err) {
-               res.send(err);
-            } else {
-               hashPassword = hash;
-               resolve();
-            }
-         });
-      });
-   };
-   await encryptPassword();
-
-   query(strQuery,
-      [req.body.acc_email, hashPassword, req.body.acc_name],
-      (err) => err ? res.send(err) : res.send('Added successfully')
-   );
-});
-
-// ************************
-// 會員登入，檢查密碼是否正確
-// ************************
-router.post('/account/loginEncrypt', async (req, res) => {
-   // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
-   var acc_id = await checkAccount(req.body.acc_email, res);
-
-   let strQuery = `SELECT acc_email, acc_password FROM account WHERE acc_id = ?`;
-   await query(strQuery, [acc_id], (err, rows) => {
-      if (err) {
-         res.send(err);
-      } else {
-         // 確認密碼比對是否正確，第一個參數是前端傳來的 acc_password，第二個參數是 DB 取得的加密密碼
-         bcrypt.compare(req.body.acc_password, rows[0].acc_password, (err, result) => {
-            err ?
-               res.send(err) :
-               res.send(result ? 'Password correct' : 'Password error');
-         });
-
-      }
-   });
-   // console.log(dbEncryptPassword);
-
-
-
-});
-
 
 module.exports = router;
