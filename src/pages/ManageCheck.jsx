@@ -7,43 +7,21 @@
  * * * * * * * * * * * */
 
 import React, { useEffect, useState } from 'react';
-import { Container, Row, Col, Tab, Nav, Button } from 'react-bootstrap';
+import { Container, Row, Col, Tab, Nav } from 'react-bootstrap';
 import { Formik, Form } from 'formik';
-import axios from 'axios';
+// import axios from 'axios';
 import dt from 'date-and-time';
 
 import { MyFormikObserver, MyInput, MySelect } from '../components/MyFormComponent';
-import ManageRecent from '../components/ManageRecent.jsx';
+// import { MyChartPie, MyChartLine } from '../components/MyChartComponent.jsx';
 
 const acc_email = 'ggg@mail.com';
 const nowTime = new Date();
 const urlPostChartData = '';
-const urlPostInventory = 'http://localhost:5000/transaction/inventory';
-const urlGetDatalist = 'http://localhost:5000/securities/datalist/';
 
-// 主表使用
-const col = [
-   { id: 'plan_id', name: 'asd_id', hidden: 'true' },
-   {
-      id: 'plan_date', name: '日期',
-      formatter: (cell) => { let d = new Date(cell); return dt.format(d, 'YYYY-MM-DD'); },
-   },
-   { id: 'sec_id', name: '代號' },
-   { id: 'sec_name', name: '名稱' },
-   { id: 'plan_strategy', name: '類型' },
-   { id: 'plan_param1', name: '參數', hidden: true },
-   { id: 'plan_param2', name: '參數', hidden: true },
-   { id: 'plan_anchor', name: '參考價' },
-   { id: 'plan_stoploss', name: '停損' },
-   { id: 'plan_target', name: '目標' },
-   { id: 'plan_note', name: '筆記' },
-];
+// 主圖使用
+
 // 副表使用
-const col2 = [
-   { id: 'sec_id', name: '代號' },
-   { id: 'sec_name', name: '名稱' },
-   { id: 'total', name: '庫存數量' },
-];
 
 function ManageCheck(props) {
    console.log('--ManageCheck--');
