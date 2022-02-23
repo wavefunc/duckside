@@ -40,7 +40,7 @@ router.get('/account/check/:acc_email', (req, res) => {
 // *******************
 // 列出某會員的會員資料
 // *******************
-router.get('/account/list', async (req, res) => {
+router.post('/account/list', async (req, res) => {
    // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
    var acc_id = await checkAccount(req.body.acc_email, res);
 
@@ -53,7 +53,7 @@ router.get('/account/list', async (req, res) => {
 // ************************
 // 會員登入，檢查密碼是否正確
 // ************************
-router.get('/account/login', async (req, res) => {
+router.post('/account/login', async (req, res) => {
    // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
    var acc_id = await checkAccount(req.body.acc_email, res);
 
