@@ -26,11 +26,10 @@ const options = {
     responsive: true,
     plugins: {
         legend: {
-            position: 'top',
+            position: 'bottom',
         },
         title: {
             display: true,
-            text: 'Chart.js Line Chart',
         },
     },
 };
@@ -41,13 +40,13 @@ const data = {
     labels: labels,
     datasets: [
         {
-            label: 'Dataset 1',
+            label: '總資產',
             data: [1,8,9,15,20,25,28],
             borderColor: 'rgb(255, 99, 132)',
             backgroundColor: 'rgba(255, 99, 132, 0.5)',
         },
         {
-            label: 'Dataset 2',
+            label: '現金',
             data: [1,2,3,4,5,3,5],
             borderColor: 'rgb(53, 162, 235)',
             backgroundColor: 'rgba(53, 162, 235, 0.5)',
