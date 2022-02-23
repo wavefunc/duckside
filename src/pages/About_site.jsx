@@ -1,4 +1,6 @@
 // ----- 沛珊 ----- //
+// 假底圖: https://placeholder.com/#How_To_Use_Our_Placeholders
+
 
 import React, { Component } from 'react';
 import Carousel from 'react-bootstrap/Carousel'
@@ -10,7 +12,7 @@ export const About_site = (props) => {
          <Carousel.Item interval={1000}>
             <img
                className="d-block w-100"
-               src=".\assets\photo\DSC_0286 1.JPG"
+               src="https://via.placeholder.com/600x400"
                alt="First slide"
                height="100%"
             />
@@ -22,7 +24,7 @@ export const About_site = (props) => {
          <Carousel.Item interval={500}>
             <img
                className="d-block w-100"
-               src=".\assets\photo\DSC_0442.JPG"
+               src="https://via.placeholder.com/600x400"
                alt="Second slide"
             />
             <Carousel.Caption>
@@ -33,7 +35,7 @@ export const About_site = (props) => {
          <Carousel.Item>
             <img
                className="d-block w-100"
-               src=".\assets\photo\DSC_0935.jpg"
+               src="https://via.placeholder.com/600x400"
                alt="Third slide"
             />
 
