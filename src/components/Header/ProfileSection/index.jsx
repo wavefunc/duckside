@@ -37,16 +37,17 @@ const ProfileSection = () => {
     // login component
     const [showLogin, setShowLogin] = useState(false);
     const [showregister, setShowRegister] = useState(false);
-    function showtoggle() {
+    function showLoginToggle() {
         setShowLogin(!showLogin);
         setShowRegister(!showregister);
     }
-    function showClose() {
+    function showLoginClose() {
         setShowLogin(false);
         setShowRegister(false);
     }
-    function showOpen() {
-        setShowLogin(!showLogin);
+    function showLoginOpen() {
+        setShowLogin(true);
+        setListOpen(false);
     }
     // login component
 
@@ -180,17 +181,13 @@ const ProfileSection = () => {
                                             <ListItemButton
                                                 sx={{ borderRadius: `20px` }}
                                                 selected={selectedIndex === 0}
-                                                onClick={showOpen}
+                                                onClick={showLoginOpen}                                                
                                             >
                                                 <ListItemIcon>
                                                     <LoginIcon stroke={1.5} size="1.3rem" />
                                                 </ListItemIcon>
                                                 <ListItemText primary={<Typography variant="body2">登入</Typography>} />
                                             </ListItemButton>
-                                            {/* login component */}
-                                            <MemberLogin  show={showLogin} showtoggle={showtoggle} close={showClose}></MemberLogin>
-                                            <MemberRegister show={showregister} showtoggle={showtoggle}></MemberRegister>
-                                            {/* login component */}
 
                                             {/* 忘記密碼 */}
                                             <Link to="/member/changePass" style={{ color: 'black' }}>
@@ -231,7 +228,10 @@ const ProfileSection = () => {
 
 
 
-
+            {/* login component */}
+            <MemberLogin  show={showLogin} showtoggle={showLoginToggle} close={showLoginClose} ></MemberLogin>
+            <MemberRegister show={showregister} showtoggle={showLoginToggle} close={showLoginClose}></MemberRegister>
+            {/* login component */}
 
         </>
 

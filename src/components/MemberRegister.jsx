@@ -127,7 +127,7 @@ let MemberRegister = (props) => {
         if (result.data === "Added successfully") {
           console.log("註冊成功!");
           setNoticeState({ ...noticeState, registertrue: "contents", registerfalse: "none" });
-
+          // props.close();
         } else {
           console.log("註冊失敗!");
           setNoticeState({ ...noticeState, registertrue: "none", registerfalse: "contents" });
