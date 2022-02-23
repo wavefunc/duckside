@@ -30,6 +30,8 @@ let MemberRegister = (props) => {
     nameIcon: "none", //initial
     email: "none", //contents
     emailtext: "請確認信箱是否正確",
+    emailover:"none",
+    emailovertext:"此信箱已註冊",
     emailIcon: "none", //initial
     password: "none", //contents
     passwordtext: "請輸入密碼",
@@ -38,7 +40,6 @@ let MemberRegister = (props) => {
     passwordchecktext: "請確認兩次密碼是否一致",
     passwordcheckIcon: "none", //initial
     registerfalse: "none", //contents
-    registertrue: "none", //contents
   });
 
   //暱稱input
@@ -67,23 +68,40 @@ let MemberRegister = (props) => {
       : setNoticeState({ ...noticeState, name: "contents", nameIcon: "none" });
   };
   //信箱blur
-  let checkMailBlur = () => {
+  let checkMailBlur = async () => {
     if (memberInfo.email) {
-      let emailRule = /^([\w.]){1,64}@(yahoo|hotmail|gmail)(.com|.com.tw)$/;
-      memberInfo.email.search(emailRule) !== -1
-        ? setMemberState({ ...memberState, email: true })
-        : setMemberState({ ...memberState, email: false });
-      memberInfo.email.search(emailRule) !== -1
-        ? setNoticeState({
+      await Axios.get(
+        "http://localhost:5000/account/check/" + memberInfo.email
+      ).then((result) => {
+        console.log(result.data);
+        if (result.data === true) {
+          setMemberState({ ...memberState, email: false });
+          setNoticeState({
             ...noticeState,
             email: "none",
-            emailIcon: "initial",
-          })
-        : setNoticeState({
-            ...noticeState,
-            email: "contents",
             emailIcon: "none",
-          });
+            emailover:"contents"
+          }); 
+        } else {
+          let emailRule = /^([\w.]){1,64}@(yahoo|hotmail|gmail)(.com|.com.tw)$/;
+          memberInfo.email.search(emailRule) !== -1
+            ? setMemberState({ ...memberState, email: true })
+            : setMemberState({ ...memberState, email: false });
+          memberInfo.email.search(emailRule) !== -1
+            ? setNoticeState({
+                ...noticeState,
+                email: "none",
+                emailIcon: "initial",
+                emailover:"none"
+              })
+            : setNoticeState({
+                ...noticeState,
+                email: "contents",
+                emailIcon: "none",
+                emailover:"none"
+              });
+        }
+      });
     } else {
       setNoticeState({ ...noticeState, email: "contents", emailIcon: "none" });
     }
@@ -146,6 +164,9 @@ let MemberRegister = (props) => {
     }
   };
   //送出_button
+  let [outsec, setOutsec] = useState(2);
+  let [showsuccess, setShowsuccess] = useState("none");
+
   let memberRegisterHandler = async () => {
     if (memberState.name && memberState.email && memberState.password) {
       await Axios.post("http://localhost:5000/account/create", {
@@ -154,12 +175,51 @@ let MemberRegister = (props) => {
         acc_name: memberInfo.name,
       }).then((result) => {
         if (result.data === "Added successfully") {
-          console.log("註冊成功!");
+          // console.log("註冊成功!");
           setNoticeState({
             ...noticeState,
-            registertrue: "contents",
             registerfalse: "none",
           });
+          setShowsuccess("contents");
+          //3秒後跳轉
+          let settime = setInterval(() => {
+            if (outsec > 0) {
+              //關閉視窗
+              setOutsec((outsec -= 1));
+            } else {
+              props.close();
+              setOutsec((outsec = 2));
+              clearInterval(settime);
+              //clear all data
+              setMemberInfo({
+                ...memberInfo,
+                name: "",
+                email: "",
+                password: "",
+                passwordcheck: "",
+              });
+              setMemberState({
+                ...memberState,
+                name: false,
+                email: false,
+                password: false,
+              });
+              setNoticeState({
+                ...noticeState,
+                name: "none",
+                nameIcon: "none",
+                email: "none",
+                emailIcon: "none",
+                password: "none",
+                passwordIcon: "none",
+                passwordcheck: "none",
+                passwordcheckIcon: "none",
+                registerfalse: "none",
+              });
+              setShowsuccess("none");
+              //clear all data
+            }
+          }, 1000);
           //localStorage
           if (window.localStorage) {
             var local = window.localStorage;
@@ -167,38 +227,11 @@ let MemberRegister = (props) => {
 
             // localStorage.removeItem("name"); //清除
             // localStorage.clear(); //全部清除
+            // let a = localStorage.getItem("loginState");
+            // console.log(a);
           }
-          //關閉視窗
-          props.close();
-          //clear all data
-          setMemberInfo({
-            ...memberInfo,
-            name: "",
-            email: "",
-            password: "",
-            passwordcheck: "",
-          });
-          setMemberState({
-            ...memberState,
-            name: false,
-            email: false,
-            password: false,
-          });
-          setNoticeState({
-            ...noticeState,
-            name: "none",
-            nameIcon: "none",
-            email: "none",
-            emailIcon: "none",
-            password: "none",
-            passwordIcon: "none",
-            passwordcheck: "none",
-            passwordcheckIcon: "none",
-            registerfalse: "none",
-            registertrue: "none",
-          });
         } else {
-          console.log("註冊失敗!");
+          // console.log("註冊失敗!");
           setNoticeState({
             ...noticeState,
             registertrue: "none",
@@ -207,6 +240,7 @@ let MemberRegister = (props) => {
         }
       });
     }
+    
   };
 
   return (
@@ -268,6 +302,12 @@ let MemberRegister = (props) => {
                       style={{ display: noticeState.email }}
                     >
                       {noticeState.emailtext}
+                    </span>
+                    <span
+                      className="text-danger"
+                      style={{ display: noticeState.emailover }}
+                    >
+                      {noticeState.emailovertext}
                     </span>
                     <CheckCircleOutlineIcon
                       sx={{ color: "green" }}
@@ -335,9 +375,9 @@ let MemberRegister = (props) => {
                   </span>
                   <span
                     className="text-success"
-                    style={{ display: noticeState.registertrue }}
+                    style={{ display: showsuccess }}
                   >
-                    註冊成功!!!
+                    註冊成功!!! {outsec + 1}秒後跳轉...
                   </span>
                 </div>
                 <button type="button" onClick={memberRegisterHandler}>
