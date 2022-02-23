@@ -79,7 +79,7 @@ function ManageAsset(props) {
                      (values) => {
                         const errors = {};
                         if (values.ast_cash < 0) {
-                           errors.sec_str = "負現金請填寫於其他或調整項";
+                           errors.ast_cash = "負現金請填寫於其他或調整項";
                         }
                         return errors;
                      }

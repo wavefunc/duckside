@@ -1,9 +1,9 @@
 ﻿import { useField } from 'formik';
-import { Form, InputGroup, Button } from 'react-bootstrap';
+import { Form, InputGroup } from 'react-bootstrap';
 import React, { useEffect, useRef } from 'react';
 
 
-export const MyInput = ({ label, list, getList, ...props }) => {
+export const MyInput = ({ label, list, getList, helptext, ...props }) => {
     const [field, meta] = useField(props);
     let didChanged = useRef(false);
     useEffect(() => {
@@ -40,8 +40,8 @@ export const MyInput = ({ label, list, getList, ...props }) => {
                     <Form.Control.Feedback type="invalid">
                         {meta.error}
                     </Form.Control.Feedback>) : null}
-                {props.helpText ?  <Form.Text id={`helptext${props.id}`} muted>
-                    {props.helpText}
+                {helptext ?  <Form.Text id={`helptext${props.id}`} muted>
+                    {helptext}
                 </Form.Text> : null}
             </InputGroup>
             {list ? (
