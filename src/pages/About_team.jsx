@@ -15,10 +15,10 @@ class About_team extends Component {
                      <Card.Body>
                         <Card.Title>鄭人豪</Card.Title>
                         <Card.Text>
-                           -投資管理介面及功能<br />
-                           -抓取並整理股價資料的程式<br />
-                           -規劃網站目標客群及需求<br />
-                           -與圖表及表單相關套件應用
+                           -投資管理功能<br />
+                           -股價爬蟲程式<br />
+                           -規劃網站目標<br />
+                           -圖表套件應用
                         </Card.Text>
                      </Card.Body>
                   </Card>
@@ -29,9 +29,10 @@ class About_team extends Component {
                      <Card.Body>
                         <Card.Title>李巧琳</Card.Title>
                         <Card.Text>
-                           -會員專區動向規劃與介面設計<br />
-                           -會員資訊的建立與維護<br />
-                           -第三方會員登入
+                           -會員登入<br />
+                           -會員註冊<br />
+                           -會員資料維護<br />
+                           -第三方登入
                         </Card.Text>
                      </Card.Body>
                   </Card>
@@ -55,8 +56,9 @@ class About_team extends Component {
                      <Card.Body>
                         <Card.Title>陳鎧洋</Card.Title>
                         <Card.Text>
-                           -使用React呈現遊戲跑關頁面
-                           -從後段資料庫抓去資料
+                           -選擇關卡畫面<br />
+                           -模擬投資遊戲<br />
+                           -遊戲積分結算
                         </Card.Text>
                      </Card.Body>
                   </Card>
@@ -80,10 +82,10 @@ class About_team extends Component {
                      <Card.Body>
                         <Card.Title>李冠樺</Card.Title>
                         <Card.Text>
-                           -為專案導入 git<br />
-                           -建立專案檔案架構<br />
+                           -導入 git<br />
+                           -建立檔案架構<br />
                            -架設資料庫<br />
-                           -資料庫銜接前端的程式
+                           -後端 API
                         </Card.Text>
                      </Card.Body>
                   </Card>
