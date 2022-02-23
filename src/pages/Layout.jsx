@@ -9,7 +9,6 @@ import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
@@ -17,14 +16,12 @@ import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import { mainListItems, secondaryListItems } from '../components/Sidebar_listItems';
 import Avatar from '@mui/material/Avatar';
-import AccordionTools from '../components/Sidebar_tools';
-import AccordionGame from '../components/Sidebar_game';
 import PageTitle from '../components/PageTitle';
 import Breadcrumb from '../components/Breadcrumb';
 import { Outlet } from 'react-router-dom';
 import NotificationSection from '../components/Header/NotificationSection';
+import MainListItem from '../components/Sidebar_mainList'
 
 import ProfileSection from "../components/Header/ProfileSection"
 
@@ -208,13 +205,11 @@ function Layout() {
             </IconButton>
           </Toolbar >
 
+          <List component="nav" sx={{ bgcolor: '#ecdfb1', height: '100%' }} >
+            
           {/*Sidebar List*/}
-          <List component="nav" sx={{ bgcolor: '#ecdfb1', height: '100%' }}>
-            {mainListItems}
-            <Divider sx={{ my: 1 }} />
-            <AccordionGame />
-            <AccordionTools />
-            {secondaryListItems}
+            <MainListItem />
+            
           </List>
         </Drawer>
 
