@@ -32,6 +32,9 @@ let MemberRegister = (props) => {
     passwordtext: "請輸入密碼",
     passwordcheck: "none",
     passwordchecktext: "請確認兩次密碼是否一致",
+    registerfalse:"none", //contents
+    registertrue:"none", //contents
+
   });
 
   //暱稱input
@@ -76,21 +79,28 @@ let MemberRegister = (props) => {
   //密碼blur
   let checkPasswordBlur = () => {
     if (!memberInfo.password) {
-      setNoticeState({ ...noticeState, password: "contents" });
+      setNoticeState({
+        ...noticeState,
+        password: "contents",
+        passwordcheck: "contents",
+      });
       setMemberState({ ...memberState, password: false });
     } else {
-      setNoticeState({ ...noticeState, password: "none" });
-    }
-    if (memberInfo.password) {
-      setNoticeState({ ...noticeState, password: "none" });
-      memberInfo.password === memberInfo.passwordcheck
-        ? setMemberState({ ...memberState, password: true })
-        : setMemberState({ ...memberState, password: false });
-      memberInfo.password === memberInfo.passwordcheck
-        ? setNoticeState({ ...noticeState, passwordcheck: "none" })
-        : setNoticeState({ ...noticeState, passwordcheck: "contents" });
-    } else {
-      setNoticeState({ ...noticeState, passwordcheck: "contents" });
+      if (memberInfo.password === memberInfo.passwordcheck) {
+        setMemberState({ ...memberState, password: true });
+        setNoticeState({
+          ...noticeState,
+          password: "none",
+          passwordcheck: "none",
+        });
+      } else {
+        setMemberState({ ...memberState, password: false });
+        setNoticeState({
+          ...noticeState,
+          password: "none",
+          passwordcheck: "contents",
+        });
+      }
     }
   };
   //確認密碼blur
@@ -108,17 +118,22 @@ let MemberRegister = (props) => {
   };
   //送出_button
   let memberRegisterHandler = async () => {
-    // if (memberState.name && memberState.email && memberState.password) {
-    //   console.log("123");
-    // }
-    // await Axios.post("http://localhost:5000/account/create", {"acc_email":memberState.email, "acc_password":memberState.password, "acc_name":memberState.name}).then((result) => {
-    //   console.log(result);
-    // });
-    
-    await Axios.get("http://localhost:5000/account/all", {"123":"123"}).then((result) => {
-      console.log(result);
-    });
-    //
+    if (memberState.name && memberState.email && memberState.password) {
+      await Axios.post("http://localhost:5000/account/create", {
+        acc_email: memberInfo.email,
+        acc_password: memberInfo.password,
+        acc_name: memberInfo.name,
+      }).then((result) => {
+        if (result.data === "Added successfully") {
+          console.log("註冊成功!");
+          setNoticeState({ ...noticeState, registertrue: "contents", registerfalse: "none" });
+
+        } else {
+          console.log("註冊失敗!");
+          setNoticeState({ ...noticeState, registertrue: "none", registerfalse: "contents" });
+        }
+      });
+    }
   };
 
   return (
@@ -221,7 +236,13 @@ let MemberRegister = (props) => {
                     onBlur={checkPasswordCheckBlur}
                   />
                   <div className="border"></div>
+                
                 </label>
+                <div className="d-flex justify-content-center">
+                <span className="text-danger" style={{display:noticeState.registerfalse}}>註冊失敗!!!</span>
+                <span className="text-success" style={{display:noticeState.registertrue}}>註冊成功!!!</span>
+
+               </div>
                 <button type="button" onClick={memberRegisterHandler}>
                   註 册
                 </button>
