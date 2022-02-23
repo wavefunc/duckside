@@ -2,6 +2,7 @@
 
 var express = require('express');
 var router = express.Router();
+var bcrypt = require('bcrypt'); // 對密碼進行加密的套件
 var { query, checkAccount } = require('./mysql.js');
 
 // *******************
@@ -9,8 +10,8 @@ var { query, checkAccount } = require('./mysql.js');
 // *******************
 router.get('/account/all', (req, res) => {
    query(`SELECT * FROM account`,
-   [],
-   (err, rows) => res.send(rows)
+      [],
+      (err, rows) => res.send(rows)
    );
 });
 
@@ -84,7 +85,7 @@ router.put('/account/updatename', async (req, res) => {
 // ********
 // 更改密碼
 // ********
-router.put('/account/updatepassword', async(req, res)=>{
+router.put('/account/updatepassword', async (req, res) => {
    // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
    var acc_id = await checkAccount(req.body.acc_email, res);
 
@@ -97,7 +98,7 @@ router.put('/account/updatepassword', async(req, res)=>{
 // **********
 // 更改大頭照
 // **********
-router.put('/account/updateavatar', async(req, res)=>{
+router.put('/account/updateavatar', async (req, res) => {
    // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
    var acc_id = await checkAccount(req.body.acc_email, res);
 
@@ -105,6 +106,63 @@ router.put('/account/updateavatar', async(req, res)=>{
    query(strQuery, [req.body.acc_avatar, acc_id], (err) => {
       err ? res.send(err) : res.send(`Successfully updated account avatar`);
    });
+});
+
+
+//------------------ 密碼加密測試區 -------------//
+// ********
+// 新增會員
+// ********
+router.post('/account/createEncrypt', async (req, res) => {
+   let strQuery = `INSERT INTO account
+        (acc_email, acc_password, acc_name) VALUES(?, ?, ?)`
+
+   var hashPassword;
+   const encryptPassword = () => {
+      return new Promise(resolve => {
+         bcrypt.hash(req.body.acc_password, 10, function (err, hash) {
+            if (err) {
+               res.send(err);
+            } else {
+               hashPassword = hash;
+               resolve();
+            }
+         });
+      });
+   };
+   await encryptPassword();
+
+   query(strQuery,
+      [req.body.acc_email, hashPassword, req.body.acc_name],
+      (err) => err ? res.send(err) : res.send('Added successfully')
+   );
+});
+
+// ************************
+// 會員登入，檢查密碼是否正確
+// ************************
+router.post('/account/loginEncrypt', async (req, res) => {
+   // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
+   var acc_id = await checkAccount(req.body.acc_email, res);
+
+   let strQuery = `SELECT acc_email, acc_password FROM account WHERE acc_id = ?`;
+   await query(strQuery, [acc_id], (err, rows) => {
+      if (err) {
+         res.send(err);
+      } else {
+         // 確認密碼比對是否正確，第一個參數是前端傳來的 acc_password，第二個參數是 DB 取得的加密密碼
+         bcrypt.compare(req.body.acc_password, rows[0].acc_password, (err, result) => {
+            err ?
+               res.send(err) :
+               res.send(result ? 'Password correct' : 'Password error');
+         });
+
+      }
+   });
+   // console.log(dbEncryptPassword);
+
+
+
 });
 
 

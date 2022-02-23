@@ -11,9 +11,6 @@ app.use(express.static('backend/build'));
 var cors = require('cors');
 app.use(cors());
 
-// 對密碼進行加密的套件
-var bcrypt = require('bcrypt');
-
 // 獲取前端的變數
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());

@@ -32,7 +32,7 @@ exports.query = async function (strQuery, options, callback) {
             conn.release();
          }
       });
-   })
+   });
 };
 
 // 檢查前端的會員email帳號是否正確
@@ -46,8 +46,8 @@ exports.checkAccount = async function (acc_email, res) {
             conn.query('SELECT acc_id, acc_name FROM account WHERE acc_email = ?',
                [acc_email],
                (_err, rows) => {
-                  if (err) {
-                     reject(err);
+                  if (_err) {
+                     reject(_err);
                   } else {
                      rows[0] ? resolve(JSON.stringify(rows[0].acc_id)) : res.send('No such account');
                   }
@@ -55,6 +55,6 @@ exports.checkAccount = async function (acc_email, res) {
             )
             conn.release();
          }
-      })
-   })
-}
+      });
+   });
+};
