@@ -27,20 +27,12 @@ export const mainListItems = (
         <ListSubheader component="div" inset sx={{ bgcolor: '#ecdfb1' }}>
             投資管理
         </ListSubheader>
-        <Link to="/manage/dashboard" style={{ color: 'black' }}>
-            <ListItemButton>
-                <ListItemIcon>
-                    <BarChartIcon sx={{ color: '#2A6470' }} />
-                </ListItemIcon>
-                <ListItemText primary="總覽" />
-            </ListItemButton>
-        </Link>
-        <Link to="/manage/plan" style={{ color: 'black' }}>
+        <Link to="/manage/plan" style={{ color: 'black'}}>
             <ListItemButton >
                 <ListItemIcon>
-                    <AssistantPhotoOutlinedIcon sx={{ color: '#2A6470' }}/>
+                    <AssistantPhotoOutlinedIcon className='listIcon' sx={{ color: '#2A6470'}}/>
                 </ListItemIcon>
-                <ListItemText primary="進出策略" />
+                <ListItemText primary="我的計畫" />
             </ListItemButton>
         </Link>
 
@@ -68,7 +60,15 @@ export const mainListItems = (
                 <ListItemIcon>
                     <AutoGraphIcon sx={{ color: '#2A6470' }}/>
                 </ListItemIcon>
-                <ListItemText primary="投資結算" />
+                <ListItemText primary="投資成果" />
+            </ListItemButton>
+        </Link>
+        <Link to="/manage/dashboard" style={{ color: 'black' }}>
+            <ListItemButton>
+                <ListItemIcon>
+                    <BarChartIcon sx={{ color: '#2A6470' }} />
+                </ListItemIcon>
+                <ListItemText primary="總覽" />
             </ListItemButton>
         </Link>
 

@@ -12,6 +12,7 @@
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.26.0",
+    "bcrypt": "^5.0.1",
     "bootstrap": "^4.6.0",
     "chart.js": "^3.7.1",
     "chartjs-adapter-date-fns": "^2.0.0",

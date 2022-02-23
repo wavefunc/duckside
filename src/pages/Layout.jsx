@@ -98,11 +98,26 @@ const mdTheme = createTheme({
 
 });
 
+const widthBreakpoint = 950;
+
 function Layout() {
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+  const [width, setWidth] = React.useState(window.innerWidth)
+  React.useEffect(() => {
+    window.addEventListener("resize", () => setWidth(window.innerWidth));
+  }, []);
+  React.useLayoutEffect(() => {
+    if (width < widthBreakpoint) {
+      setOpen(false)
+    } else if (width > widthBreakpoint) {
+      setOpen(true)
+    }
+  }, [width])
+
 
 
   return (
@@ -194,11 +209,11 @@ function Layout() {
           </Toolbar >
 
           {/*Sidebar List*/}
-          <List component="nav" sx={{ bgcolor: '#ecdfb1',height:'100%' }}>
+          <List component="nav" sx={{ bgcolor: '#ecdfb1', height: '100%' }}>
             {mainListItems}
             <Divider sx={{ my: 1 }} />
-            <AccordionTools />
             <AccordionGame />
+            <AccordionTools />
             {secondaryListItems}
           </List>
         </Drawer>

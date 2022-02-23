@@ -21,9 +21,9 @@ router.post('/asset/create', async (req, res) => {
    var acc_id = await checkAccount(req.body.acc_email, res);
 
    var strQuery =
-      `INSERT INTO asset (acc_id, ast_date, ast_securities, 
-         ast_cash, ast_borrowing, ast_option, ast_others, ast_adjust) 
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+      `INSERT INTO asset (acc_id, ast_date, ast_securities, ast_cash, 
+         ast_borrowing, ast_option, ast_others, ast_adjust, ast_note) 
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
    query(
       strQuery,
       [
@@ -34,7 +34,8 @@ router.post('/asset/create', async (req, res) => {
          req.body.ast_borrowing,
          req.body.ast_option,
          req.body.ast_others,
-         req.body.ast_adjust
+         req.body.ast_adjust,
+         req.body.ast_note
       ],
       (err) => {
          err ? res.send(err) : res.send('Successfully added an asset!')
@@ -50,8 +51,8 @@ router.put('/asset/update', async (req, res) => {
 
    var strQuery =
       `UPDATE asset SET ast_date = ?, ast_securities = ?, ast_cash = ?,
-      ast_borrowing = ?, ast_option = ?, ast_others = ?, ast_adjust = ? 
-         WHERE ast_id = ? AND acc_id = ?`;
+         ast_borrowing = ?, ast_option = ?, ast_others = ?, ast_adjust = ?,
+         ast_note = ?, WHERE ast_id = ? AND acc_id = ?`;
    query(
       strQuery,
       [
@@ -63,6 +64,7 @@ router.put('/asset/update', async (req, res) => {
          req.body.ast_others,
          req.body.ast_adjust,
          req.body.ast_id,
+         req.body.ast_note,
          acc_id
       ],
       (err) => {
