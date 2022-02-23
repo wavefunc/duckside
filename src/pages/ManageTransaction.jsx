@@ -97,6 +97,9 @@ function ManageTransaction(props) {
                               if (!values.sec_str) {
                                  errors.sec_str = "代號及名稱不可空白";
                               }
+                              if (datalist.indexOf(values.sec_str)<0) {
+                                 errors.sec_str = "查無此股, 請從選項填入";
+                              }
                               if (!values.txn_price) {
                                  errors.txn_price = "價格不可空白";
                               }
