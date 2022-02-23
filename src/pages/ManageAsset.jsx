@@ -22,7 +22,7 @@ const urlPostRecent = 'http://localhost:5000/asset/recent';
 const urlPostCreate = 'http://localhost:5000/asset/create';
 // const urlPutUpdate = 'http://localhost:5000/asset/update';
 // const urlDelete = 'http://localhost:5000/asset/delete';
-const urlPostPosition = 'http://localhost:5000/transaction/inventory';
+const urlPostInventory = 'http://localhost:5000/transaction/inventory';
 // const urlGetDatalist = 'http://localhost:5000/securities/datalist/';
 
 // 主表使用
@@ -45,19 +45,15 @@ const col2 = [
    { id: 'sec_name', name: '名稱' },
    { id: 'total', name: '庫存數量' },
 ];
-const noteSec = {
-   header: '庫存市值',
-   note: '當您輸入日期時, 我們會計算',
-   footer: '',
-}
 
 function ManageAsset(props) {
    console.log('--ManageAsset--');
    const [refreshState, setRefresh] = useState(true);
    const refresh = () => {
       setRefresh(!refreshState);
-   }
+   };
    const [inputDate, setInputDate] = useState();
+   console.log(inputDate);
    const [secValue, setSecValue] = useState(750683);
    useEffect(() => {
       // 抓取該日庫存市價
@@ -94,12 +90,12 @@ function ManageAsset(props) {
                         ...values
                      };
                      console.log(`dataToServer: ${JSON.stringify(dataToServer)}`);
-                     // axios.post(urlPostCreate, dataToServer).then((res) => {
-                     //    console.log(res.data);
-                     //    actions.resetForm();
-                     //    refresh();
-                     // });
-                     // actions.resetForm();
+                     axios.post(urlPostCreate, dataToServer).then((res) => {
+                        console.log(res.data);
+                        actions.resetForm();
+                        refresh();
+                     });
+                     actions.resetForm();
                   }}
                >
                   {(props) => (
@@ -178,7 +174,7 @@ function ManageAsset(props) {
             </Col>
             <Col lg={4}>
                <ManageCurrent col={col2} className={{ table: 'table table-sm' }}
-                  url={urlPostPosition} dataToServer={{ acc_email: acc_email, dateQuery: dt.format(new Date(), 'YYYY-MM-DD') }}
+                  url={urlPostInventory} dataToServer={{ acc_email: acc_email, dateQuery: inputDate }}
                ></ManageCurrent>
             </Col>
          </Row>
