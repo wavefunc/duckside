@@ -189,8 +189,22 @@ const ProfileSection = () => {
                                                 <ListItemText primary={<Typography variant="body2">登入</Typography>} />
                                             </ListItemButton>
 
-                                            {/* 忘記密碼 */}
+                                            {/* 登出 */}
                                             <Link to="/member/changePass" style={{ color: 'black' }}>
+                                                <ListItemButton
+                                                    sx={{ borderRadius: `20px` }}
+                                                    selected={selectedIndex === 4}
+                                                    onClick={handleLogout}
+                                                >
+                                                    <ListItemIcon>
+                                                        <LogoutIcon stroke={1.5} size="1.3rem" />
+                                                    </ListItemIcon>
+                                                    <ListItemText primary={<Typography variant="body2">登出</Typography>} />
+                                                </ListItemButton>
+                                            </Link>
+
+                                            {/* 忘記密碼 */}
+                                            {/* <Link to="/member/changePass" style={{ color: 'black' }}>
                                                 <ListItemButton
                                                     sx={{ borderRadius: `20px` }}
                                                     selected={selectedIndex === 4}
@@ -201,7 +215,7 @@ const ProfileSection = () => {
                                                     </ListItemIcon>
                                                     <ListItemText primary={<Typography variant="body2">忘記密碼</Typography>} />
                                                 </ListItemButton>
-                                            </Link>
+                                            </Link> */}
 
                                             {/* 會員資料修改 */}
                                             <Link to="/member/info" style={{ color: 'black' }}>
