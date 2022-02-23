@@ -8,6 +8,7 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import Collapse from '@mui/material/Collapse';
 import StarBorder from '@mui/icons-material/StarBorder';
 import VideogameAssetOutlinedIcon from '@mui/icons-material/VideogameAssetOutlined';
+import ListSubheader from '@mui/material/ListSubheader';
 import { Link } from 'react-router-dom';
 
 
@@ -20,6 +21,9 @@ export default function NestedList() {
 
     return (
         <React.Fragment>
+             <ListSubheader component="div" inset sx={{ bgcolor: '#ecdfb1' }}>
+                其他常用
+            </ListSubheader>
             <ListItemButton onClick={handleClick}>
                 <ListItemIcon>
                     <VideogameAssetOutlinedIcon sx={{ color: '#2A6470' }}/>

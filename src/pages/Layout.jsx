@@ -98,7 +98,7 @@ const mdTheme = createTheme({
 
 });
 
-const widthBreakpoint = 960;
+const widthBreakpoint = 950;
 
 function Layout() {
   const [open, setOpen] = React.useState(true);
@@ -107,12 +107,12 @@ function Layout() {
   };
 
   const [width, setWidth] = React.useState(window.innerWidth)
-  React.useState(() => {
+  React.useEffect(() => {
     window.addEventListener("resize", () => setWidth(window.innerWidth));
   }, []);
   React.useLayoutEffect(() => {
     if (width < widthBreakpoint) {
-      setOpen(false);
+      setOpen(false)
     } else if (width > widthBreakpoint) {
       setOpen(true)
     }
@@ -212,8 +212,8 @@ function Layout() {
           <List component="nav" sx={{ bgcolor: '#ecdfb1', height: '100%' }}>
             {mainListItems}
             <Divider sx={{ my: 1 }} />
-            <AccordionTools />
             <AccordionGame />
+            <AccordionTools />
             {secondaryListItems}
           </List>
         </Drawer>

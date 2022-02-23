@@ -6,7 +6,7 @@ import ListItemText from '@mui/material/ListItemText';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import Collapse from '@mui/material/Collapse';
-import ListSubheader from '@mui/material/ListSubheader';
+
 import HomeRepairServiceOutlinedIcon from '@mui/icons-material/HomeRepairServiceOutlined';
 import PieChartOutlinedIcon from '@mui/icons-material/PieChartOutlined';
 import CalculateOutlinedIcon from '@mui/icons-material/CalculateOutlined';
@@ -23,12 +23,10 @@ export default function NestedList() {
 
     return (
         <React.Fragment>
-            <ListSubheader component="div" inset sx={{ bgcolor: '#ecdfb1' }}>
-                其他常用
-            </ListSubheader>
+
             <ListItemButton onClick={handleClick}>
                 <ListItemIcon>
-                    <HomeRepairServiceOutlinedIcon sx={{ color: '#2A6470' }}/>
+                    <HomeRepairServiceOutlinedIcon sx={{ color: '#2A6470' }} />
                 </ListItemIcon>
                 <ListItemText primary="小工具" />
                 {open ? <ExpandLess /> : <ExpandMore />}
@@ -44,8 +42,9 @@ export default function NestedList() {
                             <ListItemText primary="圓餅圖: 部位配置" />
                         </ListItemButton>
                     </Link>
+                </List>
 
-                </List><List component="div" disablePadding>
+                {/* <List component="div" disablePadding>
                     <Link to="#" style={{ color: 'black' }}>
                         <ListItemButton sx={{ pl: 4 }}>
                             <ListItemIcon>
@@ -54,8 +53,7 @@ export default function NestedList() {
                             <ListItemText primary="計算機: 風險報酬" />
                         </ListItemButton>
                     </Link>
-
-                </List>
+                </List> */}
             </Collapse>
         </React.Fragment>
 
