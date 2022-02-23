@@ -21,7 +21,7 @@ let MemberLogin = (props) => {
 
   //登入_button
   let memberCheckHandler = async () => {
-    // await Axios.post("http://localhost:5000/member/add", "123").then(
+    // await Axios.post("/account/create", {"acc_email":"123", "acc_password":"456", "acc_name":"789"}).then(
     //   (result) => {
     //     console.log(result);
     //   }
@@ -39,7 +39,7 @@ let MemberLogin = (props) => {
       <div id="formContainer_body">
         <div id="formContainer" className="dwo">
           <div className="formLeft">
-            <img src="/assets/images/member_testimg.png" />
+            <img src="/assets/images/member_testimg.png" alt="頭相"/>
           </div>
           <div className="formRight">
             {/* <!-- Login form --> */}
