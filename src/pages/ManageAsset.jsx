@@ -14,7 +14,7 @@ import axios from 'axios';
 import dt from 'date-and-time';
 
 import { MyFormikObserver, MyInput, MyButton } from '../components/MyFormComponent';
-import ManageCurrent from '../components/ManageCurrent.jsx';
+import MyCurrentPosition from '../components/ManageCurrent.jsx';
 import ManageRecent from '../components/ManageRecent.jsx';
 
 const acc_email = 'ggg@mail.com';
@@ -54,9 +54,9 @@ function ManageAsset(props) {
    };
    const [inputDate, setInputDate] = useState();
    console.log(inputDate);
-   const [secValue, setSecValue] = useState(750683);
+   const [secValue, setSecValue] = useState();
    useEffect(() => {
-      // 抓取該日庫存市價
+      // 依日期抓取股價計算庫存市值
       let rand = Math.floor(Math.random() * 1000) + 740000;
       setSecValue(rand.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
    }, [inputDate])
@@ -80,6 +80,9 @@ function ManageAsset(props) {
                         const errors = {};
                         if (values.ast_cash < 0) {
                            errors.ast_cash = "負現金請填寫於其他或調整項";
+                        }
+                        if (!values.ast_date) {
+                           errors.ast_date = "需填寫日期";
                         }
                         return errors;
                      }
@@ -117,9 +120,9 @@ function ManageAsset(props) {
                            label="證券"
                            name="txn_round" id="txn_round"
                            type="number" step="10000"
-                           placeholder="當時庫存現值"
+                           placeholder="當時的庫存市值"
                            inline="true"
-                           helptext={`依${inputDate}紀錄及市價估計: ${secValue} 元`}
+                           helptext={inputDate && secValue ? `${inputDate}估計市值: ${secValue}` : '依您的交易紀錄及當天市價估計..'}
                         />
                         <MyFormikObserver
                            value={props.values.ast_date}
@@ -173,9 +176,9 @@ function ManageAsset(props) {
                </Formik>
             </Col>
             <Col lg={4}>
-               <ManageCurrent col={col2} className={{ table: 'table table-sm' }}
+               <MyCurrentPosition col={col2} className={{ table: 'table table-sm' }}
                   url={urlPostInventory} dataToServer={{ acc_email: acc_email, dateQuery: inputDate }}
-               ></ManageCurrent>
+               ></MyCurrentPosition>
             </Col>
          </Row>
          <br />

@@ -12,7 +12,7 @@ import axios from 'axios';
 import dt from 'date-and-time';
 
 import { MyFormikObserver, MyInput, MySelect } from '../components/MyFormComponent';
-import ManageCurrent from '../components/ManageCurrent.jsx';
+import MyCurrentPosition from '../components/ManageCurrent.jsx';
 import ManageRecent from '../components/ManageRecent.jsx';
 
 const acc_email = 'ggg@mail.com';
@@ -203,9 +203,9 @@ function Manageplan(props) {
                </Formik>
             </Col>
             <Col lg={4}>
-               <ManageCurrent col={col2} className={{ table: 'table table-sm' }}
+               <MyCurrentPosition col={col2} className={{ table: 'table table-sm' }}
                   url={urlPostInventory} dataToServer={{ acc_email: acc_email, dateQuery: dt.format(new Date(), 'YYYY-MM-DD') }}
-               ></ManageCurrent>
+               ></MyCurrentPosition>
             </Col>
          </Row>
          <br />
