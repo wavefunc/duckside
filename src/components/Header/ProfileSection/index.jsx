@@ -53,7 +53,7 @@ const ProfileSection = () => {
     const theme = useTheme();
 
     const [selectedIndex, setSelectedIndex] = useState(-1);
-    const [open, setOpen] = useState(false);
+    const [listOpen, setListOpen] = useState(false);
     /**
      * anchorRef is used on different componets and specifying one type leads to other components throwing an error
      * */
@@ -66,21 +66,21 @@ const ProfileSection = () => {
         if (anchorRef.current && anchorRef.current.contains(event.target)) {
             return;
         }
-        setOpen(false);
+        setListOpen(false);
     };
 
     const handleToggle = () => {
-        setOpen((prevOpen) => !prevOpen);
+        setListOpen((prevOpen) => !prevOpen);
     };
 
-    const prevOpen = useRef(open);
+    const prevOpen = useRef(listOpen);
     useEffect(() => {
-        if (prevOpen.current === true && open === false) {
+        if (prevOpen.current === true && listOpen === false) {
             anchorRef.current.focus();
         }
 
-        prevOpen.current = open;
-    }, [open]);
+        prevOpen.current = listOpen;
+    }, [listOpen]);
 
     return (
         <>
@@ -115,7 +115,7 @@ const ProfileSection = () => {
                             cursor: 'pointer',
                         }}
                         ref={anchorRef}
-                        aria-controls={open ? 'menu-list-grow' : undefined}
+                        aria-controls={listOpen ? 'menu-list-grow' : undefined}
                         aria-haspopup="true"
                         color="inherit"
                     />
@@ -123,7 +123,7 @@ const ProfileSection = () => {
                 label={<LoginIcon stroke={1.5} size="1.5rem" sx={{ color: 'white' }} />}
                 variant="outlined"
                 ref={anchorRef}
-                aria-controls={open ? 'menu-list-grow' : undefined}
+                aria-controls={listOpen ? 'menu-list-grow' : undefined}
                 aria-haspopup="true"
                 onClick={handleToggle}
             />
@@ -131,7 +131,7 @@ const ProfileSection = () => {
             {/* 下拉選單 */}
             <Popper
                 placement="bottom-end"
-                open={open}
+                open={listOpen}
                 anchorEl={anchorRef.current}
                 role={undefined}
                 transition
@@ -148,7 +148,7 @@ const ProfileSection = () => {
                 }}
             >
                 {({ TransitionProps }) => (
-                    <Transitions in={open} {...TransitionProps}>
+                    <Transitions in={listOpen} {...TransitionProps}>
                         <Paper sx={{ borderRadius: "20px" }}>
                             <ClickAwayListener onClickAway={handleClose}>
                                 <MainCard sx={{ borderRadius: "20px" }} border={false} elevation={16} content={false} boxShadow shadow={theme.shadows[16]}>
@@ -184,40 +184,40 @@ const ProfileSection = () => {
                                             >
                                                 <ListItemIcon>
                                                     <LoginIcon stroke={1.5} size="1.3rem" />
-                                                    {/* login component */}
-                                                    <MemberLogin show={showLogin} showtoggle={showtoggle} close={showClose}></MemberLogin>
-                                                    <MemberRegister show={showregister} showtoggle={showtoggle}></MemberRegister>
-                                                    {/* login component */}
                                                 </ListItemIcon>
                                                 <ListItemText primary={<Typography variant="body2">登入</Typography>} />
                                             </ListItemButton>
+                                            {/* login component */}
+                                            <MemberLogin  show={showLogin} showtoggle={showtoggle} close={showClose}></MemberLogin>
+                                            <MemberRegister show={showregister} showtoggle={showtoggle}></MemberRegister>
+                                            {/* login component */}
 
                                             {/* 忘記密碼 */}
                                             <Link to="/member/changePass" style={{ color: 'black' }}>
-                                            <ListItemButton
-                                                sx={{ borderRadius: `20px` }}
-                                                selected={selectedIndex === 4}
-                                                onClick={handleLogout}
-                                            >
-                                                <ListItemIcon>
-                                                    <VpnKeyOutlinedIcon stroke={1.5} size="1.3rem" />
-                                                </ListItemIcon>
-                                                <ListItemText primary={<Typography variant="body2">忘記密碼</Typography>} />
-                                            </ListItemButton>
+                                                <ListItemButton
+                                                    sx={{ borderRadius: `20px` }}
+                                                    selected={selectedIndex === 4}
+                                                    onClick={handleLogout}
+                                                >
+                                                    <ListItemIcon>
+                                                        <VpnKeyOutlinedIcon stroke={1.5} size="1.3rem" />
+                                                    </ListItemIcon>
+                                                    <ListItemText primary={<Typography variant="body2">忘記密碼</Typography>} />
+                                                </ListItemButton>
                                             </Link>
 
                                             {/* 會員資料修改 */}
                                             <Link to="/member/info" style={{ color: 'black' }}>
-                                            <ListItemButton
-                                                sx={{ borderRadius: `20px` }}
-                                                selected={selectedIndex === 4}
-                                                onClick={handleLogout}
-                                            >
-                                                <ListItemIcon>
-                                                    <SettingsOutlinedIcon stroke={1.5} size="1.3rem" />
-                                                </ListItemIcon>
-                                                <ListItemText primary={<Typography variant="body2">會員資料修改</Typography>} />
-                                            </ListItemButton>
+                                                <ListItemButton
+                                                    sx={{ borderRadius: `20px` }}
+                                                    selected={selectedIndex === 4}
+                                                    onClick={handleLogout}
+                                                >
+                                                    <ListItemIcon>
+                                                        <SettingsOutlinedIcon stroke={1.5} size="1.3rem" />
+                                                    </ListItemIcon>
+                                                    <ListItemText primary={<Typography variant="body2">會員資料修改</Typography>} />
+                                                </ListItemButton>
                                             </Link>
                                         </List>
                                     </Box>
