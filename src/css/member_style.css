@@ -4,7 +4,7 @@
 }
 
 #formContainer_body {
-  height: 50vw;
+  height: 0vw;
   width: 100%;
   background: url(/public/assets/images/test.png)
     center/cover fixed;
@@ -14,14 +14,15 @@
 }
 
 #formContainer {
+  transform: translate(24%, 70%);
   display: flex;
   transition: 0.2s ease;
-  height: 400px;
+  height: 420px;
   transition-delay: 0.3s;
 }
 
 #formContainer.toggle {
-  height: 550px;
+  height: 576px;
   transition-delay: 0s;
 }
 
@@ -48,6 +49,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  
 }
 
 .formRight:before {
@@ -63,6 +65,7 @@
 }
 
 .formRight form {
+  background-color: #FFF;
   position: relative;
   width: 350px;
   padding: 25px;
@@ -78,7 +81,7 @@
 }
 
 .formRight form header h1 {
-  color: #fff;
+  color: #191919;
   margin: 0;
   font-weight: 400;
   -webkit-user-select: none;
@@ -88,10 +91,10 @@
 }
 
 .formRight form header p {
-  color: #fff;
+  color: #191919;
   margin: 5px 0 0;
   opacity: 0.5;
-  font-size: 14px;
+  font-size: 24px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -106,10 +109,10 @@
 }
 
 .formRight form section label p {
-  color: #fff;
+  color: #191919;
   margin: 0 0 10px 0;
   font-weight: 600;
-  font-size: 12px;
+  font-size: 18px;
   opacity: 0.5;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -122,8 +125,8 @@
   display: block;
   border: none;
   background: transparent;
-  color: #fff;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: #191919;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   padding: 0 0 10px;
   box-sizing: border-box;
   font-weight: 600;
@@ -177,15 +180,16 @@
 .formRight form footer {
   margin-top: 15px;
   display: flex;
+  padding: 0.5rem 0 0!important;
 }
 
 .formRight form footer button {
   background: transparent;
   padding: 0;
   border: none;
-  color: #fff;
+  color: #191919;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 16px;
   font-weight: bold;
   flex: 1;
   opacity: 0.5;
@@ -217,9 +221,11 @@
   opacity: 0;
   transition: 0.2s ease;
   transition-delay: 0s;
+  margin-top: 15px;
 }
 .formRight form.otherForm header h1{
   color: #000;
+  /* margin-top: 20px; */
 }
 .formRight form.otherForm p {
   color: #000;
@@ -238,6 +244,7 @@
 
 .formRight form.otherForm footer button {
   color: #000;
+
 }
 
 .formRight form.otherForm input {
