@@ -30,7 +30,7 @@ let MemberLogin = (props) => {
 
   return (
     <Modal
-      size="lg"
+      size="sm"
       show={props.show}
       animation={true}
       aria-labelledby="example-modal-sizes-title-lg"
@@ -39,7 +39,7 @@ let MemberLogin = (props) => {
       <div id="formContainer_body">
         <div id="formContainer" className="dwo">
           <div className="formLeft">
-            <img src="/assets/images/member_testimg.png" alt="頭相"/>
+            <img src="/assets/images/member_photo.png" alt="頭相"/>
           </div>
           <div className="formRight">
             {/* <!-- Login form --> */}

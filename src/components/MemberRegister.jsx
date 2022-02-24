@@ -37,7 +37,7 @@ let MemberRegister = (props) => {
     passwordtext: "請輸入密碼",
     passwordIcon: "none", //initial
     passwordcheck: "none", //contents
-    passwordchecktext: "請確認兩次密碼是否一致",
+    passwordchecktext: "請確認密碼是否一致",
     passwordcheckIcon: "none", //initial
     registerfalse: "none", //contents
   });
@@ -256,7 +256,7 @@ let MemberRegister = (props) => {
         {/* 加toggle變長(註冊功能)，改高度用此選擇器 */}
         <div id="formContainer" className="dwo toggle">
           <div className="formLeft">
-            <img src="/assets/images/member_testimg.png" alt="" />
+            <img src="/assets/images/member_photo.png" alt="" />
           </div>
           <div className="formRight">
             {/* <!-- Login form --> */}
