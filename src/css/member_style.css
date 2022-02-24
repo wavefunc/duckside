@@ -6,7 +6,7 @@
 #formContainer_body {
   height: 50vw;
   width: 100%;
-  background: url("https://images.unsplash.com/photo-1623721949492-88c84f98175e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2670&q=80")
+  background: url(/public/assets/images/test.png)
     center/cover fixed;
   display: flex;
   justify-content: center;
@@ -26,7 +26,7 @@
 }
 
 .formLeft {
-  background: #fff;
+  background: #2A6470;
   border-radius: 5px 0 0 5px;
   padding: 0 35px;
   box-sizing: border-box;
@@ -161,7 +161,7 @@
 }
 
 .formRight form section button {
-  background: #00897b;
+  background: #2A6470;
   border: none;
   width: 100%;
   padding: 10px 0;
