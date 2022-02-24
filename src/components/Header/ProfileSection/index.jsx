@@ -46,8 +46,15 @@ const ProfileSection = () => {
         setShowRegister(false);
     }
     function showLoginOpen() {
-        setShowLogin(true);
-        setListOpen(false);
+        if (showLogin === false && showregister === true) {
+            setShowLogin(false);
+            setShowRegister(false);
+            setListOpen(false);
+        } else {
+            setShowLogin(true);
+            setShowRegister(false);
+            setListOpen(false);
+        }
     }
     // login component
 
@@ -181,12 +188,12 @@ const ProfileSection = () => {
                                             <ListItemButton
                                                 sx={{ borderRadius: `20px` }}
                                                 selected={selectedIndex === 0}
-                                                onClick={showLoginOpen}                                                
+                                                onClick={showLoginOpen}
                                             >
                                                 <ListItemIcon>
                                                     <LoginIcon stroke={1.5} size="1.3rem" />
                                                 </ListItemIcon>
-                                                <ListItemText primary={<Typography variant="body2">登入</Typography>} />
+                                                <ListItemText primary={<Typography variant="body2">登入/註冊</Typography>} />
                                             </ListItemButton>
 
                                             {/* 登出 */}
@@ -243,7 +250,7 @@ const ProfileSection = () => {
 
 
             {/* login component */}
-            <MemberLogin  show={showLogin} showtoggle={showLoginToggle} close={showLoginClose} ></MemberLogin>
+            <MemberLogin show={showLogin} showtoggle={showLoginToggle} close={showLoginClose} ></MemberLogin>
             <MemberRegister show={showregister} showtoggle={showLoginToggle} close={showLoginClose}></MemberRegister>
             {/* login component */}
 

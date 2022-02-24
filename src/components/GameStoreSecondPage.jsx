@@ -44,11 +44,13 @@ let GameStoreSecondPage = (props) =>{
                      <text id="購買" transform="translate(333 578)" fill="#faf3e2" font-size="30" font-family="PingFangTC-Semibold, PingFang TC" font-weight="600"><tspan x="0" y="0">購買</tspan></text>
                      </a>
                   </g>
+                  {/* 時鐘 */}
                   <g id="時鐘-2" data-name="時鐘" transform="translate(1261 -3111.826)">
                      <circle id="Ellipse_57" data-name="Ellipse 57" cx="86" cy="86" r="86" transform="translate(-660 3471.826)" fill="#464444" opacity="0.88"/>
                      <line id="Line_30" data-name="Line 30" y1="48.63" x2="44.339" transform="translate(-574.54 3509.737)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="10"/>
                      <line id="Line_31" data-name="Line 31" y1="15.018" x2="43.624" transform="translate(-618.164 3558.366)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="10"/>
                   </g>
+
                </g>
                </svg>
 
@@ -149,6 +151,7 @@ let GameStoreSecondPage = (props) =>{
                      <text id="購買" transform="translate(333 578)" fill="#faf3e2" font-size="30" font-family="PingFangTC-Semibold, PingFang TC" font-weight="600"><tspan x="0" y="0">購買</tspan></text>
                      </a>
                   </g>
+                  {/* 舉重槓 */}
                   <g id="舉重槓-2" data-name="舉重槓" transform="translate(3283 -3340.028)">
                      <g id="Group_28" data-name="Group 28" transform="translate(-1914 3730)">
                      <g data-type="innerShadowGroup">
@@ -213,6 +216,7 @@ let GameStoreSecondPage = (props) =>{
                      <rect id="Rectangle_97" data-name="Rectangle 97" width="4" height="19" rx="2" transform="translate(-1680 3750.028)" fill="#8d8d8d"/>
                      <rect id="Rectangle_98" data-name="Rectangle 98" width="3" height="7" rx="1.5" transform="translate(-1698 3766.028)" fill="#8d8d8d"/>
                   </g>
+
                </g>
                </svg>
 
@@ -232,6 +236,7 @@ let GameStoreSecondPage = (props) =>{
                     <g transform="matrix(1, 0, 0, 1, 1317, 287)" filter="url(#Path_750)">
                     <path id="Path_750-2" data-name="Path 750" d="M40,0H315a40,40,0,0,1,40,40V278a40,40,0,0,1-40,40H40A40,40,0,0,1,0,278V40A40,40,0,0,1,40,0Z" transform="translate(9 6)" fill="#f0f0f0"/>
                     </g>
+                    {/* 畫像 */}
                     <g id="畫像" transform="translate(1149.529 263.316)">
                     <path id="Path_24" data-name="Path 24" d="M4.383,29.945,80.632-2.11" transform="translate(266.303 67.963)" fill="none" stroke="#ea9c42" stroke-linecap="round" stroke-width="6"/>
                     <path id="Path_27" data-name="Path 27" d="M79.423,31.088,0,0" transform="translate(346.889 66.011)" fill="none" stroke="#ea9c42" stroke-linecap="round" stroke-width="6"/>
@@ -270,6 +275,7 @@ let GameStoreSecondPage = (props) =>{
                     <text id="購買" transform="translate(333 578)" fill="#faf3e2" font-size="30" font-family="PingFangTC-Semibold, PingFang TC" font-weight="600"><tspan x="0" y="0">購買</tspan></text>
                     </g>
                 </g>
+                
                 </svg>
                </li>
                <li id="licard24">
