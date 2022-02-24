@@ -1,68 +1,129 @@
-/* #fade {
-    display: none;
-    position: absolute;
-    top: 0%;
-    left: 0%;
-    width: 100%;
-    height: 100%;
-    background-color: black;
-    z-index: 1001;
-    opacity: .80;
-    filter: alpha(opacity=80);
-  }
+.button-plus{
+  background-color:#3E88A8 ;
+  border-radius: 5px;
+  color: white;
+  font-size: 16px;
+  padding: 3px;
+  margin-left: 10px;
+  font-family: PingFangTC-Semibold, PingFang TC;
+}
 
-  #light {
-    display: none;
-    position: absolute;
-    top: 25%;
-    left: 25%;
-    width: 50%;
-    height: 50%;
-    z-index: 1002;
-    overflow: auto;
-  } */
+.getButton-plus{
+  font-family: PingFangTC-Semibold, PingFang TC;
+  background-color:#3E88A8 ;
+  border-radius: 20px;
+  color: white;
+  font-size: 25px;
+  width: 160px;
+  margin-left: 40px;
+}
 
-  #pagehome{
-    width: 780px;
-    height: 480px;
-    background-color: #EDDBBE;
-  }
+.getButton-gift-icon{
+  padding-left: 6px;
+  padding-bottom:6px;
+}
 
-  input{
-    margin: 10px;
-  }
+.nextButton-plus{
+  font-family: PingFangTC-Semibold, PingFang TC;
+  background-color:#3E88A8 ;
+  border-radius: 20px;
+  color: white;
+  font-size: 25px;
+  width: 100px;
+  margin-left: 80px;
+  margin-top: 3px;
+  
+}
 
-  button{
-    background-color:#3E88A8; 
-    display: inline-block;
-    text-decoration: none;
-    border:none;
-    color: #F0F0F0;
-    border-radius: 3px;
-    margin: 10px;
-  }
-  .fontsyle{
-    color: #520707;
-    font-family:PingFangTC-Semibold, PingFang TC;
-    font-weight:450px;
-    font-size:17px;
-    padding: 10px;
-  }
+.button-plus-icon{
+  font-size: 22px;
+  margin-bottom: 4px;
+  margin-right: 4px;
+}
 
-  .titlech{
-    width: 300px;
-    height: 35px;
-    text-align: center;
-    background-color:#3E88A8; 
-    display: inline-block;
-    text-decoration: none;
-    border:none;
-    font-size: 25px;
-    color: #F0F0F0;
-    border-radius: 20px;
-    margin: 10px;
-  }
+.button-plus-text{
+  font-size: 20px;
+}
 
-  #duckpict{
-    margin: 50px;
-  }
+.header-Back-text{
+  font-size: 25px;
+  color: white;
+}
+
+.headerBack{
+  background-color:#AC4C4C ;
+  width: 150px;
+  height: 50px;
+  border-radius: 15px;
+  margin-top:10px;
+  margin-left: 340px;
+  font-family: PingFangTC-Semibold, PingFang TC;
+}
+
+.header{
+  padding: 15px;
+  width: 890px;
+  height: 500px;
+
+  margin-left:65px ;
+  background-color: #EDDBBE;
+}
+
+.headerSide{
+  color: #E4E9EB;
+  background-color:#3E88A8 ;
+  width: 300px;
+  height: 50px;
+  border-radius: 15px;
+  margin-top:10px;
+  margin-left: 10px;
+  font-size:30px ;
+  padding:0 30px ;
+  font-family: PingFangTC-Semibold, PingFang TC;
+}
+
+.buyTitle{
+  padding-right: 50px;
+  font-family: PingFangTC-Semibold, PingFang TC;
+  color: #520707;
+  margin: 10px;
+  font-size: 16px;
+}
+
+.testEnter{
+  margin-left: 20px;
+}
+
+.testEnterOne{
+  margin-left:71px ;
+}
+
+.duckPict{
+  width: 450px;
+  height: 300px;
+  padding-top: 30px;
+  padding-left: 10px;
+}
+
+.haveIpt{
+  width: 270px;
+  height: 100px;
+  float: right;
+}
+
+.testinput{
+  padding: 5px;
+}
+
+.testInput{
+  float: right;
+}
+
+.haveInput{
+  width: 390px;
+  height: 230px;
+  margin-left: 15px;
+  margin-bottom: 10px;
+}
+
+
