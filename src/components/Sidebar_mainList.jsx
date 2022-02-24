@@ -35,14 +35,6 @@ export default function MainListItem() {
     };
     return (
         <React.Fragment>
-            {/* <Link to="/member/info" style={{ color: 'black' }}>
-            <ListItemButton>
-                <ListItemIcon>
-                    <AccountCircleIcon />
-                </ListItemIcon>
-                <ListItemText primary="會員中心" />
-            </ListItemButton>
-        </Link> */}
 
             <ListSubheader component="div" inset sx={{ bgcolor: '#ecdfb1' }}>
                 投資管理

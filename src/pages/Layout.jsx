@@ -181,7 +181,7 @@ function Layout() {
               bgcolor: '#ecdfb1'
             }}
           >
-            <Avatar sx={{ width: '60px', height: '60px' }} alt="duckside" src="/assets/images/duck_right.png" />
+            <Avatar sx={{ width: '43px',height:'55px' }} alt="duckside" src="/assets/images/母鴨.svg" />
             <Link underline="none" color="black" href='/'>
               <Typography
                 component="h1"
@@ -191,9 +191,9 @@ function Layout() {
                   flexGrow: 1,
                   color: "#2A6470",
                   fontWeight: 'bold',
-                  fontSize: '24px',
-                  paddingTop: "23px",
-                  marginLeft: '-10px'
+                  fontSize: '25px',
+                  paddingTop: "34px",
+                  marginLeft: '5px'
                 }}
               >
                 Duckside

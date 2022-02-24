@@ -186,7 +186,7 @@ const ProfileSection = () => {
                                                 <ListItemIcon>
                                                     <LoginIcon stroke={1.5} size="1.3rem" />
                                                 </ListItemIcon>
-                                                <ListItemText primary={<Typography variant="body2">登入</Typography>} />
+                                                <ListItemText primary={<Typography variant="body2">登入/註冊</Typography>} />
                                             </ListItemButton>
 
                                             {/* 登出 */}
