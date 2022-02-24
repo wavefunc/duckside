@@ -181,9 +181,10 @@ function Layout() {
               bgcolor: '#ecdfb1'
             }}
           >
-            <Avatar sx={{ width: '60px', height: '60px' }} alt="duckside" src="/assets/images/duck_right.png" />
             <Link underline="none" color="black" href='/'>
-              <Typography
+            {/* <Avatar sx={{ width: '200px',height:'70px' }} alt="duckside" src="/assets/images/logo.svg" /> */}
+              <img src="/assets/images/logo.svg" alt="logo" style={{height:'55px',width:'200px',paddingLeft:'40px'}}/>
+              {/* <Typography
                 component="h1"
                 variant="h1"
                 noWrap
@@ -191,13 +192,12 @@ function Layout() {
                   flexGrow: 1,
                   color: "#2A6470",
                   fontWeight: 'bold',
-                  fontSize: '24px',
-                  paddingTop: "23px",
-                  marginLeft: '-10px'
+                  fontSize: '25px',
+                  paddingTop: "34px",
                 }}
               >
                 Duckside
-              </Typography>
+              </Typography> */}
             </Link>
 
             <IconButton onClick={toggleDrawer}>
