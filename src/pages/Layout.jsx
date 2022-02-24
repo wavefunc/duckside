@@ -181,9 +181,10 @@ function Layout() {
               bgcolor: '#ecdfb1'
             }}
           >
-            <Avatar sx={{ width: '55px',height:'55px' }} alt="duckside" src="/assets/images/頭像母鴨.svg" />
             <Link underline="none" color="black" href='/'>
-              <Typography
+            {/* <Avatar sx={{ width: '200px',height:'70px' }} alt="duckside" src="/assets/images/logo.svg" /> */}
+              <img src="/assets/images/logo.svg" alt="logo" style={{height:'55px',width:'200px',paddingLeft:'40px'}}/>
+              {/* <Typography
                 component="h1"
                 variant="h1"
                 noWrap
@@ -196,7 +197,7 @@ function Layout() {
                 }}
               >
                 Duckside
-              </Typography>
+              </Typography> */}
             </Link>
 
             <IconButton onClick={toggleDrawer}>
