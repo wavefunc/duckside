@@ -181,7 +181,7 @@ function Layout() {
               bgcolor: '#ecdfb1'
             }}
           >
-            <Avatar sx={{ width: '43px',height:'55px' }} alt="duckside" src="/assets/images/母鴨.svg" />
+            <Avatar sx={{ width: '55px',height:'55px' }} alt="duckside" src="/assets/images/頭像母鴨.svg" />
             <Link underline="none" color="black" href='/'>
               <Typography
                 component="h1"
@@ -193,7 +193,6 @@ function Layout() {
                   fontWeight: 'bold',
                   fontSize: '25px',
                   paddingTop: "34px",
-                  marginLeft: '5px'
                 }}
               >
                 Duckside
