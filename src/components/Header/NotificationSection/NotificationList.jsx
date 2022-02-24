@@ -58,7 +58,7 @@ const NotificationList = () => {
                     <ListItemAvatar>
                     <Avatar alt="John Doe" src={User1} sx={{ bgcolor: "#53B8C5" }} />
                     </ListItemAvatar>
-                    <ListItemText primary="John Doe" />
+                    <ListItemText primary="系統通知" />
                     <ListItemSecondaryAction>
                         <Grid container justifyContent="flex-end">
                             <Grid item xs={12}>
@@ -84,7 +84,7 @@ const NotificationList = () => {
                             <Avatar alt="John Doe" src={User1} sx={{ bgcolor: "#53B8C5" }} />
                         
                     </ListItemAvatar>
-                    <ListItemText primary={<Typography variant="subtitle1">Store Verification Done</Typography>} />
+                    <ListItemText primary={<Typography variant="subtitle1">系統通知</Typography>} />
                     <ListItemSecondaryAction>
                         <Grid container justifyContent="flex-end">
                             <Grid item xs={12}>
@@ -110,7 +110,7 @@ const NotificationList = () => {
                             <Avatar alt="John Doe" src={User1} sx={{ bgcolor: "#53B8C5" }} />
                        
                     </ListItemAvatar>
-                    <ListItemText primary={<Typography variant="subtitle1">Check Your Mail.</Typography>} />
+                    <ListItemText primary={<Typography variant="subtitle1">系統通知</Typography>} />
                     <ListItemSecondaryAction>
                         <Grid container justifyContent="flex-end">
                             <Grid item>
@@ -134,7 +134,7 @@ const NotificationList = () => {
                     <ListItemAvatar>
                     <Avatar alt="John Doe" src={User1} sx={{ bgcolor: "#53B8C5" }} />
                     </ListItemAvatar>
-                    <ListItemText primary={<Typography variant="subtitle1">John Doe</Typography>} />
+                    <ListItemText primary={<Typography variant="subtitle1">系統通知</Typography>} />
                     <ListItemSecondaryAction>
                         <Grid container justifyContent="flex-end">
                             <Grid item xs={12}>

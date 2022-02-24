@@ -13,13 +13,14 @@ import { Formik, Form } from 'formik';
 import dt from 'date-and-time';
 
 import { MyFormikObserver, MyInput, MySelect } from '../components/MyFormComponent';
-// import { MyChartPie, MyChartLine } from '../components/MyChartComponent.jsx';
+import { MyChartLine } from '../components/MyChartComponent.jsx';
 
 const acc_email = 'ggg@mail.com';
 const nowTime = new Date();
-const urlPostChartData = '';
+// const urlPostChartData = '';
 
 // 主圖使用
+
 
 // 副表使用
 
@@ -126,7 +127,7 @@ return (
                </Nav>
                <Tab.Content>
                   <Tab.Pane eventKey="first">
-                     {/* 折線圖 */}
+                  <MyChartLine></MyChartLine>
                   </Tab.Pane>
                   {/* <Tab.Pane eventKey="second">
                      折線圖

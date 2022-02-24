@@ -6,7 +6,7 @@ import ListItemText from '@mui/material/ListItemText';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import Collapse from '@mui/material/Collapse';
-
+import ListSubheader from '@mui/material/ListSubheader';
 import HomeRepairServiceOutlinedIcon from '@mui/icons-material/HomeRepairServiceOutlined';
 import PieChartOutlinedIcon from '@mui/icons-material/PieChartOutlined';
 import CalculateOutlinedIcon from '@mui/icons-material/CalculateOutlined';
@@ -21,9 +21,16 @@ export default function NestedList() {
         setOpen(!open);
     };
 
+    const [selectedIndex, setSelectedIndex] = React.useState(0);
+    const handleListItemClick = (event, index) => {
+        setSelectedIndex(index);
+    };
+
     return (
         <React.Fragment>
-
+            <ListSubheader component="div" inset sx={{ bgcolor: '#ecdfb1' }}>
+                其他常用
+            </ListSubheader>
             <ListItemButton onClick={handleClick}>
                 <ListItemIcon>
                     <HomeRepairServiceOutlinedIcon sx={{ color: '#2A6470' }} />
@@ -35,7 +42,7 @@ export default function NestedList() {
                 <List component="div" disablePadding>
 
                     <Link to="/tools/chart_pie" style={{ color: 'black' }}>
-                        <ListItemButton sx={{ pl: 4 }}>
+                        <ListItemButton>
                             <ListItemIcon>
                                 <PieChartOutlinedIcon />
                             </ListItemIcon>

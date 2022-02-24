@@ -14,7 +14,7 @@ import axios from 'axios';
 import dt from 'date-and-time';
 
 import { MyInput, MySelect } from '../components/MyFormComponent';
-import ManageCurrent from '../components/ManageCurrent.jsx';
+import MyCurrentPosition from '../components/ManageCurrent.jsx';
 import ManageRecent from '../components/ManageRecent.jsx';
 
 const acc_email = 'ggg@mail.com';
@@ -234,9 +234,10 @@ function ManageTransaction(props) {
                   </Nav>
                   <Tab.Content>
                      <Tab.Pane eventKey="first">
-                        <ManageCurrent col={colInventory} 
-                           url={urlPostInventory} dataToServer={{ acc_email: acc_email, dateQuery: dt.format(new Date(), 'YYYY-MM-DD') }}
-                        ></ManageCurrent>
+                        <MyCurrentPosition col={colInventory} refreshState={refreshState}
+                           url={urlPostInventory}
+                           dataToServer={{ acc_email: acc_email, dateQuery: dt.format(new Date(), 'YYYY-MM-DD') }}
+                        ></MyCurrentPosition>
                      </Tab.Pane>
                   </Tab.Content>
                </Tab.Container>

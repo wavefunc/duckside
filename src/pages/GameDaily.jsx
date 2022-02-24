@@ -24,15 +24,17 @@ function MyVerticallyCenteredModal(props) {
                      </text>
                      <line id="Line_41" data-name="Line 41" x2="1032" transform="translate(485 314.5)" fill="none" stroke="#707070"
                         stroke-width="5" />
-                     <text id="時間:" transform="translate(554 517)" fill="#520707" fontSize="80"
+                     <text id="時間:" transform="translate(493 517)" fill="#520707" fontSize="80"
                         fontFamily="PingFangTC-Semibold, PingFang TC" fontWeight="600">
                         <tspan x="0" y="0">時間</tspan>
                         <tspan y="0" fontFamily="Helvetica-Bold, Helvetica" fontWeight="700">:</tspan>
+                        <tspan y="0" fontFamily="Helvetica-Bold, Helvetica" fontWeight="700">2019/01/02-2019/04/02</tspan>
                      </text>
-                     <text id="交易天數:" transform="translate(554 712)" fill="#520707" fontSize="80"
+                     <text id="交易天數:" transform="translate(493 712)" fill="#520707" fontSize="80"
                         fontFamily="PingFangTC-Semibold, PingFang TC" fontWeight="600">
                         <tspan x="0" y="0">交易天數</tspan>
                         <tspan y="0" fontFamily="Helvetica-Bold, Helvetica" fontWeight="700">:</tspan>
+                        <tspan y="0" fontFamily="Helvetica-Bold, Helvetica" fontWeight="700">3 Month</tspan>
                      </text>
 
                      <a href="http://localhost:3000/game/dailyrun">
