@@ -3,7 +3,7 @@
 import { Axios } from 'axios';
 import React, { Component, useState } from 'react';
 import { Row, Modal } from 'react-bootstrap';
-import "../css/GameDaily_style.css"
+import "../css/gamedaily_style.css"
 import { PlusCircle, Search, DashCircle, Gift } from "react-bootstrap-icons"
 
 function GameDailyRun() {
