@@ -30,8 +30,8 @@ let MemberRegister = (props) => {
     nameIcon: "none", //initial
     email: "none", //contents
     emailtext: "請確認信箱是否正確",
-    emailover:"none",
-    emailovertext:"此信箱已註冊",
+    emailover: "none",
+    emailovertext: "此信箱已註冊",
     emailIcon: "none", //initial
     password: "none", //contents
     passwordtext: "請輸入密碼",
@@ -41,6 +41,9 @@ let MemberRegister = (props) => {
     passwordcheckIcon: "none", //initial
     registerfalse: "none", //contents
   });
+  //登入成功state
+  let [outsec, setOutsec] = useState(2);
+  let [showsuccess, setShowsuccess] = useState("none");
 
   //暱稱input
   let nameInputer = async (e) => {
@@ -80,8 +83,8 @@ let MemberRegister = (props) => {
             ...noticeState,
             email: "none",
             emailIcon: "none",
-            emailover:"contents"
-          }); 
+            emailover: "contents",
+          });
         } else {
           let emailRule = /^([\w.]){1,64}@(yahoo|hotmail|gmail)(.com|.com.tw)$/;
           memberInfo.email.search(emailRule) !== -1
@@ -92,13 +95,13 @@ let MemberRegister = (props) => {
                 ...noticeState,
                 email: "none",
                 emailIcon: "initial",
-                emailover:"none"
+                emailover: "none",
               })
             : setNoticeState({
                 ...noticeState,
                 email: "contents",
                 emailIcon: "none",
-                emailover:"none"
+                emailover: "none",
               });
         }
       });
@@ -164,10 +167,8 @@ let MemberRegister = (props) => {
     }
   };
   //送出_button
-  let [outsec, setOutsec] = useState(2);
-  let [showsuccess, setShowsuccess] = useState("none");
 
-  let memberRegisterHandler = async () => {
+  let memberRegisterHandler = async (e) => {
     if (memberState.name && memberState.email && memberState.password) {
       await Axios.post("http://localhost:5000/account/create", {
         acc_email: memberInfo.email,
@@ -240,7 +241,6 @@ let MemberRegister = (props) => {
         }
       });
     }
-    
   };
 
   return (
