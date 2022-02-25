@@ -1,16 +1,34 @@
-﻿/* ----------
-抓取外部股票並整理成前端方便使用的格式
-人豪寫完再交冠樺整合進app.js
-*/
+﻿/* * 抓取外部股票及價格資料 * *
+ * 
+ * class 物件類別
+ * 定義不同管道抓來的資料要存成什麼結構
+ * 不會直接使用, 會由公式依傳入參數判斷要使用哪個
+ * 
+ * 1. 抓取某股票某期間的股價資料 getYahoo(stockId, period1, period2)
+ * stockId 證券代號數值或字串
+ * period1 period2 日期區間數值或字串(YYYYMMDD)
+ * 註: 查詢某股票在某期間的所有股價資料, 期間長的情況下用這個方法較快
+ * 
+ * 2. 抓取某天全市場股價資料: getTwse([Ymd])
+ * Ymd 字串格式 YYYYMMDD 傳入想要查詢的日期, 查詢當天全市場資料
+ * 如沒給參數, 就查詢最近一日
+ * 
+ * 3. 抓取某股當月的股價日資料 getTwse([Ymd, stockId, periods])
+ * Ymd 字串格式 YYYYMMDD 傳入查詢的日期
+ * stockId 證券代號字串, 查詢該股在該月的成交日資料
+ * perioeds 傳入數值是決定要調幾個月份資料
+ * 註: 因為短時間頻繁請求會擋ip, 需設延遲, 所以此方法較慢
+ * 
+ * 模組
+ * axios: 模擬 Client 訪問網站，並設定訪問時所攜帶的Header
+ * date-and-time: a minimalist collection of functions for manipulating JS date and time module which is used to format the date according to a certain pattern. 
+ * data-forge: JavaScript data wrangling, transformation and analysis toolkit
+ * cheerio: node.js界的jQuery
+ * 
+ */
 
 const axios = require("axios");
-// axios可模擬 Client 訪問網站，並設定訪問時所攜帶的Header
 const dt = require('date-and-time');
-// The date-and-time.Date.format() is a minimalist collection of functions for manipulating JS date and time module which is used to format the date according to a certain pattern. 
-// const forge = require("data-forge");
-// JavaScript data wrangling, transformation and analysis toolkit
-// const cheerio = require("cheerio");
-// 像是node.js界的jQuery
 
 function transpose(arr) {
     // 轉置處理
@@ -23,7 +41,10 @@ function transpose(arr) {
 }
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
+// 先定義好從證交所抓取資料時常使用的架構
+// 抓股價資料時傳入必要參數做出物件實體存放資料查詢結果
 class twseMarketInfo {
+    // 查詢某日期的最近一日市場行情日資料
     constructor(Ymd) {
         this._date = Ymd;
         this.url = `http://www.twse.com.tw/exchangeReport/MI_INDEX?response=json&type=ALLBUT0999&date=${Ymd}`;
@@ -209,6 +230,7 @@ class twseMarketInfo {
     }
 }
 class twseStockDay {
+    // 查詢個股成交資訊
     constructor(Ymd, stockId, periods = 1) {
         this._stockId = stockId;
         this._periods = periods;
@@ -398,151 +420,6 @@ class twseStockDay {
     }
 
 }
-class yahooStockDay_v2 {
-    constructor(stockId, period1, period2) {
-        this._stockId = stockId;
-        this._period1 = new Date(period1 * 1000);
-        this._period2 = new Date(period2 * 1000);
-
-        switch ('上市') {
-            case '上市':
-                stockId = `${stockId}.TW`;
-                break;
-            case '上櫃':
-                stockId = `${stockId}.TWO`;
-                break;
-            default:
-                return ('查無此股號');
-        }
-        this.url = `https://query1.finance.yahoo.com/v7/finance/download/${stockId}?period1=${period1.toString()}&period2=${period2.toString()}&interval=1d&events=history&includeAdjustedClose=true`;
-        this.responsePromise = axios(this.url);
-
-    }
-    async initialize() {
-        var res = await this.responsePromise;
-        var rows = res.data.split('\n');
-        this._fields = rows.shift().split(',');
-        var data = transpose(rows.map(e => e.split(',')));
-
-        this._dates = data[0].map(e => e.replace(/-/g, ""));
-        this._priceOpen = data[1].map(e => Math.round(parseFloat(e) * 100) / 100);
-        this._priceHigh = data[2].map(e => Math.round(parseFloat(e) * 100) / 100);
-        this._priceLow = data[3].map(e => Math.round(parseFloat(e) * 100) / 100);
-        this._priceClose = data[4].map(e => Math.round(parseFloat(e) * 100) / 100);
-        this._priceCloseAdj = data[5].map(e => Math.round(parseFloat(e) * 100) / 100);
-        this._volShare = data[6].map(e => parseInt(e));
-        this._changeNet = [...this._priceClose].map(function (v, i) {
-            return Math.round((v - this[i - 1]) * 100) / 100 || 0;
-        }, [...this._priceClose]);
-        // no data: volDollar volDeal
-        // no this._stockName
-        // console.log(this._priceOpen);
-    }
-    dates() {
-        return this._dates;
-    }
-    priceClose(Ymd) {
-        var lookupArr = this._priceClose;
-        if (Ymd == undefined) {
-            return lookupArr;
-        } else {
-            Ymd = Ymd.toString();
-            var idx = this._dates.indexOf(Ymd);
-            try {
-                return lookupArr[idx];
-            } catch (err) {
-                console.log(err.message);
-                return 'No result.';
-            }
-        }
-    }
-    volShare(Ymd) {
-        var lookupArr = this._volShare;
-        if (Ymd == undefined) {
-            return lookupArr;
-        } else {
-            Ymd = Ymd.toString();
-            var idx = this._dates.indexOf(Ymd);
-            try {
-                return lookupArr[idx];
-            } catch (err) {
-                console.log(err.message);
-                return 'No result.';
-            }
-        }
-    }
-    priceOpen(Ymd) {
-        var lookupArr = this._priceOpen;
-        if (Ymd == undefined) {
-            return lookupArr;
-        } else {
-            Ymd = Ymd.toString();
-            var idx = this._dates.indexOf(Ymd);
-            try {
-                return lookupArr[idx];
-            } catch (err) {
-                console.log(err.message);
-                return 'No result.';
-            }
-        }
-    }
-    priceHigh(Ymd) {
-        var lookupArr = this._priceHigh;
-        if (Ymd == undefined) {
-            return lookupArr;
-        } else {
-            Ymd = Ymd.toString();
-            var idx = this._dates.indexOf(Ymd);
-            try {
-                return lookupArr[idx];
-            } catch (err) {
-                console.log(err.message);
-                return 'No result.';
-            }
-        }
-    }
-    priceLow(Ymd) {
-        var lookupArr = this._priceLow;
-        if (Ymd == undefined) {
-            return lookupArr;
-        } else {
-            Ymd = Ymd.toString();
-            var idx = this._dates.indexOf(Ymd);
-            try {
-                return lookupArr[idx];
-            } catch (err) {
-                console.log(err.message);
-                return 'No result.';
-            }
-        }
-    }
-    changeNet(Ymd) {
-        var lookupArr = this._changeNet;
-        if (Ymd == undefined) {
-            return lookupArr;
-        } else {
-            Ymd = Ymd.toString();
-            var idx = this._dates.indexOf(Ymd);
-            try {
-                return lookupArr[idx];
-            } catch (err) {
-                console.log(err.message);
-                return 'No result.';
-            }
-        }
-    }
-    get fields() {
-        return this._fields;
-    }
-    // 缺乏股名資料
-    // get stockName() {
-    //     return this._stockName;
-    // }
-    get stockId() {
-        return this._stockId;
-    }
-
-}
 class yahooStockDay {
     constructor(stockId, period1, period2) {
         this.stockId = stockId;
@@ -586,23 +463,17 @@ class yahooStockDay {
         this.candleBody = this.priceClose.map( (v,i) => [this.priceOpen[i] , v] );
     }
 }
-
 async function getTwse(Ymd, stockId, periods) {
     Ymd = (Ymd !== undefined) ? Ymd.toString() : dt.format(new Date(), 'YYYYMMDD');
     if (isNaN(dt.parse(Ymd, 'YYYYMMDD'))) {
-        // console.log('Invalid Date');
         return 'Invalid Date'
     }
     if (stockId) {
-        // stockDaysMI 有給id參數, 查詢個股成交資訊
-        // perioeds傳入要調幾個月資料, 預設為當月
         stockId = stockId.toString();
         var MI = new twseStockDay(Ymd, stockId, periods);
         await MI.initialize();
         return MI;
     } else {
-        // afterHoursMI 只給日期參數, 查詢該日整體市場行情
-        // 完全沒給參數, 預設查詢今日或最近一日市場行情
         var MI = new twseMarketInfo(Ymd);
         await MI.initialize();
         return MI;
