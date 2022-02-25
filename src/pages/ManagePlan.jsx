@@ -40,6 +40,19 @@ const col = [
    { id: 'plan_target', name: '目標' },
    { id: 'plan_note', name: '筆記' },
 ];
+
+// 表單預設值
+const initialValues = {
+   plan_date: dt.format(new Date(), 'YYYY-MM-DD'),
+   sec_str: "",
+   plan_strategy:"",
+   plan_param1:"",
+   plan_param2:"",
+   plan_anchor:"",
+   plan_stoploss:"",
+   plan_target:"",
+}
+
 // 副表使用
 const col2 = [
    { id: 'sec_id', name: '代號' },
@@ -55,6 +68,8 @@ function Manageplan(props) {
    };
    const [inputValues, setInputValues] = useState();
    const [datalist, setDatalist] = useState([]);
+   const planHelper = (values) => {
+   }
 
    let controller = new AbortController();
    const getDatalist = (inputStr) => {
@@ -71,27 +86,37 @@ function Manageplan(props) {
          })
       }
    }
-   useEffect(() => {
-      console.log(`Manageplan useEffect: ${JSON.stringify(inputValues)}`);
-      // 依照選取的類型, 自動計算參考值顯示在下方
-      // 各種策略模型寫在其他檔案import進來
+   const handleSubmit = (values, actions) => {
+      let dataToServer = {
+         sec_id: values.sec_str.split(" ")[0],
+         acc_email: acc_email,
+         ...values
+      };
+      axios.post(urlPostCreate, dataToServer).then((res) => {
+         console.log(dataToServer);
+         console.log(res.data);
+         actions.resetForm();
+         refresh();
+      });
+   }
+   // useEffect(() => {
+   //    // console.log(`Manageplan useEffect: ${JSON.stringify(inputValues)}`);
+   //    // 依照選取的類型, 自動計算參考值顯示在下方
+   //    // 各種策略模型寫在其他檔案import進來
 
-   }, [inputValues])
-
+   // }, [inputValues])
 
    return (
       <Container fluid>
          <Row>
             <Col lg={8}>
                <Formik
-                  initialValues={{
-                     plan_date: dt.format(new Date(), 'YYYY-MM-DD'),
-                  }}
+                  initialValues={initialValues}
                   validate={
                      (values) => {
                         const errors = {};
                         if (values.plan_date < 0) {
-                           errors.sec_str = "日期不可空白";
+                           errors.plan_date = "日期不可空白";
                         }
                         if (!values.sec_str) {
                            errors.sec_str = "代號及名稱不可空白";
@@ -102,19 +127,7 @@ function Manageplan(props) {
                         return errors;
                      }
                   }
-                  onSubmit={(values, actions) => {
-                     let dataToServer = {
-                        acc_email: acc_email,
-                        ...values
-                     };
-                     Window.alert(`dataToServer: ${JSON.stringify(dataToServer)}`);
-                     // axios.post(urlPostCreate, dataToServer).then((res) => {
-                     //    console.log(res.data);
-                     //    actions.resetForm();
-                     //    refresh();
-                     // });
-                     actions.resetForm();
-                  }}
+                  onSubmit={handleSubmit}
                >
                   {(props) => (
                      <Form>
@@ -126,8 +139,7 @@ function Manageplan(props) {
                         />
                         <MyInput
                            label="股票代號及名稱"
-                           name="sec_str"
-                           id="sec_str"
+                           name="sec_str" id="sec_str"
                            type="text"
                            placeholder=""
                            inline="true"
@@ -136,18 +148,12 @@ function Manageplan(props) {
                         />
                         <MySelect
                            label="類型"
-                           name="plan_strategy"
-                           id="plan_strategy"
+                           name="plan_strategy" id="plan_strategy"
                            type="text"
                            inline="true"
                            size="sm">
                            {['自訂', '虧損相對總資本', '虧損絕對金額', '虧損百分比']}
                         </MySelect>
-
-                        <MyFormikObserver
-                           value={props.values}
-                           onChange={setInputValues}>
-                        </MyFormikObserver>
                         <br />
                         <MyInput
                            label="參數1"
@@ -184,6 +190,10 @@ function Manageplan(props) {
                            placeholder=""
                            inline="true"
                         />
+                        <MyFormikObserver
+                           value={props.values}
+                           onChange={setInputValues}>
+                        </MyFormikObserver>
                         <br />
                         <Row>
                            <Col lg={8}>

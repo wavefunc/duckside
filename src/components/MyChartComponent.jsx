@@ -10,6 +10,7 @@
     ArcElement,
 } from 'chart.js';
 import { Line, Pie } from 'react-chartjs-2';
+
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 ChartJS.register(

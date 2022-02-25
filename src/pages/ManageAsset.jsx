@@ -39,6 +39,19 @@ const col = [
    { id: 'ast_borrowing', name: '資券調整' },
    { id: 'ast_adjust', name: '其他調整' },
 ];
+
+// 表單預設值
+const initialValues = {
+   ast_date: dt.format(new Date(), 'YYYY-MM-DD'),
+   ast_cash: 453000,
+   ast_securities: 750000,
+   ast_option: 50000,
+   ast_others: 100000,
+   ast_borrowing: -7000,
+   ast_adjust: -50000,
+   ast_note:"",
+};
+
 // 副表使用
 const col2 = [
    { id: 'sec_id', name: '代號' },
@@ -66,15 +79,7 @@ function ManageAsset(props) {
          <Row>
             <Col lg={8}>
                <Formik
-                  initialValues={{
-                     ast_date: dt.format(new Date(), 'YYYY-MM-DD'),
-                     ast_cash: 453000,
-                     ast_securities: 750000,
-                     ast_option: 50000,
-                     ast_others: 100000,
-                     ast_borrowing: -7000,
-                     ast_adjust: -50000,
-                  }}
+                  initialValues={initialValues}
                   validate={
                      (values) => {
                         const errors = {};
@@ -95,6 +100,7 @@ function ManageAsset(props) {
                      console.log(`dataToServer: ${JSON.stringify(dataToServer)}`);
                      axios.post(urlPostCreate, dataToServer).then((res) => {
                         console.log(res.data);
+                        console.log(res.data.sqlMessage);
                         actions.resetForm();
                         refresh();
                      });
@@ -118,7 +124,7 @@ function ManageAsset(props) {
                         />
                         <MyInput
                            label="證券"
-                           name="txn_round" id="txn_round"
+                           name="ast_securities" id="ast_securities"
                            type="number" step="10000"
                            placeholder="當時的庫存市值"
                            inline="true"

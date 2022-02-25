@@ -9,7 +9,9 @@
 
 import React, { useState } from 'react';
 import { Container, Row, Col, Tab, Nav, Button } from 'react-bootstrap';
+
 import { Formik, Form } from 'formik';
+
 import axios from 'axios';
 import dt from 'date-and-time';
 
@@ -155,8 +157,7 @@ function ManageTransaction(props) {
                            <br />
                            <MyInput
                               label="股票代號及名稱"
-                              name="sec_str"
-                              id="sec_str"
+                              name="sec_str" id="sec_str"
                               type="text"
                               placeholder=""
                               inline="true"
