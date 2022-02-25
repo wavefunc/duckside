@@ -41,6 +41,7 @@ let GameStoreFirstPage = (props) => {
                   <path id="Icon_simple-cashapp" data-name="Icon simple-cashapp" d="M35.385,5.2A7.65,7.65,0,0,0,30.81.63C28.845,0,27.06,0,23.43,0H12.54C8.94,0,7.125,0,5.19.6A7.65,7.65,0,0,0,.615,5.19C0,7.14,0,8.94,0,12.54v10.9c0,3.615,0,5.4.6,7.35A7.65,7.65,0,0,0,5.175,35.37c1.95.615,3.75.615,7.35.615h10.92c3.615,0,5.415,0,7.35-.6a7.65,7.65,0,0,0,4.59-4.59c.615-1.95.615-3.75.615-7.35V12.57c0-3.615,0-5.415-.615-7.365ZM26.13,12.15l-1.4,1.4a.75.75,0,0,1-1,.015,7.5,7.5,0,0,0-4.83-1.77c-1.455,0-2.91.48-2.91,1.815s1.56,1.8,3.36,2.475c3.15,1.05,5.76,2.37,5.76,5.46,0,3.36-2.61,5.67-6.87,5.925l-.39,1.8a.735.735,0,0,1-.72.585H14.445l-.135-.015a.75.75,0,0,1-.57-.885l.42-1.905A9.81,9.81,0,0,1,9.84,24.69v-.015a.72.72,0,0,1,0-1.02l1.5-1.455a.735.735,0,0,1,1.005,0,7.254,7.254,0,0,0,5.085,1.98c1.95,0,3.255-.825,3.255-2.13s-1.32-1.65-3.81-2.58c-2.64-.945-5.145-2.28-5.145-5.4,0-3.63,3.015-5.4,6.585-5.565L18.69,6.66a.72.72,0,0,1,.72-.57h2.67l.15.015a.718.718,0,0,1,.555.855L22.38,9.015A11.257,11.257,0,0,1,26.1,11.1l.03.03a.715.715,0,0,1,0,1.02Z" transform="translate(134.365 546.007)" fill="#dec646"/>
                   <text id="_500" data-name="500" transform="translate(183 579)" fill="#520707" font-size="40" font-family="HelveticaNeue-Bold, Helvetica Neue" font-weight="700"><tspan x="0" y="0">500</tspan></text>
                   <text id="燈串" transform="translate(118 350)" fill="#520707" font-size="40" font-family="PingFangTC-Regular, PingFang TC"><tspan x="0" y="0">燈串</tspan></text>
+                  {/* 燈串 */}
                   <g id="my_light" transform="translate(79.5 31.989)">
                      <path id="Path_4" data-name="Path 4" d="M0,1.1S51.02,65.9,124.145,68.491C215.212,67.848,281,0,281,0" transform="translate(62.5 357.5)" fill="none" stroke="#707070" stroke-width="4"/>
                      <g id="Group_14" data-name="Group 14" transform="translate(71.812 376.559)">
@@ -84,6 +85,8 @@ let GameStoreFirstPage = (props) => {
                      <path id="Path_5-8" data-name="Path 5" d="M6.813,0c3.763,0,6.813,3.875,6.813,8.655,0,2.471-.489,5.658-1.868,7.32-1.15,1.388-3.127,1.335-4.945,1.335-1.678,0-3.069.829-4.772-1.335S0,11.3,0,8.655C0,3.875,3.05,0,6.813,0Z" transform="translate(13.626 30.724) rotate(180)" fill="#ffd230"/>
                      </g>
                   </g>
+
+
                   <g id="BuyBtn" onClick={showModal} style={{cursor:"pointer"}}>
                      <rect id="Rectangle_119" data-name="Rectangle 119" width="111" height="54" rx="20" transform="translate(307 540)" fill="#bc2121"/>
                      <text id="購買" transform="translate(333 578)" fill="#faf3e2" font-size="30" font-family="PingFangTC-Semibold, PingFang TC" font-weight="600"><tspan x="0" y="0">購買</tspan></text>
@@ -117,6 +120,7 @@ let GameStoreFirstPage = (props) => {
                      <text id="購買" transform="translate(333 578)" fill="#faf3e2" font-size="30" font-family="PingFangTC-Semibold, PingFang TC" font-weight="600"><tspan x="0" y="0">購買</tspan></text>
                      </a>
                   </g>
+                  {/* 籃球 */}
                   <g id="basketball" transform="translate(436.026 -392.066)">
                      <circle id="Ellipse_6" data-name="Ellipse 6" cx="88.474" cy="88.474" r="88.474" transform="translate(169 737)" fill="#ef8d37"/>
                      <line id="Line_25" data-name="Line 25" x2="176.948" transform="translate(169 825.474)" fill="none" stroke="#707070" stroke-width="10"/>
@@ -124,6 +128,7 @@ let GameStoreFirstPage = (props) => {
                      <path id="Path_7" data-name="Path 7" d="M25.682,0S1.111,34.034.037,67.1s21.35,65.178,21.35,65.178" transform="translate(292.262 761.481)" fill="none" stroke="#707070" stroke-width="10"/>
                      <line id="Line_26" data-name="Line 26" y2="176.948" transform="translate(257.903 737.429)" fill="none" stroke="#707070" stroke-width="10"/>
                   </g>
+
                </g>
                </svg>
                </li>
@@ -152,6 +157,7 @@ let GameStoreFirstPage = (props) => {
                      <text id="購買" transform="translate(333 578)" fill="#faf3e2" font-size="30" font-family="PingFangTC-Semibold, PingFang TC" font-weight="600"><tspan x="0" y="0">購買</tspan></text>
                      </a>
                   </g>
+                  {/* 浴池 */}
                   <g id="bath_tube" data-name="bath tube" transform="translate(158.625 -140.035)">
                      <path id="Path_8" data-name="Path 8" d="M0,0H244.926V56.554c0,5.129-6.129,10.656-16.41,13.795,0,0-51.021,13.681-104.047,13.681S16.41,70.349,16.41,70.349C7.9,67.737,1.329,59.991,1.329,54.862Z" transform="translate(1222 554.285)" fill="#b8dbdb"/>
                      <g id="Path_9" data-name="Path 9" transform="translate(1222 523)" fill="#68709f">
@@ -185,6 +191,7 @@ let GameStoreFirstPage = (props) => {
                      <circle id="Ellipse_20" data-name="Ellipse 20" cx="6.38" cy="6.38" r="6.38" transform="translate(1259.459 548.933)" fill="#fff"/>
                      <circle id="Ellipse_32" data-name="Ellipse 32" cx="6.586" cy="6.586" r="6.586" transform="translate(1415.06 548.933)" fill="#bba3c4"/>
                   </g>
+
                </g>
                </svg>
                </li>
@@ -213,6 +220,7 @@ let GameStoreFirstPage = (props) => {
                      <text id="購買" transform="translate(333 578)" fill="#faf3e2" font-size="30" font-family="PingFangTC-Semibold, PingFang TC" font-weight="600"><tspan x="0" y="0">購買</tspan></text>
                      </a>
                   </g>
+                  {/* 電視 */}
                   <g id="TV" transform="translate(945 108.167)">
                      <g id="Rectangle_43" data-name="Rectangle 43" transform="translate(442 266.833)" fill="#464444" stroke="#707070" stroke-width="1">
                      <rect width="234" height="121" stroke="none"/>
@@ -225,6 +233,7 @@ let GameStoreFirstPage = (props) => {
                      <rect id="Rectangle_45" data-name="Rectangle 45" width="13" height="24" transform="translate(553 387.833)" fill="#464444"/>
                      <ellipse id="Ellipse_36" data-name="Ellipse 36" cx="67.5" cy="7.5" rx="67.5" ry="7.5" transform="translate(492 405.833)" fill="#464444"/>
                   </g>
+
                </g>
                </svg>
                </li>
@@ -267,6 +276,7 @@ let GameStoreFirstPage = (props) => {
                      <text id="購買" transform="translate(333 578)" fill="#faf3e2" font-size="30" font-family="PingFangTC-Semibold, PingFang TC" font-weight="600"><tspan x="0" y="0">購買</tspan></text>
                      </a>
                   </g>
+                  {/* 櫃子 */}
                   <g id="櫃子" transform="translate(995.75 166.789)">
                      <path id="Path_13" data-name="Path 13" d="M4.922,0c4.392,0,5.963,45.257,5.963,45.257s-1.136,1.5-5.031,1.5A10.11,10.11,0,0,1,0,45.257S.53,0,4.922,0Z" transform="translate(456.571 369.041) rotate(180)" fill="#d6c298"/>
                      <path id="Path_15" data-name="Path 15" d="M4.922,0c4.392,0,5.963,45.257,5.963,45.257s-1.136,1.5-5.031,1.5A10.11,10.11,0,0,1,0,45.257S.53,0,4.922,0Z" transform="translate(577.91 369.041) rotate(180)" fill="#d6c298"/>
@@ -282,6 +292,7 @@ let GameStoreFirstPage = (props) => {
                      <circle id="Ellipse_38-2" data-name="Ellipse 38" cx="4.098" cy="4.098" r="4.098" transform="translate(182.81 152.48)" fill="#760202"/>
                      </g>
                   </g>
+
                </g>
                </svg>
                </li>
@@ -353,6 +364,7 @@ let GameStoreFirstPage = (props) => {
                      <text id="購買" transform="translate(333 578)" fill="#faf3e2" font-size="30" font-family="PingFangTC-Semibold, PingFang TC" font-weight="600"><tspan x="0" y="0">購買</tspan></text>
                      </a>
                   </g>
+                  {/* 鏡子 */}
                   <g id="鏡子-2" data-name="鏡子" transform="translate(2048.577 -3009)">
                      <g data-type="innerShadowGroup">
                      <g transform="matrix(1, 0, 0, 1, -731.58, 3296)" filter="url(#Subtraction_8)">
@@ -391,6 +403,7 @@ let GameStoreFirstPage = (props) => {
                      <path id="Path_738-2" data-name="Path 738" d="M18.586,0S10.721,6.638,6.526,22.68,0,63.03,0,63.03" transform="matrix(-0.97, -0.26, 0.26, -0.97, 157.55, 159.01)" fill="#fff" opacity="0.25"/>
                      </g>
                   </g>
+
                </g>
                </svg>
 
@@ -420,6 +433,7 @@ let GameStoreFirstPage = (props) => {
                      <text id="購買" transform="translate(333 578)" fill="#faf3e2" font-size="30" font-family="PingFangTC-Semibold, PingFang TC" font-weight="600"><tspan x="0" y="0">購買</tspan></text>
                      </a>
                   </g>
+                  {/* 母鴨 */}
                   <g id="母鴨" transform="translate(3841.322 -5516.489)">
                      <g id="鴨子" transform="translate(-2411.749 5871.979)">
                      <line id="Line_17" data-name="Line 17" y2="11.56" transform="translate(59.387 152.337)" fill="none" stroke="#574809" stroke-width="7"/>
@@ -447,6 +461,7 @@ let GameStoreFirstPage = (props) => {
                      <ellipse id="Ellipse_49" data-name="Ellipse 49" cx="11.188" cy="5.967" rx="11.188" ry="5.967" transform="translate(-2319.545 5920.178)" fill="rgba(188,13,43,0.22)" opacity="0.57"/>
                      <ellipse id="Ellipse_50" data-name="Ellipse 50" cx="11.188" cy="5.967" rx="11.188" ry="5.967" transform="translate(-2379.771 5920.178)" fill="rgba(188,13,43,0.22)" opacity="0.57"/>
                   </g>
+
                </g>
                </svg>
 
@@ -476,6 +491,7 @@ let GameStoreFirstPage = (props) => {
                      <text id="購買" transform="translate(333 578)" fill="#faf3e2" font-size="30" font-family="PingFangTC-Semibold, PingFang TC" font-weight="600"><tspan x="0" y="0">購買</tspan></text>
                      </a>
                   </g>
+                  {/* 眼鏡 */}
                   <g id="眼鏡-2" data-name="眼鏡" transform="translate(537.204 20.359)">
                      <g id="Ellipse_41" data-name="Ellipse 41" transform="translate(840.435 361.22)" fill="#dbdbdb" stroke="#707070" stroke-width="10">
                      <ellipse cx="51.767" cy="51.767" rx="51.767" ry="51.767" stroke="none"/>
@@ -487,6 +503,7 @@ let GameStoreFirstPage = (props) => {
                      </g>
                      <path id="Path_34" data-name="Path 34" d="M.186-9.79s12.558-9.476,23.993-9.476S45.835-9.79,45.835-9.79" transform="translate(943.783 422.777)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="10"/>
                   </g>
+                  
                </g>
                </svg>
 
