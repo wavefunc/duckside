@@ -6,7 +6,7 @@
  * * * * * * * * * * * */
 
 import React, { useEffect, useState } from 'react';
-import { Container, Row, Col, Tab, Nav, Button } from 'react-bootstrap';
+import { Container, Row, Col, Tab, Nav, Button, Modal, Toast, Card } from 'react-bootstrap';
 import { Formik, Form } from 'formik';
 import axios from 'axios';
 import dt from 'date-and-time';
@@ -14,16 +14,48 @@ import dt from 'date-and-time';
 import { MyFormikObserver, MyInput, MySelect } from '../components/MyFormComponent';
 import MyCurrentPosition from '../components/ManageCurrent.jsx';
 import ManageRecent from '../components/ManageRecent.jsx';
+import myPlanHelper from '../components/MyPlanHelper.jsx';
 
 const acc_email = 'ggg@mail.com';
 const urlPostRecent = 'http://localhost:5000/plan/recent';
 const urlPostCreate = 'http://localhost:5000/plan/create';
-// const urlPutUpdate = 'http://localhost:5000/plan/update';
-// const urlDelete = 'http://localhost:5000/plan/delete';
-const urlPostInventory = 'http://localhost:5000/transaction/inventory';
+const urlPutUpdate = 'http://localhost:5000/plan/update';
+const urlDelete = 'http://localhost:5000/plan/delete';
 const urlGetDatalist = 'http://localhost:5000/securities/datalist/';
 
-// 主表使用
+
+const urlPostInventory = 'http://localhost:5000/transaction/inventory';
+
+// 表單設定
+const initialValues = {
+   plan_date: dt.format(new Date(), 'YYYY-MM-DD'),
+   sec_str: "",
+   plan_strategy: "自訂",
+   plan_param1: "",
+   plan_param2: "",
+   plan_anchor: "",
+   plan_stoploss: "",
+   plan_target: "",
+   plan_note: "",
+}
+
+let controller = new AbortController();
+const getDatalist = (inputStr, callback) => {
+   if (inputStr.length < 2 || inputStr.length > 6) {
+      return
+   } else {
+      controller.abort();
+      controller = new AbortController();
+      axios(urlGetDatalist + inputStr, { signal: controller.signal }).then((result) => {
+         let datalist = result.data.map((v) => {
+            return `${v['sec_id']} ${v['sec_name']}`
+         });
+         callback(datalist);
+      })
+   }
+}
+
+// 主表設定
 const col = [
    { id: 'plan_id', name: 'asd_id', hidden: 'true' },
    {
@@ -33,7 +65,7 @@ const col = [
    { id: 'sec_id', name: '代號' },
    { id: 'sec_name', name: '名稱' },
    { id: 'plan_strategy', name: '類型' },
-   { id: 'plan_param1', name: '參數', hidden: true },
+   { id: 'plan_param1', name: '參數' },
    { id: 'plan_param2', name: '參數', hidden: true },
    { id: 'plan_anchor', name: '參考價' },
    { id: 'plan_stoploss', name: '停損' },
@@ -41,19 +73,8 @@ const col = [
    { id: 'plan_note', name: '筆記' },
 ];
 
-// 表單預設值
-const initialValues = {
-   plan_date: dt.format(new Date(), 'YYYY-MM-DD'),
-   sec_str: "",
-   plan_strategy: "",
-   plan_param1: "",
-   plan_param2: "",
-   plan_anchor: "",
-   plan_stoploss: "",
-   plan_target: "",
-}
 
-// 副表使用
+// 副表設定
 const col2 = [
    { id: 'sec_id', name: '代號' },
    { id: 'sec_name', name: '名稱' },
@@ -63,53 +84,134 @@ const col2 = [
 function Manageplan(props) {
    console.log('--Manageplan--');
    const [refreshState, setRefresh] = useState(true);
+
+   const [inputValues, setInputValues] = useState({});
+   const [strategy, setStrategy] = useState({});
+   const [helper, setHelper] = useState(() => null);
+   const [result, setResult] = useState(null);
+   const [editingValues, setEditingValues] = useState({});
+   const [datalist, setDatalist] = useState([]);
+
+   const [showEdit, setShowEdit] = useState(false);
+   const [showDelete, setShowDelete] = useState(false);
+   const [showToast, setShowToast] = useState(false);
+
    const refresh = () => {
       setRefresh(!refreshState);
    };
-   const [inputValues, setInputValues] = useState();
-   const [datalist, setDatalist] = useState([]);
-   const planHelper = (values) => {
-   }
-   const handleEdit = (id) => {
-      console.log(`editing ${id}`);
-   };
-   const handleDelete = (id) => {
-      console.log(`deleting ${id}`);
-   };
-   let controller = new AbortController();
-   const getDatalist = (inputStr) => {
-      if (inputStr.length < 2 || inputStr.length > 4) {
-         return
-      } else {
-         controller.abort();
-         controller = new AbortController();
-         axios(urlGetDatalist + inputStr, { signal: controller.signal }).then((result) => {
-            let datalist = result.data.map((v) => {
-               return `${v['sec_id']} ${v['sec_name']}`
-            });
-            setDatalist(datalist);
-         })
+
+   const validate = (values) => {
+      const errors = {};
+      if (values.plan_date < 0) {
+         errors.plan_date = "日期不可空白";
       }
-   }
+      if (!values.sec_str) {
+         errors.sec_str = "代號及名稱不可空白";
+      }
+      if (datalist.indexOf(values.sec_str) < 0) {
+         errors.sec_str = "查無此股, 請從選項填入";
+      }
+      return errors;
+   };
+
    const handleSubmit = (values, actions) => {
       let dataToServer = {
          sec_id: values.sec_str.split(" ")[0],
          acc_email: acc_email,
          ...values
       };
+      console.log('dataToServer:');
+      console.log(dataToServer);
       axios.post(urlPostCreate, dataToServer).then((res) => {
-         console.log(dataToServer);
          console.log(res.data);
          actions.resetForm();
          refresh();
       });
-   }
-   // useEffect(() => {
-   //    // console.log(`Manageplan useEffect: ${JSON.stringify(inputValues)}`);
-   //    // 依照選取的類型, 自動計算參考值顯示在下方
-   //    // 各種策略模型寫在其他檔案import進來
+   };
 
-   // }, [inputValues])
+   const handleShowEdit = (cells) => {
+      let values = cells.map((v) => v.data);
+      let dataToEdit = col.reduce((target, elm, idx) => {
+         target[elm.id] = elm.formatter ? elm.formatter(values[idx]) : values[idx];
+         return target;
+      }, {});
+      dataToEdit['sec_str'] = `${dataToEdit.sec_id} ${dataToEdit.sec_name}`;
+      setDatalist(dataToEdit['sec_str']);
+      setEditingValues(dataToEdit);
+      setShowEdit(true);
+   }
+   const handleCloseEdit = () => {
+      setEditingValues();
+      setShowEdit(false);
+   }
+   const handleEdit = (values, actions) => {
+      let dataToServer = {
+         sec_id: values.sec_str.split(" ")[0],
+         acc_email: acc_email,
+         ...values
+      };
+      console.log(dataToServer);
+      axios.put(urlPutUpdate, dataToServer).then((res) => {
+         console.log(res.data);
+         actions.resetForm();
+         handleCloseEdit()
+         refresh();
+         setShowToast(true);
+      });
+   }
+   const handleShowDelete = (cells) => {
+      let values = cells.map((v) => v.data);
+      let dataToDelete = col.reduce((target, elm, idx) => {
+         target[elm.id] = elm.formatter ? elm.formatter(values[idx]) : values[idx];
+         return target;
+      }, {});
+      dataToDelete['sec_str'] = `${dataToDelete.sec_id} ${dataToDelete.sec_name}`;
+      setDatalist(dataToDelete['sec_str']);
+      setEditingValues(dataToDelete);
+      setShowDelete(true);
+   }
+   const handleCloseDelete = () => {
+      setEditingValues();
+      setShowDelete(false);
+   }
+   const handleDelete = (values, actions) => {
+      let dataToServer = {
+         plan_id: values.plan_id
+      };
+      axios.delete(urlDelete, { data: dataToServer }).then((res) => {
+         console.log(res.data);
+         actions.resetForm();
+         handleCloseDelete();
+         refresh();
+         setShowToast(true);
+      });
+   }
+
+   useEffect(() => {
+      if (inputValues.plan_strategy) {
+         let searchStr = inputValues.plan_strategy;
+         console.log(`ManagePlan useEffect: ${searchStr}`);
+         setStrategy(myPlanHelper.findIndex(searchStr));
+         let StrategyKey = myPlanHelper.findIndex(searchStr).key;
+         setHelper(myPlanHelper[StrategyKey]);
+         console.log(myPlanHelper[StrategyKey]);
+      }
+   }, [inputValues.plan_strategy])
+
+   /*
+   useEffect(() => {
+      console.log('ManagePlan useEffect helper get result');
+      console.log(typeof helper);
+      console.log(helper);
+      if (helper) {
+         let result = helper(inputValues);
+      }
+      setResult(result);
+      console.log(result);
+      // 依照選取的類型, 自動計算參考值顯示在下方
+      // 各種策略模型寫在其他檔案import進來
+   }, [inputValues]);
+   */
 
    return (
       <Container fluid>
@@ -117,21 +219,7 @@ function Manageplan(props) {
             <Col lg={8}>
                <Formik
                   initialValues={initialValues}
-                  validate={
-                     (values) => {
-                        const errors = {};
-                        if (values.plan_date < 0) {
-                           errors.plan_date = "日期不可空白";
-                        }
-                        if (!values.sec_str) {
-                           errors.sec_str = "代號及名稱不可空白";
-                        }
-                        if (datalist.indexOf(values.sec_str) < 0) {
-                           errors.sec_str = "查無此股, 請從選項填入";
-                        }
-                        return errors;
-                     }
-                  }
+                  validate={validate}
                   onSubmit={handleSubmit}
                >
                   {(props) => (
@@ -150,46 +238,50 @@ function Manageplan(props) {
                            inline="true"
                            list={datalist}
                            getList={getDatalist}
+                           setList={setDatalist}
                         />
                         <MySelect
                            label="類型"
                            name="plan_strategy" id="plan_strategy"
                            type="text"
                            inline="true"
-                           size="sm">
-                           {['自訂', '虧損相對總資本', '虧損絕對金額', '虧損百分比']}
+                           size="sm"
+                        >
+                           {myPlanHelper.list}
                         </MySelect>
-                        <br />
                         <MyInput
-                           label="參數1"
+                           label={strategy && strategy.param < 1 ? null : "參數1"}
                            name="plan_param1" id="plan_param1"
                            type="number" step="1"
                            placeholder=""
                            inline="true"
+                           className={strategy && strategy.param < 1 ? "d-none" : null}
                         />
                         <MyInput
-                           label="參數2"
+                           label={strategy && strategy.param < 2 ? null : "參數2"}
                            name="plan_param2" id="plan_param2"
                            type="number" step="1"
                            placeholder=""
                            inline="true"
+                           className={strategy && strategy.param < 2 ? "d-none" : null}
                         />
+                        <br />
                         <MyInput
                            label="參考價"
                            name="plan_anchor" id="plan_anchor"
                            type="number" step="1"
-                           placeholder=""
+                           placeholder="心目中合理的進場價"
                            inline="true"
                         />
                         <MyInput
-                           label="停損"
+                           label="停損價"
                            name="plan_stoploss" id="plan_stoploss"
                            type="number" step="1"
                            placeholder=""
                            inline="true"
                         />
                         <MyInput
-                           label="目標"
+                           label="目標價"
                            name="plan_target" id="plan_target"
                            type="number" step="1"
                            placeholder=""
@@ -216,11 +308,41 @@ function Manageplan(props) {
                      </Form>
                   )}
                </Formik>
+               <Modal show={showEdit} onHide={handleCloseEdit} centered={true} size='lg'>
+                  <Modal.Header closeButton>
+                     <Modal.Title>編輯</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                     <Formik
+                        initialValues={editingValues}
+                        validate={validate}
+                        onSubmit={handleEdit}
+                     >
+                     </Formik>
+                  </Modal.Body>
+                  <Modal.Footer>
+                  </Modal.Footer>
+               </Modal>
+               <Modal show={showDelete} onHide={handleCloseDelete} centered={true} size='lg'>
+                  <Modal.Header closeButton>
+                     <Modal.Title>刪除</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                     <Formik
+                        initialValues={editingValues}
+                        onSubmit={handleDelete}
+                     >
+                     </Formik>
+                  </Modal.Body>
+                  <Modal.Footer>
+                  </Modal.Footer>
+               </Modal>
             </Col>
             <Col lg={4}>
-               <MyCurrentPosition col={col2} className={{ table: 'table table-sm' }}
-                  url={urlPostInventory} dataToServer={{ acc_email: acc_email, dateQuery: dt.format(new Date(), 'YYYY-MM-DD') }}
-               ></MyCurrentPosition>
+               <Card>
+                  <h3>小幫手</h3>
+                  <p>{strategy.directions}</p>
+               </Card>
             </Col>
          </Row>
          <br />
@@ -234,6 +356,32 @@ function Manageplan(props) {
                      <Nav.Item>
                         <Nav.Link eventKey="second" bsPrefix='btn btn-light ml-1'>顯示更多</Nav.Link>
                      </Nav.Item>
+                     <div
+                        aria-live="polite"
+                        aria-atomic="true"
+                        style={{
+                           position: 'absolute',
+                           right: 0
+                        }}
+                        className="mr-3 alert"
+                     >
+                        <Toast
+                           show={showToast} onClose={() => setShowToast(false)} delay={1000} autohide
+                           style={{
+                              position: 'absolute',
+                              zIndex: 999,
+                              top: 0,
+                              right: 0,
+                              height: 36,
+                              width: 200,
+                           }}
+                        >
+                           <Toast.Header>
+                              <strong className="mr-auto">修改成功!</strong>
+                              <small>{dt.format(new Date(), "M/D H:m")}</small>
+                           </Toast.Header>
+                        </Toast>
+                     </div>
                   </Nav>
                   <Tab.Content>
                      <Tab.Pane eventKey="first">

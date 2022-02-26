@@ -3,13 +3,13 @@ import { Form, InputGroup } from 'react-bootstrap';
 import React, { useEffect, useRef } from 'react';
 
 
-export const MyInput = ({ label, list, getList, helptext, ...props }) => {
+export const MyInput = ({ label, list, getList, setList, helptext, ...props }) => {
     const [field, meta] = useField(props);
     let didChanged = useRef(false);
     useEffect(() => {
         if (list && didChanged.current) {
-            console.log('MyInput useEffect getlist');
-            getList(field.value);
+            console.log('MyInput useEffect getlist then setlist(callback)');
+            getList(field.value, setList);
             return
         }
         didChanged.current = true;
@@ -40,7 +40,7 @@ export const MyInput = ({ label, list, getList, helptext, ...props }) => {
                     <Form.Control.Feedback type="invalid">
                         {meta.error}
                     </Form.Control.Feedback>) : null}
-                {helptext ?  <Form.Text id={`helptext${props.id}`} muted>
+                {helptext ? <Form.Text id={`helptext${props.id}`} muted>
                     {helptext}
                 </Form.Text> : null}
             </InputGroup>
@@ -78,7 +78,10 @@ export const MySelect = ({ children, label, ...props }) => {
                     aria-describedby={`prependId${props.id}`}
                     isInvalid={meta.touched && meta.error}
                 >
-                    {children.map((v, i) => <option key={i} value={v}>{v}</option>)}
+                    {typeof children[0] === 'string' ?
+                        children.map((v, i) => <option key={i} value={v}>{v}</option>) :
+                        children.map((v) => <option key={v.key} value={v.value}>{v.value}</option>)
+                    }
                 </Form.Control>
                 <Form.Control.Feedback type="invalid">
                     {meta.error}

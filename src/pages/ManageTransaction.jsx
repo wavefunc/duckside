@@ -27,6 +27,17 @@ const urlPostInventory = 'http://localhost:5000/transaction/inventory';
 const urlGetDatalist = 'http://localhost:5000/securities/datalist/';
 
 // 表單設定
+const initialValues = {
+   txn_date: dt.format(new Date(), 'YYYY-MM-DD'),
+   sec_str: "",
+   txn_round: 1,
+   txn_position: "建倉",
+   txn_price: '630',
+   txn_amount: '',
+   txn_note: "老師說的",
+};
+
+
 const resetInputs = (prevValues) => {
    let newValues = { ...prevValues };
    newValues['sec_str'] = "";
@@ -36,7 +47,23 @@ const resetInputs = (prevValues) => {
    return newValues;
 }
 
-// 主表欄位
+let controller = new AbortController();
+const getDatalist = (inputStr, callback) => {
+   if (inputStr.length < 2 || inputStr.length > 6) {
+      return
+   } else {
+      controller.abort();
+      controller = new AbortController();
+      axios(urlGetDatalist + inputStr, { signal: controller.signal }).then((result) => {
+         let datalist = result.data.map((v) => {
+            return `${v['sec_id']} ${v['sec_name']}`
+         });
+         callback(datalist);
+      })
+   }
+}
+
+// 主表設定
 const col = [
    { id: 'txn_id', name: 'txn_id', hidden: true },
    {
@@ -51,7 +78,7 @@ const col = [
    { id: 'txn_note', name: '摘要' },
 ];
 
-// 副表欄位
+// 副表設定
 const colInventory = [
    { id: 'sec_id', name: '代號' },
    { id: 'sec_name', name: '名稱' },
@@ -61,10 +88,10 @@ const colInventory = [
 function ManageTransaction(props) {
    console.log('--ManageTransaction--');
    const [refreshState, setRefresh] = useState(true);
-   
+
    const [editingValues, setEditingValues] = useState({});
    const [datalist, setDatalist] = useState([]);
-   
+
    const [showEdit, setShowEdit] = useState(false);
    const [showDelete, setShowDelete] = useState(false);
    const [showToast, setShowToast] = useState(false);
@@ -88,6 +115,21 @@ function ManageTransaction(props) {
          errors.txn_amount = "數量不可空白";
       }
       return errors;
+   };
+
+   const handleSubmit = (values, actions) => {
+      let dataToServer = {
+         sec_id: values.sec_str.split(" ")[0],
+         acc_email: acc_email,
+         ...values
+      };
+      console.log(`dataToServer: ${JSON.stringify(dataToServer)}`);
+      axios.post(urlPostCreate, dataToServer).then((res) => {
+         console.log(res.data);
+         let newInitValues = resetInputs({ ...values });
+         actions.resetForm({ values: newInitValues });
+         refresh();
+      });
    };
 
    const handleShowEdit = (cells) => {
@@ -148,68 +190,14 @@ function ManageTransaction(props) {
       });
    }
 
-   let controller = new AbortController();
-   const getDatalist = (inputStr) => {
-      if (inputStr.length < 2 || inputStr.length > 4) {
-         return
-      } else {
-         controller.abort();
-         controller = new AbortController();
-         axios(urlGetDatalist + inputStr, { signal: controller.signal }).then((result) => {
-            let datalist = result.data.map((v) => {
-               return `${v['sec_id']} ${v['sec_name']}`
-            });
-            setDatalist(datalist);
-         })
-      }
-   }
-
    return (
       <Container fluid>
          <Row className='pr-2'>
             <Col lg={8}>
                <Formik
-                  initialValues={{
-                     txn_date: dt.format(new Date(), 'YYYY-MM-DD'),
-                     sec_str: "",
-                     txn_round: 1,
-                     txn_position: "建倉",
-                     txn_price: '630',
-                     txn_amount: '',
-                     txn_note: "老師說的",
-                  }}
-                  validate={
-                     (values) => {
-                        const errors = {};
-                        if (!values.sec_str) {
-                           errors.sec_str = "代號及名稱不可空白";
-                        }
-                        if (datalist.indexOf(values.sec_str) < 0) {
-                           errors.sec_str = "查無此股, 請從選項填入";
-                        }
-                        if (!values.txn_price) {
-                           errors.txn_price = "價格不可空白";
-                        }
-                        if (!values.txn_amount) {
-                           errors.txn_amount = "數量不可空白";
-                        }
-                        return errors;
-                     }
-                  }
-                  onSubmit={(values, actions) => {
-                     let dataToServer = {
-                        sec_id: values.sec_str.split(" ")[0],
-                        acc_email: acc_email,
-                        ...values
-                     };
-                     console.log(`dataToServer: ${JSON.stringify(dataToServer)}`);
-                     axios.post(urlPostCreate, dataToServer).then((res) => {
-                        console.log(res);
-                        let newInitValues = resetInputs({ ...values });
-                        actions.resetForm({ values: newInitValues });
-                        refresh();
-                     });
-                  }}
+                  initialValues={initialValues}
+                  validate={validate}
+                  onSubmit={handleSubmit}
                >
                   <Form>
                      <MyInput
@@ -247,6 +235,7 @@ function ManageTransaction(props) {
                         placeholder=""
                         inline="true"
                         list={datalist}
+                        setList={setDatalist}
                         getList={getDatalist}
                      />
                      <MyInput
