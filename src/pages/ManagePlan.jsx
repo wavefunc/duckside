@@ -45,12 +45,12 @@ const col = [
 const initialValues = {
    plan_date: dt.format(new Date(), 'YYYY-MM-DD'),
    sec_str: "",
-   plan_strategy:"",
-   plan_param1:"",
-   plan_param2:"",
-   plan_anchor:"",
-   plan_stoploss:"",
-   plan_target:"",
+   plan_strategy: "",
+   plan_param1: "",
+   plan_param2: "",
+   plan_anchor: "",
+   plan_stoploss: "",
+   plan_target: "",
 }
 
 // 副表使用
@@ -70,7 +70,12 @@ function Manageplan(props) {
    const [datalist, setDatalist] = useState([]);
    const planHelper = (values) => {
    }
-
+   const handleEdit = (id) => {
+      console.log(`editing ${id}`);
+   };
+   const handleDelete = (id) => {
+      console.log(`deleting ${id}`);
+   };
    let controller = new AbortController();
    const getDatalist = (inputStr) => {
       if (inputStr.length < 2 || inputStr.length > 4) {
@@ -108,7 +113,7 @@ function Manageplan(props) {
 
    return (
       <Container fluid>
-         <Row>
+         <Row className='pr-2'>
             <Col lg={8}>
                <Formik
                   initialValues={initialValues}
@@ -233,18 +238,19 @@ function Manageplan(props) {
                   <Tab.Content>
                      <Tab.Pane eventKey="first">
                         <ManageRecent row={10} col={col} refreshState={refreshState}
+                           edit={handleEdit} delete={handleDelete}
                            url={urlPostRecent} dataToServer={{ acc_email: acc_email, amount: 10 }}
                         ></ManageRecent>
                      </Tab.Pane>
                      <Tab.Pane eventKey="second">
-                        <ManageRecent row={10} col={col} refreshState={refreshState}
+                        <ManageRecent col={col} refreshState={refreshState}
+                           edit={handleEdit} delete={handleDelete}
                            url={urlPostRecent} dataToServer={{ acc_email: acc_email, amount: 200 }}
                         ></ManageRecent>
                      </Tab.Pane>
                   </Tab.Content>
                </Tab.Container>
             </Col>
-
          </Row>
       </Container >
    );

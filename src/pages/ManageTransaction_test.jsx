@@ -9,11 +9,11 @@ import React, { useState } from 'react';
 import { Formik, Form } from 'formik';
 
 import axios from 'axios';
-import dt from 'date-and-time';
+// import dt from 'date-and-time';
 
 import { MyInput } from '../components/MyFormComponent';
 
-const urlPostCreate = 'http://localhost:5000/transaction/create';
+// const urlPostCreate = 'http://localhost:5000/transaction/create';
 const urlGetDatalist = 'http://localhost:5000/securities/datalist/';
 
 function ManageTransaction_test(props) {

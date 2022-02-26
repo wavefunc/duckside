@@ -41,7 +41,7 @@ function MyCurrentPosition({ url, dataToServer, row, col = null, ...props }) {
                 sort={true}
                 style={{
                     table: {
-                        'width': '100%',
+                        'width': '96%',
                         'border-top': '1px solid #e2e2e2',
                     },
                 }}

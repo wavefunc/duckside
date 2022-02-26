@@ -89,7 +89,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const mdTheme = createTheme({
   typography: {
     "fontFamily": `"Roboto", "Helvetica", "Arial", sans-serif`,
-    "fontSize": 14,
+    "fontSize": 15,
     "fontWeight": 'bold',
   },
 
@@ -182,22 +182,7 @@ function Layout() {
             }}
           >
             <Link underline="none" color="black" href='/'>
-            {/* <Avatar sx={{ width: '200px',height:'70px' }} alt="duckside" src="/assets/images/logo.svg" /> */}
               <img src="/assets/images/logo.svg" alt="logo" style={{height:'55px',width:'200px',paddingLeft:'40px'}}/>
-              {/* <Typography
-                component="h1"
-                variant="h1"
-                noWrap
-                sx={{
-                  flexGrow: 1,
-                  color: "#2A6470",
-                  fontWeight: 'bold',
-                  fontSize: '25px',
-                  paddingTop: "34px",
-                }}
-              >
-                Duckside
-              </Typography> */}
             </Link>
 
             <IconButton onClick={toggleDrawer}>

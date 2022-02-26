@@ -26,6 +26,7 @@
     "gridjs-react": "^5.0.2",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.15",
+    "pubsub-js": "^1.9.4",
     "react": "^17.0.2",
     "react-bootstrap": "^1.6.4",
     "react-bootstrap-icons": "^1.7.2",
