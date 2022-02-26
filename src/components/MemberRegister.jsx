@@ -388,7 +388,7 @@ let MemberRegister = (props) => {
                 <button
                   type="button"
                   className="registerBtn"
-                  onClick={props.showtoggle}
+                  onClick={props.showLoginToggle}
                 >
                   返回
                 </button>

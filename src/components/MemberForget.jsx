@@ -25,55 +25,13 @@ let MemberLogin = (props) => {
   let emailInpButton = async (e) => {
     await setMemberInfo({ ...memberInfo, email: e.target.value });
   };
-  //密碼input
-  let passwordInpButton = async (e) => {
-    await setMemberInfo({ ...memberInfo, password: e.target.value });
-  };
 
   //登入_button
   let memberCheckHandler = async () => {
     await Axios.post("http://localhost:5000/account/login", {
       acc_email: memberInfo.email,
       acc_password: memberInfo.password,
-    }).then((result) => {
-      console.log(result.data);
-      if (result.data === "Password correct") {
-        //成功
-        setShowsuccess("contents");
-        //3秒後跳轉
-        let settime = setInterval(() => {
-          if (outsec > 0) {
-            //關閉視窗
-            setOutsec((outsec -= 1));
-          } else {
-            props.close();
-            setOutsec((outsec = 2));
-            clearInterval(settime);
-            //clear all data
-            setMemberInfo({ ...memberInfo, name: "", email: "", password: "" });
-            setShowsuccess("none");
-            //clear all data
-          }
-        }, 1000);
-        //localStorage
-        if (window.localStorage) {
-          var local = window.localStorage;
-          local.setItem("loginState", memberInfo.email);
-
-          // localStorage.removeItem("name"); //清除
-          // localStorage.clear(); //全部清除
-          // let a = localStorage.getItem("loginState");
-          // console.log(a);
-        }
-      } else if (result.data === "Password error") {
-        //失敗Password error
-        setPasswordfalse("contents");
-      } else if (result.data === "No such account") {
-        //失敗No such account
-        setEmailfalse("contents");
-      }
-    });
-    console.log(memberInfo);
+    }).then((result) => {});
   };
   //清除提示字
   let noticeClear = async () => {
@@ -92,14 +50,14 @@ let MemberLogin = (props) => {
       <div id="formContainer_body">
         <div id="formContainer" className="dwo">
           <div className="formLeft">
-            <img src="/assets/images/member_photo.png" alt="頭像" />
+            <img src="/assets/images/member_photo.png" alt="頭相" />
           </div>
           <div className="formRight">
             {/* <!-- Login form --> */}
             <form id="login">
               <header>
-                <h1>歡迎回來</h1>
-                <p>請先登入</p>
+                <h1 className="mt-4">忘記密碼</h1>
+                <p>請輸入信箱</p>
               </header>
               <section>
                 <label>
@@ -112,16 +70,7 @@ let MemberLogin = (props) => {
                   />
                   <div className="border"></div>
                 </label>
-                <label>
-                  <p>密碼</p>
-                  <input
-                    type="password"
-                    placeholder=" "
-                    onChange={passwordInpButton}
-                    onClick={noticeClear}
-                  />
-                  <div className="border"></div>
-                </label>
+
                 <div className="d-flex justify-content-center">
                   <span
                     className="text-danger"
@@ -140,28 +89,14 @@ let MemberLogin = (props) => {
                   </span>
                 </div>
                 <button type="button" onClick={memberCheckHandler}>
-                  登 入
+                  送 出
                 </button>
               </section>
               <footer>
                 <button
                   type="button"
-                  className="forgotBtn"
+                  className="registerBtn"
                   onClick={props.showForgetToggle}
-                >
-                  忘記密碼?
-                </button>
-                <button
-                  type="button"
-                  className="registerBtn"
-                  onClick={props.showLoginToggle}
-                >
-                  註冊?
-                </button>
-                <button
-                  type="button"
-                  className="registerBtn"
-                  onClick={props.close}
                 >
                   返回
                 </button>
