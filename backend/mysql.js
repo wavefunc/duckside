@@ -9,6 +9,7 @@ var pool = mysql.createPool({
    password: 'iii23265860',
    database: 'duckside',
    port: 3306,
+   multipleStatements: true,
    // 無可用連線時是否等待pool連線釋放(預設為true)
    waitForConnections: true,
    // 連線池可建立的總連線數上限(預設最多為10個連線數)

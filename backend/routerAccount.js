@@ -15,15 +15,23 @@ router.get('/account/all', (req, res) => {
    );
 });
 
-// ********
-// 新增會員
-// ********
+// **************************
+// 新增會員，並建立家具預設資料
+// **************************
 router.post('/account/create', async (req, res) => {
-   let strQuery = `INSERT INTO account
-        (acc_email, acc_password, acc_name) VALUES(?, ?, ?)`
+   let strQuery1 = `INSERT INTO account
+   (acc_email, acc_password, acc_name) VALUES(?, ?, ?);`
 
-   var hashPassword;
+   // 建立 會員_家俱 預設資料的 SQL 語法
+   let aryFurnId = ['basketball', 'bath_tube', 'my_light', 'TV', '時鐘-2', '櫃子', '母鴨', '畫像', '眼鏡-2', '舉重槓-2', '鏡子-2']
+   let strQuery2 = `INSERT INTO acc_furn (acc_furn_id, acc_id, furn_id) VALUES `;
+   aryFurnId.forEach((val) => {
+      strQuery2 += `(NULL, (SELECT acc_id from account where acc_email = '${req.body.acc_email}'), '${val}'),`;
+   });
+   strQuery2 = strQuery2.slice(0, -1);
+
    // 將密碼加密後再存入 DB
+   var hashPassword;
    const encryptPassword = () => {
       return new Promise(resolve => {
          bcrypt.hash(req.body.acc_password, 10, function (err, hash) {
@@ -38,7 +46,7 @@ router.post('/account/create', async (req, res) => {
    };
    await encryptPassword();
 
-   query(strQuery,
+   await query(strQuery1 + strQuery2,
       [req.body.acc_email, hashPassword, req.body.acc_name],
       (err) => err ? res.send(err) : res.send('Added successfully')
    );

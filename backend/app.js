@@ -13,6 +13,8 @@ app.use(cors());
 
 // 獲取前端的變數
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static('./public'))
+app.use(express.static('../node_modules'))
 app.use(express.json());
 
 // 引用各資料表的 router
@@ -21,7 +23,9 @@ var routers = [
     './routerAsset',
     './routerPlan',
     './routerSecurities',
-    './routerTransaction'
+    './routerTransaction',
+    './routerGameRoom'
+    // './routerTwStock'
 ]
 
 routers.forEach(val => { app.use('/', require(val)); })
