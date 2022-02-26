@@ -96,7 +96,7 @@ router.post('/transaction/inventory', async (req, res) => {
       SELECT txn.sec_id, sec.sec_name, sec.sec_market, SUM(txn.txn_amount) total
       FROM transaction txn 
       INNER JOIN securities sec ON txn.sec_id = sec.sec_id
-      WHERE txn.acc_id = ? AND txn.txn_date < ?
+      WHERE txn.acc_id = ? AND txn.txn_date <= ?
       GROUP BY txn.sec_id
    `
    query(strQuery, [acc_id, req.body.dateQuery], (err, rows) => {
