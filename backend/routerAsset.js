@@ -52,7 +52,7 @@ router.put('/asset/update', async (req, res) => {
    var strQuery =
       `UPDATE asset SET ast_date = ?, ast_securities = ?, ast_cash = ?,
          ast_borrowing = ?, ast_option = ?, ast_others = ?, ast_adjust = ?,
-         ast_note = ?, WHERE ast_id = ? AND acc_id = ?`;
+         ast_note = ? WHERE ast_id = ? AND acc_id = ?`;
    query(
       strQuery,
       [
@@ -63,8 +63,8 @@ router.put('/asset/update', async (req, res) => {
          req.body.ast_option,
          req.body.ast_others,
          req.body.ast_adjust,
-         req.body.ast_id,
          req.body.ast_note,
+         req.body.ast_id,
          acc_id
       ],
       (err) => {

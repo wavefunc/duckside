@@ -15,9 +15,9 @@ router.get('/account/all', (req, res) => {
    );
 });
 
-// ********
-// 新增會員
-// ********
+// **************************
+// 新增會員，並建立家具預設資料
+// **************************
 router.post('/account/create', async (req, res) => {
    let strQuery1 = `INSERT INTO account
    (acc_email, acc_password, acc_name) VALUES(?, ?, ?);`
