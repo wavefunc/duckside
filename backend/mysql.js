@@ -23,10 +23,8 @@ exports.query = async function (strQuery, options, callback) {
       // 取得連線池的連線
       pool.getConnection((err, conn) => {
          if (err) {
-            console.log('Database connection error!');
             reject(err);
          } else {
-            console.log('Database connection succeeded!');
             conn.query(strQuery, options, callback);
 
             // release connection。
