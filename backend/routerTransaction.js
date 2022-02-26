@@ -118,7 +118,8 @@ router.post('/transaction/recent', async (req, res) => {
       SELECT * FROM transaction txn
       INNER JOIN securities sec ON txn.sec_id = sec.sec_id
       WHERE acc_id = ?
-      ORDER BY txn_date ${strLimit}`;
+      ORDER BY txn_date ${strLimit}
+   `;
 
    query(strQuery, [acc_id], (err, rows) => {
       err ? res.send(err) : res.send(rows);
