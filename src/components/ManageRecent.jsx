@@ -7,16 +7,17 @@
  * 
  ********* */
 
-import { Grid } from 'gridjs-react';
-import { h } from 'gridjs';
+import { Grid, _ } from 'gridjs-react';
+import { PencilSquare, Trash } from 'react-bootstrap-icons';
+
 import "gridjs/dist/theme/mermaid.min.css";
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 
-function ManageRecent({ url, dataToServer, row, col = undefined, ... props }) {
+function ManageRecent({ url, dataToServer, row, ...props }) {
     const [data, setData] = useState([]);
     const dataToServerRef = useRef(dataToServer);
-
+    const [col, setCol] = useState([]);
     console.log(`ManageRecent: data*${data.length}`);
     useEffect(() => {
         let beingMounted = true;
@@ -49,42 +50,34 @@ function ManageRecent({ url, dataToServer, row, col = undefined, ... props }) {
         return () => { beingMounted = false };
     }, [url, dataToServerRef, props.refreshState, props.data]);
     useEffect(() => {
-        if (props.editHandler) {
-            let apndBtnCol = {
+        let myCol = props.col.map(x => x);
+        if (props.edit || props.delete) {
+            myCol.push({
                 name: '修改',
                 formatter: (cell, row) => {
-                    return h('button', {
-                        className: 'btn btn-outline-warning',
-                        onClick: () => alert(`Editing "${row.cells[0].data}" "${row.cells[1].data}"`)
-                    }, '編輯');
+                    return [
+                        props.edit ? _(<PencilSquare onClick={() => props.edit(row.cells)} cursor="pointer" className='mr-2' />, "i") : null,
+                        props.delete ? _(<Trash onClick={() => props.delete(row.cells)} cursor="pointer" />, "i") : null
+                    ]
                 }
-            }
-        }
-        if (props.deleteHandler) {
-            let apndBtnCol = {
-                name: '修改',
-                formatter: (cell, row) => {
-                    return h('button', {
-                        className: 'btn btn-outline-warning',
-                        onClick: () => alert(`Editing "${row.cells[0].data}" "${row.cells[1].data}"`)
-                    }, '編輯');
-                }
-            }
-        }
-    }, [])
+            });
+        };
+        setCol(myCol);
+    }, []);
 
-    return (
-        // 判斷是否有資料: data && data.length
-        data && data.length ? (
-            <Grid
-                columns={col}
-                data={row ? data.slice(0, row) : data}
-                search={row ? false : true}
-                sort={true}
-                pagination={row ? false : { enabled: true, limit: 50 }}
-                resizable={true}
-                style={{table: { 'width': '100%', 'border-top': '1px solid #e2e2e2', }}}
-            />) : null
-    );
+    return (data && data.length ?
+        <Grid
+            columns={col}
+            data={row ? data.slice(0, row) : data}
+            search={row ? false : true}
+            sort={true}
+            pagination={row ? false : { enabled: true, limit: 50 }}
+            resizable={true}
+            style={{
+                table: { 'width': '100%', 'border-top': '1px solid #e2e2e2', 'marginTop': '5px' },
+                th: { 'backgroundColor': '#e7ebee', 'fontWeight': 'bolder' }
+            }}
+        />:null
+    )
 }
 export default ManageRecent;
