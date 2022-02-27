@@ -32,9 +32,9 @@ const initialValues = {
    sec_str: "",
    txn_round: 1,
    txn_position: "建倉",
-   txn_price: '630',
-   txn_amount: '',
-   txn_note: "老師說的",
+   txn_price: 630,
+   txn_amount: 1000,
+   txn_note: "朋友說的",
 };
 
 

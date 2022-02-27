@@ -18,33 +18,26 @@ function ManageRecent({ url, dataToServer, row, ...props }) {
     const [data, setData] = useState([]);
     const dataToServerRef = useRef(dataToServer);
     const [col, setCol] = useState([]);
-    console.log(`ManageRecent: data*${data.length}`);
     useEffect(() => {
         let beingMounted = true;
-        console.log('ManageRecent useEffect');
         if (url) {
             // 如有收到url屬性, 則以axios請求資料來呈現在表格
             if (dataToServer) {
                 // 如有收到dataToServer(鍵值對), 以post方法請求, 否則預設以get方法請求
-                console.log('ManageRecent useEffect req (post)');
                 axios.post(url, dataToServer).then((res) => {
                     if (beingMounted) {
-                        console.log(res.data);
                         setData(res.data);
                     }
                 });
             } else {
                 // 如沒收到dataToServer, 預設以get方法請求
-                console.log('ManageRecent useEffect req (get)');
                 axios(url).then((res) => {
                     if (beingMounted) {
-                        console.log(res.data);
                         setData(res.data);
                     }
                 });
             }
         } else {
-            console.log(`ManageRecent useEffect use props.data: ${props.data}`)
             setData(props.data);
         }
         return () => { beingMounted = false };

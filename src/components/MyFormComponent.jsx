@@ -96,7 +96,6 @@ export const MyFormikObserver = (props) => {
     // <Formik>(props)=>{  <Form> 使用於此處  </Form> }<Formik>
     // 將想要監控的值傳入MyFormikObserver的value屬性
     // 將最上層元件想在該輸入值變動時做的函式傳入onchange
-    console.log('observer');
     useEffect(() => {
         props.onChange(props.value);
     }, [Object.values(props.value).join(', ')]);
