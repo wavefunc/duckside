@@ -12,7 +12,6 @@ import axios from 'axios';
 import dt from 'date-and-time';
 
 import { MyFormikObserver, MyInput, MySelect } from '../components/MyFormComponent';
-import MyCurrentPosition from '../components/ManageCurrent.jsx';
 import ManageRecent from '../components/ManageRecent.jsx';
 import myPlanHelper from '../components/MyPlanHelper.jsx';
 
@@ -22,9 +21,6 @@ const urlPostCreate = 'http://localhost:5000/plan/create';
 const urlPutUpdate = 'http://localhost:5000/plan/update';
 const urlDelete = 'http://localhost:5000/plan/delete';
 const urlGetDatalist = 'http://localhost:5000/securities/datalist/';
-
-
-const urlPostInventory = 'http://localhost:5000/transaction/inventory';
 
 // 表單設定
 const initialValues = {
@@ -57,7 +53,7 @@ const getDatalist = (inputStr, callback) => {
 
 // 主表設定
 const col = [
-   { id: 'plan_id', name: 'asd_id', hidden: 'true' },
+   { id: 'plan_id', name: 'asd_id', hidden: true },
    {
       id: 'plan_date', name: '日期',
       formatter: (cell) => { let d = new Date(cell); return dt.format(d, 'YYYY-MM-DD'); },
@@ -85,12 +81,12 @@ function Manageplan(props) {
    console.log('--Manageplan--');
    const [refreshState, setRefresh] = useState(true);
 
-   const [inputValues, setInputValues] = useState({});
-   const [strategy, setStrategy] = useState({});
-   const [helper, setHelper] = useState(() => null);
-   const [result, setResult] = useState(null);
    const [editingValues, setEditingValues] = useState({});
    const [datalist, setDatalist] = useState([]);
+   const [inputValues, setInputValues] = useState({});
+   console.log(inputValues);
+   const [strategy, setStrategy] = useState({});
+   const [result, setResult] = useState();
 
    const [showEdit, setShowEdit] = useState(false);
    const [showDelete, setShowDelete] = useState(false);
@@ -123,9 +119,10 @@ function Manageplan(props) {
       console.log('dataToServer:');
       console.log(dataToServer);
       axios.post(urlPostCreate, dataToServer).then((res) => {
-         console.log(res.data);
          actions.resetForm();
+         actions.setSubmitting(false);
          refresh();
+         console.log(res.data);
       });
    };
 
@@ -136,7 +133,7 @@ function Manageplan(props) {
          return target;
       }, {});
       dataToEdit['sec_str'] = `${dataToEdit.sec_id} ${dataToEdit.sec_name}`;
-      setDatalist(dataToEdit['sec_str']);
+      setDatalist([dataToEdit['sec_str']]);
       setEditingValues(dataToEdit);
       setShowEdit(true);
    }
@@ -166,7 +163,7 @@ function Manageplan(props) {
          return target;
       }, {});
       dataToDelete['sec_str'] = `${dataToDelete.sec_id} ${dataToDelete.sec_name}`;
-      setDatalist(dataToDelete['sec_str']);
+      setDatalist([dataToDelete['sec_str']]);
       setEditingValues(dataToDelete);
       setShowDelete(true);
    }
@@ -188,30 +185,15 @@ function Manageplan(props) {
    }
 
    useEffect(() => {
-      if (inputValues.plan_strategy) {
-         let searchStr = inputValues.plan_strategy;
-         console.log(`ManagePlan useEffect: ${searchStr}`);
-         setStrategy(myPlanHelper.findIndex(searchStr));
-         let StrategyKey = myPlanHelper.findIndex(searchStr).key;
-         setHelper(myPlanHelper[StrategyKey]);
-         console.log(myPlanHelper[StrategyKey]);
+      console.log('ManagePlan useEffect');
+      let strategyName = inputValues.plan_strategy;
+      if (strategyName) {
+         let strategyKey = myPlanHelper.findIndex(strategyName).key;
+         let helper = myPlanHelper.getFunction(strategyKey);
+         setResult(helper(inputValues));
+         setStrategy(myPlanHelper.findIndex(strategyName));
       }
-   }, [inputValues.plan_strategy])
-
-   /*
-   useEffect(() => {
-      console.log('ManagePlan useEffect helper get result');
-      console.log(typeof helper);
-      console.log(helper);
-      if (helper) {
-         let result = helper(inputValues);
-      }
-      setResult(result);
-      console.log(result);
-      // 依照選取的類型, 自動計算參考值顯示在下方
-      // 各種策略模型寫在其他檔案import進來
-   }, [inputValues]);
-   */
+   }, [inputValues])
 
    return (
       <Container fluid>
@@ -237,8 +219,8 @@ function Manageplan(props) {
                            placeholder=""
                            inline="true"
                            list={datalist}
-                           getList={getDatalist}
                            setList={setDatalist}
+                           getList={getDatalist}
                         />
                         <MySelect
                            label="類型"
@@ -287,10 +269,6 @@ function Manageplan(props) {
                            placeholder=""
                            inline="true"
                         />
-                        <MyFormikObserver
-                           value={props.values}
-                           onChange={setInputValues}>
-                        </MyFormikObserver>
                         <br />
                         <Row>
                            <Col lg={8}>
@@ -305,6 +283,10 @@ function Manageplan(props) {
                               <Button type="submit" variant="warning" size="sm">送出</Button>
                            </Col>
                         </Row>
+                        <MyFormikObserver
+                           value={props.values}
+                           onChange={setInputValues}>
+                        </MyFormikObserver>
                      </Form>
                   )}
                </Formik>
@@ -340,8 +322,15 @@ function Manageplan(props) {
             </Col>
             <Col lg={4}>
                <Card>
-                  <h3>小幫手</h3>
-                  <p>{strategy.directions}</p>
+                  <Card.Header>小幫手</Card.Header>
+                  <Card.Body>
+                     <Card.Text>
+                        {strategy.directions}
+                     </Card.Text>
+                     <Card.Title>
+                        {result ? `${strategy.result} ${result} 元` : null}
+                     </Card.Title>
+                  </Card.Body>
                </Card>
             </Col>
          </Row>
@@ -386,13 +375,13 @@ function Manageplan(props) {
                   <Tab.Content>
                      <Tab.Pane eventKey="first">
                         <ManageRecent row={10} col={col} refreshState={refreshState}
-                           edit={handleEdit} delete={handleDelete}
+                           edit={handleShowEdit} delete={handleShowDelete}
                            url={urlPostRecent} dataToServer={{ acc_email: acc_email, amount: 10 }}
                         ></ManageRecent>
                      </Tab.Pane>
                      <Tab.Pane eventKey="second">
                         <ManageRecent col={col} refreshState={refreshState}
-                           edit={handleEdit} delete={handleDelete}
+                           edit={handleShowEdit} delete={handleShowDelete}
                            url={urlPostRecent} dataToServer={{ acc_email: acc_email, amount: 200 }}
                         ></ManageRecent>
                      </Tab.Pane>

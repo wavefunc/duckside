@@ -128,6 +128,7 @@ function ManageTransaction(props) {
          console.log(res.data);
          let newInitValues = resetInputs({ ...values });
          actions.resetForm({ values: newInitValues });
+         actions.setSubmitting(false);
          refresh();
       });
    };

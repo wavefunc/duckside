@@ -55,7 +55,7 @@ const validate = (values) => {
 
 // 主表欄位
 const col = [
-   { id: 'ast_id', name: 'asd_id', hidden: 'true' },
+   { id: 'ast_id', name: 'asd_id', hidden: true },
    {
       id: 'ast_date', name: '日期',
       formatter: (cell) => { let d = new Date(cell); return dt.format(d, 'YYYY-MM-DD'); },
@@ -175,12 +175,11 @@ function ManageAsset(props) {
                      };
                      console.log(`dataToServer: ${JSON.stringify(dataToServer)}`);
                      axios.post(urlPostCreate, dataToServer).then((res) => {
-                        console.log(res.data);
-                        console.log(res.data.sqlMessage);
                         actions.resetForm();
+                        actions.setSubmitting(false);
+                        console.log(res.data);
                         refresh();
                      });
-                     actions.resetForm();
                   }}
                >
                   {(props) => (
