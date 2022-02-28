@@ -6,46 +6,52 @@ import "../css/member_style.css";
 import Modal from "react-bootstrap/Modal";
 
 let MemberLogin = (props) => {
+  //********************
   //State
-  //inp內容
+  //memberInfo
   let [memberInfo, setMemberInfo] = useState({
     name: "",
     email: "",
     password: "",
   });
-  //inp錯誤提示
+  // errorNotice
   let [passwordfalse, setPasswordfalse] = useState("none"); //contents
   let [emailfalse, setEmailfalse] = useState("none"); //contents
-  //登入成功state
+  //LoginSuccessState
   let [outsec, setOutsec] = useState(2);
   let [showsuccess, setShowsuccess] = useState("none");
 
+  //********************
   // function
   //信箱input
-  let emailInpButton = async (e) => {
+  let emailInpChange = async (e) => {
     await setMemberInfo({ ...memberInfo, email: e.target.value });
   };
   //密碼input
-  let passwordInpButton = async (e) => {
+  let passwordInpChange = async (e) => {
     await setMemberInfo({ ...memberInfo, password: e.target.value });
   };
+  //清除提示字
+  let noticeClearInpClick = async () => {
+    setEmailfalse("none");
+    setPasswordfalse("none");
+  };
 
-  //登入_button
-  let memberCheckHandler = async () => {
+  //登入button
+  let memberButClick = async () => {
     await Axios.post("http://localhost:5000/account/login", {
       acc_email: memberInfo.email,
       acc_password: memberInfo.password,
     }).then((result) => {
-      console.log(result.data);
       if (result.data === "Password correct") {
-        //成功
+        //成功登入
         setShowsuccess("contents");
         //3秒後跳轉
         let settime = setInterval(() => {
           if (outsec > 0) {
-            //關閉視窗
             setOutsec((outsec -= 1));
           } else {
+            //關閉視窗
             props.close();
             setOutsec((outsec = 2));
             clearInterval(settime);
@@ -59,27 +65,18 @@ let MemberLogin = (props) => {
         if (window.localStorage) {
           var local = window.localStorage;
           local.setItem("loginState", memberInfo.email);
-
-          // localStorage.removeItem("name"); //清除
-          // localStorage.clear(); //全部清除
-          // let a = localStorage.getItem("loginState");
-          // console.log(a);
         }
       } else if (result.data === "Password error") {
-        //失敗Password error
+        //失敗密碼錯誤
         setPasswordfalse("contents");
       } else if (result.data === "No such account") {
-        //失敗No such account
+        //失敗找不到帳號
         setEmailfalse("contents");
       }
     });
-    console.log(memberInfo);
   };
-  //清除提示字
-  let noticeClear = async () => {
-    setEmailfalse("none");
-    setPasswordfalse("none");
-  };
+
+
 
   return (
     <Modal
@@ -107,8 +104,8 @@ let MemberLogin = (props) => {
                   <input
                     type="text"
                     placeholder=" "
-                    onChange={emailInpButton}
-                    onClick={noticeClear}
+                    onChange={emailInpChange}
+                    onClick={noticeClearInpClick}
                   />
                   <div className="border"></div>
                 </label>
@@ -117,8 +114,8 @@ let MemberLogin = (props) => {
                   <input
                     type="password"
                     placeholder=" "
-                    onChange={passwordInpButton}
-                    onClick={noticeClear}
+                    onChange={passwordInpChange}
+                    onClick={noticeClearInpClick}
                   />
                   <div className="border"></div>
                 </label>
@@ -139,7 +136,7 @@ let MemberLogin = (props) => {
                     註冊成功!!! {outsec + 1}秒後跳轉...
                   </span>
                 </div>
-                <button type="button" onClick={memberCheckHandler}>
+                <button type="button" onClick={memberButClick}>
                   登 入
                 </button>
               </section>

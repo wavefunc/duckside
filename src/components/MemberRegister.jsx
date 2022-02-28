@@ -76,7 +76,6 @@ let MemberRegister = (props) => {
       await Axios.get(
         "http://localhost:5000/account/check/" + memberInfo.email
       ).then((result) => {
-        console.log(result.data);
         if (result.data === true) {
           setMemberState({ ...memberState, email: false });
           setNoticeState({
@@ -86,6 +85,7 @@ let MemberRegister = (props) => {
             emailover: "contents",
           });
         } else {
+          //正規表示法
           let emailRule = /^([\w.]){1,64}@(yahoo|hotmail|gmail)(.com|.com.tw)$/;
           memberInfo.email.search(emailRule) !== -1
             ? setMemberState({ ...memberState, email: true })
@@ -106,7 +106,12 @@ let MemberRegister = (props) => {
         }
       });
     } else {
-      setNoticeState({ ...noticeState, email: "contents", emailIcon: "none" });
+      setNoticeState({
+        ...noticeState,
+        email: "contents",
+        emailIcon: "none",
+        emailover: "none",
+      });
     }
   };
   //密碼blur
