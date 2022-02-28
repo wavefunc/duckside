@@ -4,11 +4,11 @@
 import React from 'react';
 import { Route } from "react-router-dom";
 
-import BackendDatatype from '../components/BackendDatatype';
+import BackendAvatar from '../components/BackendAvatar';
 
 
 export default (
    <React.Fragment>
-      <Route path='backend/datatype' element={<BackendDatatype />} />
+      <Route path='backend' element={<BackendAvatar />} />
    </React.Fragment>
 )

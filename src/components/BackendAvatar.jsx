@@ -1,9 +1,21 @@
 // ----- 冠樺 ----- //
 
-import React from 'react';
+import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 import { Form, Button } from 'react-bootstrap';
+var fileReader = new FileReader();
 
 function BackendAvatar() {
+   const [avatar, setAvatar] = useState('');
+
+   useEffect(() => {
+      axios.post('http://localhost:5000/account/list',
+         { acc_email: 'edward.lee@blisswisdom.org' }
+      )
+         .then(res => {
+            setAvatar(res.data.acc_avatar);
+         });
+   }, []);
 
    return (
       <div>
@@ -14,6 +26,7 @@ function BackendAvatar() {
                <br />
                <Button>確定上傳</Button>
             </Form.Group>
+            <img src={avatar}></img>
          </Form>
       </div>
    );

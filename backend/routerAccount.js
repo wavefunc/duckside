@@ -8,7 +8,6 @@ const nodemailer = require('nodemailer'); // 引用 nodemailer
 const crypto = require('crypto'); // 用來生成 token 的套件
 require('dotenv').config();   // 使用環境變數
 
-
 // *******************
 // 列出資料表全部的資料
 // *******************
@@ -76,7 +75,16 @@ router.post('/account/list', async (req, res) => {
 
    let strQuery = `SELECT * FROM account WHERE acc_id = ?`;
    query(strQuery, [acc_id], (err, rows) => {
-      err ? res.send(err) : res.send(rows[0]);
+      if (err) {
+         res.send(err);
+      } else {
+         var mime = 'image/(png|jpg)';
+         var encoding = 'base64';
+         var data = rows[0].acc_avatar.toString(encoding);
+         var uri = `data:${mime};${encoding},${data}`;
+         rows[0].acc_avatar = uri;
+         res.send(rows[0]);
+      }
    });
 });
 
