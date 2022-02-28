@@ -17,6 +17,9 @@ app.use(express.static('./public'))
 app.use(express.static('../node_modules'))
 app.use(express.json());
 
+// 建立 MySQL 連線
+var { query } = require('./mysql.js');
+
 // 引用各資料表的 router
 var routers = [
     './routerAccount',
@@ -33,6 +36,10 @@ routers.forEach(val => { app.use('/', require(val)); })
 
 // 一切就緒，開始接受用戶端連線
 app.listen(process.env.PORT || 5000);
+
+query('UPDATE account SET acc_token = ""', [], (err) => {
+    err ? console.log(err) : console.log('Clear all tokens');
+});
 
 
 // ------------------------------------------------------- //
