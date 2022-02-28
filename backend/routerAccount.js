@@ -4,6 +4,11 @@ var express = require('express');
 var router = express.Router();
 var bcrypt = require('bcrypt'); // 對密碼進行加密的套件
 var { query, checkAccount } = require('./mysql.js');
+const nodemailer = require('nodemailer'); // 引用 nodemailer
+const crypto = require('crypto'); // 用來生成 token 的套件
+const { isNull } = require('util');
+require('dotenv').config();   // 使用環境變數
+
 
 // *******************
 // 列出資料表全部的資料
@@ -111,9 +116,83 @@ router.put('/account/updatename', async (req, res) => {
    });
 });
 
-// ********
-// 更改密碼
-// ********
+
+// **********
+// 更改大頭照
+// **********
+router.put('/account/updateavatar', async (req, res) => {
+   // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
+   var acc_id = await checkAccount(req.body.acc_email, res);
+
+   let strQuery = `UPDATE account SET acc_avatar = ? WHERE account.acc_id = ?`;
+   query(strQuery, [req.body.acc_avatar, acc_id], (err) => {
+      err ? res.send(err) : res.send(`Successfully updated account avatar`);
+   });
+});
+
+
+// ********************************************************
+// 【忘記密碼】生成隨機的 token，並寄出包含 token 連結的 email
+// 前端送來使用者輸入的 acc_email 即可
+// ********************************************************
+router.post('/account/emailValidation', async (req, res) => {
+   // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
+   var acc_id = await checkAccount(req.body.acc_email, res);
+
+   // 生成 token
+   const acc_token = crypto.randomBytes(20).toString('hex');
+
+   let strQueryStoreToken = `UPDATE account SET acc_token = ? WHERE acc_id = ?`;
+   query(strQueryStoreToken, [acc_token, acc_id], (err) => {
+      err ? res.send(err) : res.send(acc_token);
+   });
+
+   //宣告發信物件
+   var transporter = nodemailer.createTransport({
+      service: 'Gmail',
+      auth: {
+         user: `${process.env.MAIL_USER}`,
+         pass: `${process.env.MAIL_PASS}`
+      }
+   });
+
+   var options = {
+      from: `duckside <${process.env.MAIL_USER}>`, // 寄件者
+      to: req.body.acc_email, // 收件者
+      subject: '這是 duckside 投資管理網站發送的更改密碼信件', // 主旨
+      html: `<h2>請點擊網址來更改密碼</h2><p><a href="http://localhost:3000/resetPass/${acc_token}">
+         http://localhost:3000/resetPass/${acc_token}</a></p>` // 嵌入 html 的內文
+   };
+
+   //發送信件方法
+   transporter.sendMail(options, function (error, info) {
+      if (error) {
+         console.log(error);
+      } else {
+         console.log('訊息發送: ' + info.response);
+      }
+   });
+});
+
+// ********************************************************
+// 【忘記密碼】前端給 acc_token，後端回傳是哪一個 acc_email
+// ********************************************************
+router.post('/account/whoResetPass', (req, res) => {
+   let strQuery = `SELECT acc_email FROM account WHERE acc_token = ?`;
+   query(strQuery, [req.body.acc_token], (err, rows) => {
+      if (err) {
+         res.send(err);
+      } else {
+         rows[0] ?
+            res.send(rows[0].acc_email) :
+            res.send('此 token 過期或不存在');
+      }
+   });
+});
+
+// *********************************************************
+// 【忘記密碼】更改密碼。前端送 acc_email, acc_password(新密碼)
+// *********************************************************
 router.put('/account/updatepassword', async (req, res) => {
    // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
    var acc_id = await checkAccount(req.body.acc_email, res);
@@ -139,20 +218,6 @@ router.put('/account/updatepassword', async (req, res) => {
       err ? res.send(err) : res.send(`Successfully updated account password`);
    });
 });
-
-// **********
-// 更改大頭照
-// **********
-router.put('/account/updateavatar', async (req, res) => {
-   // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
-   var acc_id = await checkAccount(req.body.acc_email, res);
-
-   let strQuery = `UPDATE account SET acc_avatar = ? WHERE account.acc_id = ?`;
-   query(strQuery, [req.body.acc_avatar, acc_id], (err) => {
-      err ? res.send(err) : res.send(`Successfully updated account avatar`);
-   });
-});
-
 
 
 module.exports = router;
