@@ -2,11 +2,10 @@
 
 var express = require('express');
 var router = express.Router();
-var bcrypt = require('bcrypt'); // 對密碼進行加密的套件
 var { query, checkAccount } = require('./mysql.js');
+var bcrypt = require('bcrypt'); // 對密碼進行加密的套件
 const nodemailer = require('nodemailer'); // 引用 nodemailer
 const crypto = require('crypto'); // 用來生成 token 的套件
-const { isNull } = require('util');
 require('dotenv').config();   // 使用環境變數
 
 
@@ -153,7 +152,7 @@ router.post('/account/emailValidation', async (req, res) => {
       query(strQueryDeleteToken, [acc_id], (err) => {
          err ? console.log(err) : console.log(`Token for ${req.body.acc_email} has deleted`);
       });
-   }, 18000000);
+   }, 300000);
 
    //宣告發信物件
    var transporter = nodemailer.createTransport({
