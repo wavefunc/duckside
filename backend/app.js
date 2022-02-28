@@ -28,6 +28,7 @@ var routers = [
     './routerSecurities',
     './routerTransaction',
     './routerGameRoom',
+    './routerGameDaily',
     // './routerTwStock',
     './routerBackend'
 ]

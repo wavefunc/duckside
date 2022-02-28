@@ -51,5 +51,94 @@ router.put('/acc_furn/buying', async (req, res) => {
    );
 });
 
+// **********************************************************
+// 房間擺放家具時，修改會員家具的 acc_furn_placed 為 1
+// **********************************************************
+router.put('/acc_furn/placing', async (req, res) => {
+   // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
+   var acc_id = await checkAccount(req.body.acc_email, res);
+
+   let strQuery = `UPDATE acc_furn SET acc_furn_placed = 1 
+      WHERE acc_id = ? AND furn_id = ?`;
+   query(strQuery, [acc_id, req.body.furn_id], (err) => {
+      res.send(err ? err : 'Successfully update acc_furn_placed to 1');
+   });
+});
+
+// **********************************************************
+// 家具收回至倉庫時，修改會員家具的 acc_furn_placed 為 0
+// **********************************************************
+router.put('/acc_furn/takeBack', async (req, res) => {
+   // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
+   var acc_id = await checkAccount(req.body.acc_email, res);
+
+   let strQuery = `UPDATE acc_furn SET acc_furn_placed = 0 
+      WHERE acc_id = ? AND furn_id = ?`;
+   query(strQuery, [acc_id, req.body.furn_id], (err) => {
+      res.send(err ? err : 'Successfully update acc_furn_placed to 0');
+   });
+});
+
+// **********************************************************
+// 商店頁面 - 列出會員的家具及其屬性 (已購買: 1, 未購買: 0)
+// **********************************************************
+router.post('/acc_furn/storeList', async (req, res) => {
+   // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
+   var acc_id = await checkAccount(req.body.acc_email, res);
+
+   let strQuery = `
+      SELECT af.furn_id, furn.furn_name, af.acc_furn_bought, furn.furn_price 
+      FROM acc_furn af INNER JOIN furniture furn ON af.furn_id = furn.furn_id 
+      WHERE acc_id = ?
+   `;
+
+   query(strQuery, [acc_id], (err, rows) => {
+      res.send(err ? err : rows);
+   });
+});
+
+// **********************************************************************
+// 倉庫頁面 - 列出會員已購買的家具及其屬性 (倉庫不顯示: none, 倉庫顯示: block)
+// **********************************************************************
+router.post('/acc_furn/storageList', async (req, res) => {
+   // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
+   var acc_id = await checkAccount(req.body.acc_email, res);
+
+   let strQuery = `
+      SELECT af.furn_id, furn.furn_name, 
+         IF(af.acc_furn_placed = 1 OR af.acc_furn_bought = 0, 
+            'none', 'block') display
+      FROM acc_furn af 
+      INNER JOIN furniture furn 
+      ON af.furn_id = furn.furn_id 
+      WHERE acc_id = ?
+   `;
+
+   query(strQuery, [acc_id], (err, rows) => {
+      res.send(err ? err : rows);
+   });
+});
+
+// *****************************************************************
+// 房間頁面 - 列出會員的家具及其屬性 (擺在房間: block, 不擺在房間: none)
+// *****************************************************************
+router.post('/acc_furn/roomList', async (req, res) => {
+   // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
+   var acc_id = await checkAccount(req.body.acc_email, res);
+
+   let strQuery = `
+      SELECT af.furn_id, furn.furn_name, 
+         IF(af.acc_furn_placed = 0 OR af.acc_furn_bought = 0, 
+            'none', 'block') display
+      FROM acc_furn af 
+      INNER JOIN furniture furn 
+      ON af.furn_id = furn.furn_id 
+      WHERE acc_id = ?
+   `;
+
+   query(strQuery, [acc_id], (err, rows) => {
+      res.send(err ? err : rows);
+   });
+});
 
 module.exports = router;
