@@ -25,8 +25,22 @@ const urlPostRecent = 'http://localhost:5000/asset/recent';
 const nowTime = new Date();
 // const urlPostChartData = '';
 
-// 主圖使用
-
+// 主圖設定
+const initialValues = {
+   dateQuery1: dt.format(dt.addYears(nowTime, -1), 'YYYY-MM-DD'),
+   dateQuery2: dt.format(nowTime, 'YYYY-MM-DD'),
+   chartType: "總資產",
+};
+const options = {
+   "總資產": { x: "ast_date", y: "ast_sum", yLabels:"總資產" },
+   "證券": { x: "ast_date", y: "ast_securities", yLabels:"證券" },
+   "現金": { x: "ast_date", y: "ast_cash", yLabels:"現金" },
+   "資產分佈": {
+      x: "ast_date",
+      y: ["ast_cash", 'ast_securities', 'ast_option', 'ast_borrowing', 'ast_others', 'ast_adjust'],
+      yLabels: ["現金", "證券", "期權", "資券", "其他", "調整項"]
+   }
+}
 
 // 副表使用
 
@@ -36,37 +50,38 @@ function ManageCheck(props) {
    // const refresh = () => {
    //    setRefresh(!refreshState);
    // };
-   const [inputValues, setInputValues] = useState({
-      dateQuery1: dt.format(dt.addYears(nowTime, -1), 'YYYY-MM-DD'),
-      dateQuery2: dt.format(nowTime, 'YYYY-MM-DD'),
-      chartType: "總資產"
-   })
 
    const [chartData, setChartData] = useState([]);
+   const [option, setOption] = useState({ x: "ast_date", y: "ast_sum", yLabels:"總資產" });
 
    useEffect(() => {
-      console.log("ManageCheck useEffect (post)");
-      let dataToServer = {
-         acc_email: acc_email,
-         dateQuery1: inputValues.dateQuery1,
-         dateQuery2: inputValues.dateQuery2,
-      }
+      let dataToServer = { ...initialValues};
+      let chartType = initialValues.chartType;
+      dataToServer.acc_email = acc_email;
+      console.log(`ManageCheck useEffect post ${JSON.stringify(dataToServer)}`);
       axios.post(urlPostRecent, dataToServer).then((res) => {
+         console.log(res.data);
          setChartData(res.data);
+         setOption(options[chartType]);
       })
-      // dateQuery預設為去年至今, 故第一次進戶畫面會先抓近一年資料來呈現
-      // onSubmit呼叫setRefreshState再次觸發抓取資料
-   }, [inputValues])
+   }, [])
+   const handleSubmit = (values, actions) => {
+      let dataToServer = { ...values };
+      dataToServer.acc_email = acc_email;
+      console.log(`ManageCheck handleSubmit post ${JSON.stringify(dataToServer)}`);
+      axios.post(urlPostRecent, dataToServer).then((res) => {
+         console.log(res.data);
+         setChartData(res.data);
+         setOption(options[values.chartType]);
+      })
+   }
 
    return (
       <Container fluid>
          <Row>
             <Col lg={8}>
                <Formik
-                  initialValues={{
-                     dateQuery1: inputValues.dateQuery1,
-                     dateQuery2: inputValues.dateQuery2,
-                  }}
+                  initialValues={initialValues}
                   validate={
                      (values) => {
                         const errors = {};
@@ -79,9 +94,7 @@ function ManageCheck(props) {
                         }
                      }
                   }
-                  onSubmit={(values, actions) => {
-                     setInputValues(values);
-                  }}
+                  onSubmit={handleSubmit}
                >
                   <Form>
                      <MyInput
@@ -99,7 +112,7 @@ function ManageCheck(props) {
                         name="chartType" id="chartType"
                         type="text" inline="true"
                      >
-                        {['總資產', '累計資產報酬(元)', '累計資產報酬(%)',]}
+                        {Object.keys(options)}
                      </MySelect>
                      <Button type="submit" variant="warning" className="mb-1">
                         <Search className="mb-1 mr-1" />
@@ -112,26 +125,10 @@ function ManageCheck(props) {
          </Row>
          <Row>
             <Col lg={12}>
-               <Tab.Container id="left-tabs-example" defaultActiveKey="first" mountOnEnter={true}>
-                  <Nav variant="pills">
-                     <Nav.Item>
-                        <Nav.Link eventKey="first" bsPrefix='btn btn-light ml-1'>資產變動</Nav.Link>
-                     </Nav.Item>
-                     {/* <Nav.Item>
-                     <Nav.Link eventKey="first" bsPrefix='btn btn-light ml-1'>損益來源</Nav.Link>
-                  </Nav.Item> */}
-                  </Nav>
-                  <Tab.Content>
-                     <Tab.Pane eventKey="first">
-                        <MyChartLine></MyChartLine>
-                     </Tab.Pane>
-                     {/* <Tab.Pane eventKey="second">
-                     折線圖
-                  </Tab.Pane> */}
-                  </Tab.Content>
-               </Tab.Container>
+               <MyChartLine data={chartData}
+               {...option}
+               ></MyChartLine>
             </Col>
-
          </Row>
       </Container >
    );

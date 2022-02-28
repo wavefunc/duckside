@@ -107,13 +107,13 @@ function ManageDashboard(props) {
          <br />
          <Row>
             <Col lg={8}>
-            <MyChartLine></MyChartLine>
+            {/* <MyChartLine></MyChartLine> */}
             </Col>
             <Col lg={4}>
-               <MyChartPie></MyChartPie>
+               {/* <MyChartPie></MyChartPie>
                <ManageCurrent col={col2} className={{ table: 'table table-sm' }}
                   url={urlPostInventory} dataToServer={{ acc_email: acc_email, dateQuery: dateQuery }}
-               ></ManageCurrent>
+               ></ManageCurrent> */}
             </Col>
          </Row>
 
