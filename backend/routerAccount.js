@@ -147,6 +147,14 @@ router.post('/account/emailValidation', async (req, res) => {
       err ? res.send(err) : res.send(acc_token);
    });
 
+   // 設定 5分鐘後刪掉該 token
+   const tokenTimeout = setTimeout(() => {
+      let strQueryDeleteToken = `UPDATE account SET acc_token = '' WHERE acc_id = ?`;
+      query(strQueryDeleteToken, [acc_id], (err) => {
+         err ? console.log(err) : console.log(`Token for ${req.body.acc_email} has deleted`);
+      });
+   }, 18000000);
+
    //宣告發信物件
    var transporter = nodemailer.createTransport({
       service: 'Gmail',

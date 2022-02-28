@@ -16,6 +16,18 @@ var pool = mysql.createPool({
    connectionLimit: 10
 });
 
+// // 清空所有的 acc_token
+// pool.getConnection((err, conn) => {
+//    if (err) {
+//       console.log(err);
+//    } else {
+//       conn.query(`UPDATE account SET acc_token = ''`, [], (_err) => {
+//          console.log('Delete all tokens');
+//       });
+//       conn.release();
+//    }
+// });
+
 // 一般 sql query 使用的函式
 exports.query = async function (strQuery, options, callback) {
    return new Promise((resolve, reject) => {
