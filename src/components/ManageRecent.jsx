@@ -18,6 +18,7 @@ function ManageRecent({ url, dataToServer, row, ...props }) {
     const [data, setData] = useState([]);
     const dataToServerRef = useRef(dataToServer);
     const [col, setCol] = useState([]);
+    console.log(`ManageRecent: data*${data.length}`);
     useEffect(() => {
         let beingMounted = true;
         if (url) {
@@ -27,6 +28,7 @@ function ManageRecent({ url, dataToServer, row, ...props }) {
                 axios.post(url, dataToServer).then((res) => {
                     if (beingMounted) {
                         setData(res.data);
+                        console.log(res.data);
                     }
                 });
             } else {

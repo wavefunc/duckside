@@ -15,7 +15,9 @@ import dt from 'date-and-time';
 import { MyFormikObserver, MyInput, MySelect } from '../components/MyFormComponent';
 import { MyChartLine } from '../components/MyChartComponent.jsx';
 
-const acc_email = 'ggg@mail.com';
+console.log(`login: ${localStorage.getItem('loginState')}`);
+const acc_email = localStorage.getItem('loginState');
+
 const nowTime = new Date();
 // const urlPostChartData = '';
 

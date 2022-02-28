@@ -18,7 +18,8 @@ import ManageCurrent, { MyCardDeck } from '../components/ManageCurrent.jsx';
 import { MyChartLine, MyChartPie } from '../components/MyChartComponent.jsx'
 import ManageRecent from '../components/ManageRecent.jsx';
 
-const acc_email = 'ggg@mail.com';
+console.log(`login: ${localStorage.getItem('loginState')}`);
+const acc_email = localStorage.getItem('loginState');
 const dateQuery = dt.format(new Date(), 'YYYY-MM-DD');
 const urlPostRecent = 'http://localhost:5000/asset/recent';
 const urlPostInventory = 'http://localhost:5000/transaction/inventory';

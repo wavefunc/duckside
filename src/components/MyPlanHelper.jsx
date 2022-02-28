@@ -1,4 +1,4 @@
-﻿const myPlanHelper = {
+const myPlanHelper = {
     list: [
         {
             key: 'userdefined', param: 0, result: '',
@@ -20,11 +20,12 @@
 
 myPlanHelper.findIndex = (searchValue) => {
     let searched = myPlanHelper.list.map(obj => {
-        if (Object.keys(obj).some(property => obj[property].toString().indexOf(searchValue) != -1))
+        if (Object.keys(obj).some(property => obj[property].toString().indexOf(searchValue) !== -1)) {
             return obj;
+        }
+        return undefined;
     });
-
-    return searched.filter(obj => obj != undefined)[0];
+    return searched.filter(obj => obj !== undefined)[0];
 }
 myPlanHelper.getFunction = (name) => {
     return myPlanHelper[name];

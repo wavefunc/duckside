@@ -24,7 +24,8 @@ import { MyFormikObserver, MyInput } from '../components/MyFormComponent';
 import MyCurrentPosition from '../components/ManageCurrent.jsx';
 import ManageRecent from '../components/ManageRecent.jsx';
 
-const acc_email = 'ggg@mail.com';
+console.log(`login: ${localStorage.getItem('loginState')}`);
+const acc_email = localStorage.getItem('loginState');
 const urlPostRecent = 'http://localhost:5000/asset/recent';
 const urlPostCreate = 'http://localhost:5000/asset/create';
 const urlPutUpdate = 'http://localhost:5000/asset/update';
@@ -67,6 +68,7 @@ const col = [
    { id: 'ast_others', name: '其他' },
    { id: 'ast_borrowing', name: '資券調整' },
    { id: 'ast_adjust', name: '其他調整' },
+   { id: 'ast_sum', name: '總計' },
    { id: 'ast_note', name: '摘要' },
 ];
 

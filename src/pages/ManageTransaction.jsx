@@ -18,7 +18,8 @@ import { MyInput, MySelect } from '../components/MyFormComponent';
 import MyCurrentPosition from '../components/ManageCurrent.jsx';
 import ManageRecent from '../components/ManageRecent.jsx';
 
-const acc_email = 'ggg@mail.com';
+console.log(`login: ${localStorage.getItem('loginState')}`);
+const acc_email = localStorage.getItem('loginState');
 const urlPostRecent = 'http://localhost:5000/transaction/recent';
 const urlPostCreate = 'http://localhost:5000/transaction/create';
 const urlPutUpdate = 'http://localhost:5000/transaction/update';
@@ -71,6 +72,7 @@ const col = [
       formatter: (cell) => { let d = new Date(cell); return dt.format(d, 'YYYY-MM-DD'); }
    },
    { id: 'sec_id', name: '代號' },
+   { id: 'sec_name', name: '名稱' },
    { id: 'txn_round', name: 'No', width: '85px' },
    { id: 'txn_position', name: '類型' },
    { id: 'txn_price', name: '價格' },

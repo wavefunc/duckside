@@ -15,7 +15,8 @@ import { MyFormikObserver, MyInput, MySelect } from '../components/MyFormCompone
 import ManageRecent from '../components/ManageRecent.jsx';
 import myPlanHelper from '../components/MyPlanHelper.jsx';
 
-const acc_email = 'ggg@mail.com';
+console.log(`login: ${localStorage.getItem('loginState')}`);
+const acc_email = localStorage.getItem('loginState');
 const urlPostRecent = 'http://localhost:5000/plan/recent';
 const urlPostCreate = 'http://localhost:5000/plan/create';
 const urlPutUpdate = 'http://localhost:5000/plan/update';
@@ -71,11 +72,7 @@ const col = [
 
 
 // 副表設定
-const col2 = [
-   { id: 'sec_id', name: '代號' },
-   { id: 'sec_name', name: '名稱' },
-   { id: 'total', name: '庫存數量' },
-];
+
 
 function Manageplan(props) {
    console.log('--Manageplan--');
@@ -121,9 +118,13 @@ function Manageplan(props) {
       switch (strategy.param) {
          case 0:
             dataToServer.plan_param1 = "";
+            dataToServer.plan_param2 = "";
+            break
          case 1:
             dataToServer.plan_param2 = "";
             break;
+         default:
+         break
       };
       axios.post(urlPostCreate, dataToServer).then((res) => {
          actions.resetForm();
@@ -160,9 +161,13 @@ function Manageplan(props) {
       switch (myPlanHelper.findIndex(dataToServer.plan_strategy).param) {
          case 0:
             dataToServer.plan_param1 = "";
+            dataToServer.plan_param2 = "";
+            break;
          case 1:
             dataToServer.plan_param2 = "";
             break;
+         default:
+         break;
       };
       console.log(dataToServer);
       axios.put(urlPutUpdate, dataToServer).then((res) => {

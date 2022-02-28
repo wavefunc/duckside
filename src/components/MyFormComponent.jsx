@@ -1,4 +1,4 @@
-﻿import { useField } from 'formik';
+import { useField } from 'formik';
 import { Form, InputGroup } from 'react-bootstrap';
 import React, { useEffect, useRef } from 'react';
 
