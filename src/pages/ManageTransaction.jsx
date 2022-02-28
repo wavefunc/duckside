@@ -7,14 +7,14 @@
  * * * * * * * * * * * */
 
 import React, { useState } from 'react';
-import { Container, Row, Col, Tab, Nav, Button, Modal, Toast } from 'react-bootstrap';
+import { Container, Row, Col, Tab, Nav, Button, Modal } from 'react-bootstrap';
 
 import { Formik, Form } from 'formik';
 
 import axios from 'axios';
 import dt from 'date-and-time';
 
-import { MyInput, MySelect } from '../components/MyFormComponent';
+import { MyInput, MySelect, MyOkToast } from '../components/MyFormComponent';
 import MyCurrentPosition from '../components/ManageCurrent.jsx';
 import ManageRecent from '../components/ManageRecent.jsx';
 
@@ -490,32 +490,7 @@ function ManageTransaction(props) {
                      <Nav.Item>
                         <Nav.Link eventKey="disabled" disabled bsPrefix='btn btn-basic ml-1'>按住shift點選欄位可多重排序</Nav.Link>
                      </Nav.Item>
-                     <div
-                        aria-live="polite"
-                        aria-atomic="true"
-                        style={{
-                           position: 'absolute',
-                           right: 0
-                        }}
-                        className="mr-3 alert"
-                     >
-                        <Toast
-                           show={showToast} onClose={() => setShowToast(false)} delay={1000} autohide
-                           style={{
-                              position: 'absolute',
-                              zIndex: 999,
-                              top: 0,
-                              right: 0,
-                              height: 36,
-                              width: 200,
-                           }}
-                        >
-                           <Toast.Header>
-                              <strong className="mr-auto">修改成功!</strong>
-                              <small>{dt.format(new Date(), "M/D H:m")}</small>
-                           </Toast.Header>
-                        </Toast>
-                     </div>
+                     <MyOkToast show={showToast} closeToast={()=>{setShowToast(false)}} />
                   </Nav>
                   <Tab.Content>
                      <Tab.Pane eventKey="first">

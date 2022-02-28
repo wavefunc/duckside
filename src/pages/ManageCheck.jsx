@@ -7,16 +7,20 @@
  * * * * * * * * * * * */
 
 import React, { useEffect, useState } from 'react';
-import { Container, Row, Col, Tab, Nav } from 'react-bootstrap';
+import { Container, Row, Col, Tab, Nav, Button } from 'react-bootstrap';
+import { Search } from 'react-bootstrap-icons';
+
 import { Formik, Form } from 'formik';
-// import axios from 'axios';
+import axios from 'axios';
 import dt from 'date-and-time';
 
-import { MyFormikObserver, MyInput, MySelect } from '../components/MyFormComponent';
+import { MyInput, MySelect } from '../components/MyFormComponent';
 import { MyChartLine } from '../components/MyChartComponent.jsx';
 
 console.log(`login: ${localStorage.getItem('loginState')}`);
 const acc_email = localStorage.getItem('loginState');
+
+const urlPostRecent = 'http://localhost:5000/asset/recent';
 
 const nowTime = new Date();
 // const urlPostChartData = '';
@@ -28,66 +32,57 @@ const nowTime = new Date();
 
 function ManageCheck(props) {
    console.log('--ManageCheck--');
-   const [refreshState, setRefresh] = useState(true);
-   const refresh = () => {
-      setRefresh(!refreshState);
-   };
+   // const [refreshState, setRefresh] = useState(true);
+   // const refresh = () => {
+   //    setRefresh(!refreshState);
+   // };
    const [inputValues, setInputValues] = useState({
-      dateQuery1:dt.format(dt.addYears(nowTime,-1),'YYYY-MM-DD'),
-      dateQuery2:dt.format(nowTime,'YYYY-MM-DD'),
+      dateQuery1: dt.format(dt.addYears(nowTime, -1), 'YYYY-MM-DD'),
+      dateQuery2: dt.format(nowTime, 'YYYY-MM-DD'),
+      chartType: "總資產"
    })
-   console.log(JSON.stringify(inputValues))
+
    const [chartData, setChartData] = useState([]);
 
-useEffect(() => {
-   let dataToServer = {
-      acc_email: acc_email,
-      dateQuery1: inputValues.dateQuery1,
-      dateQuery2: inputValues.dateQuery2,
-   }
-   console.log(`ManageCheck useEffect (post): ${JSON.stringify(dataToServer)}`);
-   // axios.post(url, urlPostChartData).then((res) => {
-   //    setChartData(res.data);
-   // }
-   // dateQuery預設為去年至今, 故第一次進戶畫面會先抓近一年資料來呈現
-   // onSubmit呼叫setRefreshState再次觸發抓取資料
-}, [refreshState])
+   useEffect(() => {
+      console.log("ManageCheck useEffect (post)");
+      let dataToServer = {
+         acc_email: acc_email,
+         dateQuery1: inputValues.dateQuery1,
+         dateQuery2: inputValues.dateQuery2,
+      }
+      axios.post(urlPostRecent, dataToServer).then((res) => {
+         setChartData(res.data);
+      })
+      // dateQuery預設為去年至今, 故第一次進戶畫面會先抓近一年資料來呈現
+      // onSubmit呼叫setRefreshState再次觸發抓取資料
+   }, [inputValues])
 
-return (
-   <Container fluid>
-      <Row>
-         <Col lg={8}>
-            <Formik
-               initialValues={{
-                  dateQuery1: inputValues.dateQuery1,
-                  dateQuery2: inputValues.dateQuery2,
-               }}
-               validate={
-                  (values) => {
-                     const errors = {};
-                     if (values.dateQuery1 || values.dateQuery1) {
-                        return errors;
-                     } else {
-                        errors.dateQuery1 = "起訖日至少擇一輸入";
-                        errors.dateQuery2 = "起訖日至少擇一輸入";
-                        return errors;
+   return (
+      <Container fluid>
+         <Row>
+            <Col lg={8}>
+               <Formik
+                  initialValues={{
+                     dateQuery1: inputValues.dateQuery1,
+                     dateQuery2: inputValues.dateQuery2,
+                  }}
+                  validate={
+                     (values) => {
+                        const errors = {};
+                        if (values.dateQuery1 || values.dateQuery1) {
+                           return errors;
+                        } else {
+                           errors.dateQuery1 = "起訖日至少擇一輸入";
+                           errors.dateQuery2 = "起訖日至少擇一輸入";
+                           return errors;
+                        }
                      }
                   }
-               }
-               onSubmit={(values, actions) => {
-                  let dataToServer = {
-                     acc_email: acc_email,
-                     ...values
-                  };
-                  Window.alert(`dataToServer: ${JSON.stringify(dataToServer)}`);
-                  refresh();
-                  // axios.post(urlPostCreate, dataToServer).then((res) => {
-                  //    console.log(res.data);
-                  //    actions.resetForm();
-                  // });
-               }}
-            >
-               {(props) => (
+                  onSubmit={(values, actions) => {
+                     setInputValues(values);
+                  }}
+               >
                   <Form>
                      <MyInput
                         label="日期"
@@ -106,41 +101,40 @@ return (
                      >
                         {['總資產', '累計資產報酬(元)', '累計資產報酬(%)',]}
                      </MySelect>
-                     <MyFormikObserver
-                        value={props.values}
-                        onChange={setInputValues}>
-                     </MyFormikObserver>
+                     <Button type="submit" variant="warning" className="mb-1">
+                        <Search className="mb-1 mr-1" />
+                        <span>查詢</span>
+                     </Button>
                      <br />
                   </Form>
-               )}
-            </Formik>
-         </Col>
-      </Row>
-      <Row>
-         <Col lg={12}>
-            <Tab.Container id="left-tabs-example" defaultActiveKey="first" mountOnEnter={true}>
-               <Nav variant="pills">
-                  <Nav.Item>
-                     <Nav.Link eventKey="first" bsPrefix='btn btn-light ml-1'>資產變動</Nav.Link>
-                  </Nav.Item>
-                  {/* <Nav.Item>
+               </Formik>
+            </Col>
+         </Row>
+         <Row>
+            <Col lg={12}>
+               <Tab.Container id="left-tabs-example" defaultActiveKey="first" mountOnEnter={true}>
+                  <Nav variant="pills">
+                     <Nav.Item>
+                        <Nav.Link eventKey="first" bsPrefix='btn btn-light ml-1'>資產變動</Nav.Link>
+                     </Nav.Item>
+                     {/* <Nav.Item>
                      <Nav.Link eventKey="first" bsPrefix='btn btn-light ml-1'>損益來源</Nav.Link>
                   </Nav.Item> */}
-               </Nav>
-               <Tab.Content>
-                  <Tab.Pane eventKey="first">
-                  <MyChartLine></MyChartLine>
-                  </Tab.Pane>
-                  {/* <Tab.Pane eventKey="second">
+                  </Nav>
+                  <Tab.Content>
+                     <Tab.Pane eventKey="first">
+                        <MyChartLine></MyChartLine>
+                     </Tab.Pane>
+                     {/* <Tab.Pane eventKey="second">
                      折線圖
                   </Tab.Pane> */}
-               </Tab.Content>
-            </Tab.Container>
-         </Col>
+                  </Tab.Content>
+               </Tab.Container>
+            </Col>
 
-      </Row>
-   </Container >
-);
+         </Row>
+      </Container >
+   );
 }
 
 export default ManageCheck;

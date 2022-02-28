@@ -1,5 +1,7 @@
 import { useField } from 'formik';
-import { Form, InputGroup } from 'react-bootstrap';
+import { Form, InputGroup, Toast } from 'react-bootstrap';
+import { CheckSquare } from 'react-bootstrap-icons';
+import dt from "date-and-time";
 import React, { useEffect, useRef } from 'react';
 
 
@@ -102,6 +104,39 @@ export const MyFormikObserver = (props) => {
     return null
 }
 
+export const MyOkToast = (props) => {
+    return (
+        <div
+            aria-live="polite"
+            aria-atomic="true"
+            style={{
+                position: 'absolute',
+                right: 0
+            }}
+            className="mr-3 alert"
+        >
+            <Toast
+                show={props.show} onClose={props.closeToast} delay={1000} autohide
+                style={{
+                    position: 'absolute',
+                    zIndex: 999,
+                    top: 0,
+                    right: 0,
+                    height: 36,
+                    width: 200,
+                }}
+            >
+                <Toast.Header>
+                    <strong className="mr-auto">
+                        <CheckSquare className='mr-1 mb-1 text-success' />
+                        修改成功!
+                    </strong>
+                    <small>{dt.format(new Date(), "M/D H:m")}</small>
+                </Toast.Header>
+            </Toast>
+        </div>
+    )
+}
 
 /***********
 

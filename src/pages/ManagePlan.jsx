@@ -11,7 +11,7 @@ import { Formik, Form } from 'formik';
 import axios from 'axios';
 import dt from 'date-and-time';
 
-import { MyFormikObserver, MyInput, MySelect } from '../components/MyFormComponent';
+import { MyFormikObserver, MyInput, MySelect, MyOkToast } from '../components/MyFormComponent';
 import ManageRecent from '../components/ManageRecent.jsx';
 import myPlanHelper from '../components/MyPlanHelper.jsx';
 
@@ -124,7 +124,7 @@ function Manageplan(props) {
             dataToServer.plan_param2 = "";
             break;
          default:
-         break
+            break
       };
       axios.post(urlPostCreate, dataToServer).then((res) => {
          actions.resetForm();
@@ -167,7 +167,7 @@ function Manageplan(props) {
             dataToServer.plan_param2 = "";
             break;
          default:
-         break;
+            break;
       };
       console.log(dataToServer);
       axios.put(urlPutUpdate, dataToServer).then((res) => {
@@ -400,6 +400,11 @@ function Manageplan(props) {
                                  <Col lg={1} className="d-inline-flex flex-column-reverse input-group p-2">
                                     <Button type="submit" variant="warning" size="sm">送出</Button>
                                  </Col>
+                                 <Col lg={1} className="d-inline-flex flex-column-reverse input-group p-2">
+                                    <Button variant="outline-secondary" onClick={handleCloseEdit} size="sm">
+                                       取消
+                                    </Button>
+                                 </Col>
                               </Row>
                               <MyFormikObserver
                                  value={props.values}
@@ -505,7 +510,12 @@ function Manageplan(props) {
                                  />
                               </Col>
                               <Col lg={1} className="d-inline-flex flex-column-reverse input-group p-2">
-                                 <Button type="submit" variant="warning" size="sm">送出</Button>
+                                 <Button type="submit" variant="warning" size="sm">確認</Button>
+                              </Col>
+                              <Col lg={1} className="d-inline-flex flex-column-reverse input-group p-2">
+                                 <Button variant="outline-secondary" onClick={handleCloseDelete} size="sm">
+                                    取消
+                                 </Button>
                               </Col>
                            </Row>
                         </Form>
@@ -543,33 +553,7 @@ function Manageplan(props) {
                      <Nav.Item>
                         <Nav.Link eventKey="disabled" disabled bsPrefix='btn btn-basic ml-1'>按住shift點選欄位可多重排序</Nav.Link>
                      </Nav.Item>
-
-                     <div
-                        aria-live="polite"
-                        aria-atomic="true"
-                        style={{
-                           position: 'absolute',
-                           right: 0
-                        }}
-                        className="mr-3 alert"
-                     >
-                        <Toast
-                           show={showToast} onClose={() => setShowToast(false)} delay={1000} autohide
-                           style={{
-                              position: 'absolute',
-                              zIndex: 999,
-                              top: 0,
-                              right: 0,
-                              height: 36,
-                              width: 200,
-                           }}
-                        >
-                           <Toast.Header>
-                              <strong className="mr-auto">修改成功!</strong>
-                              <small>{dt.format(new Date(), "M/D H:m")}</small>
-                           </Toast.Header>
-                        </Toast>
-                     </div>
+                     <MyOkToast show={showToast} closeToast={() => { setShowToast(false) }} />
                   </Nav>
                   <Tab.Content>
                      <Tab.Pane eventKey="first">
