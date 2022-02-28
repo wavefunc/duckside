@@ -1,7 +1,6 @@
 // ----- 冠樺 ----- //
 
 var express = require('express');
-const { Rss } = require('react-bootstrap-icons');
 var router = express.Router();
 var { query, checkAccount } = require('./mysql.js');
 
@@ -30,25 +29,26 @@ router.put('/acc_furn/buying', async (req, res) => {
    // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
    var acc_id = await checkAccount(req.body.acc_email, res);
 
-   var price = await query(
-      `SELECT furn_price FROM furniture WHERE furn_id = ?`,
-      [req.body.furn_id],
-      (err, rows) => {
-         err ? res.send(err) : res.send(JSON.stringify(rows[0].furn_price));
+   let strQueryBought = `UPDATE acc_furn SET acc_furn_bought = 1 
+      WHERE acc_id = ? AND furn_id = ?;`;
+
+   let strQuerySetPoint = `
+      INSERT INTO point_record (acc_id, pt_datetime, pt_scoring)
+      VALUES (?, NOW(),
+	      -1 * (SELECT furn_price FROM furniture WHERE furn_id = ?)
+      )`;
+   query(
+      strQueryBought + strQuerySetPoint,
+      [acc_id, req.body.furn_id, acc_id, req.body.furn_id],
+      (err) => {
+         res.send(
+            err ?
+               err :
+               `Successfully updated acc_furn on 
+                  acc_id = ${acc_id} and furn_id = ${req.body.furn_id}`
+         );
       }
    );
-
-   console.log(typeof (price));
-   // strQueryBuy = `UPDATE acc_furn SET acc_furn_bought = 1 
-   //    WHERE acc_id = ? AND furn_id = ?`;
-   // strQueryDeduction = `UPDATE point_record SET acc_id = ?, pt_datetime = ?, pt_scoring = 
-   // `;
-   // query(strQueryBuy, [acc_id, req.body.furn_id], (err) => {
-   //    err ?
-   //       res.send(err) :
-   //       res.send(`Successfully updated acc_furn on 
-   //          acc_id = ${acc_id} and furn_id = ${req.body.furn_id}`);
-   // });
 });
 
 
