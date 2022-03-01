@@ -78,11 +78,15 @@ router.post('/account/list', async (req, res) => {
       if (err) {
          res.send(err);
       } else {
-         var mime = 'image/(png|jpg)';
-         var encoding = 'base64';
-         var data = rows[0].acc_avatar.toString(encoding);
-         var uri = `data:${mime};${encoding},${data}`;
-         rows[0].acc_avatar = uri;
+         if(rows[0].acc_avatar){
+            var mime = 'image/(png|jpg)';
+            var encoding = 'base64';
+            var data = rows[0].acc_avatar.toString(encoding);
+            var uri = `data:${mime};${encoding},${data}`;
+            rows[0].acc_avatar = uri;
+         } else{
+            rows[0].acc_avatar = '/assets/images/member_photo.png';
+         }
          res.send(rows[0]);
       }
    });

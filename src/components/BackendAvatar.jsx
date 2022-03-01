@@ -10,7 +10,7 @@ function BackendAvatar() {
 
    useEffect(() => {
       axios.post('http://localhost:5000/account/list',
-         { acc_email: 'edward.lee@blisswisdom.org' }
+         { acc_email: 'ggg@mail.com' }
       )
          .then(res => {
             setAvatar(res.data.acc_avatar);
