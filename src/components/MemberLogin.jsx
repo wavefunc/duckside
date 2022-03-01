@@ -4,43 +4,10 @@ import React, { useState } from "react";
 import Axios from "axios";
 import "../css/member_style.css";
 import Modal from "react-bootstrap/Modal";
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+
 
 let MemberLogin = (props) => {
-  //********************
-  //第三方支付
-  // Your web app's Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyBv_AqANc-x64mfqthUlcyBconPJIV7guU",
-    authDomain: "test-d01b5.firebaseapp.com",
-    projectId: "test-d01b5",
-    storageBucket: "test-d01b5.appspot.com",
-    messagingSenderId: "134583126754",
-    appId: "1:134583126754:web:c04955091bdd770a006cbb",
-    measurementId: "G-LVMTSM69PH",
-  };
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
 
-
-  const provider = new app.auth.GoogleAuthProvider();
-app.auth()
-  .signInWithPopup(provider)
-  .then((result) => {
-    var credential = result.credential;
-    var token = credential.accessToken;
-    var user = result.user;
-  }).catch((error) => {
-    var errorCode = error.code;
-    var errorMessage = error.message;
-    var email = error.email;
-    var credential = error.credential;
-  });
-
-  //********************
 
   //********************
   //State
