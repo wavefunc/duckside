@@ -1,6 +1,8 @@
 // ----- 沛珊 ----- //
 
 import * as React from 'react';
+import PubSub from 'pubsub-js';
+
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -16,13 +18,11 @@ import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import Avatar from '@mui/material/Avatar';
 import PageTitle from '../components/PageTitle';
 import Breadcrumb from '../components/Breadcrumb';
 import { Outlet } from 'react-router-dom';
 import NotificationSection from '../components/Header/NotificationSection';
 import MainListItem from '../components/Sidebar_mainList'
-
 import ProfileSection from "../components/Header/ProfileSection"
 
 
@@ -114,6 +114,8 @@ function Layout() {
       setOpen(true)
     }
   }, [width])
+
+  
 
 
 
