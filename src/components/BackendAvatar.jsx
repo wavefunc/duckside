@@ -1,9 +1,10 @@
 // ----- 冠樺 ----- //
 
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Form, Button } from 'react-bootstrap';
 var fileReader = new FileReader();
+
 
 function BackendAvatar() {
    const [avatar, setAvatar] = useState('');
@@ -11,6 +12,7 @@ function BackendAvatar() {
    useEffect(() => {
       axios.post('http://localhost:5000/account/list',
          { acc_email: 'ggg@mail.com' }
+         // { acc_email: 'edward.lee@blisswisdom.org' }
       )
          .then(res => {
             setAvatar(res.data.acc_avatar);
@@ -26,14 +28,34 @@ function BackendAvatar() {
                <br />
                <Button>確定上傳</Button>
             </Form.Group>
-            <img src={avatar}></img>
+            <img src={avatar} />
+            <br />
+            <input type='file' onChange={uploadAvatar} />
          </Form>
       </div>
    );
 }
 
-// function uploadAvatar() {
-//    console.log(avatar);
-// }
+function uploadAvatar(e) {
+   // 檔案位置
+   // console.log(e.target.files[0]);
+
+   // 新增 formData
+   const formData = new FormData();
+   formData.append('image', e.target.files[0]);
+   formData.append('acc_email', 'ggg@mail.com');
+
+   // 傳送資料
+   axios.put('http://localhost:5000/account/updateavatar', formData,
+      {
+         headers: {
+            'Content-Type': 'multipart/form-data',
+         }
+      }
+   ).then(res => {
+      console.log(res.data);
+   });
+
+}
 
 export default BackendAvatar;

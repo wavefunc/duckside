@@ -1,11 +1,12 @@
 // ----- 冠樺 ----- //
 
-var express = require('express');
-var router = express.Router();
-var { query, checkAccount } = require('./mysql.js');
-var bcrypt = require('bcrypt'); // 對密碼進行加密的套件
+const express = require('express');
+const router = express.Router();
+const { query, checkAccount } = require('./mysql.js');
+const bcrypt = require('bcrypt'); // 對密碼進行加密的套件
 const nodemailer = require('nodemailer'); // 引用 nodemailer
 const crypto = require('crypto'); // 用來生成 token 的套件
+const multer = require('multer'); // 處理大頭照上傳
 require('dotenv').config();   // 使用環境變數
 
 // *******************
@@ -78,13 +79,13 @@ router.post('/account/list', async (req, res) => {
       if (err) {
          res.send(err);
       } else {
-         if(rows[0].acc_avatar){
+         if (rows[0].acc_avatar) {
             var mime = 'image/(png|jpg)';
             var encoding = 'base64';
             var data = rows[0].acc_avatar.toString(encoding);
             var uri = `data:${mime};${encoding},${data}`;
             rows[0].acc_avatar = uri;
-         } else{
+         } else {
             rows[0].acc_avatar = '/assets/images/member_photo.png';
          }
          res.send(rows[0]);
@@ -133,12 +134,31 @@ router.put('/account/updatename', async (req, res) => {
 // **********
 router.put('/account/updateavatar', async (req, res) => {
    // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
-   var acc_id = await checkAccount(req.body.acc_email, res);
+   // var acc_id = await checkAccount(req.body.acc_email, res);
+   console.log(req.body);
+   res.send(req.body);
 
-   let strQuery = `UPDATE account SET acc_avatar = ? WHERE account.acc_id = ?`;
-   query(strQuery, [req.body.acc_avatar, acc_id], (err) => {
-      err ? res.send(err) : res.send(`Successfully updated account avatar`);
+   // 初始化設定
+   const upload = multer({
+      storage: multer.memoryStorage(),
+      limits: {
+         fileSize: 2 * 1024 * 1024, // 限制 2MB
+      },
+      fileFilter(req, file, callback) { // 限制檔案格式為 image
+         if (!file.mimetype.match(/^image/)) {
+            callback(new Error().message = '檔案格式錯誤');
+         } else {
+            callback(null, true);
+         }
+      }
    });
+
+
+
+   // let strQuery = `UPDATE account SET acc_avatar = ? WHERE account.acc_id = ?`;
+   // query(strQuery, [req.body.acc_avatar, acc_id], (err) => {
+   //    err ? res.send(err) : res.send(`Successfully updated account avatar`);
+   // });
 });
 
 
@@ -200,7 +220,7 @@ router.post('/account/whoResetPass', (req, res) => {
    let strQuery = `SELECT acc_email FROM account WHERE acc_token = ?`;
    query(strQuery, [req.body.acc_token], (err, rows) => {
       if (err) {
-         res.send('此 token 過期或不存在');
+         res.send(err);
       } else {
          rows[0] ?
             res.send(rows[0].acc_email) :
