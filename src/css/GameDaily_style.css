@@ -23,6 +23,11 @@
   padding-bottom:6px;
 }
 
+.buttbar{
+  margin-top: 10px;
+  margin-left: 55px;
+}
+
 .nextButton-plus{
   font-family: PingFangTC-Semibold, PingFang TC;
   background-color:#3E88A8 ;
@@ -30,9 +35,7 @@
   color: white;
   font-size: 25px;
   width: 100px;
-  margin-left: 55px;
-  margin-top: 3px;
-  
+  margin-bottom: 100px;
 }
 
 .button-plus-icon{
@@ -99,24 +102,22 @@
 }
 
 .duckPict{
-  width: 450px;
-  height: 300px;
-  padding-top: 30px;
-  padding-left: 10px;
-}
-
-.haveDiv{
-  background-color: white;
   width: 400px;
-  height: 240px;
-  margin-bottom: 10px;
+  height: 300px;
 }
 
-.testinput{
+
+.testinputnew{
   padding: 5px;
 }
 
 .testInput{
+  width: 400px;
+  height: 250px;
+  background-color: white;
+}
+
+.haveUI{
   float: right;
 }
 
