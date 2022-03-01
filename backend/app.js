@@ -43,23 +43,3 @@ query('UPDATE account SET acc_token = ""', [], (err) => {
 });
 
 
-// ------------------------------------------------------- //
-// member 為測試用的資料表，之後將會刪掉，正式名稱應為 account //
-// ------------------------------------------------------- //
-
-var { query } = require('./mysql.js');
-
-app.get('/member/list', function (req, res) {
-    query('SELECT * FROM members', [], function (err, rows) {
-        res.send(rows);
-    });
-});
-
-app.post('/member/add', function (req, res) {
-    conn.query('INSERT INTO members (name) VALUES (?)', [req.body.name], function (err, rows) {
-        res.send('ok');
-    })
-    console.log(req.body);
-})
-
-
