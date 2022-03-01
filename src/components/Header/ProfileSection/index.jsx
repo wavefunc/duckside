@@ -30,6 +30,7 @@ import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 // login component
 import MemberLogin from "../../MemberLogin";
 import MemberRegister from "../../MemberRegister";
+import MemberForget from "../../MemberForget";
 import "../../../css/bootstrap.min.css";
 // login component
 
@@ -269,7 +270,7 @@ const ProfileSection = () => {
             {/* login component */}
             <MemberLogin show={showLogin} showtoggle={showLoginToggle} showForgetToggle={showForgetToggle} close={showLoginClose} ></MemberLogin>
             <MemberRegister show={showregister} showtoggle={showLoginToggle} close={showLoginClose}></MemberRegister>
-            {/* <MemberForget show={showforget} showForgetToggle={showForgetToggle}></MemberForget> */}
+            <MemberForget show={showforget} showForgetToggle={showForgetToggle}></MemberForget>
             {/* login component */}
 
         </>
