@@ -9,6 +9,7 @@ var pool = mysql.createPool({
    password: 'iii23265860',
    database: 'duckside',
    port: 3306,
+   multipleStatements: true,
    // 無可用連線時是否等待pool連線釋放(預設為true)
    waitForConnections: true,
    // 連線池可建立的總連線數上限(預設最多為10個連線數)
@@ -22,10 +23,8 @@ exports.query = async function (strQuery, options, callback) {
       // 取得連線池的連線
       pool.getConnection((err, conn) => {
          if (err) {
-            console.log('Database connection error!');
             reject(err);
          } else {
-            console.log('Database connection succeeded!');
             conn.query(strQuery, options, callback);
 
             // release connection。

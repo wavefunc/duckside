@@ -6,7 +6,7 @@
 var express = require('express');
 var app = express();
 app.listen(3000);
-var getYahoo = require('./twstock.js');
+var { getYahoo, getTwse } = require('./twstock.js');
 
 app.use(express.static('./public'))
 app.use(express.static('../node_modules'))
@@ -24,7 +24,23 @@ app.post('/candlestick', function (req, res) {
     console.log(JSON.stringify(req.body));
     getYahoo(req.body.stockId, req.body.period1, req.body.period2)
         .then(function (MI) {
-            console.log('MI sent');
             res.send(MI);
         });
 })
+app.post('/stockDay', function (req, res) {
+    getYahoo(req.body.stockId, req.body.period1, req.body.period2)
+        .then( (stockDay) => {
+            res.send(stockDay);
+        }).catch((e) => {
+            res.send('Server Busy');
+        });
+});
+
+app.post('/marketInfo', function (req, res) {
+    getTwse(req.body.dateQuery).then((MI) => {
+        res.send(MI);
+    }).catch((e) => {
+        res.send('Server Busy');
+    });
+});
+

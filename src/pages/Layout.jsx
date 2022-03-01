@@ -1,6 +1,8 @@
 // ----- 沛珊 ----- //
 
 import * as React from 'react';
+import PubSub from 'pubsub-js';
+
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -16,13 +18,11 @@ import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import Avatar from '@mui/material/Avatar';
 import PageTitle from '../components/PageTitle';
 import Breadcrumb from '../components/Breadcrumb';
 import { Outlet } from 'react-router-dom';
 import NotificationSection from '../components/Header/NotificationSection';
 import MainListItem from '../components/Sidebar_mainList'
-
 import ProfileSection from "../components/Header/ProfileSection"
 
 
@@ -89,7 +89,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const mdTheme = createTheme({
   typography: {
     "fontFamily": `"Roboto", "Helvetica", "Arial", sans-serif`,
-    "fontSize": 14,
+    "fontSize": 15,
     "fontWeight": 'bold',
   },
 
@@ -114,6 +114,8 @@ function Layout() {
       setOpen(true)
     }
   }, [width])
+
+  
 
 
 
@@ -182,22 +184,7 @@ function Layout() {
             }}
           >
             <Link underline="none" color="black" href='/'>
-            {/* <Avatar sx={{ width: '200px',height:'70px' }} alt="duckside" src="/assets/images/logo.svg" /> */}
               <img src="/assets/images/logo.svg" alt="logo" style={{height:'55px',width:'200px',paddingLeft:'40px'}}/>
-              {/* <Typography
-                component="h1"
-                variant="h1"
-                noWrap
-                sx={{
-                  flexGrow: 1,
-                  color: "#2A6470",
-                  fontWeight: 'bold',
-                  fontSize: '25px',
-                  paddingTop: "34px",
-                }}
-              >
-                Duckside
-              </Typography> */}
             </Link>
 
             <IconButton onClick={toggleDrawer}>
@@ -234,10 +221,10 @@ function Layout() {
                   <div className="content-wrap">
                     <div className="main">
                       <div className="container-fluid">
-                        <div className="row">
-                          <PageTitle />
-                          <Breadcrumb />
-                        </div>
+                        {/* <div className="row"> */}
+                          {/* <PageTitle /> */}
+                          {/* <Breadcrumb /> */}
+                        {/* </div> */}
                         <section id="main-content">
                           <Outlet />
                         </section>

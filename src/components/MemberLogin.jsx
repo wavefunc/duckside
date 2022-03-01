@@ -6,27 +6,77 @@ import "../css/member_style.css";
 import Modal from "react-bootstrap/Modal";
 
 let MemberLogin = (props) => {
+  //********************
   //State
-  let [memberEmail, setEmail] = useState();
-  let [memberPassword, setPassword] = useState();
+  //memberInfo
+  let [memberInfo, setMemberInfo] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+  // errorNotice
+  let [passwordfalse, setPasswordfalse] = useState("none"); //contents
+  let [emailfalse, setEmailfalse] = useState("none"); //contents
+  //LoginSuccessState
+  let [outsec, setOutsec] = useState(2);
+  let [showsuccess, setShowsuccess] = useState("none");
 
+  //********************
+  // function
   //信箱input
-  let emailInpButton = async (e) => {
-    await setEmail(e.target.value);
+  let emailInpChange = async (e) => {
+    await setMemberInfo({ ...memberInfo, email: e.target.value });
   };
   //密碼input
-  let passwordInpButton = async (e) => {
-    await setPassword(e.target.value);
+  let passwordInpChange = async (e) => {
+    await setMemberInfo({ ...memberInfo, password: e.target.value });
+  };
+  //清除提示字
+  let noticeClearInpClick = async () => {
+    setEmailfalse("none");
+    setPasswordfalse("none");
   };
 
-  //登入_button
-  let memberCheckHandler = async () => {
-    // await Axios.post("/account/create", {"acc_email":"123", "acc_password":"456", "acc_name":"789"}).then(
-    //   (result) => {
-    //     console.log(result);
-    //   }
-    // );
+  //登入button
+  let memberButClick = async () => {
+    await Axios.post("http://localhost:5000/account/login", {
+      acc_email: memberInfo.email,
+      acc_password: memberInfo.password,
+    }).then((result) => {
+      if (result.data === "Password correct") {
+        //成功登入
+        setShowsuccess("contents");
+        //3秒後跳轉
+        let settime = setInterval(() => {
+          if (outsec > 0) {
+            setOutsec((outsec -= 1));
+          } else {
+            //關閉視窗
+            props.close();
+            setOutsec((outsec = 2));
+            clearInterval(settime);
+            //clear all data
+            setMemberInfo({ ...memberInfo, name: "", email: "", password: "" });
+            setShowsuccess("none");
+            //clear all data
+          }
+        }, 1000);
+        //localStorage
+        if (window.localStorage) {
+          var local = window.localStorage;
+          local.setItem("loginState", memberInfo.email);
+        }
+      } else if (result.data === "Password error") {
+        //失敗密碼錯誤
+        setPasswordfalse("contents");
+      } else if (result.data === "No such account") {
+        //失敗找不到帳號
+        setEmailfalse("contents");
+      }
+    });
   };
+
+
 
   return (
     <Modal
@@ -39,7 +89,7 @@ let MemberLogin = (props) => {
       <div id="formContainer_body">
         <div id="formContainer" className="dwo">
           <div className="formLeft">
-            <img src="/assets/images/member_photo.png" alt="頭相"/>
+            <img src="/assets/images/member_photo.png" alt="頭像" />
           </div>
           <div className="formRight">
             {/* <!-- Login form --> */}
@@ -54,7 +104,8 @@ let MemberLogin = (props) => {
                   <input
                     type="text"
                     placeholder=" "
-                    onChange={emailInpButton}
+                    onChange={emailInpChange}
+                    onClick={noticeClearInpClick}
                   />
                   <div className="border"></div>
                 </label>
@@ -63,28 +114,46 @@ let MemberLogin = (props) => {
                   <input
                     type="password"
                     placeholder=" "
-                    onChange={passwordInpButton}
+                    onChange={passwordInpChange}
+                    onClick={noticeClearInpClick}
                   />
                   <div className="border"></div>
                 </label>
-                <button type="button" onClick={memberCheckHandler}>
+                <div className="d-flex justify-content-center">
+                  <span
+                    className="text-danger"
+                    style={{ display: passwordfalse }}
+                  >
+                    密碼錯誤，登入失敗...
+                  </span>
+                  <span className="text-danger" style={{ display: emailfalse }}>
+                    查無此帳號，登入失敗...
+                  </span>
+                  <span
+                    className="text-success"
+                    style={{ display: showsuccess }}
+                  >
+                    登入成功!!! {outsec + 1}秒後跳轉...
+                  </span>
+                </div>
+                <button type="button" onClick={memberButClick}>
                   登 入
                 </button>
               </section>
               <footer>
-                {/* <button
+                <button
                   type="button"
                   className="forgotBtn"
-                 
+                  onClick={props.showForgetToggle}
                 >
                   忘記密碼?
-                </button> */}
+                </button>
                 <button
                   type="button"
                   className="registerBtn"
                   onClick={props.showtoggle}
                 >
-                  新用戶?
+                  註冊?
                 </button>
                 <button
                   type="button"

@@ -20,12 +20,11 @@ function MyCurrentPosition({ url, dataToServer, row, col = null, ...props }) {
     useEffect(() => {
         let beingMounted = true;
 
-        console.log('MyCurrentPosition useEffect:');
         if (url) {
-            console.log('MyCurrentPosition useEffect req (post)');
             axios.post(url, dataToServer).then((res) => {
                 if (beingMounted) {
                     setData(res.data);
+                    console.log(res.data);
                 }
             });
         } else {
@@ -41,7 +40,7 @@ function MyCurrentPosition({ url, dataToServer, row, col = null, ...props }) {
                 sort={true}
                 style={{
                     table: {
-                        'width': '100%',
+                        'width': '96%',
                         'border-top': '1px solid #e2e2e2',
                     },
                 }}

@@ -1,0 +1,509 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+        <script
+            src="jquery/dist/jquery.min.js"></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="/chart.js/dist/chart.min.js"></script>
+        <script
+            src="/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+        <script src="/date-and-time/date-and-time.min.js"></script>
+        <title>twstock</title>
+    </head>
+    <body>
+        <div class="container-fluid px-5">
+            <div class="row">
+                <div class="col-md-5">
+                    <h1>Demo: input</h1>
+                    <hr />
+                    <h2>查詢股票在日期區間之股價資料，輸出為技術線圖</h2>
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <input name="stockId" id="stockId"
+                                type="text"
+                                class="form-control form-control-sm mr-sm-2
+                                mb-2"
+                                placeholder="股票代號" value="2330">
+                            <input name="period1" id="period1"
+                                type="text"
+                                class="form-control form-control-sm mr-sm-2
+                                mb-2"
+                                placeholder="起日: YYYYMMDD" value="20210101">
+                            <input name="period2" id="period2"
+                                type="text"
+                                class="form-control form-control-sm mr-sm-2
+                                mb-2"
+                                placeholder="迄日: YYYYMMDD" value="20210331">
+                            <button type="button" id="demoBtn1"
+                                class="btn btn-sm btn-success
+                                mr-md-2
+                                mb-2">送出</button> &nbsp;
+                        </div>
+                    </form>
+                    <hr />
+                    <h2>查詢某日期為止的股價資料, 輸出為技術線圖</h2>
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <input name="startDate" id="startDate"
+                                type="text"
+                                class="form-control form-control-sm mr-sm-2
+                                mb-2"
+                                placeholder="關卡日期: YYYYMMDD"
+                                value="20210101">
+                            <input name="lookupStockId" id="lookupStockId"
+                                type="text"
+                                class="form-control form-control-sm mr-sm-2
+                                mb-2"
+                                placeholder="股票代號"
+                                value="2330">
+                            <button type="button" id="demoBtn2" class="btn
+                                btn-sm
+                                btn-success
+                                mr-md-2
+                                mb-2">查詢
+                            </button> &nbsp;
+                        </div>
+                    </form>
+                    <ol>
+                        <li>後端跟Yahoo抓取該股票近三年的股價資料給前端，資料存在變數MI裡 (Market Infos)</li>
+                        <li>前端將資料丟進預先寫好的函式，整理成Chartjs認得的格式</li>
+                        <li>將整理好的資料放入預先設定好的Chartjs物件後刷新畫布</li>
+                    </ol>
+                    <h2>技術圖; K線圖; Candlestick Chart</h2>
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <input id="changeRange1"
+                                type="text"
+                                class="form-control form-control-sm mr-sm-2
+                                mb-2"
+                                placeholder="起日: YYYYMMDD">
+                            <input id="changeRange2"
+                                type="text"
+                                class="form-control form-control-sm mr-sm-2
+                                mb-2"
+                                placeholder="迄日: YYYYMMDD">
+                            <button type="button" id="changeRange"
+                                class="btn
+                                btn-sm
+                                btn-outline-success
+                                mr-md-2
+                                mb-2">查詢</button> &nbsp;
+                        </div>
+                    </form>
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <button type="button" id="prev2"
+                                class="btn btn-sm
+                                btn-outline-success
+                                mb-2">&lt;&lt;</button> &nbsp;
+                            <button type="button" id="prev1"
+                                class="btn btn-sm
+                                btn-outline-success
+                                mb-2">&lt;</button> &nbsp;
+
+                            <button type="button" id="widennn"
+                                class="btn btn-sm
+                                btn-outline-success
+                                mb-2">--</button> &nbsp;
+                            <button type="button" id="widen"
+                                class="btn btn-sm
+                                btn-outline-success
+                                mb-2">-</button> &nbsp;
+                            <button type="button" id="narrow"
+                                class="btn btn-sm
+                                btn-outline-success
+                                mb-2">+</button> &nbsp;
+                            <button type="button" id="narrowww"
+                                class="btn btn-sm
+                                btn-outline-success
+                                mb-2">++</button> &nbsp;
+                            <button type="button" id="next1"
+                                class="btn btn-sm
+                                btn-outline-success
+                                mr-md-2
+                                mb-2">&gt;</button> &nbsp;
+                            <button type="button" id="next2"
+                                class="btn btn-sm
+                                btn-outline-success
+                                mr-md-2
+                                mb-2">&gt;&gt;</button> &nbsp;
+                        </div>
+                    </form>
+                    <ol>
+                        <li>左右: 整個圖表呈現的資料區間向左或右移動1或5日</li>
+                        <li>加: 拉近視野，縮窄圖表呈現的資料區間10或20日，盡量前後平均分配</li>
+                        <li>減: 拉遠視野，加寬圖表呈現的資料區間10或20日，盡量前後平均分配</li>
+                    </ol>
+                </div>
+                <div class='col-md-7' style="word-wrap:break-word;">
+                    <h1>output
+                        <button type="button" id="cls" class="btn btn-sm
+                            btn-outline-secondary">
+                            clear
+                        </button>
+                    </h1>
+                    <p class="demo"></p>
+                    <canvas class="demo" id="myChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <script>
+            $(document).ready(function() {
+                var MI = {};
+                var chartRange = 0;
+                var chartCurrntIdx = 0;
+
+                const body_red = 'rgba(255, 144, 144)';
+                const body_green = 'rgba(144, 255, 144)';
+                const body_gray ='rgba(96, 96, 96)';
+                const shadow_red =  'rgba(255, 196, 196)';
+                const shadow_green = 'rgba(196, 255, 196)';
+                const shadow_gray = 'rgba(144, 144, 144)';
+                const getBodyColor = function(ayy){
+                                return ayy.map( e => {
+                                    switch (e) {
+                                        case 1:
+                                            return body_red;
+                                        case -1:
+                                            return body_green;
+                                        case 0:
+                                            return body_gray;
+                                    }
+                                })
+                            };
+                const getShadowColor = function(ayy){
+                    return ayy.map( e => {
+                        switch (e) {
+                            case 1:
+                                return shadow_red;
+                            case -1:
+                                return shadow_green;
+                            case 0:
+                                return shadow_gray;
+                        }
+                    })
+                };
+                const getStepSize = function(val){
+                    var digit = val.toString().length;
+                    var tenPoweredSameDigit = Math.pow(10,digit-1);
+                    var onefourth = Math.pow(10,digit-1)/4;
+                    // console.log(val);
+                    // console.log(Math.ceil( val / onefourth  )* onefourth);
+                    return Math.ceil( val / onefourth  )* onefourth;
+                }
+
+                const ctx = document.getElementById('myChart').getContext('2d');
+                const myChart = new Chart(ctx, {
+                    type: 'bar',
+                    options: {
+                        scales: {
+                            x: {
+                                type: 'timeseries',
+                                display: 'auto',
+                                ticks:{
+                                    source: "labels",
+                                    callback: (v,i,arr) => {
+                                        if(i == 0) {
+                                            return v;
+                                        } else {
+                                            let currentYmdArr = v.split('/');
+                                            return `${currentYmdArr[1]}/${currentYmdArr[2]}`
+                                            //     let currentDate = new Date(arr[i].value);
+                                            //     let previousDate = new Date(arr[i-1].value);
+                                            //     return currentDate.getFullYear() !== previousDate.getFullYear() ? v:
+                                            //     Math.floor(currentDate.getDate()/10) !== Math.floor(previousDate.getDate()/10) ? `${currentYmdArr[1]}/${currentYmdArr[2]}`:"";
+                                        }
+                                    }
+                                },
+                                time: {
+                                    unit: 'day',
+                                    align: 'start',
+                                    displayFormats: {
+                                        day: "yyyy/M/d",
+                                    }
+                                }
+
+                            },
+                            y: {
+                                title: {
+                                display: true,
+                                text: '元',
+                                },
+                                // stacked: true,
+                                stack: 1,
+                                stackWeight: 3,
+                                position: 'right',
+                                beginAtZero: false,
+                                offset: true,
+                            },
+                            y2: {
+                                title: {
+                                display: true,
+                                text: '張數',
+                                },
+                                stacked: true,
+                                stack: 1,
+                                stackWeight: 1,
+                                position: 'right',
+                                min: true,
+                                ticks: {
+                                    callback: val => Math.floor( val / 1000 ),
+                                },
+                            }
+                        },
+                        interaction: {
+                            intersect: false,
+                            mode: 'index',
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip:{
+                                callbacks:{
+                                    title: (i) => {
+                                        let tempIdx = i[0].label.lastIndexOf(',')
+                                        return i[0].label.slice(0,tempIdx);
+                                    },
+                                    label: (i) => {
+                                        return [i.dataset.label , i.raw];
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                });
+
+                async function getMI(dataToServer) {
+                    await $.ajax({
+                        type: "post",
+                        url: "candlestick",
+                        data: JSON.stringify(dataToServer),
+                        contentType: "application/json",
+                        success: function(result) {
+                            MI = result;
+                        }
+                    });
+                };
+
+                function candleStick(MI, days=0) {
+                    let len = MI.dates.length;
+                    timeScalesMin = MI.dates[len-days];
+                    timeScalesMax = MI.dates[len-1];
+                    let data = {
+                        labels: MI.dates,
+                        datasets: [
+                        {
+                            label: "最低, 最高",
+                            data: MI.candleShadow,
+                            backgroundColor: getShadowColor(MI.priceDaytimeMoveDir),
+                            barPercentage: 0.2,
+                            grouped: false,
+                            order: 3,
+                        },
+                        {
+                            label: "開盤, 收盤",
+                            data: MI.candleBody,
+                            backgroundColor: getBodyColor(MI.priceDaytimeMoveDir),
+                            barPercentage: 1,
+                            grouped: false,
+                            order: 1,
+                            minBarLength: 1,
+                        },
+                        {
+                            label: "成交量(股)",
+                            data: MI.volShare,
+                            backgroundColor: getShadowColor(MI.priceCloseChangeDir),
+                            borderColor: getBodyColor(MI.priceCloseChangeDir),
+                            borderWidth: 2,
+                            barPercentage: 1,
+                            yAxisID:'y2',
+                        }
+                        ]
+                    };
+                    myChart.data = data;
+                    myChart.options.scales.x.min = timeScalesMin;
+                    myChart.options.scales.x.max = timeScalesMax;
+                    myChart.update();
+                };
+
+                $("#cls").on("click",function(){
+                    try {
+                        Chart.getChart("myChart").destroy()
+                    } catch {
+                        console.log("myChart not found");
+                    };
+                    $(".demo").text("");
+                })
+
+                $("#demoBtn1").on("click", async function(){
+                    let dataToServer = {
+                        stockId: $("#stockId").val(),
+                        period1: $("#period1").val(),
+                        period2: $("#period2").val()
+                    }
+                    await getMI(dataToServer);
+                    candleStick(MI);
+                })
+                
+                $("#demoBtn2").on("click", async function(){
+                    let startDate = $("#startDate").val();
+                    let backward = parseInt(startDate.substr(0,4)) - 3;
+                    let dataToServer = {
+                        stockId: $("#lookupStockId").val(),
+                        period1: backward + startDate.substr(4,4),
+                        period2: startDate,
+                    }
+                    await getMI(dataToServer);
+                    candleStick(MI,20);
+                })
+            
+                $("#changeRange").on("click", function(){
+                    let dataMinDate = date.parse( myChart.data.labels[0] , "YYYY-MM-DD")
+                    let dataMaxDate = date.parse( [...myChart.data.labels].reverse()[0] , "YYYY-MM-DD");
+                    let changeMinDate = dataMinDate;
+                    let changeMaxDate = dataMaxDate;
+                    if( $("#changeRange1").val() ){
+                        changeMinDate = date.parse($("#changeRange1").val(),"YYYYMMDD");
+                    }
+                    if( $("#changeRange2").val() ){
+                        changeMaxDate = date.parse($("#changeRange2").val(),"YYYYMMDD");
+                    }
+                    if( changeMinDate > changeMaxDate ){
+                        [changeMinDate,changeMaxDate] = [changeMaxDate,changeMinDate];
+                    }
+                    console.log(changeMinDate);
+                    console.log(changeMaxDate);
+
+                    for (let i = 0; myChart.data.labels.indexOf( date.format(changeMinDate,"YYYY-MM-DD") ) < 0; i++ ){
+                        changeMinDate.setDate(changeMinDate.getDate() + 1);
+                        if ( changeMinDate >= changeMaxDate || changeMinDate >= dataMaxDate){
+                            console.log('no match');
+                            break;
+                        }
+                    }
+                    console.log();
+                    for (let i = 0; myChart.data.labels.indexOf( date.format(changeMaxDate,"YYYY-MM-DD") ) < 0; i++ ){
+                        changeMaxDate.setDate(changeMaxDate.getDate() - 1);
+                        if ( changeMinDate >= changeMaxDate || changeMaxDate <= dataMinDate){
+                            console.log('no match');
+                            break;
+                        }
+                    }
+                    let changeMinDateIdx = myChart.data.labels.indexOf( date.format(changeMinDate,"YYYY-MM-DD") );
+                    let changeMaxDateIdx = myChart.data.labels.indexOf( date.format(changeMaxDate,"YYYY-MM-DD") );
+
+                    if(changeMinDateIdx > -1 && changeMaxDateIdx > -1){
+                        myChart.options.scales.x.min = myChart.data.labels[changeMinDateIdx];
+                        myChart.options.scales.x.max = myChart.data.labels[changeMaxDateIdx];
+                    }
+
+                    console.log(`min ${myChart.options.scales.x.min} (${changeMinDateIdx})`);
+                    console.log(`max ${myChart.options.scales.x.max} (${changeMaxDateIdx})`);
+
+                    myChart.update();
+                })
+
+                function dataRangeMove(d=1) {
+                    let minDate = new Date(myChart.options.scales.x.min);
+                    let maxDate = new Date(myChart.options.scales.x.max);
+                    let minDateStr = date.format(minDate,"YYYY-MM-DD")
+                    let maxDateStr = date.format(maxDate,"YYYY-MM-DD")
+                    let minDateIdx = myChart.data.labels.indexOf(minDateStr);
+                    let maxDateIdx = myChart.data.labels.indexOf(maxDateStr);
+
+                    let i = 0;
+                    if ( d>0 ) {
+                        while ( myChart.data.labels[maxDateIdx+i+1] && i< Math.abs(d) ) {
+                        i += 1;
+                        };
+                        myChart.options.scales.x.min = myChart.data.labels[minDateIdx+i];
+                        myChart.options.scales.x.max = myChart.data.labels[maxDateIdx+i];
+                        console.log(`${minDateIdx+i}-${maxDateIdx+i}`);
+                    } else {
+                        while ( myChart.data.labels[minDateIdx-i-1] && i< Math.abs(d) ) {
+                        i += 1;
+                        };
+                        myChart.options.scales.x.min = myChart.data.labels[minDateIdx-i];
+                        myChart.options.scales.x.max = myChart.data.labels[maxDateIdx-i];
+                        console.log(`${minDateIdx-i}-${maxDateIdx-i}`);
+                    }
+                    myChart.update();
+
+                }
+                function dataRangeWiden(d=1){
+                    let minDate = new Date(myChart.options.scales.x.min);
+                    let maxDate = new Date(myChart.options.scales.x.max);
+                    let minDateStr = date.format(minDate,"YYYY-MM-DD")
+                    let maxDateStr = date.format(maxDate,"YYYY-MM-DD")
+                    let minDateIdx = myChart.data.labels.indexOf(minDateStr);
+                    let maxDateIdx = myChart.data.labels.indexOf(maxDateStr);
+                    
+                    for (let pedo = 0 , i=0 , j=0; pedo < d; pedo++) {
+                        if (myChart.data.labels[maxDateIdx+1] && i++ < d/2 ) {
+                            maxDateIdx += 1;
+                            console.log("flag 1");
+                            continue;
+                        } else if (myChart.data.labels[minDateIdx-1]) {
+                            minDateIdx -= 1;
+                            console.log("flag 2");
+                            continue;
+                        } else if (myChart.data.labels[maxDateIdx+1]) {
+                            maxDateIdx += 1;
+                            console.log("flag 3");
+                            continue;
+                        } else {
+                            console.log("flag 4");
+                            pedo = 9999;
+                        }
+                    }
+                    myChart.options.scales.x.min = myChart.data.labels[minDateIdx];
+                    myChart.options.scales.x.max = myChart.data.labels[maxDateIdx];
+                    myChart.update();
+                    console.log(`${minDateIdx}-${maxDateIdx}`);
+                }
+                function dataRangeNarrow(d=1){
+                    let minDate = new Date(myChart.options.scales.x.min);
+                    let maxDate = new Date(myChart.options.scales.x.max);
+                    let minDateStr = date.format(minDate,"YYYY-MM-DD")
+                    let maxDateStr = date.format(maxDate,"YYYY-MM-DD")
+                    let minDateIdx = myChart.data.labels.indexOf(minDateStr);
+                    let maxDateIdx = myChart.data.labels.indexOf(maxDateStr);
+                    
+                    for (let pedo = 0 , i=0 , j=0; pedo < d && maxDateIdx - minDateIdx >= 5; pedo++) {
+                        if( pedo % 2 == 0 ){
+                            maxDateIdx -= 1;
+                            continue;
+                        } else {
+                            minDateIdx += 1;
+                            continue;
+                        }
+                    }
+                    myChart.options.scales.x.min = myChart.data.labels[minDateIdx];
+                    myChart.options.scales.x.max = myChart.data.labels[maxDateIdx];
+                    myChart.update();
+                    console.log(`${minDateIdx}-${maxDateIdx}`);
+                }
+                
+                $("#next1").on("click", ()=>{dataRangeMove(1)});
+                $("#next2").on("click", ()=>{dataRangeMove(5)});
+                $("#prev1").on("click", ()=>{dataRangeMove(-1)});
+                $("#prev2").on("click", ()=>{dataRangeMove(-5)});
+                $("#widen").on("click", ()=>{dataRangeWiden(10)});
+                $("#widennn").on("click", ()=>{dataRangeWiden(20)});
+                $("#narrow").on("click",  ()=>{dataRangeNarrow(10)});
+                $("#narrowww").on("click",  ()=>{dataRangeNarrow(20)});
+
+            });
+        </script>
+    </body>
+</html>

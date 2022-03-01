@@ -1,8 +1,9 @@
-// ----- 冠樺 ----- //
+// ----- 人豪 ----- //
 
 var express = require('express');
 var router = express.Router();
 var { query } = require('./mysql.js');
+var { getYahoo, getTwse } = require('./twstock.js');
 
 // *******************
 // 列出資料表全部的資料
@@ -10,8 +11,8 @@ var { query } = require('./mysql.js');
 router.get('/securities/all', (req, res) => {
     query('SELECT * FROM securities',
         [], (err, rows) => res.send(rows)
-    )
-})
+    );
+});
 
 // *********************
 // 依關鍵字找出相關的股票
@@ -20,8 +21,8 @@ router.get('/securities/search/:key', (req, res) => {
     query(`SELECT * FROM securities WHERE sec_id 
             LIKE "%${req.params.key}%" OR sec_name LIKE "%${req.params.key}%"`,
         [], (err, rows) => res.send(rows)
-    )
-})
+    );
+});
 
 // *****************************************************
 // 依關鍵字找出相關的股票: input onchange使用, 降低lag情形
@@ -31,7 +32,41 @@ router.get('/securities/datalist/:key', (req, res) => {
             LIKE "${req.params.key}%" OR sec_name LIKE "%${req.params.key}%"
             ORDER BY sec_id DESC LIMIT 100`,
         [], (err, rows) => res.send(rows)
-    )
+    );
+});
+
+// *****************************************************
+// 依stockId及日期區間(period1至period2) 
+// 抓該股票日成交資料, 繪製技術線圖
+// *****************************************************
+router.post('/candlestick', function (req, res) {
+    console.log(JSON.stringify(req.body));
+    getYahoo(req.body.stockId, req.body.period1, req.body.period2)
+        .then(function (MI) {
+            res.send(MI);
+        });
 })
+// *****************************************************
+// 依stockId及日期區間(period1至period2) 
+// 抓該股票在這期間的日成交資料
+// *****************************************************
+router.post('/stockDay', function (req, res) {
+    getYahoo(req.body.stockId, req.body.period1, req.body.period2)
+        .then((stockDay) => {
+            res.send(stockDay);
+        }).catch((e) => {
+            res.send('Server Busy');
+        });
+});
+// *****************************************************
+// 依 dateQuery 抓該天所有股票成交資料 (打包成MI物件)
+// *****************************************************
+router.post('/marketInfo', function (req, res) {
+    getTwse(req.body.dateQuery).then((MI) => {
+        res.send(MI);
+    }).catch((e) => {
+        res.send('Server Busy');
+    });
+});
 
 module.exports = router;

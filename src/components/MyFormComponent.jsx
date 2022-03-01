@@ -1,15 +1,17 @@
-﻿import { useField } from 'formik';
-import { Form, InputGroup } from 'react-bootstrap';
+import { useField } from 'formik';
+import { Form, InputGroup, Toast } from 'react-bootstrap';
+import { CheckSquare } from 'react-bootstrap-icons';
+import dt from "date-and-time";
 import React, { useEffect, useRef } from 'react';
 
 
-export const MyInput = ({ label, list, getList, helptext, ...props }) => {
+export const MyInput = ({ label, list, getList, setList, helptext, ...props }) => {
     const [field, meta] = useField(props);
     let didChanged = useRef(false);
     useEffect(() => {
         if (list && didChanged.current) {
-            console.log('MyInput useEffect getlist');
-            getList(field.value);
+            console.log('MyInput useEffect getlist then setlist(callback)');
+            getList(field.value, setList);
             return
         }
         didChanged.current = true;
@@ -40,7 +42,7 @@ export const MyInput = ({ label, list, getList, helptext, ...props }) => {
                     <Form.Control.Feedback type="invalid">
                         {meta.error}
                     </Form.Control.Feedback>) : null}
-                {helptext ?  <Form.Text id={`helptext${props.id}`} muted>
+                {helptext ? <Form.Text id={`helptext${props.id}`} muted>
                     {helptext}
                 </Form.Text> : null}
             </InputGroup>
@@ -78,7 +80,10 @@ export const MySelect = ({ children, label, ...props }) => {
                     aria-describedby={`prependId${props.id}`}
                     isInvalid={meta.touched && meta.error}
                 >
-                    {children.map((v, i) => <option key={i} value={v}>{v}</option>)}
+                    {typeof children[0] === 'string' ?
+                        children.map((v, i) => <option key={i} value={v}>{v}</option>) :
+                        children.map((v) => <option key={v.key} value={v.value}>{v.value}</option>)
+                    }
                 </Form.Control>
                 <Form.Control.Feedback type="invalid">
                     {meta.error}
@@ -95,10 +100,43 @@ export const MyFormikObserver = (props) => {
     // 將最上層元件想在該輸入值變動時做的函式傳入onchange
     useEffect(() => {
         props.onChange(props.value);
-    }, typeof props.value === 'object' ? [Object.values(props.value).join(', ')] : [props.value]);
+    }, [Object.values(props.value).join(', ')]);
     return null
 }
 
+export const MyOkToast = (props) => {
+    return (
+        <div
+            aria-live="polite"
+            aria-atomic="true"
+            style={{
+                position: 'absolute',
+                right: 0
+            }}
+            className="mr-3 alert"
+        >
+            <Toast
+                show={props.show} onClose={props.closeToast} delay={1000} autohide
+                style={{
+                    position: 'absolute',
+                    zIndex: 999,
+                    top: 0,
+                    right: 0,
+                    height: 36,
+                    width: 200,
+                }}
+            >
+                <Toast.Header>
+                    <strong className="mr-auto">
+                        <CheckSquare className='mr-1 mb-1 text-success' />
+                        修改成功!
+                    </strong>
+                    <small>{dt.format(new Date(), "M/D H:m")}</small>
+                </Toast.Header>
+            </Toast>
+        </div>
+    )
+}
 
 /***********
 

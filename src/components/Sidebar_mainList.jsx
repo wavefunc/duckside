@@ -18,7 +18,7 @@ import List from '@mui/material/List';
 import StarBorder from '@mui/icons-material/StarBorder';
 import { Link, NavLink } from 'react-router-dom';
 import Divider from '@mui/material/Divider';
-
+import PubSub from 'pubsub-js';
 
 
 export default function MainListItem() {
@@ -31,8 +31,11 @@ export default function MainListItem() {
 
     const [selectedIndex, setSelectedIndex] = React.useState(0);
     const handleListItemClick = (event, index) => {
+        PubSub.publish('Path Name',event.view.location.pathname)
         setSelectedIndex(index);
     };
+
+    
     return (
         <React.Fragment>
 

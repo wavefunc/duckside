@@ -18,7 +18,8 @@ import ManageCurrent, { MyCardDeck } from '../components/ManageCurrent.jsx';
 import { MyChartLine, MyChartPie } from '../components/MyChartComponent.jsx'
 import ManageRecent from '../components/ManageRecent.jsx';
 
-const acc_email = 'ggg@mail.com';
+console.log(`login: ${localStorage.getItem('loginState')}`);
+const acc_email = localStorage.getItem('loginState');
 const dateQuery = dt.format(new Date(), 'YYYY-MM-DD');
 const urlPostRecent = 'http://localhost:5000/asset/recent';
 const urlPostInventory = 'http://localhost:5000/transaction/inventory';
@@ -106,13 +107,13 @@ function ManageDashboard(props) {
          <br />
          <Row>
             <Col lg={8}>
-            <MyChartLine></MyChartLine>
+            {/* <MyChartLine></MyChartLine> */}
             </Col>
             <Col lg={4}>
-               <MyChartPie></MyChartPie>
+               {/* <MyChartPie></MyChartPie>
                <ManageCurrent col={col2} className={{ table: 'table table-sm' }}
                   url={urlPostInventory} dataToServer={{ acc_email: acc_email, dateQuery: dateQuery }}
-               ></ManageCurrent>
+               ></ManageCurrent> */}
             </Col>
          </Row>
 

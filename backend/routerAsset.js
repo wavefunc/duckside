@@ -52,7 +52,7 @@ router.put('/asset/update', async (req, res) => {
    var strQuery =
       `UPDATE asset SET ast_date = ?, ast_securities = ?, ast_cash = ?,
          ast_borrowing = ?, ast_option = ?, ast_others = ?, ast_adjust = ?,
-         ast_note = ?, WHERE ast_id = ? AND acc_id = ?`;
+         ast_note = ? WHERE ast_id = ? AND acc_id = ?`;
    query(
       strQuery,
       [
@@ -63,8 +63,8 @@ router.put('/asset/update', async (req, res) => {
          req.body.ast_option,
          req.body.ast_others,
          req.body.ast_adjust,
-         req.body.ast_id,
          req.body.ast_note,
+         req.body.ast_id,
          acc_id
       ],
       (err) => {
@@ -96,7 +96,8 @@ router.post('/asset/recent', async (req, res) => {
 
    var strLimit = (req.body.amount) ? `DESC LIMIT ${req.body.amount}` : ``;
 
-   var strQuery = `SELECT * FROM asset WHERE acc_id = ?
+   var strQuery = `SELECT *, (ast_securities + ast_cash + ast_borrowing + 
+      ast_option + ast_others + ast_adjust) ast_sum FROM asset WHERE acc_id = ?
       ORDER BY ast_date ${strLimit}`;
 
    query(strQuery, [acc_id], (err, rows) => {
@@ -111,7 +112,8 @@ router.post('/asset/someday', async (req, res) => {
    // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
    var acc_id = await checkAccount(req.body.acc_email, res);
 
-   var strQuery = `SELECT * FROM asset WHERE acc_id = ? 
+   var strQuery = `SELECT *, (ast_securities + ast_cash + ast_borrowing + 
+      ast_option + ast_others + ast_adjust) ast_sum FROM asset WHERE acc_id = ? 
       AND ast_date <= ? ORDER BY ast_date DESC LIMIT 1`;
 
    query(strQuery, [acc_id, req.body.dateQuery], (err, rows) => {

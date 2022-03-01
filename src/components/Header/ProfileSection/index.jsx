@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-
+import PubSub from 'pubsub-js';
 
 import { useTheme } from '@mui/material/styles';
 import {
@@ -30,6 +30,7 @@ import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 // login component
 import MemberLogin from "../../MemberLogin";
 import MemberRegister from "../../MemberRegister";
+import MemberForget from "../../MemberForget";
 import "../../../css/bootstrap.min.css";
 // login component
 
@@ -37,6 +38,7 @@ const ProfileSection = () => {
     // login component
     const [showLogin, setShowLogin] = useState(false);
     const [showregister, setShowRegister] = useState(false);
+    const [showforget, setShowForget] = useState(false);
     function showLoginToggle() {
         setShowLogin(!showLogin);
         setShowRegister(!showregister);
@@ -46,15 +48,13 @@ const ProfileSection = () => {
         setShowRegister(false);
     }
     function showLoginOpen() {
-        if (showLogin === false && showregister === true) {
-            setShowLogin(false);
-            setShowRegister(false);
-            setListOpen(false);
-        } else {
-            setShowLogin(true);
-            setShowRegister(false);
-            setListOpen(false);
-        }
+        setShowLogin(true);
+        setShowRegister(false);
+        setListOpen(false);
+    }
+    function showForgetToggle() {
+        setShowLogin(!showLogin);
+        setShowForget(!showforget);
     }
     // login component
 
@@ -66,8 +66,9 @@ const ProfileSection = () => {
      * anchorRef is used on different componets and specifying one type leads to other components throwing an error
      * */
     const anchorRef = useRef(null);
-    const handleLogout = async () => {
-        console.log('Logout');
+    const handleLogout = () => {
+        localStorage.clear();
+        setListOpen(false);
     };
 
     const handleClose = (event) => {
@@ -79,6 +80,9 @@ const ProfileSection = () => {
 
     const handleToggle = () => {
         setListOpen((prevOpen) => !prevOpen);
+        setShowLogin(false);
+        setShowRegister(false);
+        setShowForget(false);
     };
 
     const prevOpen = useRef(listOpen);
@@ -86,13 +90,23 @@ const ProfileSection = () => {
         if (prevOpen.current === true && listOpen === false) {
             anchorRef.current.focus();
         }
-
         prevOpen.current = listOpen;
     }, [listOpen]);
 
+
+    let loginState = localStorage.getItem("loginState");
+    useEffect(() => {
+        PubSub.subscribe('Path Name', () => {
+            if (loginState === null) {
+                setShowLogin(true);
+            } else if (typeof loginState === "string") {
+                setShowLogin(false);
+            }
+        })
+    }, [loginState])
+
     return (
         <>
-
             <Chip
                 sx={{
                     height: '45px',
@@ -184,59 +198,63 @@ const ProfileSection = () => {
                                                 }
                                             }}
                                         >
-                                            {/* 登入按鈕 */}
-                                            <ListItemButton
-                                                sx={{ borderRadius: `20px` }}
-                                                selected={selectedIndex === 0}
-                                                onClick={showLoginOpen}
-                                            >
-                                                <ListItemIcon>
-                                                    <LoginIcon stroke={1.5} size="1.3rem" />
-                                                </ListItemIcon>
-                                                <ListItemText primary={<Typography variant="body2">登入/註冊</Typography>} />
-                                            </ListItemButton>
+                                            {
+                                                loginState === null ?
+                                                    <>
+                                                        {/* 登入選項 */}
+                                                        <ListItemButton
+                                                            sx={{ borderRadius: `20px` }}
+                                                            selected={selectedIndex === 0}
+                                                            onClick={showLoginOpen}
+                                                        >
+                                                            <ListItemIcon>
+                                                                <LoginIcon stroke={1.5} size="1.3rem" />
+                                                            </ListItemIcon>
+                                                            <ListItemText primary={<Typography variant="body2">登入/註冊</Typography>} />
+                                                        </ListItemButton>
 
-                                            {/* 登出 */}
-                                            <Link to="/member/changePass" style={{ color: 'black' }}>
-                                                <ListItemButton
-                                                    sx={{ borderRadius: `20px` }}
-                                                    selected={selectedIndex === 4}
-                                                    onClick={handleLogout}
-                                                >
-                                                    <ListItemIcon>
-                                                        <LogoutIcon stroke={1.5} size="1.3rem" />
-                                                    </ListItemIcon>
-                                                    <ListItemText primary={<Typography variant="body2">登出</Typography>} />
-                                                </ListItemButton>
-                                            </Link>
+                                                    </> :
+                                                    <>
+                                                        {/* 登出選項 */}
+                                                        <ListItemButton
+                                                            sx={{ borderRadius: `20px` }}
+                                                            selected={selectedIndex === 4}
+                                                            onClick={handleLogout}
+                                                        >
+                                                            <ListItemIcon>
+                                                                <LogoutIcon stroke={1.5} size="1.3rem" />
+                                                            </ListItemIcon>
+                                                            <ListItemText primary={<Typography variant="body2">登出</Typography>} />
+                                                        </ListItemButton>
+                                                        {/* 會員資料修改 */}
+                                                        <Link to="/member/info" style={{ color: 'black' }}>
+                                                            <ListItemButton
+                                                                sx={{ borderRadius: `20px` }}
+                                                                selected={selectedIndex === 4}
+                                                            >
+                                                                <ListItemIcon>
+                                                                    <SettingsOutlinedIcon stroke={1.5} size="1.3rem" />
+                                                                </ListItemIcon>
+                                                                <ListItemText primary={<Typography variant="body2">會員資料修改</Typography>} />
+                                                            </ListItemButton>
+                                                        </Link>
+                                                    </>
+                                            }
 
                                             {/* 忘記密碼 */}
                                             {/* <Link to="/member/changePass" style={{ color: 'black' }}>
-                                                <ListItemButton
-                                                    sx={{ borderRadius: `20px` }}
-                                                    selected={selectedIndex === 4}
-                                                    onClick={handleLogout}
-                                                >
-                                                    <ListItemIcon>
-                                                        <VpnKeyOutlinedIcon stroke={1.5} size="1.3rem" />
-                                                    </ListItemIcon>
-                                                    <ListItemText primary={<Typography variant="body2">忘記密碼</Typography>} />
-                                                </ListItemButton>
-                                            </Link> */}
+                                                            <ListItemButton
+                                                                sx={{ borderRadius: `20px` }}
+                                                                selected={selectedIndex === 4}
+                                                                onClick={handleLogout}
+                                                            >
+                                                                <ListItemIcon>
+                                                                    <VpnKeyOutlinedIcon stroke={1.5} size="1.3rem" />
+                                                                </ListItemIcon>
+                                                                <ListItemText primary={<Typography variant="body2">忘記密碼</Typography>} />
+                                                            </ListItemButton>
+                                                        </Link> */}
 
-                                            {/* 會員資料修改 */}
-                                            <Link to="/member/info" style={{ color: 'black' }}>
-                                                <ListItemButton
-                                                    sx={{ borderRadius: `20px` }}
-                                                    selected={selectedIndex === 4}
-                                                    onClick={handleLogout}
-                                                >
-                                                    <ListItemIcon>
-                                                        <SettingsOutlinedIcon stroke={1.5} size="1.3rem" />
-                                                    </ListItemIcon>
-                                                    <ListItemText primary={<Typography variant="body2">會員資料修改</Typography>} />
-                                                </ListItemButton>
-                                            </Link>
                                         </List>
                                     </Box>
 
@@ -250,8 +268,9 @@ const ProfileSection = () => {
 
 
             {/* login component */}
-            <MemberLogin show={showLogin} showtoggle={showLoginToggle} close={showLoginClose} ></MemberLogin>
+            <MemberLogin show={showLogin} showtoggle={showLoginToggle} showForgetToggle={showForgetToggle} close={showLoginClose} ></MemberLogin>
             <MemberRegister show={showregister} showtoggle={showLoginToggle} close={showLoginClose}></MemberRegister>
+            <MemberForget show={showforget} showForgetToggle={showForgetToggle}></MemberForget>
             {/* login component */}
 
         </>
