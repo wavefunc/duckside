@@ -27,7 +27,7 @@ router.post('/account/create', async (req, res) => {
    (acc_email, acc_password, acc_name) VALUES(?, ?, ?);`
 
    // 建立 會員_家俱 預設資料的 SQL 語法
-   let aryFurnId = ['basketball', 'bath_tube', 'my_light', 'TV', '時鐘-2', '櫃子', '母鴨', '畫像', '眼鏡-2', '舉重槓-2', '鏡子-2']
+   let aryFurnId = ['basketball', 'bathTube', 'light', 'TV', 'clock', 'cabinet', 'femaleDuck', 'protrait', 'glasses', 'weight', 'mirror']
    let strQuery2 = `INSERT INTO acc_furn (acc_furn_id, acc_id, furn_id) VALUES `;
    aryFurnId.forEach((val) => {
       strQuery2 += `(NULL, (SELECT acc_id from account where acc_email = '${req.body.acc_email}'), '${val}'),`;
