@@ -12,6 +12,33 @@ let GameRoomPage = () => {
    const [showRoom, setShowRoom] = useState("block");
    const [showStore, setShowStore] = useState("none");
    const [showStorage, setshowStorage ]= useState("none");
+   const [funitureHave, setfunitureHave] = useState(
+      {"light":"none",
+       "basketball":"none",
+      "bathTube":"none",
+      "TV":"none",
+      "cabinet":"none",
+      "mirror":"none",
+      "femaleDuck":"none",
+      "glasses":"none",
+      "clock":"none",
+      "weight":"none",
+      "protrait":"none"}
+       )
+   const [funitureUse, setfunitureUse] = useState(
+      {"light":"block",
+      "basketball":"block",
+      "bathTube":"block",
+      "TV":"block",
+      "cabinet":"block",
+      "mirror":"block",
+      "femaleDuck":"block",
+      "glasses":"block",
+      "clock":"block",
+      "weight":"block",
+      "protrait":"block"}
+       )
+
    
 
 
@@ -61,15 +88,25 @@ let GameRoomPage = () => {
          showStorage={showStorage} 
          changePage={changePage} 
          showStoragePage={showStoragePage}
-         showFirst={showFirst}> 
+         showFirst={showFirst}
+         funitureUse={funitureUse}> 
          </GameRoomMain>
          </div>
          
 
          <div style={{display:showStore}}>
-         <GameStoreHeader changePage={changePage}></GameStoreHeader>
-         <GameStoreFirstPage show={showFirst} showtoggle={showtoggle}></GameStoreFirstPage>
-         <GameStoreSecondPage show={showSecond} showtoggle={showtoggle}></GameStoreSecondPage>
+         <GameStoreHeader 
+         changePage={changePage}></GameStoreHeader>
+
+         <GameStoreFirstPage 
+         show={showFirst} 
+         showtoggle={showtoggle} 
+         funitureHave={funitureHave}></GameStoreFirstPage>
+
+         <GameStoreSecondPage 
+         show={showSecond} 
+         showtoggle={showtoggle} 
+         funitureHave={funitureHave}></GameStoreSecondPage>
          </div>
       </React.Fragment>
    );
