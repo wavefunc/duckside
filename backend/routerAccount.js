@@ -161,6 +161,7 @@ router.put('/account/updateavatar', upload.single('image'), async (req, res) => 
    query(strQuery, [req.file.buffer, acc_id], (err) => {
       // err ? res.send(err) : res.send(`Successfully updated account avatar`);
       res.send('ok');
+      
    });
 });
 
