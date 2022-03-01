@@ -6,7 +6,7 @@
  * 
  * * * * * * * * * * * */
 
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Container, Row, Col, Tab, Nav, Button } from 'react-bootstrap';
 import { Search } from 'react-bootstrap-icons';
 
@@ -17,9 +17,7 @@ import dt from 'date-and-time';
 import { MyInput, MySelect } from '../components/MyFormComponent';
 import { MyChartLine } from '../components/MyChartComponent.jsx';
 
-console.log(`login: ${localStorage.getItem('loginState')}`);
 const acc_email = localStorage.getItem('loginState');
-
 const urlPostRecent = 'http://localhost:5000/asset/recent';
 
 const nowTime = new Date();
@@ -32,9 +30,9 @@ const initialValues = {
    chartType: "總資產",
 };
 const options = {
-   "總資產": { x: "ast_date", y: "ast_sum", yLabels:"總資產" },
-   "證券": { x: "ast_date", y: "ast_securities", yLabels:"證券" },
-   "現金": { x: "ast_date", y: "ast_cash", yLabels:"現金" },
+   "總資產": { x: "ast_date", y: "ast_sum", yLabels: "總資產" },
+   "證券": { x: "ast_date", y: "ast_securities", yLabels: "證券" },
+   "現金": { x: "ast_date", y: "ast_cash", yLabels: "現金" },
    "資產分佈": {
       x: "ast_date",
       y: ["ast_cash", 'ast_securities', 'ast_option', 'ast_borrowing', 'ast_others', 'ast_adjust'],
@@ -52,10 +50,15 @@ function ManageCheck(props) {
    // };
 
    const [chartData, setChartData] = useState([]);
-   const [option, setOption] = useState({ x: "ast_date", y: "ast_sum", yLabels:"總資產" });
+   const [option, setOption] = useState({ x: "ast_date", y: "ast_sum", yLabels: "總資產" });
+   const [windowDimensions, setWindowDimensions] = useState();
+   const updateWindowDimensions = useCallback( (e) => {
+      // let innerHeight = windows.innerHeight;
+      setWindowDimensions(600);
+   });
 
    useEffect(() => {
-      let dataToServer = { ...initialValues};
+      let dataToServer = { ...initialValues };
       let chartType = initialValues.chartType;
       dataToServer.acc_email = acc_email;
       console.log(`ManageCheck useEffect post ${JSON.stringify(dataToServer)}`);
@@ -63,7 +66,11 @@ function ManageCheck(props) {
          console.log(res.data);
          setChartData(res.data);
          setOption(options[chartType]);
-      })
+      });
+   }, [])
+   useEffect(() => {
+      window.addEventListener('resize', updateWindowDimensions);
+      return () => {window.removeEventListener('resize', updateWindowDimensions)}
    }, [])
    const handleSubmit = (values, actions) => {
       let dataToServer = { ...values };
@@ -74,10 +81,10 @@ function ManageCheck(props) {
          setChartData(res.data);
          setOption(options[values.chartType]);
       })
-   }
+   };
 
    return (
-      <Container fluid>
+      <Container fluid className="pt-3">
          <Row>
             <Col lg={8}>
                <Formik
@@ -118,7 +125,6 @@ function ManageCheck(props) {
                         <Search className="mb-1 mr-1" />
                         <span>查詢</span>
                      </Button>
-                     <br />
                   </Form>
                </Formik>
             </Col>
@@ -126,7 +132,7 @@ function ManageCheck(props) {
          <Row>
             <Col lg={12}>
                <MyChartLine data={chartData}
-               {...option}
+                  {...option} height={windowDimensions*0.8}
                ></MyChartLine>
             </Col>
          </Row>

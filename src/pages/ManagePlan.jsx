@@ -1,7 +1,7 @@
 /* * * * * 人豪 * * * * * 
  * 
- * 待辦:
- * const acc_email = ... 要換成localStorage
+ * 
+ * 
  * 
  * * * * * * * * * * * */
 
@@ -15,7 +15,6 @@ import { MyFormikObserver, MyInput, MySelect, MyOkToast } from '../components/My
 import ManageRecent from '../components/ManageRecent.jsx';
 import myPlanHelper from '../components/MyPlanHelper.jsx';
 
-console.log(`login: ${localStorage.getItem('loginState')}`);
 const acc_email = localStorage.getItem('loginState');
 const urlPostRecent = 'http://localhost:5000/plan/recent';
 const urlPostCreate = 'http://localhost:5000/plan/create';
@@ -62,7 +61,7 @@ const col = [
    { id: 'sec_id', name: '代號' },
    { id: 'sec_name', name: '名稱' },
    { id: 'plan_strategy', name: '類型' },
-   { id: 'plan_param1', name: '參數' },
+   { id: 'plan_param1', name: '參數', hidden: true },
    { id: 'plan_param2', name: '參數', hidden: true },
    { id: 'plan_anchor', name: '參考價' },
    { id: 'plan_stoploss', name: '停損' },
@@ -218,7 +217,7 @@ function Manageplan(props) {
    }, [inputValues])
 
    return (
-      <Container fluid>
+      <Container fluid className="pt-3">
          <Row className='pr-2'>
             <Col lg={8}>
                <Formik

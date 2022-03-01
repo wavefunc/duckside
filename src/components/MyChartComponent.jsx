@@ -32,81 +32,80 @@ ChartJS.register(
 const options = {
     responsive: true,
     scales: {
-        x: {
-            type: 'timeseries',
+    x: {
+        type: 'timeseries',
             display: 'auto',
-            ticks: {
-                source: "labels",
+                ticks: {
+            source: "labels",
                 font: {
-                    size: 18,
+                size: 18,
                 },
-                callback: (v, i, arr) => {
-                    console.log(v);
-                    let currentYmdArr = v.split('-');
-                    if (i == 0) {
-                        return `${currentYmdArr[0]}/${currentYmdArr[1]}/${currentYmdArr[2]}`;
-                    } else {
-                        // return `${currentYmdArr[1]}/${currentYmdArr[2]}`
-                            let currentDate = new Date(arr[i].value);
-                            let previousDate = new Date(arr[i-1].value);
-                            return currentDate.getFullYear() !== previousDate.getFullYear() ? `${currentYmdArr[0]}/${currentYmdArr[1]}/${currentYmdArr[2]}`:`${currentYmdArr[1]}/${currentYmdArr[2]}`;
-                    }
+            callback: (v, i, arr) => {
+                let currentYmdArr = v.split('-');
+                if (i == 0) {
+                    return `${currentYmdArr[0]}/${currentYmdArr[1]}/${currentYmdArr[2]}`;
+                } else {
+                    // return `${currentYmdArr[1]}/${currentYmdArr[2]}`
+                    let currentDate = new Date(arr[i].value);
+                    let previousDate = new Date(arr[i - 1].value);
+                    return currentDate.getFullYear() !== previousDate.getFullYear() ? `${currentYmdArr[0]}/${currentYmdArr[1]}/${currentYmdArr[2]}` : `${currentYmdArr[1]}/${currentYmdArr[2]}`;
                 }
-            },
-            time: {
-                unit: 'day',
+            }
+        },
+        time: {
+            unit: 'day',
                 align: 'start',
-                displayFormats: {
-                    day: "yyyy-M-d",
+                    displayFormats: {
+                day: "yyyy-M-d",
                 }
-            }
-        },
-        y: {
-            title: {
-                display: true,
-                text: '元',
-            },
-            ticks: {
-                font: {
-                    size: 18,
-                }
-            },
-            stack: 1,
-            stackWeight: 3,
-            position: 'right',
-            beginAtZero: false,
-            offset: true,
-            stacked: true,
-        },
+        }
     },
-    interaction: {
-        intersect: false,
-        mode: 'index',
-    },
-    plugins: {
-        legend: {
-            align: 'start',
-            labels: {
-                font: {
-                    size: 18
-                }
-            }
-        },
+    y: {
         title: {
             display: true,
+                text: '元',
+            },
+        ticks: {
+            font: {
+                size: 18,
+                }
         },
-        tooltip: {
-            callbacks: {
-                title: (i) => {
-                    let tempIdx = i[0].label.lastIndexOf(',')
-                    return i[0].label.slice(0, tempIdx);
-                },
+        stack: 1,
+            stackWeight: 3,
+                position: 'right',
+                    beginAtZero: false,
+                        offset: true,
+                            stacked: true,
+        },
+},
+interaction: {
+    intersect: false,
+        mode: 'index',
+    },
+plugins: {
+    legend: {
+        align: 'start',
+            labels: {
+            font: {
+                size: 18
+            }
+        }
+    },
+    title: {
+        display: true,
+        },
+    tooltip: {
+        callbacks: {
+            title: (i) => {
+                let tempIdx = i[0].label.lastIndexOf(',')
+                return i[0].label.slice(0, tempIdx);
+            },
                 //         label: (i) => {
                 //             return [i.dataset.label, i.raw];
                 //         }
             }
-        }
     }
+}
 };
 const data2 = {
     labels: ['台積電', '元大台灣50', '富邦台50'],
@@ -128,10 +127,7 @@ const data2 = {
     ],
 };
 
-export function MyChartLine({ data, x, y, yLabels }) {
-    console.log("--MyChartLine--")
-    console.log(typeof y);
-    console.log(y);
+export function MyChartLine({ data, x, y, yLabels, ...props }) {
     options.parsing = {
         xAxisKey: x,
     };
@@ -160,7 +156,7 @@ export function MyChartLine({ data, x, y, yLabels }) {
     }));
 
     return (
-        <Line options={options} data={{
+        <Line options={options} {...props} data={{
             labels: labels,
             datasets: datasets
         }} />

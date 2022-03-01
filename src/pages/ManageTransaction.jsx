@@ -18,7 +18,6 @@ import { MyInput, MySelect, MyOkToast } from '../components/MyFormComponent';
 import MyCurrentPosition from '../components/ManageCurrent.jsx';
 import ManageRecent from '../components/ManageRecent.jsx';
 
-console.log(`login: ${localStorage.getItem('loginState')}`);
 const acc_email = localStorage.getItem('loginState');
 const urlPostRecent = 'http://localhost:5000/transaction/recent';
 const urlPostCreate = 'http://localhost:5000/transaction/create';
@@ -194,7 +193,7 @@ function ManageTransaction(props) {
    }
 
    return (
-      <Container fluid>
+      <Container fluid  className="pt-3">
          <Row className='pr-2'>
             <Col lg={8}>
                <Formik
