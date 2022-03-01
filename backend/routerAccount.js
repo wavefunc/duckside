@@ -132,33 +132,36 @@ router.put('/account/updatename', async (req, res) => {
 // **********
 // 更改大頭照
 // **********
-router.put('/account/updateavatar', async (req, res) => {
+
+// 初始化設定
+const upload = multer({
+   storage: multer.memoryStorage(),
+   limits: {
+      fileSize: 2 * 1024 * 1024, // 限制 2MB
+   },
+   fileFilter(req, file, callback) { // 限制檔案格式為 image
+      if (!file.mimetype.match(/^image/)) {
+         callback(new Error().message = '檔案格式錯誤');
+      } else {
+         callback(null, true);
+      }
+   }
+});
+
+router.put('/account/updateavatar', upload.single('image'), async (req, res) => {
    // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
    // var acc_id = await checkAccount(req.body.acc_email, res);
-   console.log(req.body);
-   res.send(req.body);
 
-   // 初始化設定
-   const upload = multer({
-      storage: multer.memoryStorage(),
-      limits: {
-         fileSize: 2 * 1024 * 1024, // 限制 2MB
-      },
-      fileFilter(req, file, callback) { // 限制檔案格式為 image
-         if (!file.mimetype.match(/^image/)) {
-            callback(new Error().message = '檔案格式錯誤');
-         } else {
-            callback(null, true);
-         }
-      }
+   var acc_id = 4;
+
+   console.log(req.file);
+   res.send(req.file);
+
+   let strQuery = `UPDATE account SET acc_avatar = ? WHERE account.acc_id = ?`;
+   query(strQuery, [req.file.buffer, acc_id], (err) => {
+      // err ? res.send(err) : res.send(`Successfully updated account avatar`);
+      res.send('ok');
    });
-
-
-
-   // let strQuery = `UPDATE account SET acc_avatar = ? WHERE account.acc_id = ?`;
-   // query(strQuery, [req.body.acc_avatar, acc_id], (err) => {
-   //    err ? res.send(err) : res.send(`Successfully updated account avatar`);
-   // });
 });
 
 
