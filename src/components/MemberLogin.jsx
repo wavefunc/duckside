@@ -133,7 +133,7 @@ let MemberLogin = (props) => {
                     className="text-success"
                     style={{ display: showsuccess }}
                   >
-                    註冊成功!!! {outsec + 1}秒後跳轉...
+                    登入成功!!! {outsec + 1}秒後跳轉...
                   </span>
                 </div>
                 <button type="button" onClick={memberButClick}>
