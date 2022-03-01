@@ -180,6 +180,7 @@ let MemberRegister = (props) => {
         acc_password: memberInfo.password,
         acc_name: memberInfo.name,
       }).then((result) => {
+        console.log(result.data)
         if (result.data === "Added successfully") {
           // console.log("註冊成功!");
           setNoticeState({
