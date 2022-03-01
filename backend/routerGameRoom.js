@@ -80,15 +80,18 @@ router.put('/acc_furn/takeBack', async (req, res) => {
 });
 
 // **********************************************************
-// 商店頁面 - 列出會員的家具及其屬性 (已購買: 1, 未購買: 0)
+// 商店頁面 - 列出會員的家具及其屬性 (已購買: none, 未購買: block)
 // **********************************************************
 router.post('/acc_furn/storeList', async (req, res) => {
    // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
    var acc_id = await checkAccount(req.body.acc_email, res);
 
    let strQuery = `
-      SELECT af.furn_id, furn.furn_name, af.acc_furn_bought, furn.furn_price 
-      FROM acc_furn af INNER JOIN furniture furn ON af.furn_id = furn.furn_id 
+      SELECT af.furn_id, furn.furn_name, furn.furn_price,
+         IF(af.acc_furn_bought = 1, 'none', 'block') display
+      FROM acc_furn af 
+      INNER JOIN furniture furn 
+      ON af.furn_id = furn.furn_id 
       WHERE acc_id = ?
    `;
 
