@@ -148,23 +148,14 @@ const upload = multer({
    }
 });
 
-router.put('/account/updateavatar', upload.array('image', 'acc_email'), async (req, res) => {
+router.put('/account/updateavatar', upload.single('image'), async (req, res) => {
    // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
-   // var acc_id = await checkAccount(req.body.acc_email, res);
+   var acc_id = await checkAccount(req.body.acc_email, res);
 
-   var acc_id = 4;
-
-   var file = req.files;
-   // console.log('req.get: ' + req.get('acc_email'));
-   // console.log('req.get: ' + upload.single(req.get('image')).file);
-   console.log(file[0]);
-   console.log(file[1]);
-
-   // let strQuery = `UPDATE account SET acc_avatar = ? WHERE account.acc_id = ?`;
-   // query(strQuery, [req.file.buffer, acc_id], (err) => {
-   //    query(strQuery, [upload.single(req.get('image')).file.buffer, acc_id], (err) => {
-   //       err ? res.send(err) : res.send(`Successfully updated account avatar`);
-   //    });
+   let strQuery = `UPDATE account SET acc_avatar = ? WHERE account.acc_id = ?`;
+   query(strQuery, [req.file.buffer, acc_id], (err) => {
+      err ? res.send(err) : res.send(`Successfully updated account avatar`);
+   });
 });
 
 
