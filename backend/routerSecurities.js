@@ -3,6 +3,7 @@
 var express = require('express');
 var router = express.Router();
 var { query } = require('./mysql.js');
+var getYahoo = require('./twstock.js');
 
 // *******************
 // 列出資料表全部的資料
@@ -32,6 +33,15 @@ router.get('/securities/datalist/:key', (req, res) => {
             ORDER BY sec_id DESC LIMIT 100`,
         [], (err, rows) => res.send(rows)
     );
+});
+
+// test
+router.get('/test', async (req, res) => {
+    // var MI = await getYahoo('0050');
+    // res.send(MI);
+    getYahoo('0050').then((MI) => {
+        res.send(MI);
+    });
 });
 
 module.exports = router;
