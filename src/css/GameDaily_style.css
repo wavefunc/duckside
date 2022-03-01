@@ -134,6 +134,19 @@
   background-color:#EDDBBE ;
 }
 
+.jumpNextTitle{
+  color: #E4E9EB;
+  background-color:#3E88A8 ;
+  width: 150px;
+  height: 50px;
+  border-radius: 10px;
+  margin-left: 230px;
+  font-size:30px ;
+  margin-top:10px;
+  font-family: PingFangTC-Semibold, PingFang TC;
+  position: center;
+}
+
 .jumpTitle{
   color: #E4E9EB;
   background-color:#3E88A8 ;
@@ -149,6 +162,15 @@
 .jumpTotle{
   text-align:center;
   padding-left: 14.5px;
+}
+
+.jumpNextGet{
+  font-family: PingFangTC-Semibold, PingFang TC;
+  color: #520707;
+  font-size: 30px;
+  padding-top: 70px;
+  padding-left: 170px;
+  position: center;
 }
 
 .jumpGet{
@@ -174,6 +196,7 @@
   font-size:30px ;
   margin-top: 52px;
   font-family: PingFangTC-Semibold, PingFang TC;
+  position: center;
 }
 
 .modalMove{
