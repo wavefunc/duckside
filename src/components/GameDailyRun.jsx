@@ -29,7 +29,7 @@ ChartJS.register(
 
 
 function GameDailyRun() {
-   
+
    const [FindShow, setFindShow] = useState(false); //查詢
    const [GiftShow, setGiftShow] = useState(false); //領取獎勵
    const [NextShow, setNextShow] = useState(false); //下一關
@@ -162,10 +162,10 @@ function GameDailyRun() {
       let buyStockId = inputStockId.current.value;
       let buyAmount = parseInt(inputAmount.current.value);
       // let newListChecked = stockList.filter((v) => buyStockId === inputStockId.current.value)
-      let original = stockList.findIndex((obj)=>(obj.inputStockId === buyStockId));
+      let original = stockList.findIndex((obj) => (obj.inputStockId === buyStockId));
       let newList = stockList.map((v) => v);
 
-      if(original===-1){
+      if (original === -1) {
          newList.push({ inputStockId: buyStockId, inputAmount: buyAmount });
       } else {
          newList[original].inputAmount += buyAmount;
@@ -173,20 +173,20 @@ function GameDailyRun() {
       setStockList(newList);
    }
 
-const sellTwstock = () => {
-   let buyStockId = inputStockId.current.value;
-   let buyAmount = - parseInt(inputAmount.current.value);
-   
-   let original = stockList.findIndex((obj)=>(obj.inputStockId === buyStockId));
-   let newList = stockList.map((v) => v);
+   const sellTwstock = () => {
+      let buyStockId = inputStockId.current.value;
+      let buyAmount = - parseInt(inputAmount.current.value);
 
-   if(original===-1){
-      newList.push({ inputStockId: buyStockId, inputAmount: buyAmount });
-   } else{
-      newList[original].inputAmount += buyAmount;
+      let original = stockList.findIndex((obj) => (obj.inputStockId === buyStockId));
+      let newList = stockList.map((v) => v);
+
+      if (original === -1) {
+         newList.push({ inputStockId: buyStockId, inputAmount: buyAmount });
+      } else {
+         newList[original].inputAmount += buyAmount;
+      }
+      setStockList(newList);
    }
-   setStockList(newList);
-}
 
 
 
@@ -218,7 +218,7 @@ const sellTwstock = () => {
                            <PlusCircle className="button-plus-icon" />
                            <span className="button-plus-text">買進</span>
                         </button>
-                        <button className="button-plus" onClick = {sellTwstock}>
+                        <button className="button-plus" onClick={sellTwstock}>
                            <DashCircle className="button-plus-icon" />
                            <span className="button-plus-text">賣出</span>
                         </button>
@@ -240,7 +240,7 @@ const sellTwstock = () => {
                            </ul>
                         </div>
                         <div className="buttbar">
-                           <button className="nextButton-plus">
+                           <button className="nextButton-plus" onClick={() => { setNextShow(true) }}>
                               <span >下一關</span>
                            </button>
 
@@ -269,16 +269,25 @@ const sellTwstock = () => {
             onHide={() => setFindShow(false)}
             aria-labelledby="example-modal-sizes-title-lg"
          >
-
-
             <Chart type='bar' options={options} data={chartData} />
-
-
-
-
 
          </Modal>
 
+         <Modal
+            size="md"
+            show={NextShow}
+            onHide={() => setNextShow(false)}
+            aria-labelledby="example-modal-sizes-title-md"
+            centered
+            className="modalMove">
+
+            <div className="jumpBody">
+               <div className="jumpNextTitle"><span className="jumpTotle"> 今日結算</span></div>
+               <div className="jumpNextGet">今日獲利％數： <span className="jumpScore">123</span></div>
+               <div className="jumpNextGet">目前持有資產： <span className="jumpScore">123</span></div>
+               <button className="jumpClose" onClick={() => { setNextShow(false) }}>關閉</button>
+            </div>
+         </Modal>
 
          <Modal
             size="md"
@@ -290,8 +299,8 @@ const sellTwstock = () => {
          >
             <div className="jumpBody">
                <div className="jumpTitle"><span className="jumpTotle"> 結算版</span></div>
-               <div className="jumpGet">獲得％數： <span className="jumpScore">123</span></div>
-               <div className="jumpGet">獲得積分： <span className="jumpScore">123</span></div>
+               <div className="jumpGet">總獲得％數： <span className="jumpScore">123</span></div>
+               <div className="jumpGet">總獲得積分： <span className="jumpScore">123</span></div>
                <button className="jumpClose" onClick={() => { setGiftShow(false) }}>關閉</button>
             </div>
          </Modal>

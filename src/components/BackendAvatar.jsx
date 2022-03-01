@@ -41,7 +41,7 @@ function BackendAvatar() {
       <div>
          <h3>測試大頭照上傳</h3>
          <Form>
-            <img src={avatar} />
+            <img src={avatar} alt="avatar" />
             <br />
             <input type='file' onChange={uploadAvatar} />
          </Form>
