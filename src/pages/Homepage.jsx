@@ -6,9 +6,8 @@ import HomePageWord from '../components/HomepageWord';
 class Homepage extends Component {
    render() {
       return (
-         <div className="row">
-            <div className="col-lg-12">
-               {/* <Image src='/assets/images/homepage.jpg' fluid/> */}
+         <div>
+            <div style={{background:'#F5F5CC'}}>
                <HomePageWord />
                <svg width="100%" viewBox="0 0 1920 1080">
                   <defs>

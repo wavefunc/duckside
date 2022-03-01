@@ -18,7 +18,6 @@ import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import PageTitle from '../components/PageTitle';
 import Breadcrumb from '../components/Breadcrumb';
 import { Outlet } from 'react-router-dom';
 import NotificationSection from '../components/Header/NotificationSection';
@@ -142,7 +141,6 @@ function Layout() {
             >
               <MenuIcon />
 
-              {/* <Avatar sx={{ width: '60px', height: '60px' }} alt="duckside" src="/duck_left.png" /> */}
             </IconButton>
             <Typography
               component="h1"
@@ -231,10 +229,11 @@ function Layout() {
                       </div>
                     </div>
                   </div>
+                  <Copyright sx={{ pt: 0 }} />
                 </Paper>
               </Grid>
             </Grid>
-            <Copyright sx={{ pt: 5 }} />
+            
           </Container>
         </Box>
       </Box>
