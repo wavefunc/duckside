@@ -1,6 +1,7 @@
 // ----- 巧琳 ----- //
 
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router";
 import Axios from "axios";
 import "../css/member_style.css";
 
@@ -17,6 +18,19 @@ let MemberInfo = () => {
         });
       };
       getMemberInfo();
+      if (localStorage.getItem("loginState") === null) {
+        setViweChange({
+          ...viweChange,
+          membershow: "none",
+          forgetshow: "block",
+        });
+      } else {
+        setViweChange({
+          ...viweChange,
+          membershow: "block",
+          forgetshow: "none",
+        });
+      }
     },
     []
     //箭頭函示多給一個[]只會執行一次
@@ -24,31 +38,37 @@ let MemberInfo = () => {
 
   //********************
   //State
+  // viweChange
+  let [viweChange, setViweChange] = useState({
+    membershow: "block", //block/none
+    forgetshow: "none",
+  });
   //memberInfo
   let [memberInfo, setMemberInfo] = useState({
     email: localStorage.getItem("loginState"),
     name: "",
   });
-  //changeInp
+  //changeInfo
   let [changeInfo, setChangeInfo] = useState({
     name: "",
     password: "",
     newpassword: "",
     againnewpassword: "",
   });
-  // errorNoticeInp
+  // noticeState
   let [passwordNoticeState, setPasswordNoticeState] = useState({
     show: "none", //block/none
     text: "",
     color: "", //text-danger/text-success
   });
+
   //********************
   // function
-  //暱稱input
+  //會員暱稱input
   let nameInpChange = async (e) => {
     await setChangeInfo({ ...changeInfo, name: e.target.value });
   };
-  //舊密碼input
+  //會員舊密碼input
   let passwordInpChange = async (e) => {
     setPasswordNoticeState({
       ...passwordNoticeState,
@@ -58,7 +78,7 @@ let MemberInfo = () => {
     });
     await setChangeInfo({ ...changeInfo, password: e.target.value });
   };
-  //新密碼input
+  //會員新密碼input
   let nwepasswordInpChange = async (e) => {
     setPasswordNoticeState({
       ...passwordNoticeState,
@@ -68,7 +88,7 @@ let MemberInfo = () => {
     });
     await setChangeInfo({ ...changeInfo, newpassword: e.target.value });
   };
-  //重複新密碼input
+  //會員重複新密碼input
   let againNwepasswordInpChange = async (e) => {
     setPasswordNoticeState({
       ...passwordNoticeState,
@@ -89,59 +109,131 @@ let MemberInfo = () => {
     });
   };
   let passwordButClick = async () => {
-    console.log(changeInfo);
     await Axios.post("http://localhost:5000/account/login", {
       acc_email: memberInfo.email,
       acc_password: changeInfo.password,
     }).then((result) => {
-      //錯誤舊密碼
-      if (result.data === "Password error") {
+      //檢查欄位是否填寫
+      if (
+        (changeInfo.password === "") |
+        (changeInfo.newpassword === "") |
+        (changeInfo.againnewpassword === "")
+      ) {
         setPasswordNoticeState({
           ...passwordNoticeState,
           show: "block",
-          text: "舊密碼錯誤，更改失敗！",
+          text: "密碼欄位不可留白，更改失敗!",
           color: "text-danger",
         });
-      } else if (
-        //成功更改密碼
-        result.data === "Password correct" &&
-        changeInfo.newpassword === changeInfo.againnewpassword
-      ) {
-        Axios.put("http://localhost:5000/account/updatepassword", {
-          acc_email: memberInfo.email,
-          acc_password: changeInfo.newpassword,
-        }).then((result) => {
-          console.log(result.data);
-        });
-        setPasswordNoticeState({
-          ...passwordNoticeState,
-          show: "block",
-          text: "密碼更改成功!",
-          color: "text-success",
-        });
-        //清除input資料
-        setChangeInfo({
-          ...changeInfo,
-          password: "",
-          newpassword: "",
-          againnewpassword: "",
-        });
       } else {
-        //錯誤新密碼兩次不相同
-        setPasswordNoticeState({
-          ...passwordNoticeState,
+        //錯誤舊密碼
+        if (result.data === "Password error") {
+          setPasswordNoticeState({
+            ...passwordNoticeState,
+            show: "block",
+            text: "舊密碼錯誤，更改失敗！",
+            color: "text-danger",
+          });
+        } else if (
+          //成功更改密碼
+          result.data === "Password correct" &&
+          changeInfo.newpassword === changeInfo.againnewpassword
+        ) {
+          Axios.put("http://localhost:5000/account/updatepassword", {
+            acc_email: memberInfo.email,
+            acc_password: changeInfo.newpassword,
+          }).then((result) => {
+            console.log(result.data);
+          });
+          setPasswordNoticeState({
+            ...passwordNoticeState,
+            show: "block",
+            text: "密碼更改成功!",
+            color: "text-success",
+          });
+          //清除input資料
+          setChangeInfo({
+            ...changeInfo,
+            password: "",
+            newpassword: "",
+            againnewpassword: "",
+          });
+        } else {
+          //錯誤新密碼兩次不相同
+          setPasswordNoticeState({
+            ...passwordNoticeState,
+            show: "block",
+            text: "請確認兩次新密碼輸入是否相同，更改失敗！",
+            color: "text-danger",
+          });
+        }
+      }
+    });
+  };
+
+  //********************
+  //State
+  //forget
+  let [forgetInfo, setForgetInfo] = useState({
+    password: "",
+    againpassword: "",
+  });
+  // noticeState
+  let [forgetNoticeState, setForgetNoticeState] = useState({
+    show: "none", //block/none
+    text: "",
+    color: "", //text-danger/text-success
+  });
+  //********************
+  //function
+  //忘記新密碼input
+  let forgetPasswordInpChange = async (e) => {
+    await setForgetInfo({ ...forgetInfo, password: e.target.value });
+  };
+  //忘記重複新密碼input
+  let forgetAgainPasswordInpChange = async (e) => {
+    await setForgetInfo({ ...forgetInfo, againpassword: e.target.value });
+  };
+  //送出button
+  let token = useParams();
+  let forgetButClick = async () => {
+    //檢查欄位是否填寫
+    if ((forgetInfo.password === "") | (forgetInfo.againpassword === "")) {
+      setForgetNoticeState({
+        ...forgetNoticeState,
+        show: "block",
+        text: "密碼欄位不可留白，更改失敗!",
+        color: "text-danger",
+      });
+    } else {
+      if (forgetInfo.password === forgetInfo.againpassword) {
+        //成功發送密碼
+        //加三秒跳轉//
+        await Axios.post("http://localhost:5000/account/whoResetPass", {
+          acc_token: token,
+        }).then((result) => {
+          console.log(result.data)
+          // window.location = "/";
+        });
+
+      }else {
+        //錯誤密碼格式
+        setForgetNoticeState({
+          ...forgetNoticeState,
           show: "block",
           text: "請確認兩次新密碼輸入是否相同，更改失敗！",
           color: "text-danger",
         });
       }
-    });
+    }
   };
 
+  //********************
   return (
     <div className="container-xl px-4 mt-4">
       <div className="row">
-        <div className="col-xl-4">
+        {/* 會員資料維護 */}
+        <div className="col-xl-4" style={{ display: viweChange.membershow }}>
           {/* <!-- Profile picture card--> */}
           <div className="card mb-4 mb-xl-0">
             <div className="card-header">會員頭像</div>
@@ -163,7 +255,7 @@ let MemberInfo = () => {
             </div>
           </div>
         </div>
-        <div className="col-xl-8">
+        <div className="col-xl-6" style={{ display: viweChange.membershow }}>
           {/* <!-- Account details card--> */}
           <div className="card mb-4">
             <div className="card-header">會員資訊</div>
@@ -267,6 +359,59 @@ let MemberInfo = () => {
                   className="btn btn-primary mt-2"
                   type="button"
                   onClick={passwordButClick}
+                >
+                  更改密碼
+                </button>
+              </form>
+            </div>
+            {/* Password change */}
+          </div>
+        </div>
+        {/* 忘記密碼 */}
+        <div className="col-xl-4" style={{ display: viweChange.forgetshow }}>
+          {/* <!-- Account details card--> */}
+          <div className="card mb-4">
+            {/* Password forget */}
+            <div className="card-header">更改密碼</div>
+
+            <div className="card-body">
+              <form>
+                <div className="mb-3">
+                  <label className="small mb-1" htmlFor="inputUsername">
+                    請輸入新密碼
+                  </label>
+                  <input
+                    className="form-control"
+                    id="forgetInputNewPassword"
+                    type="password"
+                    placeholder="想要的新密碼"
+                    onChange={forgetPasswordInpChange}
+                    value={forgetInfo.password}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="small mb-1" htmlFor="inputUsername">
+                    請再次輸入新密碼
+                  </label>
+                  <input
+                    className="form-control"
+                    id="forgetInputAgainNewPassword"
+                    type="password"
+                    placeholder="再打一次想要的新密碼"
+                    onChange={forgetAgainPasswordInpChange}
+                    value={forgetInfo.againpassword}
+                  />
+                </div>
+                <span
+                  className={forgetNoticeState.color}
+                  style={{ display: forgetNoticeState.show }}
+                >
+                  {forgetNoticeState.text}
+                </span>
+                <button
+                  className="btn btn-primary mt-2"
+                  type="button"
+                  onClick={forgetButClick}
                 >
                   更改密碼
                 </button>

@@ -6,37 +6,52 @@ import "../css/member_style.css";
 import Modal from "react-bootstrap/Modal";
 
 let MemberLogin = (props) => {
+  //********************
   //State
-  //inp內容
+  //memberInfo
   let [memberInfo, setMemberInfo] = useState({
-    name: "",
     email: "",
-    password: "",
+    name: "",
   });
-  //inp錯誤提示
-  let [passwordfalse, setPasswordfalse] = useState("none"); //contents
-  let [emailfalse, setEmailfalse] = useState("none"); //contents
-  //登入成功state
-  let [outsec, setOutsec] = useState(2);
-  let [showsuccess, setShowsuccess] = useState("none");
-
+  // noticeState
+  let [forgetNoticeState, setForgetNoticeState] = useState({
+    show: "none", //block/none
+    text: "",
+    color: "", //text-danger/text-success
+  });
   // function
   //信箱input
-  let emailInpButton = async (e) => {
+  let emailInpChange = async (e) => {
+    setForgetNoticeState({
+      ...forgetNoticeState,
+      show: "none",
+    });
     await setMemberInfo({ ...memberInfo, email: e.target.value });
   };
 
-  //登入_button
-  let memberCheckHandler = async () => {
-    await Axios.post("http://localhost:5000/account/login", {
+  //登入button
+  let memberButClick = async () => {
+    await Axios.post("http://localhost:5000/account/emailValidation", {
       acc_email: memberInfo.email,
-      acc_password: memberInfo.password,
-    }).then((result) => {});
-  };
-  //清除提示字
-  let noticeClear = async () => {
-    setEmailfalse("none");
-    setPasswordfalse("none");
+    }).then((result) => {
+      if (result.data === "No such account") {
+        //失敗無此帳號
+        setForgetNoticeState({
+          ...forgetNoticeState,
+          show: "block",
+          text: "查無此帳號，驗證信發送失敗!",
+          color: "text-danger",
+        });
+      }else{
+        //成功寄送驗證信
+        setForgetNoticeState({
+          ...forgetNoticeState,
+          show: "block",
+          text: "驗證信已寄送至帳號信箱中!",
+          color: "text-success",
+        });
+      }
+    });
   };
 
   return (
@@ -65,30 +80,20 @@ let MemberLogin = (props) => {
                   <input
                     type="text"
                     placeholder=" "
-                    onChange={emailInpButton}
-                    onClick={noticeClear}
+                    onChange={emailInpChange}
                   />
                   <div className="border"></div>
                 </label>
 
                 <div className="d-flex justify-content-center">
                   <span
-                    className="text-danger"
-                    style={{ display: passwordfalse }}
+                    className={forgetNoticeState.color}
+                    style={{ display: forgetNoticeState.show }}
                   >
-                    密碼錯誤，登入失敗...
-                  </span>
-                  <span className="text-danger" style={{ display: emailfalse }}>
-                    查無此帳號，登入失敗...
-                  </span>
-                  <span
-                    className="text-success"
-                    style={{ display: showsuccess }}
-                  >
-                    註冊成功!!! {outsec + 1}秒後跳轉...
+                    {forgetNoticeState.text}
                   </span>
                 </div>
-                <button type="button" onClick={memberCheckHandler}>
+                <button type="button" onClick={memberButClick}>
                   送 出
                 </button>
               </section>
