@@ -221,10 +221,10 @@ function Layout() {
                   <div className="content-wrap">
                     <div className="main">
                       <div className="container-fluid">
-                        <div className="row">
-                          <PageTitle />
-                          <Breadcrumb />
-                        </div>
+                        {/* <div className="row"> */}
+                          {/* <PageTitle /> */}
+                          {/* <Breadcrumb /> */}
+                        {/* </div> */}
                         <section id="main-content">
                           <Outlet />
                         </section>
