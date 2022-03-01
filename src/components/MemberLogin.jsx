@@ -66,6 +66,8 @@ let MemberLogin = (props) => {
           var local = window.localStorage;
           local.setItem("loginState", memberInfo.email);
         }
+        //reload
+        window.location.reload();
       } else if (result.data === "Password error") {
         //失敗密碼錯誤
         setPasswordfalse("contents");
@@ -158,7 +160,7 @@ let MemberLogin = (props) => {
                 <button
                   type="button"
                   className="registerBtn"
-                  onClick={props.close}
+                  onClick={()=>{window.location = "/"}}
                 >
                   返回
                 </button>
