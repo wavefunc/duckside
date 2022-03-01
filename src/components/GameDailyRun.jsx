@@ -27,7 +27,7 @@ ChartJS.register(
    Legend
 );
 
-localStorage.setItem('loginState','s520334455@gmail.com');
+
 function GameDailyRun() {
    
    const [FindShow, setFindShow] = useState(false); //查詢
