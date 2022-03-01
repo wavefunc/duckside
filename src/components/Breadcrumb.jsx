@@ -5,7 +5,7 @@ class Breadcrumb extends Component {
    state = {}
    render() {
       return (
-         <div className="col-lg-4 p-l-0 title-margin-left">
+         <div style={{marginTop:'-25px'}} className="col-lg-12 title-margin-left">
             <div className="page-header">
                <div className="page-title">
                   <ol className="breadcrumb">
