@@ -196,7 +196,7 @@ router.post('/account/whoResetPass', (req, res) => {
    let strQuery = `SELECT acc_email FROM account WHERE acc_token = ?`;
    query(strQuery, [req.body.acc_token], (err, rows) => {
       if (err) {
-         res.send(err);
+         res.send('此 token 過期或不存在');
       } else {
          rows[0] ?
             res.send(rows[0].acc_email) :
