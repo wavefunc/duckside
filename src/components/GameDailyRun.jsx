@@ -27,8 +27,9 @@ ChartJS.register(
    Legend
 );
 
-
+localStorage.setItem('loginState','s520334455@gmail.com');
 function GameDailyRun() {
+   
    const [FindShow, setFindShow] = useState(false); //查詢
    const [GiftShow, setGiftShow] = useState(false); //領取獎勵
    const [NextShow, setNextShow] = useState(false); //下一關
@@ -72,85 +73,85 @@ function GameDailyRun() {
       // });
    }
 
-   
+
    const options = {
       options: {
          scales: {
-             x: {
-                 type: 'timeseries',
-                 display: 'auto',
-                 ticks:{
-                     source: "labels",
-                     callback: (v,i,arr) => {
-                         if(i == 0) {
-                             return v;
-                         } else {
-                             let currentYmdArr = v.split('/');
-                             return `${currentYmdArr[1]}/${currentYmdArr[2]}`
-                             //     let currentDate = new Date(arr[i].value);
-                             //     let previousDate = new Date(arr[i-1].value);
-                             //     return currentDate.getFullYear() !== previousDate.getFullYear() ? v:
-                             //     Math.floor(currentDate.getDate()/10) !== Math.floor(previousDate.getDate()/10) ? `${currentYmdArr[1]}/${currentYmdArr[2]}`:"";
-                         }
+            x: {
+               type: 'timeseries',
+               display: 'auto',
+               ticks: {
+                  source: "labels",
+                  callback: (v, i, arr) => {
+                     if (i == 0) {
+                        return v;
+                     } else {
+                        let currentYmdArr = v.split('/');
+                        return `${currentYmdArr[1]}/${currentYmdArr[2]}`
+                        //     let currentDate = new Date(arr[i].value);
+                        //     let previousDate = new Date(arr[i-1].value);
+                        //     return currentDate.getFullYear() !== previousDate.getFullYear() ? v:
+                        //     Math.floor(currentDate.getDate()/10) !== Math.floor(previousDate.getDate()/10) ? `${currentYmdArr[1]}/${currentYmdArr[2]}`:"";
                      }
-                 },
-                 time: {
-                     unit: 'day',
-                     align: 'start',
-                     displayFormats: {
-                         day: "yyyy/M/d",
-                     }
-                 }
+                  }
+               },
+               time: {
+                  unit: 'day',
+                  align: 'start',
+                  displayFormats: {
+                     day: "yyyy/M/d",
+                  }
+               }
 
-             },
-             y: {
-                 title: {
-                 display: true,
-                 text: '元',
-                 },
-                 // stacked: true,
-                 stack: 1,
-                 stackWeight: 3,
-                 position: 'right',
-                 beginAtZero: false,
-                 offset: true,
-             },
-             y2: {
-                 title: {
-                 display: true,
-                 text: '張數',
-                 },
-                 stacked: true,
-                 stack: 1,
-                 stackWeight: 1,
-                 position: 'right',
-                 min: true,
-                 ticks: {
-                     callback: val => Math.floor( val / 1000 ),
-                 },
-             }
+            },
+            y: {
+               title: {
+                  display: true,
+                  text: '元',
+               },
+               // stacked: true,
+               stack: 1,
+               stackWeight: 3,
+               position: 'right',
+               beginAtZero: false,
+               offset: true,
+            },
+            y2: {
+               title: {
+                  display: true,
+                  text: '張數',
+               },
+               stacked: true,
+               stack: 1,
+               stackWeight: 1,
+               position: 'right',
+               min: true,
+               ticks: {
+                  callback: val => Math.floor(val / 1000),
+               },
+            }
          },
          interaction: {
-             intersect: false,
-             mode: 'index',
+            intersect: false,
+            mode: 'index',
          },
          plugins: {
-             legend: {
-                 display: false
-             },
-             tooltip:{
-                 callbacks:{
-                     title: (i) => {
-                         let tempIdx = i[0].label.lastIndexOf(',')
-                         return i[0].label.slice(0,tempIdx);
-                     },
-                     label: (i) => {
-                         return [i.dataset.label , i.raw];
-                     }
-                 }
-             }
+            legend: {
+               display: false
+            },
+            tooltip: {
+               callbacks: {
+                  title: (i) => {
+                     let tempIdx = i[0].label.lastIndexOf(',')
+                     return i[0].label.slice(0, tempIdx);
+                  },
+                  label: (i) => {
+                     return [i.dataset.label, i.raw];
+                  }
+               }
+            }
          }
-     }
+      }
    };
 
 
@@ -159,15 +160,33 @@ function GameDailyRun() {
       // console.log(inputStockId.current.value);   確認有沒有抓到值
       // console.log(inputAmount.current.value); 確認有沒有抓到值
       let buyStockId = inputStockId.current.value;
-      let buyAmount = inputAmount.current.value;
+      let buyAmount = parseInt(inputAmount.current.value);
+      // let newListChecked = stockList.filter((v) => buyStockId === inputStockId.current.value)
+      let original = stockList.findIndex((obj)=>(obj.inputStockId === buyStockId));
       let newList = stockList.map((v) => v);
-      newList.push({ inputStockId: buyStockId, inputAmount: buyAmount });
 
+      if(original===-1){
+         newList.push({ inputStockId: buyStockId, inputAmount: buyAmount });
+      } else {
+         newList[original].inputAmount += buyAmount;
+      }
       setStockList(newList);
-
    }
 
+const sellTwstock = () => {
+   let buyStockId = inputStockId.current.value;
+   let buyAmount = - parseInt(inputAmount.current.value);
+   
+   let original = stockList.findIndex((obj)=>(obj.inputStockId === buyStockId));
+   let newList = stockList.map((v) => v);
 
+   if(original===-1){
+      newList.push({ inputStockId: buyStockId, inputAmount: buyAmount });
+   } else{
+      newList[original].inputAmount += buyAmount;
+   }
+   setStockList(newList);
+}
 
 
 
@@ -199,7 +218,7 @@ function GameDailyRun() {
                            <PlusCircle className="button-plus-icon" />
                            <span className="button-plus-text">買進</span>
                         </button>
-                        <button className="button-plus">
+                        <button className="button-plus" onClick = {sellTwstock}>
                            <DashCircle className="button-plus-icon" />
                            <span className="button-plus-text">賣出</span>
                         </button>
@@ -212,24 +231,24 @@ function GameDailyRun() {
                <Container>
                   <Row>
                      <Col>
-                     <img src="/assets/images/duck.svg" className="duckPict" />
+                        <img src="/assets/images/duck.svg" className="duckPict" />
                      </Col>
                      <Col>
-                     <div style={{ overflow: "scroll" }} className="testInput">
-                        <ul >
-                           {stockList.map((v) => (<li>證券代號 / 名稱 :{v.inputStockId} 買進股數 :{v.inputAmount}</li>))}
-                        </ul>
-                     </div>
-                     <div className="buttbar">
-                        <button className="nextButton-plus">
-                           <span >下一關</span>
-                        </button>
+                        <div style={{ overflow: "scroll" }} className="testInput">
+                           <ul >
+                              {stockList.map((v) => (<li>證券代號 / 名稱 :{v.inputStockId} 買進部位 :{v.inputAmount}</li>))}
+                           </ul>
+                        </div>
+                        <div className="buttbar">
+                           <button className="nextButton-plus">
+                              <span >下一關</span>
+                           </button>
 
-                        <button className="getButton-plus" onClick={() => { setGiftShow(true) }}>
-                           <span >領取獎勵</span>
-                           <Gift className="getButton-gift-icon" />
-                        </button>
-                     </div>
+                           <button className="getButton-plus" onClick={() => { setGiftShow(true) }}>
+                              <span >領取獎勵</span>
+                              <Gift className="getButton-gift-icon" />
+                           </button>
+                        </div>
                      </Col>
                   </Row>
                </Container>
