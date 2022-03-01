@@ -69,6 +69,7 @@ const ProfileSection = () => {
     const handleLogout = () => {
         localStorage.clear();
         setListOpen(false);
+        window.location.reload()
     };
 
     const handleClose = (event) => {

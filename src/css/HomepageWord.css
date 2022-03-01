@@ -1,0 +1,24 @@
+@keyframes typing {
+	from { width: 0 }
+}
+
+@keyframes caret {
+	50% { border-right-color: transparent; }
+}
+
+
+.typing {
+	position: relative;
+    top: 60px;
+    left: 30%;
+    color: #418FAC;
+    display:  inline-flex;
+	font: bold 200% Consolas, Monaco, monospace;
+	width: 15em;
+	/* width: 15ch; */
+	white-space: nowrap;
+	overflow: hidden;
+	border-right: .05em solid;
+	animation: typing 4s steps(15) infinite,
+	           caret 1s steps(1) infinite;
+}
