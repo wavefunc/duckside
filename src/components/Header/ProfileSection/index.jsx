@@ -69,7 +69,7 @@ const ProfileSection = () => {
     const handleLogout = () => {
         localStorage.clear();
         setListOpen(false);
-        window.location.reload()
+        window.location.href ="http://localhost:3000"
     };
 
     const handleClose = (event) => {
