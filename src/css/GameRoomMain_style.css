@@ -1,12 +1,13 @@
 #gameStorage{
-    width: 90%;
+    width: 100%;
     background-color: #3998A3;
     border: 1px solid #3998A3;
     border-radius: 40px;
     margin: 0 auto ;
+    padding: 0px;
     box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);
-    /* position: relative; */
-    min-width: 872px;
+    position: relative;
+    /* min-width: 872px; */
     max-width: 1000px;
 }
 #gameStorage #closeBtn{
@@ -14,80 +15,135 @@
     margin-left: 97%;
     margin-top: -20px;
 }
-#gameStorage ul{
-    padding: 10px;
+#gameStorage ul{    
     padding-bottom: 40px;
     margin: 0px;
 }
-#gameStorage #leftArrow{
-    display: flex;
-    flex-grow: 1;
-    justify-content: center;
-    align-items: center;
-}
-#gameStorage #rightArrow{
-    display: flex;
-    flex-grow: 1;
-    justify-content: center;
-    align-items: center;
-}
 #gameStorage #cardBox{
-    display: flex;
-    flex-grow: 10;
-    display: flex;
+    /* display: flex;
+    flex-grow: 10; */
+    /* display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center; */
+    overflow: scroll;
+    width: 100%;
+
+}
+#gameStorage #littleCardBox{
+    display: flex;
+    position: relative;
+    /* transform: translate(350px, 0px); */
+    /* margin-left: 93%; */
 }
 #gameStorage #storageCard1{
     width: 150px;
     height: 150px;
-    padding-top: 55px;
-    padding-left: 5px;
-    padding-right: 5px;
-    background-color: #F0F0F0;
-    border: 1px solid #F0F0F0;
+    background-color: #FFFFFF;
+    border: 1px solid #FFFFFF;
     border-radius: 10px;
     box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
+    padding: 10px;
     margin: 5px;
+    /* margin-left: 93%; */
 }
 #gameStorage #storageCard2{
     width: 150px;
     height: 150px;
-    padding-top: 30px;
-    padding-left: 26px;
-    background-color: #F0F0F0;
-    border: 1px solid #F0F0F0;
+    background-color: #FFFFFF;
+    border: 1px solid #FFFFFF;
     border-radius: 10px;
     box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
+    padding: 10px;
     margin: 5px;
 }
 #gameStorage #storageCard3{
     width: 150px;
     height: 150px;
-    padding-top: 50px;
-    padding-left: 10px;
-    padding-right: 10px;
-    background-color: #F0F0F0;
-    border: 1px solid #F0F0F0;
+    background-color: #FFFFFF;
+    border: 1px solid #FFFFFF;
     border-radius: 10px;
     box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
+    padding: 10px;
     margin: 5px;
 }
 #gameStorage #storageCard4{
     width: 150px;
     height: 150px;
-    background-color: #F0F0F0;
-    border: 1px solid #F0F0F0;
+    background-color: #FFFFFF;
+    border: 1px solid #FFFFFF;
     border-radius: 10px;
     box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
+    padding: 10px;
     margin: 5px;
 }
 #gameStorage #storageCard5{
     width: 150px;
     height: 150px;
-    background-color: #F0F0F0;
-    border: 1px solid #F0F0F0;
+    background-color: #FFFFFF;
+    border: 1px solid #FFFFFF;
     border-radius: 10px;
     box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
+    padding: 10px;
     margin: 5px;
 }
+#gameStorage #storageCard6{
+    width: 150px;
+    height: 150px;
+    background-color: #FFFFFF;
+    border: 1px solid #FFFFFF;
+    border-radius: 10px;
+    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    margin: 5px;
+}
+#gameStorage #storageCard7{
+    width: 150px;
+    height: 150px;
+    background-color: #FFFFFF;
+    border: 1px solid #FFFFFF;
+    border-radius: 10px;
+    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    margin: 5px;
+}
+#gameStorage #storageCard8{
+    width: 150px;
+    height: 150px;
+    background-color: #FFFFFF;
+    border: 1px solid #FFFFFF;
+    border-radius: 10px;
+    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    margin: 5px;
+}
+#gameStorage #storageCard9{
+    width: 150px;
+    height: 150px;
+    background-color: #FFFFFF;
+    border: 1px solid #FFFFFF;
+    border-radius: 10px;
+    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    margin: 5px;
+}
+#gameStorage #storageCard10{
+    width: 150px;
+    height: 150px;
+    background-color: #FFFFFF;
+    border: 1px solid #FFFFFF;
+    border-radius: 10px;
+    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    margin: 5px;
+}
+#gameStorage #storageCard11{
+    width: 150px;
+    height: 150px;
+    background-color: #FFFFFF;
+    border: 1px solid #FFFFFF;
+    border-radius: 10px;
+    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    margin: 5px;
+}
+
