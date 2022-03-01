@@ -1,12 +1,50 @@
 ﻿/* * 抓取外部股票及價格資料 * *
  * 
  * class 物件類別
- * 定義不同管道抓來的資料要存成什麼結構
- * 不會直接使用, 會由公式依傳入參數判斷要使用哪個
+ * 1. twseMarketInfo
+ * 透過getTwse取得的物件實體, 是依照twseMarketInfo物件類別所造, 
+ * 其下有各種方法及屬性, 丟入股票名稱或代號字串作為參數, 將回傳該天該股票的資料
+ *  stockId(IdStr) 回傳股號
+ *  stockName(IdStr) 回傳股名
+ *  volShare(IdStr) 回傳成交量
+ *  volDeal(IdStr) 回傳成交筆數
+ *  volDollar(IdStr) 回傳成交金額
+ *  priceOpen(IdStr) 回傳開盤價
+ *  priceHigh(IdStr) 回傳最高價
+ *  priceLow(IdStr) 回傳最低價
+ *  priceClose(IdStr) 回傳收盤價
+ *  changeNet(IdStr) 回傳漲跌(浮點數)
+ *  ratioPE(IdStr) 回傳本益比
+ *  fields屬性 欄位名稱(表頭)(陣列)
+ *  date屬性 資料日期(字串)
  * 
- * 1. 抓取某股票某期間的股價資料 getYahoo(stockId, period1, period2)
+ * 2. yahooStockDay
+ * 透過getYahoo取得的物件實體, yahooStockDay物件類別所造, 
+ * 其下各種屬性存放有關於該股票在這區間的資料陣列
+ *  data 原始資料轉陣列(一列存成一個element, 欄位間以逗號分開)
+ *  fields 原始資料欄位名稱(表頭)
+ *  Ymd 日期陣列(字串格式YYYYMMDD)
+ *  dates 日期陣列(字串格式YYYY-MM-DD)
+ *  priceOpen 開盤價
+ *  priceHigh 最高價
+ *  priceLow 最低價
+ *  priceClose 收盤價
+ *  priceCloseAdj 收盤價(還原)
+ *  volShare 成交量
+ *  priceCloseChangeNet 漲跌(正負數, 四捨五入到小數點後第二位)
+ *  priceCloseChangeDir 當天收盤方向(0收平 1收漲 -1收跌)
+ *  priceDaytimeMoveDir 盤中價格走向(0開盤=收盤 1走高 -1走低)
+ *  candleShadow 畫技術線圖用, [最低價, 最高價]組成的二維陣列
+ *  candleBody 畫技術線圖用, [開盤價, 收盤價]組成的二維陣列
+ * 
+ * 
+ * Function 函式
+ * 1. getYahoo(stockId [, period1, period2]) 抓取個股股價資料 
  * stockId 證券代號數值或字串
  * period1 period2 日期區間數值或字串(YYYYMMDD)
+ *  如沒給 period2, 會抓取period1當天收盤資料, 盤中則抓取即時資料
+ *  如沒給 period1, period2, 會抓取最新資料, 盤中則抓取即時資料
+ *  如果查無資料, 會找最近一天收盤資料 (程式會往前抓一天, 重複請求直到有資料為止)
  * 註: 查詢某股票在某期間的所有股價資料, 期間長的情況下用這個方法較快
  * 
  * 2. 抓取某天全市場股價資料: getTwse([Ymd])
@@ -29,6 +67,7 @@
 
 const axios = require("axios");
 const dt = require('date-and-time');
+const { json } = require("express");
 
 function transpose(arr) {
     // 轉置處理
@@ -441,7 +480,14 @@ class yahooStockDay {
 
     }
     async initialize() {
-        var res = await this.responsePromise;
+        console.log("init");
+        try {
+            var res = await this.responsePromise;
+        } catch (e) {
+            console.log(`this.data = error.response.data = ${e.response.data}`)
+            this.data = e.response.data;
+            return;
+        }
         var rows = res.data.split('\n');
         this.data = [...rows];
         this.fields = rows.shift().split(',');
@@ -456,13 +502,14 @@ class yahooStockDay {
         this.volShare = data[6].map(e => parseInt(e));
         this.priceCloseChangeNet = this.priceClose.map(function (v, i) {
             return Math.round((v - this[i - 1]) * 100) / 100 || 0;
-        }, this.priceClose );
+        }, this.priceClose);
         this.priceCloseChangeDir = this.priceCloseChangeNet.map(e => Math.sign(e));
-        this.priceDaytimeMoveDir = this.priceClose.map( (v, i) => Math.sign( v - this.priceOpen[i] ));
-        this.candleShadow = this.priceHigh.map( (v,i) => [this.priceLow[i] , v] );
-        this.candleBody = this.priceClose.map( (v,i) => [this.priceOpen[i] , v] );
+        this.priceDaytimeMoveDir = this.priceClose.map((v, i) => Math.sign(v - this.priceOpen[i]));
+        this.candleShadow = this.priceHigh.map((v, i) => [this.priceLow[i], v]);
+        this.candleBody = this.priceClose.map((v, i) => [this.priceOpen[i], v]);
     }
 }
+
 async function getTwse(Ymd, stockId, periods) {
     Ymd = (Ymd !== undefined) ? Ymd.toString() : dt.format(new Date(), 'YYYYMMDD');
     if (isNaN(dt.parse(Ymd, 'YYYYMMDD'))) {
@@ -480,22 +527,36 @@ async function getTwse(Ymd, stockId, periods) {
     }
 }
 async function getYahoo(stockId, period1, period2) {
+    var stockDay = {};
     if (period1 == undefined) {
-        period1 = Date.now() / 1000 - 86400;
-        period2 = Date.now() / 1000;
+        period1 = parseInt(Date.now() / 1000) - 86400;
+        period2 = parseInt(Date.now() / 1000);
+        // 1. 查詢起訖日需轉換成1970時間戳記(但單位是秒，不是毫秒)
+        // 2. 如果在連假抓資料又不給日期參數, 會抓不到資料
     } else {
         period1 = dt.parse(period1.toString(), 'YYYYMMDD').getTime() / 1000;
-        period2 = (period2 == undefined) ? period1 + 86400 : dt.parse(period2.toString(), 'YYYYMMDD').getTime() / 1000;
+        period2 =
+            (period2 == undefined) ?
+                period1 + 86400 :
+                dt.parse(period2.toString(), 'YYYYMMDD').getTime() / 1000 + 86400;
+        // 2. 如參數給 20220125 20220126 會因為迄時 2022/1/26 00:00:00 而查不到1/26資料
+        // 處理方法: 自動將迄時加1天, 抓取至2022/1/27 00:00:00
     }
-    if (isNaN(period1) || isNaN(period2)) {
-        console.log('Invalid Date...');
-        return 'Invalid Date...';
-    } else {
-        var MI = new yahooStockDay(stockId.toString(), period1, period2);
-        await MI.initialize();
-        return MI;
-    }
+    do {
+        console.log(period1);
+        console.log(period2);
+        if (isNaN(period1) || isNaN(period2)) {
+            console.log('Invalid Date...');
+            return 'Invalid Date...';
+        } else {
+            stockDay = new yahooStockDay(stockId.toString(), period1, period2);
+            await stockDay.initialize();
+        }
+        period1 = period1 - 86400;
+    } while (typeof stockDay.data === "string");
 
+
+    return stockDay;
 };
 async function getRTQs(StockId) {
     // .TW .TWO
@@ -515,7 +576,8 @@ async function getRTQs(StockId) {
 //     console.log(MI.priceClose());
 // });
 
-module.exports = getYahoo;
+module.exports.getYahoo = getYahoo;
+module.exports.getTwse = getTwse;
 
 
 /*************** note ****************
@@ -536,16 +598,12 @@ https://www.twse.com.tw/exchangeReport/MI_INDEX?response=json&type=ALLBUT0999&da
 http://www.twse.com.tw/exchangeReport/STOCK_DAY?response=json&stockNo=2330&date=20211226
 除權除息計算結果表
 https://www.twse.com.tw/exchangeReport/TWT49U?response=html&strDate=20220101&endDate=20221201
-奇摩個股日價格資訊
+奇摩個股歷史日成交資訊
+https://finance.yahoo.com/quote/2520.TW/history?period1=1643040000&period2=1643191200&interval=1d&filter=history&frequency=1d&includeAdjustedClose=true
+奇摩個股日價格資訊(可抓盤中)
 https://finance.yahoo.com/quote/2520.TW/history?period1=1643040000&period2=1643191200&interval=1d&filter=history&frequency=1d&includeAdjustedClose=true
 https://query1.finance.yahoo.com/v7/finance/download/2520.TW?period1=1640966400&period2=1643385600&interval=1d&events=history&includeAdjustedClose=true
 資料較簡略但方便大範圍查詢, 且可以查詢TW TWO TWN
-    var myDate = new Date(2022,0,26,18,0,0,0);
-    demo.innerText = myDate.getTime();
-    // 查詢起訖日要轉換成1970時間戳記(單位:秒)
-    // 2022/1/25 2022/1/26 1643040000 1643126400
-    // 1643126400 是 2022/1/26 00:00:00 所以查不到2022/1/26收盤資料
-    // 迄日索性自動+1天 2022/1/27
 
 興櫃股票日成交資訊
 http://www.gretai.org.tw/storage/emgstk/ch/new.csv
