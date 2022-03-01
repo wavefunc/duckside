@@ -3,7 +3,7 @@
 var express = require('express');
 var router = express.Router();
 var { query } = require('./mysql.js');
-var getYahoo = require('./twstock.js');
+var { getYahoo, getTwse } = require('./twstock.js');
 
 // *******************
 // 列出資料表全部的資料
@@ -35,12 +35,37 @@ router.get('/securities/datalist/:key', (req, res) => {
     );
 });
 
-// test
-router.get('/test', async (req, res) => {
-    // var MI = await getYahoo('0050');
-    // res.send(MI);
-    getYahoo('0050').then((MI) => {
+// *****************************************************
+// 依stockId及日期區間(period1至period2) 
+// 抓該股票日成交資料, 繪製技術線圖
+// *****************************************************
+router.post('/candlestick', function (req, res) {
+    console.log(JSON.stringify(req.body));
+    getYahoo(req.body.stockId, req.body.period1, req.body.period2)
+        .then(function (MI) {
+            res.send(MI);
+        });
+})
+// *****************************************************
+// 依stockId及日期區間(period1至period2) 
+// 抓該股票在這期間的日成交資料
+// *****************************************************
+router.post('/stockDay', function (req, res) {
+    getYahoo(req.body.stockId, req.body.period1, req.body.period2)
+        .then((stockDay) => {
+            res.send(stockDay);
+        }).catch((e) => {
+            res.send('Server Busy');
+        });
+});
+// *****************************************************
+// 依 dateQuery 抓該天所有股票成交資料 (打包成MI物件)
+// *****************************************************
+router.post('/marketInfo', function (req, res) {
+    getTwse(req.body.dateQuery).then((MI) => {
         res.send(MI);
+    }).catch((e) => {
+        res.send('Server Busy');
     });
 });
 
