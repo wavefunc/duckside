@@ -9,15 +9,50 @@
 
 .typing {
 	position: relative;
-    top: 5px;
-    left: 30%;
+    top: 31px;
+    left: 20px;
     color: #418FAC;
     display:  inline-flex;
 	font: bold 200% Consolas, Monaco, monospace;
-	width: 15em;
+	font-size: 48px;
+	width: 11em;
 	white-space: nowrap;
 	overflow: hidden;
 	border-right: .05em solid;
-	animation: typing 4s steps(15) infinite,
+	animation: typing 4s steps(15) normal,
 	           caret 1s steps(1) infinite;
+}
+
+.dialog-bottom {
+	position:relative;
+	top:230px;
+	left:45%;
+    background: rgba(255,255,255,0.9);
+    height: 70px;
+    margin-bottom: 10px;
+    position: relative;
+    width: 580px;
+	height: 120px;
+	border-radius: 20px;
+}
+.dialog-bottom::after {
+    border-color: white white transparent transparent;
+    border-style: solid solid solid solid;
+ 
+    /* 設定邊框大小可拼湊出任意形狀的三角形 */
+    border-width: 13px 8px;
+ 
+    bottom: -20px;
+ 
+    /* 必須指定，才能顯示內容 */
+    content: "";
+ 
+    height: 0px;
+
+ 
+    /* 必須指定，否則會變梯形 */
+    position: absolute;
+        left: 46px;
+        left: 30px;
+    width: 0px;
 }

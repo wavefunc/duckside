@@ -69,9 +69,9 @@ class About_team extends Component {
                      <Card.Body>
                         <Card.Title>李晴暄</Card.Title>
                         <Card.Text>
-                           -遊戲動線規劃與畫面設計<br />
-                           -以REACT渲染網頁畫面<br />
-                           -從資料庫抓取資料調整物件狀態<br />
+                           -遊戲流程規劃<br />
+                           -Logo設計<br />
+                           -小鴨房間畫面
                         </Card.Text>
                      </Card.Body>
                   </Card>
