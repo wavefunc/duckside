@@ -18,7 +18,7 @@
 	white-space: nowrap;
 	overflow: hidden;
 	border-right: .05em solid;
-	animation: typing 4s steps(15) infinite,
+	animation: typing 4s steps(15) normal,
 	           caret 1s steps(1) infinite;
 }
 
