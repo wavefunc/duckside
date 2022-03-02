@@ -68,9 +68,22 @@ let MemberLogin = (props) => {
       acc_email: memberInfo.email,
       acc_password: memberInfo.password,
     }).then((result) => {
-      if (result.data === "Password correct") {
+      if (result.data === "Password error") {
+        //失敗密碼錯誤
+        setPasswordfalse("contents");
+        setShowsuccess("none");
+      } else if (result.data === "No such account") {
+        //失敗找不到帳號
+        setEmailfalse("contents");
+      } else {
         //成功登入
         setShowsuccess("contents");
+        //localStorage
+        if (window.localStorage) {
+          var local = window.localStorage;
+          local.setItem("loginState", memberInfo.email);
+          local.setItem("memberName", result.data);
+        }
         //3秒後跳轉
         let settime = setInterval(() => {
           if (outsec > 0) {
@@ -88,17 +101,6 @@ let MemberLogin = (props) => {
             window.location.reload();
           }
         }, 1000);
-        //localStorage
-        if (window.localStorage) {
-          var local = window.localStorage;
-          local.setItem("loginState", memberInfo.email);
-        }
-      } else if (result.data === "Password error") {
-        //失敗密碼錯誤
-        setPasswordfalse("contents");
-      } else if (result.data === "No such account") {
-        //失敗找不到帳號
-        setEmailfalse("contents");
       }
     });
   };
@@ -113,7 +115,15 @@ let MemberLogin = (props) => {
         // The signed-in user info.
         const user = result.user;
         // ...
-        console.log(user.uid);
+        //註冊
+        console.log(user);
+        Axios.post("http://localhost:5000/account/create", {
+          acc_email: user.uid,
+          acc_password: "",
+          acc_name: user.displayName,
+        }).then((result) => {});
+        //上傳大頭照
+        //user.photoURL
       })
       .catch((error) => {
         // Handle Errors here.
@@ -219,7 +229,7 @@ let MemberLogin = (props) => {
                 <div className="fb btn">
                   <i className="fa fa-facebook fa-fw"></i> Login with Facebook
                 </div>
-                  
+
                 <div className="google btn mt-2" onClick={googoleButClick}>
                   <i className="fa fa-google fa-fw"></i> Login with Google
                 </div>
