@@ -4,10 +4,32 @@ import React, { useState } from "react";
 import Axios from "axios";
 import "../css/member_style.css";
 import Modal from "react-bootstrap/Modal";
-
+//********************
+// Firebase
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "@firebase/auth";
 
 let MemberLogin = (props) => {
+  //********************
+  // Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyAB1dis-KvEIutixhUL_qusP1pD8hjo3Dk",
+    authDomain: "duckside-55952.firebaseapp.com",
+    projectId: "duckside-55952",
+    storageBucket: "duckside-55952.appspot.com",
+    messagingSenderId: "937748556305",
+    appId: "1:937748556305:web:fa33b11f2d8363c5849fb0",
+    measurementId: "G-5Q3YKR831M",
+  };
 
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+
+  const provider = new GoogleAuthProvider();
+
+  const auth = getAuth();
 
   //********************
   //State
@@ -81,6 +103,29 @@ let MemberLogin = (props) => {
     });
   };
 
+  // Firebase
+  let googoleButClick = async () => {
+    await signInWithPopup(auth, provider)
+      .then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        // The signed-in user info.
+        const user = result.user;
+        // ...
+        console.log(user.uid);
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        // ...
+      });
+  };
   return (
     <Modal
       size="sm"
@@ -122,6 +167,15 @@ let MemberLogin = (props) => {
                   />
                   <div className="border"></div>
                 </label>
+                <div className="d-flex flex-column mt-2 mb-3">
+                  <div className="fb btn">
+                    <i className="fa fa-facebook fa-fw"></i> Login with Facebook
+                  </div>
+
+                  <div className="google btn mt-2" onClick={googoleButClick}>
+                    <i className="fa fa-google fa-fw"></i> Login with Google
+                  </div>
+                </div>
                 <div className="d-flex justify-content-center">
                   <span
                     className="text-danger"
@@ -164,6 +218,7 @@ let MemberLogin = (props) => {
                   onClick={() => {
                     window.location = "/";
                   }}
+                  
                 >
                   返回
                 </button>
