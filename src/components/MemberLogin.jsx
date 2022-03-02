@@ -116,14 +116,20 @@ let MemberLogin = (props) => {
         const user = result.user;
         // ...
         //註冊
-        console.log(user);
         Axios.post("http://localhost:5000/account/create", {
           acc_email: user.uid,
           acc_password: "",
           acc_name: user.displayName,
-        }).then((result) => {});
-        //上傳大頭照
-        //user.photoURL
+        }).then((result) => {
+          //登入
+          //localStorage
+          if (window.localStorage) {
+            var local = window.localStorage;
+            local.setItem("loginState", user.uid);
+            local.setItem("memberName", user.displayName);
+          }
+          props.close();
+        });
       })
       .catch((error) => {
         // Handle Errors here.
