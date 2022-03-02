@@ -14,42 +14,42 @@ class Homepage extends Component {
                      <filter id="Ellipse_37" x="1730" y="632.743" width="31.86" height="30.474" filterUnits="userSpaceOnUse">
                         <feOffset dy="3" input="SourceAlpha" />
                         <feGaussianBlur stdDeviation="3" result="blur" />
-                        <feFlood flood-opacity="0.161" />
+                        <feFlood floodOpacity="0.161" />
                         <feComposite operator="in" in2="blur" />
                         <feComposite in="SourceGraphic" />
                      </filter>
                      <filter id="Ellipse_38" x="1730" y="733.918" width="31.86" height="31.86" filterUnits="userSpaceOnUse">
                         <feOffset dy="3" input="SourceAlpha" />
                         <feGaussianBlur stdDeviation="3" result="blur-2" />
-                        <feFlood flood-opacity="0.161" />
+                        <feFlood floodOpacity="0.161" />
                         <feComposite operator="in" in2="blur-2" />
                         <feComposite in="SourceGraphic" />
                      </filter>
                      <filter id="Path_751" x="452.748" y="310.047" width="84.886" height="117.953" filterUnits="userSpaceOnUse">
                         <feOffset dy="3" input="SourceAlpha" />
                         <feGaussianBlur stdDeviation="3" result="blur-3" />
-                        <feFlood flood-opacity="0.259" />
+                        <feFlood floodOpacity="0.259" />
                         <feComposite operator="in" in2="blur-3" />
                         <feComposite in="SourceGraphic" />
                      </filter>
                      <filter id="Path_752" x="149.905" y="215.671" width="92.017" height="123.964" filterUnits="userSpaceOnUse">
                         <feOffset dy="3" input="SourceAlpha" />
                         <feGaussianBlur stdDeviation="3" result="blur-4" />
-                        <feFlood flood-opacity="0.259" />
+                        <feFlood floodOpacity="0.259" />
                         <feComposite operator="in" in2="blur-4" />
                         <feComposite in="SourceGraphic" />
                      </filter>
                      <filter id="Subtraction_8" x="1675.137" y="264" width="139.192" height="99.276" filterUnits="userSpaceOnUse">
                         <feOffset dy="3" input="SourceAlpha" />
                         <feGaussianBlur stdDeviation="3" result="blur-5" />
-                        <feFlood flood-opacity="0.259" />
+                        <feFlood floodOpacity="0.259" />
                         <feComposite operator="in" in2="blur-5" />
                         <feComposite in="SourceGraphic" />
                      </filter>
                      <filter id="Subtraction_8-2" x="1675.137" y="264" width="139.192" height="99.276" filterUnits="userSpaceOnUse">
                         <feOffset dy="3" input="SourceAlpha" />
                         <feGaussianBlur stdDeviation="3" result="blur-6" />
-                        <feFlood flood-color="#f1801e" result="color" />
+                        <feFlood floodColor="#f1801e" result="color" />
                         <feComposite operator="out" in="SourceGraphic" in2="blur-6" />
                         <feComposite operator="in" in="color" />
                         <feComposite operator="in" in2="SourceGraphic" />
@@ -57,13 +57,13 @@ class Homepage extends Component {
                      <filter id="Path_736" x="1628.679" y="323.586" width="233.115" height="290.682" filterUnits="userSpaceOnUse">
                         <feOffset dy="3" input="SourceAlpha" />
                         <feGaussianBlur stdDeviation="3" result="blur-7" />
-                        <feFlood flood-opacity="0.259" />
+                        <feFlood floodOpacity="0.259" />
                         <feComposite operator="in" in2="blur-7" />
                      </filter>
                      <filter id="Path_736-2" x="1628.679" y="323.586" width="233.115" height="290.682" filterUnits="userSpaceOnUse">
                         <feOffset dx="-30" dy="-10" input="SourceAlpha" />
                         <feGaussianBlur stdDeviation="25" result="blur-8" />
-                        <feFlood flood-color="#13dbe2" flood-opacity="0.3" result="color-2" />
+                        <feFlood floodColor="#13dbe2" floodOpacity="0.3" result="color-2" />
                         <feComposite operator="out" in="SourceGraphic" in2="blur-8" />
                         <feComposite operator="in" in="color-2" />
                         <feComposite operator="in" in2="SourceGraphic" />
@@ -71,21 +71,21 @@ class Homepage extends Component {
                      <filter id="Path_737" x="1646.859" y="351.644" width="74.556" height="114.954" filterUnits="userSpaceOnUse">
                         <feOffset dy="3" input="SourceAlpha" />
                         <feGaussianBlur stdDeviation="3" result="blur-9" />
-                        <feFlood flood-opacity="0.259" />
+                        <feFlood floodOpacity="0.259" />
                         <feComposite operator="in" in2="blur-9" />
                         <feComposite in="SourceGraphic" />
                      </filter>
                      <filter id="Path_738" x="1660.085" y="358.877" width="70.709" height="119.05" filterUnits="userSpaceOnUse">
                         <feOffset dy="3" input="SourceAlpha" />
                         <feGaussianBlur stdDeviation="3" result="blur-10" />
-                        <feFlood flood-opacity="0.259" />
+                        <feFlood floodOpacity="0.259" />
                         <feComposite operator="in" in2="blur-10" />
                         <feComposite in="SourceGraphic" />
                      </filter>
                      <filter id="Rectangle_84">
                         <feOffset dy="-30" input="SourceAlpha" />
                         <feGaussianBlur stdDeviation="3" result="blur-11" />
-                        <feFlood flood-color="#262626" flood-opacity="0.059" result="color-3" />
+                        <feFlood floodColor="#262626" floodOpacity="0.059" result="color-3" />
                         <feComposite operator="out" in="SourceGraphic" in2="blur-11" />
                         <feComposite operator="in" in="color-3" />
                         <feComposite operator="in" in2="SourceGraphic" />
@@ -93,7 +93,7 @@ class Homepage extends Component {
                      <filter id="Rectangle_85">
                         <feOffset dy="-30" input="SourceAlpha" />
                         <feGaussianBlur stdDeviation="3" result="blur-12" />
-                        <feFlood flood-opacity="0.102" result="color-4" />
+                        <feFlood floodOpacity="0.102" result="color-4" />
                         <feComposite operator="out" in="SourceGraphic" in2="blur-12" />
                         <feComposite operator="in" in="color-4" />
                         <feComposite operator="in" in2="SourceGraphic" />
@@ -101,7 +101,7 @@ class Homepage extends Component {
                      <filter id="Rectangle_86">
                         <feOffset dy="-30" input="SourceAlpha" />
                         <feGaussianBlur stdDeviation="3" result="blur-13" />
-                        <feFlood flood-opacity="0.102" result="color-5" />
+                        <feFlood floodOpacity="0.102" result="color-5" />
                         <feComposite operator="out" in="SourceGraphic" in2="blur-13" />
                         <feComposite operator="in" in="color-5" />
                         <feComposite operator="in" in2="SourceGraphic" />
@@ -109,7 +109,7 @@ class Homepage extends Component {
                      <filter id="Rectangle_87">
                         <feOffset dy="-30" input="SourceAlpha" />
                         <feGaussianBlur stdDeviation="3" result="blur-14" />
-                        <feFlood flood-opacity="0.102" result="color-6" />
+                        <feFlood floodOpacity="0.102" result="color-6" />
                         <feComposite operator="out" in="SourceGraphic" in2="blur-14" />
                         <feComposite operator="in" in="color-6" />
                         <feComposite operator="in" in2="SourceGraphic" />
@@ -117,7 +117,7 @@ class Homepage extends Component {
                      <filter id="Rectangle_88">
                         <feOffset dy="-30" input="SourceAlpha" />
                         <feGaussianBlur stdDeviation="3" result="blur-15" />
-                        <feFlood flood-opacity="0.102" result="color-7" />
+                        <feFlood floodOpacity="0.102" result="color-7" />
                         <feComposite operator="out" in="SourceGraphic" in2="blur-15" />
                         <feComposite operator="in" in="color-7" />
                         <feComposite operator="in" in2="SourceGraphic" />
@@ -125,7 +125,7 @@ class Homepage extends Component {
                      <filter id="Rectangle_89">
                         <feOffset dy="-30" input="SourceAlpha" />
                         <feGaussianBlur stdDeviation="3" result="blur-16" />
-                        <feFlood flood-opacity="0.102" result="color-8" />
+                        <feFlood floodOpacity="0.102" result="color-8" />
                         <feComposite operator="out" in="SourceGraphic" in2="blur-16" />
                         <feComposite operator="in" in="color-8" />
                         <feComposite operator="in" in2="SourceGraphic" />
@@ -133,7 +133,7 @@ class Homepage extends Component {
                      <filter id="Rectangle_90">
                         <feOffset dy="-30" input="SourceAlpha" />
                         <feGaussianBlur stdDeviation="3" result="blur-17" />
-                        <feFlood flood-opacity="0.102" result="color-9" />
+                        <feFlood floodOpacity="0.102" result="color-9" />
                         <feComposite operator="out" in="SourceGraphic" in2="blur-17" />
                         <feComposite operator="in" in="color-9" />
                         <feComposite operator="in" in2="SourceGraphic" />
@@ -141,7 +141,7 @@ class Homepage extends Component {
                      <filter id="Rectangle_91">
                         <feOffset dy="-30" input="SourceAlpha" />
                         <feGaussianBlur stdDeviation="3" result="blur-18" />
-                        <feFlood flood-color="#262626" flood-opacity="0.059" result="color-10" />
+                        <feFlood floodColor="#262626" floodOpacity="0.059" result="color-10" />
                         <feComposite operator="out" in="SourceGraphic" in2="blur-18" />
                         <feComposite operator="in" in="color-10" />
                         <feComposite operator="in" in2="SourceGraphic" />
@@ -149,7 +149,7 @@ class Homepage extends Component {
                      <filter id="Rectangle_92">
                         <feOffset dy="-30" input="SourceAlpha" />
                         <feGaussianBlur stdDeviation="3" result="blur-19" />
-                        <feFlood flood-color="#262626" flood-opacity="0.059" result="color-11" />
+                        <feFlood floodColor="#262626" floodOpacity="0.059" result="color-11" />
                         <feComposite operator="out" in="SourceGraphic" in2="blur-19" />
                         <feComposite operator="in" in="color-11" />
                         <feComposite operator="in" in2="SourceGraphic" />
@@ -158,37 +158,37 @@ class Homepage extends Component {
                         <rect width="1920" height="1080" />
                      </clipPath>
                   </defs>
-                  <g id="我的房間_1" data-name="我的房間 – 1" clip-path="url(#clip-我的房間_1)">
+                  <g id="我的房間_1" data-name="我的房間 – 1" clipPath="url(#clip-我的房間_1)">
                      <rect width="1920" height="1080" fill="#f5f5cc" />
-                     <line id="地平線" x2="1920" transform="translate(0 676)" fill="none" stroke="#53480b" stroke-width="6" />
+                     <line id="地平線" x2="1920" transform="translate(0 676)" fill="none" stroke="#53480b" strokeWidth="6" />
                      <g id="籃球" transform="translate(-148.503 118.416)">
                         <circle id="Ellipse_6" data-name="Ellipse 6" cx="63.29" cy="63.29" r="63.29" transform="translate(169 737)" fill="#ef8d37" />
-                        <line id="Line_25" data-name="Line 25" x2="126.579" transform="translate(169 800.29)" fill="none" stroke="#707070" stroke-width="7" />
-                        <path id="Path_6" data-name="Path 6" d="M0,0S17.577,24.346,18.345,48,3.072,94.627,3.072,94.627" transform="translate(188.97 754.512)" fill="none" stroke="#707070" stroke-width="7" />
-                        <path id="Path_7" data-name="Path 7" d="M18.371,0S.795,24.346.027,48,15.3,94.627,15.3,94.627" transform="translate(257.175 754.512)" fill="none" stroke="#707070" stroke-width="7" opacity="0.8" />
-                        <line id="Line_26" data-name="Line 26" y2="126.579" transform="translate(232.597 737.307)" fill="none" stroke="#707070" stroke-width="7" />
+                        <line id="Line_25" data-name="Line 25" x2="126.579" transform="translate(169 800.29)" fill="none" stroke="#707070" strokeWidth="7" />
+                        <path id="Path_6" data-name="Path 6" d="M0,0S17.577,24.346,18.345,48,3.072,94.627,3.072,94.627" transform="translate(188.97 754.512)" fill="none" stroke="#707070" strokeWidth="7" />
+                        <path id="Path_7" data-name="Path 7" d="M18.371,0S.795,24.346.027,48,15.3,94.627,15.3,94.627" transform="translate(257.175 754.512)" fill="none" stroke="#707070" strokeWidth="7" opacity="0.8" />
+                        <line id="Line_26" data-name="Line 26" y2="126.579" transform="translate(232.597 737.307)" fill="none" stroke="#707070" strokeWidth="7" />
                      </g>
                      <g id="畫像" transform="translate(1112.415 210.318)">
-                        <path id="Path_24" data-name="Path 24" d="M4.383,33.784,89.763-2.11" transform="translate(266.745 68.669)" fill="none" stroke="#ea9c42" stroke-linecap="round" stroke-width="6" />
-                        <path id="Path_27" data-name="Path 27" d="M88.935,34.811,0,0" transform="translate(356.456 66.736)" fill="none" stroke="#ea9c42" stroke-linecap="round" stroke-width="6" />
-                        <g id="Path_26" data-name="Path 26" transform="translate(267 98.905)" fill="#763505" stroke-linecap="round">
+                        <path id="Path_24" data-name="Path 24" d="M4.383,33.784,89.763-2.11" transform="translate(266.745 68.669)" fill="none" stroke="#ea9c42" strokeLinecap="round" strokeWidth="6" />
+                        <path id="Path_27" data-name="Path 27" d="M88.935,34.811,0,0" transform="translate(356.456 66.736)" fill="none" stroke="#ea9c42" strokeLinecap="round" strokeWidth="6" />
+                        <g id="Path_26" data-name="Path 26" transform="translate(267 98.905)" fill="#763505" strokeLinecap="round">
                            <path d="M 181.9374389648438 194.2761993408203 L 0.4999944865703583 194.2761993408203 L 0.4999944865703583 0.4999996721744537 L 181.9374389648438 0.4999996721744537 L 181.9374389648438 194.2761993408203 Z" stroke="none" />
                            <path d="M 1 1 L 1 193.7761993408203 L 181.4374389648438 193.7761993408203 L 181.4374389648438 1 L 1 1 M 0 0 L 182.4374389648438 0 L 182.4374389648438 194.7761993408203 L 0 194.7761993408203 L 0 0 Z" stroke="none" fill="#707070" />
                         </g>
-                        <g id="Path_25" data-name="Path 25" transform="translate(278.457 112.125)" fill="#eddbbe" stroke-linecap="round">
+                        <g id="Path_25" data-name="Path 25" transform="translate(278.457 112.125)" fill="#eddbbe" strokeLinecap="round">
                            <path d="M 158.1412506103516 168.7173461914062 L 0.4999948740005493 168.7173461914062 L 0.4999948740005493 0.5000132918357849 L 158.1412506103516 0.5000132918357849 L 158.1412506103516 168.7173461914062 Z" stroke="none" />
                            <path d="M 1 0.9999847412109375 L 1 168.2173156738281 L 157.6412506103516 168.2173156738281 L 157.6412506103516 0.9999847412109375 L 1 0.9999847412109375 M 0 -1.52587890625e-05 L 158.6412506103516 -1.52587890625e-05 L 158.6412506103516 169.2173156738281 L 0 169.2173156738281 L 0 -1.52587890625e-05 Z" stroke="none" fill="#707070" />
                         </g>
                         <ellipse id="Ellipse_39" data-name="Ellipse 39" cx="6" cy="7" rx="6" ry="7" transform="translate(351 59.681)" fill="#400202" />
                         <g id="鴨子" transform="translate(280.097 123.122)">
-                           <line id="Line_17" data-name="Line 17" y2="9.956" transform="translate(66.319 131.194)" fill="none" stroke="#574809" stroke-width="4" />
-                           <line id="Line_21" data-name="Line 21" y2="9.956" transform="translate(93.939 131.194)" fill="none" stroke="#574809" stroke-width="4" />
-                           <line id="Line_18" data-name="Line 18" x1="6.102" y2="4.817" transform="translate(59.575 140.508)" fill="none" stroke="#574809" stroke-width="4" />
-                           <line id="Line_24" data-name="Line 24" x1="6.102" y2="4.817" transform="translate(87.195 140.508)" fill="none" stroke="#574809" stroke-width="4" />
-                           <line id="Line_19" data-name="Line 19" y2="9.394" transform="translate(66.319 139.143)" fill="none" stroke="#574809" stroke-width="4" />
-                           <line id="Line_22" data-name="Line 22" y2="9.394" transform="translate(93.939 139.143)" fill="none" stroke="#574809" stroke-width="4" />
-                           <line id="Line_20" data-name="Line 20" x2="6.102" y2="4.175" transform="translate(66.961 140.508)" fill="none" stroke="#574809" stroke-width="4" />
-                           <line id="Line_23" data-name="Line 23" x2="6.102" y2="4.175" transform="translate(94.581 140.508)" fill="none" stroke="#574809" stroke-width="4" />
+                           <line id="Line_17" data-name="Line 17" y2="9.956" transform="translate(66.319 131.194)" fill="none" stroke="#574809" strokeWidth="4" />
+                           <line id="Line_21" data-name="Line 21" y2="9.956" transform="translate(93.939 131.194)" fill="none" stroke="#574809" strokeWidth="4" />
+                           <line id="Line_18" data-name="Line 18" x1="6.102" y2="4.817" transform="translate(59.575 140.508)" fill="none" stroke="#574809" strokeWidth="4" />
+                           <line id="Line_24" data-name="Line 24" x1="6.102" y2="4.817" transform="translate(87.195 140.508)" fill="none" stroke="#574809" strokeWidth="4" />
+                           <line id="Line_19" data-name="Line 19" y2="9.394" transform="translate(66.319 139.143)" fill="none" stroke="#574809" strokeWidth="4" />
+                           <line id="Line_22" data-name="Line 22" y2="9.394" transform="translate(93.939 139.143)" fill="none" stroke="#574809" strokeWidth="4" />
+                           <line id="Line_20" data-name="Line 20" x2="6.102" y2="4.175" transform="translate(66.961 140.508)" fill="none" stroke="#574809" strokeWidth="4" />
+                           <line id="Line_23" data-name="Line 23" x2="6.102" y2="4.175" transform="translate(94.581 140.508)" fill="none" stroke="#574809" strokeWidth="4" />
                            <ellipse id="Ellipse_2" data-name="Ellipse 2" cx="51.065" cy="41.269" rx="51.065" ry="41.269" transform="translate(27.94)" fill="#ffd230" />
                            <ellipse id="Ellipse_3" data-name="Ellipse 3" cx="57.327" cy="46.247" rx="57.327" ry="46.247" transform="translate(21.838 41.43)" fill="#ffd230" />
                            <path id="Polygon_1" data-name="Polygon 1" d="M15.416,0,30.831,14.131H0Z" transform="translate(63.589 28.262)" fill="#f70" />
@@ -247,38 +247,38 @@ class Homepage extends Component {
                         </g>
                      </g>
                      <g id="light" transform="translate(569.222 -103.5)">
-                        <path id="Path_4" data-name="Path 4" d="M0,2.318S107.032,138.249,260.438,143.685C451.483,142.336,589.5,0,589.5,0" transform="translate(62.5 357.5)" fill="none" stroke="#707070" stroke-width="4" />
-                        <line id="Line_16" data-name="Line 16" y2="29.37" transform="translate(96.066 396.748)" fill="none" stroke="#707070" stroke-width="4" />
+                        <path id="Path_4" data-name="Path 4" d="M0,2.318S107.032,138.249,260.438,143.685C451.483,142.336,589.5,0,589.5,0" transform="translate(62.5 357.5)" fill="none" stroke="#707070" strokeWidth="4" />
+                        <line id="Line_16" data-name="Line 16" y2="29.37" transform="translate(96.066 396.748)" fill="none" stroke="#707070" strokeWidth="4" />
                         <rect id="Rectangle_23" data-name="Rectangle 23" width="12.362" height="18.543" transform="translate(90.148 416.025)" fill="#363636" />
                         <path id="Path_5" data-name="Path 5" d="M14.293,0c7.894,0,14.293,8.129,14.293,18.156,0,5.184-1.026,11.869-3.92,15.357-2.412,2.912-6.561,2.8-10.374,2.8-3.521,0-6.438,1.739-10.011-2.8S0,23.711,0,18.156C0,8.129,6.4,0,14.293,0Z" transform="translate(110.621 461.936) rotate(180)" fill="#ffd230" />
-                        <path id="Path_23" data-name="Path 23" d="M0,0V29.37" transform="translate(161.099 449.258)" fill="none" stroke="#707070" stroke-width="4" />
+                        <path id="Path_23" data-name="Path 23" d="M0,0V29.37" transform="translate(161.099 449.258)" fill="none" stroke="#707070" strokeWidth="4" />
                         <rect id="Rectangle_23-2" data-name="Rectangle 23" width="12.362" height="18.543" transform="translate(154.918 468.626)" fill="#363636" />
                         <path id="Path_5-2" data-name="Path 5" d="M14.293,0c7.894,0,14.293,8.129,14.293,18.156,0,5.184-1.026,11.869-3.92,15.357-2.412,2.912-6.561,2.8-10.374,2.8-3.521,0-6.438,1.739-10.011-2.8S0,23.711,0,18.156C0,8.129,6.4,0,14.293,0Z" transform="translate(175.392 514.537) rotate(180)" fill="#ffd230" />
-                        <line id="Line_16-2" data-name="Line 16" y2="27.272" transform="translate(234.524 482.346)" fill="none" stroke="#707070" stroke-width="4" />
+                        <line id="Line_16-2" data-name="Line 16" y2="27.272" transform="translate(234.524 482.346)" fill="none" stroke="#707070" strokeWidth="4" />
                         <rect id="Rectangle_23-3" data-name="Rectangle 23" width="12.362" height="18.543" transform="translate(228.224 500.818)" fill="#363636" />
                         <path id="Path_5-3" data-name="Path 5" d="M14.293,0c7.894,0,14.293,8.129,14.293,18.156,0,5.184-1.026,11.869-3.92,15.357-2.412,2.912-6.561,2.8-10.374,2.8-3.521,0-6.438,1.739-10.011-2.8S0,23.711,0,18.156C0,8.129,6.4,0,14.293,0Z" transform="translate(248.698 546.729) rotate(180)" fill="#ffd230" />
-                        <line id="Line_16-3" data-name="Line 16" y2="27.272" transform="translate(316.34 499.129)" fill="none" stroke="#707070" stroke-width="4" />
+                        <line id="Line_16-3" data-name="Line 16" y2="27.272" transform="translate(316.34 499.129)" fill="none" stroke="#707070" strokeWidth="4" />
                         <rect id="Rectangle_23-4" data-name="Rectangle 23" width="12.362" height="18.543" transform="translate(310.12 517.043)" fill="#363636" />
                         <path id="Path_5-4" data-name="Path 5" d="M14.293,0c7.894,0,14.293,8.129,14.293,18.156,0,5.184-1.026,11.869-3.92,15.357-2.412,2.912-6.561,2.8-10.374,2.8-3.521,0-6.438,1.739-10.011-2.8S0,23.711,0,18.156C0,8.129,6.4,0,14.293,0Z" transform="translate(330.594 562.954) rotate(180)" fill="#ffd230" />
-                        <line id="Line_16-4" data-name="Line 16" y2="27.272" transform="translate(391.863 494.934)" fill="none" stroke="#707070" stroke-width="4" />
+                        <line id="Line_16-4" data-name="Line 16" y2="27.272" transform="translate(391.863 494.934)" fill="none" stroke="#707070" strokeWidth="4" />
                         <rect id="Rectangle_23-5" data-name="Rectangle 23" width="12.362" height="18.543" transform="translate(385.682 513.953)" fill="#363636" />
                         <path id="Path_5-5" data-name="Path 5" d="M14.293,0c7.894,0,14.293,8.129,14.293,18.156,0,5.184-1.026,11.869-3.92,15.357-2.412,2.912-6.561,2.8-10.374,2.8-3.521,0-6.438,1.739-10.011-2.8S0,23.711,0,18.156C0,8.129,6.4,0,14.293,0Z" transform="translate(406.156 559.864) rotate(180)" fill="#ffd230" />
-                        <line id="Line_16-5" data-name="Line 16" x2="0.773" y2="27.814" transform="translate(468.117 475.931)" fill="none" stroke="#707070" stroke-width="4" />
+                        <line id="Line_16-5" data-name="Line 16" x2="0.773" y2="27.814" transform="translate(468.117 475.931)" fill="none" stroke="#707070" strokeWidth="4" />
                         <rect id="Rectangle_23-6" data-name="Rectangle 23" width="12.362" height="18.543" transform="translate(463.095 494.474)" fill="#363636" />
                         <path id="Path_5-6" data-name="Path 5" d="M14.293,0c7.894,0,14.293,8.129,14.293,18.156,0,5.184-1.026,11.869-3.92,15.357-2.412,2.912-6.561,2.8-10.374,2.8-3.521,0-6.438,1.739-10.011-2.8S0,23.711,0,18.156C0,8.129,6.4,0,14.293,0Z" transform="translate(483.569 540.385) rotate(180)" fill="#ffd230" />
-                        <line id="Line_16-6" data-name="Line 16" x2="0.773" y2="27.814" transform="translate(541.515 438.846)" fill="none" stroke="#707070" stroke-width="4" />
+                        <line id="Line_16-6" data-name="Line 16" x2="0.773" y2="27.814" transform="translate(541.515 438.846)" fill="none" stroke="#707070" strokeWidth="4" />
                         <rect id="Rectangle_23-7" data-name="Rectangle 23" width="12.362" height="18.543" transform="translate(536.493 457.388)" fill="#363636" />
                         <path id="Path_5-7" data-name="Path 5" d="M14.293,0c7.894,0,14.293,8.129,14.293,18.156,0,5.184-1.026,11.869-3.92,15.357-2.412,2.912-6.561,2.8-10.374,2.8-3.521,0-6.438,1.739-10.011-2.8S0,23.711,0,18.156C0,8.129,6.4,0,14.293,0Z" transform="translate(556.967 503.299) rotate(180)" fill="#ffd230" />
-                        <line id="Line_16-7" data-name="Line 16" x2="0.773" y2="27.814" transform="translate(618.775 387.854)" fill="none" stroke="#707070" stroke-width="4" />
+                        <line id="Line_16-7" data-name="Line 16" x2="0.773" y2="27.814" transform="translate(618.775 387.854)" fill="none" stroke="#707070" strokeWidth="4" />
                         <rect id="Rectangle_23-8" data-name="Rectangle 23" width="12.362" height="18.543" transform="translate(613.753 406.396)" fill="#363636" />
                         <path id="Path_5-8" data-name="Path 5" d="M14.293,0c7.894,0,14.293,8.129,14.293,18.156,0,5.184-1.026,11.869-3.92,15.357-2.412,2.912-6.561,2.8-10.374,2.8-3.521,0-6.438,1.739-10.011-2.8S0,23.711,0,18.156C0,8.129,6.4,0,14.293,0Z" transform="translate(634.227 452.308) rotate(180)" fill="#ffd230" />
                      </g>
                      <g id="TV" transform="translate(-314 -64.774)">
-                        <g id="Rectangle_43" data-name="Rectangle 43" transform="translate(442 266.774)" fill="#464444" stroke="#707070" stroke-width="1">
+                        <g id="Rectangle_43" data-name="Rectangle 43" transform="translate(442 266.774)" fill="#464444" stroke="#707070" strokeWidth="1">
                            <rect width="436" height="226" stroke="none" />
                            <rect x="0.5" y="0.5" width="435" height="225" fill="none" />
                         </g>
-                        <g id="Rectangle_44" data-name="Rectangle 44" transform="translate(455 277.774)" fill="#dbdbdb" stroke="#707070" stroke-width="1">
+                        <g id="Rectangle_44" data-name="Rectangle 44" transform="translate(455 277.774)" fill="#dbdbdb" stroke="#707070" strokeWidth="1">
                            <rect width="414" height="203" stroke="none" />
                            <rect x="0.5" y="0.5" width="413" height="202" fill="none" />
                         </g>
@@ -328,14 +328,14 @@ class Homepage extends Component {
                         </g>
                      </g>
                      <g id="鴨子-2" data-name="鴨子" transform="translate(7.36 47.98)">
-                        <line id="Line_17-2" data-name="Line 17" y2="31" transform="translate(860.5 832.5)" fill="none" stroke="#574809" stroke-width="10" />
-                        <line id="Line_21-2" data-name="Line 21" y2="31" transform="translate(946.5 832.5)" fill="none" stroke="#574809" stroke-width="10" />
-                        <line id="Line_18-2" data-name="Line 18" x1="19" y2="15" transform="translate(839.5 861.5)" fill="none" stroke="#574809" stroke-width="10" />
-                        <line id="Line_24-2" data-name="Line 24" x1="19" y2="15" transform="translate(925.5 861.5)" fill="none" stroke="#574809" stroke-width="10" />
-                        <line id="Line_19-2" data-name="Line 19" y2="29.25" transform="translate(860.5 857.25)" fill="none" stroke="#574809" stroke-width="10" />
-                        <line id="Line_22-2" data-name="Line 22" y2="29.25" transform="translate(946.5 857.25)" fill="none" stroke="#574809" stroke-width="10" />
-                        <line id="Line_20-2" data-name="Line 20" x2="19" y2="13" transform="translate(862.5 861.5)" fill="none" stroke="#574809" stroke-width="10" />
-                        <line id="Line_23-2" data-name="Line 23" x2="19" y2="13" transform="translate(948.5 861.5)" fill="none" stroke="#574809" stroke-width="10" />
+                        <line id="Line_17-2" data-name="Line 17" y2="31" transform="translate(860.5 832.5)" fill="none" stroke="#574809" strokeWidth="10" />
+                        <line id="Line_21-2" data-name="Line 21" y2="31" transform="translate(946.5 832.5)" fill="none" stroke="#574809" strokeWidth="10" />
+                        <line id="Line_18-2" data-name="Line 18" x1="19" y2="15" transform="translate(839.5 861.5)" fill="none" stroke="#574809" strokeWidth="10" />
+                        <line id="Line_24-2" data-name="Line 24" x1="19" y2="15" transform="translate(925.5 861.5)" fill="none" stroke="#574809" strokeWidth="10" />
+                        <line id="Line_19-2" data-name="Line 19" y2="29.25" transform="translate(860.5 857.25)" fill="none" stroke="#574809" strokeWidth="10" />
+                        <line id="Line_22-2" data-name="Line 22" y2="29.25" transform="translate(946.5 857.25)" fill="none" stroke="#574809" strokeWidth="10" />
+                        <line id="Line_20-2" data-name="Line 20" x2="19" y2="13" transform="translate(862.5 861.5)" fill="none" stroke="#574809" strokeWidth="10" />
+                        <line id="Line_23-2" data-name="Line 23" x2="19" y2="13" transform="translate(948.5 861.5)" fill="none" stroke="#574809" strokeWidth="10" />
                         <ellipse id="Ellipse_2-2" data-name="Ellipse 2" cx="159" cy="128.5" rx="159" ry="128.5" transform="translate(741 424)" fill="#ffd230" />
                         <ellipse id="Ellipse_3-2" data-name="Ellipse 3" cx="178.5" cy="144" rx="178.5" ry="144" transform="translate(722 553)" fill="#ffd230" />
                         <path id="Polygon_1-2" data-name="Polygon 1" d="M48,0,96,44H0Z" transform="translate(852 512)" fill="#f70" />
@@ -346,26 +346,26 @@ class Homepage extends Component {
                         <path id="Polygon_11" data-name="Polygon 11" d="M48,0,96,44H0Z" transform="translate(852 512)" fill="#f70" />
                      </g>
                      <g id="眼鏡" transform="translate(19 178.78)">
-                        <g id="Ellipse_41" data-name="Ellipse 41" transform="translate(840.435 361.22)" fill="#dbdbdb" stroke="#707070" stroke-width="6">
+                        <g id="Ellipse_41" data-name="Ellipse 41" transform="translate(840.435 361.22)" fill="#dbdbdb" stroke="#707070" strokeWidth="6">
                            <ellipse cx="18.981" cy="18.981" rx="18.981" ry="18.981" stroke="none" />
                            <ellipse cx="18.981" cy="18.981" rx="15.981" ry="15.981" fill="none" />
                         </g>
-                        <g id="Ellipse_42" data-name="Ellipse 42" transform="translate(893.189 361.22)" fill="#dbdbdb" stroke="#707070" stroke-width="6">
+                        <g id="Ellipse_42" data-name="Ellipse 42" transform="translate(893.189 361.22)" fill="#dbdbdb" stroke="#707070" strokeWidth="6">
                            <ellipse cx="18.799" cy="18.981" rx="18.799" ry="18.981" stroke="none" />
                            <ellipse cx="18.799" cy="18.981" rx="15.799" ry="15.981" fill="none" />
                         </g>
-                        <path id="Path_34" data-name="Path 34" d="M.186-15.792s4.6-3.474,8.8-3.474,7.941,3.474,7.941,3.474" transform="translate(876.265 395.993)" fill="none" stroke="#707070" stroke-linecap="round" stroke-width="6" />
+                        <path id="Path_34" data-name="Path 34" d="M.186-15.792s4.6-3.474,8.8-3.474,7.941,3.474,7.941,3.474" transform="translate(876.265 395.993)" fill="none" stroke="#707070" strokeLinecap="round" strokeWidth="6" />
                      </g>
                      <g id="母鴨" transform="translate(3452.552 -5379.475)">
                         <g id="鴨子-3" data-name="鴨子" transform="translate(-2411.749 5900.052)">
-                           <line id="Line_17-3" data-name="Line 17" y2="28.213" transform="translate(144.931 371.771)" fill="none" stroke="#574809" stroke-width="7" />
-                           <line id="Line_21-3" data-name="Line 21" y2="28.213" transform="translate(223.198 371.771)" fill="none" stroke="#574809" stroke-width="7" />
-                           <line id="Line_18-3" data-name="Line 18" x1="17.292" y2="13.651" transform="translate(125.819 398.164)" fill="none" stroke="#574809" stroke-width="7" />
-                           <line id="Line_24-3" data-name="Line 24" x1="17.292" y2="13.651" transform="translate(204.086 398.164)" fill="none" stroke="#574809" stroke-width="7" />
-                           <line id="Line_19-3" data-name="Line 19" y2="26.62" transform="translate(144.931 394.296)" fill="none" stroke="#574809" stroke-width="7" />
-                           <line id="Line_22-3" data-name="Line 22" y2="26.62" transform="translate(223.198 394.296)" fill="none" stroke="#574809" stroke-width="7" />
-                           <line id="Line_20-3" data-name="Line 20" x2="17.292" y2="11.831" transform="translate(146.751 398.164)" fill="none" stroke="#574809" stroke-width="7" />
-                           <line id="Line_23-3" data-name="Line 23" x2="17.292" y2="11.831" transform="translate(225.018 398.164)" fill="none" stroke="#574809" stroke-width="7" />
+                           <line id="Line_17-3" data-name="Line 17" y2="28.213" transform="translate(144.931 371.771)" fill="none" stroke="#574809" strokeWidth="7" />
+                           <line id="Line_21-3" data-name="Line 21" y2="28.213" transform="translate(223.198 371.771)" fill="none" stroke="#574809" strokeWidth="7" />
+                           <line id="Line_18-3" data-name="Line 18" x1="17.292" y2="13.651" transform="translate(125.819 398.164)" fill="none" stroke="#574809" strokeWidth="7" />
+                           <line id="Line_24-3" data-name="Line 24" x1="17.292" y2="13.651" transform="translate(204.086 398.164)" fill="none" stroke="#574809" strokeWidth="7" />
+                           <line id="Line_19-3" data-name="Line 19" y2="26.62" transform="translate(144.931 394.296)" fill="none" stroke="#574809" strokeWidth="7" />
+                           <line id="Line_22-3" data-name="Line 22" y2="26.62" transform="translate(223.198 394.296)" fill="none" stroke="#574809" strokeWidth="7" />
+                           <line id="Line_20-3" data-name="Line 20" x2="17.292" y2="11.831" transform="translate(146.751 398.164)" fill="none" stroke="#574809" strokeWidth="7" />
+                           <line id="Line_23-3" data-name="Line 23" x2="17.292" y2="11.831" transform="translate(225.018 398.164)" fill="none" stroke="#574809" strokeWidth="7" />
                            <ellipse id="Ellipse_2-3" data-name="Ellipse 2" cx="144.704" cy="116.946" rx="144.704" ry="116.946" transform="translate(36.175 0)" fill="#ffd230" />
                            <ellipse id="Ellipse_3-3" data-name="Ellipse 3" cx="162.451" cy="131.053" rx="162.451" ry="131.053" transform="translate(18.883 117.402)" fill="#ffd230" />
                            <path id="Polygon_1-3" data-name="Polygon 1" d="M43.684,0,87.369,40.044H0Z" transform="translate(137.195 80.088)" fill="#f70" />
@@ -449,8 +449,8 @@ class Homepage extends Component {
                      </g>
                      <g id="時鐘" transform="translate(1493 -3374.358)">
                         <circle id="Ellipse_57" data-name="Ellipse 57" cx="72" cy="72" r="72" transform="translate(-660 3471.358)" fill="#939191" opacity="0.88" />
-                        <line id="Line_30" data-name="Line 30" y1="40.581" x2="37" transform="translate(-588.685 3503.462)" fill="none" stroke="#ffcfa5" stroke-linecap="round" stroke-width="7" />
-                        <line id="Line_31" data-name="Line 31" y1="12.532" x2="36.404" transform="translate(-625.088 3544.043)" fill="none" stroke="#ffcfa5" stroke-linecap="round" stroke-width="7" />
+                        <line id="Line_30" data-name="Line 30" y1="40.581" x2="37" transform="translate(-588.685 3503.462)" fill="none" stroke="#ffcfa5" strokeLinecap="round" strokeWidth="7" />
+                        <line id="Line_31" data-name="Line 31" y1="12.532" x2="36.404" transform="translate(-625.088 3544.043)" fill="none" stroke="#ffcfa5" strokeLinecap="round" strokeWidth="7" />
                      </g>
                   </g>
                </svg>

@@ -23,7 +23,6 @@ import MainListItem from '../components/Sidebar_mainList'
 import ProfileSection from "../components/Header/ProfileSection"
 
 
-
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -179,8 +178,8 @@ function Layout() {
               bgcolor: '#ecdfb1'
             }}
           >
-            <Link underline="none" color="black" href='/'>
-              <img src="/assets/images/logo.svg" alt="logo" style={{height:'55px',width:'200px',paddingLeft:'40px'}}/>
+            <Link underline="none" href='/'>
+              <img src="/assets/images/logo.svg" alt="logo" style={{height:'59px',paddingLeft:'40px',paddingTop:'7px'}}/>
             </Link>
 
             <IconButton onClick={toggleDrawer}>

@@ -51,7 +51,7 @@ export default function NestedList() {
                     </Link>
                 </List>
 
-                {/* <List component="div" disablePadding>
+                <List component="div" disablePadding>
                     <Link to="#" style={{ color: 'black' }}>
                         <ListItemButton sx={{ pl: 4 }}>
                             <ListItemIcon>
@@ -60,7 +60,7 @@ export default function NestedList() {
                             <ListItemText primary="計算機: 風險報酬" />
                         </ListItemButton>
                     </Link>
-                </List> */}
+                </List>
             </Collapse>
         </React.Fragment>
 
