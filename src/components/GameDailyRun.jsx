@@ -27,7 +27,14 @@ ChartJS.register(
    Legend
 );
 
-localStorage.setItem('loginState', 's520334455@gmail.com');
+
+axios.get('http://localhost:5000/point_record/all')
+    .then( (response) => console.log(response.data))
+    .catch( (error) => console.log(error))
+
+
+
+
 function GameDailyRun() {
 
    const [FindShow, setFindShow] = useState(false); //查詢
@@ -47,21 +54,21 @@ function GameDailyRun() {
          labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
          datasets: [
             {
-               type: 'line',
+               type: 'bar',
                label: 'Dataset 1',
-               data: [100, 200, 300, 400, 500, 600, 700],
+               data: [100, 200, 30, 400, 500, 60, 700],
                backgroundColor: 'rgba(255, 99, 132, 0.5)',
             },
             {
-               type: 'bar',
+               type: 'line',
                label: 'Dataset 2',
-               data: [2, 3, 4, 5, 6, 7, 8],
+               data: [20, 300, 40, 500, 60, 700, 80],
                backgroundColor: 'rgba(53, 162, 235, 0.5)',
             },
             {
                type: 'bar',
                label: 'Dataset 2',
-               data: [20, 30, 40, 50, 60, 70, 80],
+               data: [200, 30, 400, 50, 600, 700, 80],
                backgroundColor: 'rgb(53, 162, 235)',
             }
          ],
