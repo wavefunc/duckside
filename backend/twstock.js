@@ -50,6 +50,7 @@
  * 2. 抓取某天全市場股價資料: getTwse([Ymd])
  * Ymd 字串格式 YYYYMMDD 傳入想要查詢的日期, 查詢當天全市場資料
  * 如沒給參數, 就查詢最近一日
+ * 如果查無資料, stat屬性會存放"No Trading", 程式會往前抓一天, 重複請求直到有資料為止
  * 
  * 3. 抓取某股當月的股價日資料 getTwse([Ymd, stockId, periods])
  * Ymd 字串格式 YYYYMMDD 傳入查詢的日期
@@ -94,23 +95,25 @@ class twseMarketInfo {
     async initialize() {
         var res = await this.responsePromise;
         if (res.data.stat !== "OK") {
-            throw 'No Trading';
+            console.log(res.data);
+            this.stat = "No Trading";
+        } else {
+            var data = transpose(res.data.data9);
+            // 資料量大, 只以字串存放, 不全部轉成數值
+            this._stockId = data[0];
+            this._stockName = data[1];
+            this._volShare = data[2];
+            this._volDeal = data[3];
+            this._volDollar = data[4];
+            this._priceOpen = data[5];
+            this._priceHigh = data[6];
+            this._priceLow = data[7];
+            this._priceClose = data[8];
+            this._changeDir = data[9];
+            this._changeAbs = data[10];
+            this._ratioPE = data[15];
+            this._fields = res.data['fields9'];
         }
-        var data = transpose(res.data.data9);
-        // 資料量大, 只以字串存放, 不全部轉成數值
-        this._stockId = data[0];
-        this._stockName = data[1];
-        this._volShare = data[2];
-        this._volDeal = data[3];
-        this._volDollar = data[4];
-        this._priceOpen = data[5];
-        this._priceHigh = data[6];
-        this._priceLow = data[7];
-        this._priceClose = data[8];
-        this._changeDir = data[9];
-        this._changeAbs = data[10];
-        this._ratioPE = data[15];
-        this._fields = res.data['fields9'];
     }
     stockId(IdStr) {
         IdStr = IdStr.toString();
@@ -512,17 +515,21 @@ class yahooStockDay {
 
 async function getTwse(Ymd, stockId, periods) {
     Ymd = (Ymd !== undefined) ? Ymd.toString() : dt.format(new Date(), 'YYYYMMDD');
+    let MI = {};
     if (isNaN(dt.parse(Ymd, 'YYYYMMDD'))) {
         return 'Invalid Date'
     }
     if (stockId) {
         stockId = stockId.toString();
-        var MI = new twseStockDay(Ymd, stockId, periods);
+        MI = new twseStockDay(Ymd, stockId, periods);
         await MI.initialize();
         return MI;
     } else {
-        var MI = new twseMarketInfo(Ymd);
-        await MI.initialize();
+        do {
+            MI = new twseMarketInfo(Ymd);
+            await MI.initialize();
+            Ymd = dt.format((dt.addDays(dt.parse(Ymd, 'YYYYMMDD'), -1)), 'YYYYMMDD');
+        } while (MI.stat === "No Trading");
         return MI;
     }
 }
@@ -553,8 +560,10 @@ async function getYahoo(stockId, period1, period2) {
             await stockDay.initialize();
         }
         period1 = period1 - 86400;
-    } while (typeof stockDay.data === "string");
+        console.log(stockDay.data === '404 Not Found: Timestamp data missing.');
+    } while (stockDay.data === '404 Not Found: Timestamp data missing.');
 
+    // 偶爾遇到此錯誤將導致抓不到資料 404 Not Found: No data found, symbol may be delisted
 
     return stockDay;
 };
@@ -570,11 +579,7 @@ async function getRTQs(StockId) {
 //     console.log(MI.priceClose());
 // });
 
-// 待測試: daley要下幾毫秒?
-// getTwse(20220101, 9933, 12).then(function (MI) {
-//     console.log(MI.fields);
-//     console.log(MI.priceClose());
-// });
+
 
 module.exports.getYahoo = getYahoo;
 module.exports.getTwse = getTwse;
@@ -584,10 +589,14 @@ module.exports.getTwse = getTwse;
  * 單日查詢, 判斷無效日期, 返還'Invalid Date'
  * {"stat":"很抱歉，沒有符合條件的資料!" 或 "stat":"OK"}
  * 判斷抓取到到的資料非交易日, 返還'No Trading'
-// 
-// 
 
-// 模組輸出參考
+// 待測試: 爬證交所查詢個股多個月股價日成交資料時, daley要下幾毫秒才不會被擋IP?
+// getTwse(20220101, 9933, 12).then(function (MI) {
+//     console.log(MI.fields);
+//     console.log(MI.priceClose());
+// });
+
+// 模組輸出範例
 // export { playWith, Animal }
 // export default Dog
 
@@ -598,6 +607,7 @@ https://www.twse.com.tw/exchangeReport/MI_INDEX?response=json&type=ALLBUT0999&da
 http://www.twse.com.tw/exchangeReport/STOCK_DAY?response=json&stockNo=2330&date=20211226
 除權除息計算結果表
 https://www.twse.com.tw/exchangeReport/TWT49U?response=html&strDate=20220101&endDate=20221201
+
 奇摩個股歷史日成交資訊
 https://finance.yahoo.com/quote/2520.TW/history?period1=1643040000&period2=1643191200&interval=1d&filter=history&frequency=1d&includeAdjustedClose=true
 奇摩個股日價格資訊(可抓盤中)

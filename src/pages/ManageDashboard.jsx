@@ -20,13 +20,33 @@ const acc_email = localStorage.getItem('loginState');
 const dateQuery = dt.format(new Date(), 'YYYY-MM-DD');
 const urlPostAsset = 'http://localhost:5000/asset/someday';
 const urlPostInventory = 'http://localhost:5000/transaction/inventory';
+const urlPostPlan = 'http://localhost:5000/plan/recent';
 const urlPostMarketInfo = 'http://localhost:5000/securities/marketInfo';
 
-// 主表使用 庫存現況 要加掛市價欄
+// 主表使用
+// 庫存現況 要加掛市價欄
 const colInventory = [
    { id: 'sec_id', name: '代號' },
    { id: 'sec_name', name: '名稱' },
    { id: 'total', name: '庫存數量' },
+];
+// 最近計畫
+const colPlan = [
+   { id: 'plan_id', name: 'asd_id', hidden: true },
+   {
+      id: 'plan_date', name: '日期', width: '15%',
+      formatter: (cell) => { let d = new Date(cell); return dt.format(d, 'YYYY-MM-DD'); },
+   },
+   { id: 'sec_id', name: '代號', width: '10%' },
+   { id: 'sec_name', name: '名稱', width: '15%' },
+   { id: 'plan_strategy', name: '類型', hidden: true },
+   { id: 'plan_param1', name: '參數', hidden: true },
+   { id: 'plan_param2', name: '參數', hidden: true },
+   { id: 'plan_anchor', name: '參考價', width: '10%' },
+   { id: 'plan_stoploss', name: '停損', width: '10%' },
+   { id: 'plan_target', name: '目標', width: '10%' },
+   // { id: '', name: '現價', width: '10%' },
+   { id: 'plan_note', name: '筆記', width: '20%' },
 ];
 
 function ManageDashboard(props) {
@@ -86,10 +106,14 @@ function ManageDashboard(props) {
             <Col lg={8}>
                <MyCurrentPosition col={colInventory} className={{ table: 'table table-sm' }}
                   url={urlPostInventory}
-                  dataToServer={{ acc_email: acc_email, dateQuery: dt.format(new Date(), 'YYYY-MM-DD') }}
+                  dataToServer={{ acc_email: acc_email, dateQuery: dateQuery }}
                ></MyCurrentPosition>
+               <ManageRecent row={10} col={colPlan}
+                  url={urlPostPlan} dataToServer={{ acc_email: acc_email, amount: 10 }}
+               ></ManageRecent>
             </Col>
             <Col lg={4}>
+               <MyCandleLookup></MyCandleLookup>
                {/* <MyChartPie></MyChartPie>
                <ManageCurrent col={col2} className={{ table: 'table table-sm' }}
                   url={urlPostInventory} dataToServer={{ acc_email: acc_email, dateQuery: dateQuery }}
@@ -97,7 +121,7 @@ function ManageDashboard(props) {
             </Col>
          </Row>
          <Row>
-            {/* <MyCandleLookup></MyCandleLookup> */}
+
          </Row>
 
       </Container >

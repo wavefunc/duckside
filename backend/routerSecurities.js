@@ -40,7 +40,6 @@ router.get('/securities/datalist/:key', (req, res) => {
 // 抓取股票日成交資料, 整理成繪製技術線圖所需格式
 // *****************************************************
 router.post('/securities/candlestick', function (req, res) {
-    console.log(JSON.stringify(req.body));
     getYahoo(req.body.stockId, req.body.period1, req.body.period2)
         .then(function (stockDay) {
             res.send(stockDay);
@@ -62,11 +61,12 @@ router.post('/securities/stockDay', function (req, res) {
 // 依 dateQuery 抓該天所有股票成交資料 (打包成MI物件)
 // *****************************************************
 router.post('/securities/marketInfo', function (req, res) {
-    let Ymd = req.body.dateQuery.replace(/-/g,'');
+    let Ymd = req.body.dateQuery.replace(/-/g, '');
     console.log(Ymd);
     getTwse(Ymd).then((MI) => {
         res.send(MI);
     }).catch((e) => {
+        console.log(e);
         res.send('Server Busy');
     });
 });

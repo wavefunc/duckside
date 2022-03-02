@@ -44,20 +44,10 @@ const options = {
 
 function ManageCheck(props) {
    console.log('--ManageCheck--');
-   // const [refreshState, setRefresh] = useState(true);
-   // const refresh = () => {
-   //    setRefresh(!refreshState);
-   // };
 
    const [chartData, setChartData] = useState([]);
    const [option, setOption] = useState({ x: "ast_date", y: "ast_sum", yLabels: "總資產" });
-   const [chartHeight, setChartHeight] = useState('360px');
    const container = useRef();
-   const updateWindowDimensions = useCallback((e) => {
-      // console.log(container.current.clientHeight);
-      let clientHeight = container.current.clientHeight;
-      setChartHeight(clientHeight);
-   });
 
    useEffect(() => {
       let dataToServer = { ...initialValues };
@@ -69,10 +59,6 @@ function ManageCheck(props) {
          setChartData(res.data);
          setOption(options[chartType]);
       });
-   }, [])
-   useEffect(() => {
-      window.addEventListener('resize', updateWindowDimensions);
-      return () => { window.removeEventListener('resize', updateWindowDimensions) }
    }, [])
    const handleSubmit = (values, actions) => {
       let dataToServer = { ...values };

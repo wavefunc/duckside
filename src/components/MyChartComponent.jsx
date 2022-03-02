@@ -30,11 +30,6 @@ ChartJS.register(
 
 // 折線圖基本設定 (資產變動圖使用)
 const options = {
-    // onResize: (myChart, size)=> {
-    //     console.log(myChart);
-    //     console.log(size);
-    //     console.log(this);
-    // },
     maintainAspectRatio: false,
     responsive: true,
     scales: {
