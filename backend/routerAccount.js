@@ -100,7 +100,7 @@ router.post('/account/login', async (req, res) => {
    // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
    var acc_id = await checkAccount(req.body.acc_email, res);
 
-   let strQuery = `SELECT acc_email, acc_password FROM account WHERE acc_id = ?`;
+   let strQuery = `SELECT acc_email, acc_password, acc_name FROM account WHERE acc_id = ?`;
    await query(strQuery, [acc_id], (err, rows) => {
       if (err) {
          res.send(err);
@@ -109,7 +109,7 @@ router.post('/account/login', async (req, res) => {
          bcrypt.compare(req.body.acc_password, rows[0].acc_password, (err, result) => {
             err ?
                res.send(err) :
-               res.send(result ? 'Password correct' : 'Password error');
+               res.send(result ? rows[0].acc_name : 'Password error');
          });
       }
    });
