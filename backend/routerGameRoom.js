@@ -24,6 +24,7 @@ router.get('/acc_furn/all', (req, res) => {
 
 // **********************************************************
 // 商店購買家具時，會員的該家具設為已購買(true)，並扣除會員的積分
+// 前端傳入 acc_email, furn_id
 // **********************************************************
 router.put('/acc_furn/buying', async (req, res) => {
    // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
@@ -53,6 +54,7 @@ router.put('/acc_furn/buying', async (req, res) => {
 
 // **********************************************************
 // 房間擺放家具時，修改會員家具的 acc_furn_placed 為 1
+// 前端傳入 acc_email, furn_id
 // **********************************************************
 router.put('/acc_furn/placing', async (req, res) => {
    // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
@@ -67,6 +69,7 @@ router.put('/acc_furn/placing', async (req, res) => {
 
 // **********************************************************
 // 家具收回至倉庫時，修改會員家具的 acc_furn_placed 為 0
+// 前端傳入 acc_email, furn_id
 // **********************************************************
 router.put('/acc_furn/takeBack', async (req, res) => {
    // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
@@ -81,6 +84,7 @@ router.put('/acc_furn/takeBack', async (req, res) => {
 
 // **********************************************************
 // 商店頁面 - 列出會員的家具及其屬性 (已購買: none, 未購買: block)
+// 前端傳入 acc_email
 // **********************************************************
 router.post('/acc_furn/storeList', async (req, res) => {
    // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
@@ -95,13 +99,18 @@ router.post('/acc_furn/storeList', async (req, res) => {
       WHERE acc_id = ?
    `;
 
+   var dataTransfer = {};
    query(strQuery, [acc_id], (err, rows) => {
-      res.send(err ? err : rows);
+      rows.forEach(e => {
+         dataTransfer[e.furn_id] = e.display;
+      });
+      res.send(err ? err : dataTransfer);
    });
 });
 
 // **********************************************************************
 // 倉庫頁面 - 列出會員已購買的家具及其屬性 (倉庫不顯示: none, 倉庫顯示: block)
+// 前端傳入 acc_email
 // **********************************************************************
 router.post('/acc_furn/storageList', async (req, res) => {
    // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
@@ -117,13 +126,18 @@ router.post('/acc_furn/storageList', async (req, res) => {
       WHERE acc_id = ?
    `;
 
+   var dataTransfer = {};
    query(strQuery, [acc_id], (err, rows) => {
-      res.send(err ? err : rows);
+      rows.forEach(e => {
+         dataTransfer[e.furn_id] = e.display;
+      });
+      res.send(err ? err : dataTransfer);
    });
 });
 
 // *****************************************************************
 // 房間頁面 - 列出會員的家具及其屬性 (擺在房間: block, 不擺在房間: none)
+// 前端傳入 acc_email
 // *****************************************************************
 router.post('/acc_furn/roomList', async (req, res) => {
    // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
@@ -139,8 +153,12 @@ router.post('/acc_furn/roomList', async (req, res) => {
       WHERE acc_id = ?
    `;
 
+   var dataTransfer = {};
    query(strQuery, [acc_id], (err, rows) => {
-      res.send(err ? err : rows);
+      rows.forEach(e => {
+         dataTransfer[e.furn_id] = e.display;
+      });
+      res.send(err ? err : dataTransfer);
    });
 });
 
