@@ -6,6 +6,7 @@ import { Row, Modal, ModalBody, Col, Container } from 'react-bootstrap';
 import "../css/GameDaily_style.css"
 import { PlusCircle, Search, DashCircle, Gift } from "react-bootstrap-icons"
 import { Bar, Chart } from 'react-chartjs-2';
+import Table from 'react-bootstrap/Table'
 import {
    Chart as ChartJS,
    CategoryScale,
@@ -28,27 +29,23 @@ ChartJS.register(
 );
 
 
-axios.get('http://localhost:5000/point_record/all')
-    .then( (response) => console.log(response.data))
-    .catch( (error) => console.log(error))
-
-
-
-
 function GameDailyRun() {
 
    const [FindShow, setFindShow] = useState(false); //查詢
    const [GiftShow, setGiftShow] = useState(false); //領取獎勵
-   const [NextShow, setNextShow] = useState(false); //下一關
+   const [modalClose, setModalClose] = useState(false); //下一關
    const [chartData, setChartData] = useState([]);
    const [stockList, setStockList] = useState([]);
-   const [dataChange, setDataChange] = useState("2019/01/02");
+   const [currentDate, setCurrentData] = useState(2);
+   const [haveMoney, setHaveMoney] = useState("100");
+   const moneyYesterday = useRef("100");
+   const [getPercentage, setGetPercentage] = useState("");
 
    const inputAmount = useRef();
    const inputStockId = useRef();
 
    //抓取股市資料
-   const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+
    const getPrice = () => {
       const fakedata = {
          labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
@@ -80,6 +77,14 @@ function GameDailyRun() {
 
       // });
    }
+
+
+   // const searchStock = () =>{
+   //    do {
+   //       data + 1;
+   //    }
+   //    while([] === 0);
+   // }
 
 
    const options = {
@@ -196,11 +201,24 @@ function GameDailyRun() {
       setStockList(newList);
    }
 
-   const nextLevels = () => {
-      const levelsDate = "2019/01/03"
-      setDataChange(levelsDate);
-      setNextShow(false);
+   const continueLevels = () => {
+      setCurrentData((currentDate) => currentDate + 1);
+      setModalClose(false);
    }
+
+
+   const nextLevels = () => {
+      let newValue = 90;
+      moneyYesterday.current = haveMoney;
+      setHaveMoney(90);
+
+      let pct = (90 / moneyYesterday.current - 1) * 100;
+      setGetPercentage(Math.round(pct).toString());
+
+      setModalClose(true);
+   }
+
+
 
 
 
@@ -210,7 +228,7 @@ function GameDailyRun() {
             <Container>
                <Row>
                   <Col>
-                     <span className="headerSide">{`${dataChange}交易建立`}</span>
+                     <span className="headerSide">{`2019/1/${currentDate}交易建立`}</span>
                   </Col>
                   <Col>
                      <a href="http://localhost:3000/game/daily">
@@ -245,7 +263,7 @@ function GameDailyRun() {
                            <span className="button-plus-text">賣出</span>
                         </button>
 
-                        <span className="haveMoney">目前持有資產：</span>
+                        <span className="haveMoney">目前持有現金資產：{`${haveMoney}W`}</span>
                      </span>
                   </li>
                </ul>
@@ -256,13 +274,22 @@ function GameDailyRun() {
                         <img src="/assets/images/duck.svg" className="duckPict" />
                      </Col>
                      <Col>
-                        <div style={{ overflowY: "scroll" ,overflowX:"hidden" }} className="testInput">
-                           <ul >
-                              {stockList.map((v) => (<li>證券代號 / 名稱 :{v.inputStockId} 買進部位 :{v.inputAmount}</li>))}
-                           </ul>
+                        <div style={{ overflowY: "scroll", overflowX: "hidden" }} className="testInput">
+                           <Table  bordered >
+                              <thead className="thdPost">
+                                 <tr>
+                                    <th>證券代號/名稱</th>
+                                    <th>買進部位</th>
+                                    
+                                 </tr>
+                              </thead>
+                              <tbody>
+                                 {stockList.map((v) => (<tr><td>{v.inputStockId}</td><td>{v.inputAmount}</td></tr>))}
+                              </tbody>
+                           </Table>
                         </div>
                         <div className="buttbar">
-                           <button className="nextButton-plus" onClick={() => { setNextShow(true) }}>
+                           <button className="nextButton-plus" onClick={nextLevels}>
                               <span >下一關</span>
                            </button>
 
@@ -297,17 +324,17 @@ function GameDailyRun() {
 
          <Modal
             size="md"
-            show={NextShow}
-            onHide={() => setNextShow(false)}
+            show={modalClose}
+            onHide={() => setModalClose(false)}
             aria-labelledby="example-modal-sizes-title-md"
             centered
             className="modalMove">
 
             <div className="jumpBody">
                <div className="jumpNextTitle"><span className="jumpTotle">今日結算</span></div>
-               <div className="jumpNextGet">今日獲利％數： <span className="jumpScore">123</span></div>
-               <div className="jumpNextGet">目前持有資產： <span className="jumpScore">123</span></div>
-               <button className="jumpClose" onClick={nextLevels}>繼續</button>
+               <div className="jumpNextGet">今日獲利％數：{`${getPercentage}%`}</div>
+               <div className="jumpNextGet">目前持有資產：{`${haveMoney}W`} </div>
+               <button className="jumpClose" onClick={continueLevels}>繼續</button>
             </div>
          </Modal>
 
