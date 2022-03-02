@@ -198,6 +198,7 @@ let MemberInfo = () => {
   let [forgetInfo, setForgetInfo] = useState({
     password: "",
     againpassword: "",
+    email: "",
   });
   // noticeState
   let [forgetNoticeState, setForgetNoticeState] = useState({
@@ -229,12 +230,32 @@ let MemberInfo = () => {
     } else {
       if (forgetInfo.password === forgetInfo.againpassword) {
         //成功發送密碼
-        //加三秒跳轉//
         await Axios.post("http://localhost:5000/account/whoResetPass", {
-          acc_token: token,
+          acc_token: token.params,
         }).then((result) => {
           console.log(result.data);
-          // window.location = "/";
+          if (result.data === "此 token 過期或不存在") {
+            setForgetNoticeState({
+              ...forgetNoticeState,
+              show: "block",
+              text: "此驗證碼已經超過5分鐘，請重新申請，更改密碼失敗!",
+              color: "text-danger",
+            });
+          } else {
+            console.log("123")
+            setForgetInfo({ ...forgetInfo, email: result.data });
+            Axios.put("http://localhost:5000/account/updatepassword", {
+              acc_email: forgetInfo.email,
+              acc_password: forgetInfo.password,
+            }).then(() => {
+              setForgetNoticeState({
+                ...forgetNoticeState,
+                show: "block",
+                text: "密碼已更改成功，請重新登入!!",
+                color: "text-success",
+              });
+            });
+          }
         });
       } else {
         //錯誤密碼格式
