@@ -86,7 +86,7 @@ router.post('/account/list', async (req, res) => {
             var uri = `data:${mime};${encoding},${data}`;
             rows[0].acc_avatar = uri;
          } else {
-            rows[0].acc_avatar = '/assets/images/member_photo.png';
+            rows[0].acc_avatar = '/assets/images/duck-favicon.jpg';
          }
          res.send(rows[0]);
       }
