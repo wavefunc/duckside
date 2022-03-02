@@ -36,7 +36,7 @@ var routers = [
 routers.forEach(val => { app.use('/', require(val)); })
 
 // 一切就緒，開始接受用戶端連線
-app.listen(process.env.PORT || 5000);
+app.listen(process.env.BACKEND_PORT || 5000);
 
 query('UPDATE account SET acc_token = ""', [], (err) => {
     err ? console.log(err) : console.log('Clear all tokens');
