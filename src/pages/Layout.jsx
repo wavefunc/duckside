@@ -1,7 +1,6 @@
 // ----- 沛珊 ----- //
 
 import * as React from 'react';
-import PubSub from 'pubsub-js';
 
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -18,12 +17,10 @@ import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import Breadcrumb from '../components/Breadcrumb';
 import { Outlet } from 'react-router-dom';
 import NotificationSection from '../components/Header/NotificationSection';
 import MainListItem from '../components/Sidebar_mainList'
 import ProfileSection from "../components/Header/ProfileSection"
-
 
 
 function Copyright(props) {
@@ -181,8 +178,8 @@ function Layout() {
               bgcolor: '#ecdfb1'
             }}
           >
-            <Link underline="none" color="black" href='/'>
-              <img src="/assets/images/logo.svg" alt="logo" style={{height:'55px',width:'200px',paddingLeft:'40px'}}/>
+            <Link underline="none" href='/'>
+              <img src="/assets/images/logo.svg" alt="logo" style={{height:'59px',paddingLeft:'40px',paddingTop:'7px'}}/>
             </Link>
 
             <IconButton onClick={toggleDrawer}>

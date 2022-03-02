@@ -40,29 +40,29 @@ let GameRoomPage = () => {
       "protrait":"block"}
        )
 
-       useEffect(() => {
-         Axios.post('http://localhost:5000/acc_furn/storeList', {
-            acc_email:localStorage.getItem("loginState"),
+      //  useEffect(() => {
+      //    Axios.post('http://localhost:5000/acc_furn/storeList', {
+      //       acc_email:localStorage.getItem("loginState"),
 
-         })
-         .then((result) => {
-            console.log(result.data[0].display)
-            setfunitureUse({...funitureUse, 
-               "basketball":result.data[0].display,
-               "bathTube":result.data[1].display,
-               "light":result.data[2].display,
-               "TV":result.data[3].display,
-               "clock":result.data[4].display,
-               "cabinet":result.data[5].display,
-               "femaleDuck":result.data[6].display,
-               "protrait":result.data[7].display,
-               "glasses":result.data[8].display,
-               "weight":result.data[9].display,
-               "mirror":result.data[10].display               
-             })
-         })
+      //    })
+      //    .then((result) => {
+      //       console.log(result.data[0].display)
+      //       setfunitureUse({...funitureUse, 
+      //          "basketball":result.data[0].display,
+      //          "bathTube":result.data[1].display,
+      //          "light":result.data[2].display,
+      //          "TV":result.data[3].display,
+      //          "clock":result.data[4].display,
+      //          "cabinet":result.data[5].display,
+      //          "femaleDuck":result.data[6].display,
+      //          "protrait":result.data[7].display,
+      //          "glasses":result.data[8].display,
+      //          "weight":result.data[9].display,
+      //          "mirror":result.data[10].display               
+      //        })
+      //    })
 
-       },[])
+      //  },[])
 
    
 
@@ -107,7 +107,7 @@ let GameRoomPage = () => {
 
    return(
       <React.Fragment>
-         <div>{funitureUse}</div>
+       
          <div>
          <GameRoomMain 
          show={showRoom} 
