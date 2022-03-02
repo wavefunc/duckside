@@ -30,82 +30,88 @@ ChartJS.register(
 );
 
 const options = {
+    // onResize: (myChart, size)=> {
+    //     console.log(myChart);
+    //     console.log(size);
+    //     console.log(this);
+    // },
+    maintainAspectRatio: false,
     responsive: true,
     scales: {
-    x: {
-        type: 'timeseries',
+        x: {
+            type: 'timeseries',
             display: 'auto',
-                ticks: {
-            source: "labels",
+            ticks: {
+                source: "labels",
                 font: {
-                size: 18,
+                    size: 18,
                 },
-            callback: (v, i, arr) => {
-                let currentYmdArr = v.split('-');
-                if (i == 0) {
-                    return `${currentYmdArr[0]}/${currentYmdArr[1]}/${currentYmdArr[2]}`;
-                } else {
-                    // return `${currentYmdArr[1]}/${currentYmdArr[2]}`
-                    let currentDate = new Date(arr[i].value);
-                    let previousDate = new Date(arr[i - 1].value);
-                    return currentDate.getFullYear() !== previousDate.getFullYear() ? `${currentYmdArr[0]}/${currentYmdArr[1]}/${currentYmdArr[2]}` : `${currentYmdArr[1]}/${currentYmdArr[2]}`;
+                callback: (v, i, arr) => {
+                    let currentYmdArr = v.split('-');
+                    if (i == 0) {
+                        return `${currentYmdArr[0]}/${currentYmdArr[1]}/${currentYmdArr[2]}`;
+                    } else {
+                        // return `${currentYmdArr[1]}/${currentYmdArr[2]}`
+                        let currentDate = new Date(arr[i].value);
+                        let previousDate = new Date(arr[i - 1].value);
+                        return currentDate.getFullYear() !== previousDate.getFullYear() ? `${currentYmdArr[0]}/${currentYmdArr[1]}/${currentYmdArr[2]}` : `${currentYmdArr[1]}/${currentYmdArr[2]}`;
+                    }
+                }
+            },
+            time: {
+                unit: 'day',
+                align: 'start',
+                displayFormats: {
+                    day: "yyyy-M-d",
                 }
             }
         },
-        time: {
-            unit: 'day',
-                align: 'start',
-                    displayFormats: {
-                day: "yyyy-M-d",
-                }
-        }
-    },
-    y: {
-        title: {
-            display: true,
+        y: {
+            title: {
+                display: true,
                 text: '元',
             },
-        ticks: {
-            font: {
-                size: 18,
+            ticks: {
+                font: {
+                    size: 18,
                 }
-        },
-        stack: 1,
+            },
+            stack: 1,
             stackWeight: 3,
-                position: 'right',
-                    beginAtZero: false,
-                        offset: true,
-                            stacked: true,
+            position: 'right',
+            beginAtZero: false,
+            offset: true,
+            stacked: true,
         },
-},
-interaction: {
-    intersect: false,
+    },
+    interaction: {
+        intersect: false,
         mode: 'index',
     },
-plugins: {
-    legend: {
-        align: 'start',
+    plugins: {
+        legend: {
+            align: 'start',
             labels: {
-            font: {
-                size: 18
+                font: {
+                    size: 18
+                },
             }
-        }
-    },
-    title: {
-        display: true,
         },
-    tooltip: {
-        callbacks: {
-            title: (i) => {
-                let tempIdx = i[0].label.lastIndexOf(',')
-                return i[0].label.slice(0, tempIdx);
-            },
+        title: {
+            display: false,
+        },
+        tooltip: {
+            callbacks: {
+                title: (i) => {
+                    let tempIdx = i[0].label.lastIndexOf(',')
+                    return i[0].label.slice(0, tempIdx);
+                },
                 //         label: (i) => {
                 //             return [i.dataset.label, i.raw];
                 //         }
             }
+        }
     }
-}
 };
 const data2 = {
     labels: ['台積電', '元大台灣50', '富邦台50'],

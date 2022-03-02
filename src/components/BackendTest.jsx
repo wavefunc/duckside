@@ -1,12 +1,11 @@
 // ----- 冠樺 ----- //
 
 import React, { useState, useEffect } from 'react';
-import { Form, Button } from 'react-bootstrap';
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getAuth, getRedirectResult, GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
+import { getAuth, getRedirectResult, GoogleAuthProvider, signInWithRedirect, signOut } from "firebase/auth";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -32,6 +31,7 @@ const providerGoogle = new GoogleAuthProvider();
 
 function BackendTest() {
    const [userResult, setUserResult] = useState('');
+   const [logoutResult, setLogoutResult] = useState('');
 
    getRedirectResult(auth)
       .then((result) => {
@@ -39,12 +39,14 @@ function BackendTest() {
          const token = credential.accessToken;
          const user = result.user;
          setUserResult(result.user);
+         setLogoutResult('登入中');
       }).catch((error) => {
          const errorCode = error.code;
          const errorMessage = error.message;
          const email = error.email;
          const credential = GoogleAuthProvider.credentialFromError(error);
       });
+
 
    useEffect(() => {
       console.log('ok');
@@ -60,6 +62,17 @@ function BackendTest() {
          <p>emailVerified: {userResult.emailVerified}</p>
          <p>photoURL: {userResult.photoURL}</p>
          <p>uid: {userResult.uid}</p>
+         <br />
+         <button onClick={() => {
+            signOut().then(() => {
+               // 登出成功
+               setLogoutResult('登出成功');
+            }).catch((error) => {
+               // 有錯誤
+               setLogoutResult('登出失敗');
+            });
+         }}>登出</button>
+         <p>{logoutResult}</p>
       </div>
    );
 }

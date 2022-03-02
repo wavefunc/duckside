@@ -31,11 +31,15 @@ export default function MainListItem() {
 
     const [selectedIndex, setSelectedIndex] = React.useState(0);
     const handleListItemClick = (event, index) => {
-        PubSub.publish('Path Name',event.view.location.pathname)
+        PubSub.publish('Path Name', event.view.location.pathname);
         setSelectedIndex(index);
     };
 
-    
+    PubSub.subscribe('Sidebar Index', (msg, data) => {
+        setSelectedIndex(data)
+    })
+
+
     return (
         <React.Fragment>
 
@@ -172,7 +176,7 @@ export default function MainListItem() {
 
 
             <NavLink to="/about_team" style={{ color: 'black' }}>
-                <ListItemButton  onClick={(event) => handleListItemClick(event, 9)}
+                <ListItemButton onClick={(event) => handleListItemClick(event, 9)}
                     sx={{
                         boxShadow: selectedIndex === 9 ? 'inset 0 -2px 5px rgba(0,0,0,0.15),inset 0 2px 5px rgba(0,0,0,0.15)' : null,
                         bgcolor: selectedIndex === 9 ? '#E0E0D8' : null,

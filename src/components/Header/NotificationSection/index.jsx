@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import PubSub from 'pubsub-js';
 import { Link } from 'react-router-dom';
 import Badge from '@mui/material/Badge';
 import NotificationsIcon from '@mui/icons-material/Notifications';
@@ -28,7 +29,7 @@ const NotificationSection = () => {
 
 
     const [open, setOpen] = useState(false);
-    const [badge,setBadge] = useState(4)
+    const [badge, setBadge] = useState(0)
 
     const anchorRef = useRef(null);
 
@@ -51,15 +52,36 @@ const NotificationSection = () => {
         prevOpen.current = open;
     }, [open]);
 
-    
-    const badgeChange = () => {
-        setBadge(0)
+
+    let loginState = localStorage.getItem("loginState");
+    useEffect(() => {
+        if (loginState === null) {
+            setBadge(0)
+        } else if (typeof loginState === "string") {
+            setBadge(2)
+        }
+    }, [loginState])
+
+    const badgeChange = (event) => {
+        setBadge(0);
+        console.log(event)
     }
+
+    const Sidebarlight = () => {
+        PubSub.publish('Sidebar Index', 2);
+        setOpen(false);
+    }
+
+    document.onclick = function (event) {
+        console.log(event)
+    }
+
+
 
 
     return (
         <>
-        {/* notification icon */}
+            {/* notification icon */}
             <Box
                 sx={{
                     width: '20px',
@@ -96,7 +118,7 @@ const NotificationSection = () => {
                     >
 
                         <Badge badgeContent={badge} color="error">
-                            <NotificationsIcon sx={{fontSize:'32px'}}/>
+                            <NotificationsIcon sx={{ fontSize: '32px' }} />
                         </Badge>
 
                     </Avatar>
@@ -126,44 +148,63 @@ const NotificationSection = () => {
                     <Transitions position={matchesXs ? 'top' : 'top-right'} in={open} {...TransitionProps}>
                         <Paper sx={{ borderRadius: "20px" }}>
                             <ClickAwayListener onClickAway={handleClose}>
-                                <MainCard sx={{ borderRadius: "20px" }} border={false} elevation={16} content={false} boxShadow shadow={theme.shadows[16]}>
-                                    <Grid container direction="column" spacing={2}>
-                                        <Grid item xs={12}>
-                                            <Grid container alignItems="center" justifyContent="space-between" sx={{ pt: 2, px: 2 }}>
-                                                <Grid item>
-                                                    <Stack direction="row" spacing={2}>
-                                                        <Typography variant="subtitle1">All Notification</Typography>
-
-                                                    </Stack>
-                                                </Grid>
-                                                <Grid item>
-                                                    <Typography component={Link} to="/manage/plan" variant="subtitle2" color="primary">
-                                                        查看更多
-                                                    </Typography>
-                                                </Grid>
-                                            </Grid>
-                                        </Grid>
-                                        <Grid item xs={12}>
-                                            {/* <PerfectScrollbar
-                                                style={{ height: '100%', maxHeight: 'calc(100vh - 205px)', overflowX: 'hidden' }}
-                                            > */}
+                                {
+                                    loginState === null ?
+                                        <>
+                                            <MainCard sx={{ borderRadius: "20px" }} border={false} elevation={16} content={false} boxShadow shadow={theme.shadows[16]}>
                                                 <Grid container direction="column" spacing={2}>
-
-                                                    <Grid item xs={12} p={0}>
-                                                        <Divider sx={{ my: 0 }} />
+                                                    <Grid item xs={12}>
+                                                        <Grid container alignItems="center" justifyContent="space-between" sx={{ pt: 0.5, px: 2 }}>
+                                                            <Grid item>
+                                                                <Stack direction="row" spacing={3}>
+                                                                    <Typography variant="subtitle1">請先登入會員</Typography>
+                                                                </Stack>
+                                                            </Grid>
+                                                        </Grid>
                                                     </Grid>
                                                 </Grid>
-                                                <NotificationList />
-                                            {/* </PerfectScrollbar> */}
-                                        </Grid>
-                                    </Grid>
-                                    <Divider />
-                                    {/* <CardActions sx={{ p: 1.25, justifyContent: 'center' }}>
-                                        <Button size="small" disableElevation>
-                                            View All
-                                        </Button>
-                                    </CardActions> */}
-                                </MainCard>
+                                                <Divider />
+                                            </MainCard>
+                                        </>
+                                        :
+                                        <>
+                                            <MainCard sx={{ borderRadius: "20px" }} border={false} elevation={16} content={false} boxShadow shadow={theme.shadows[16]}>
+                                                <Grid container direction="column" spacing={2}>
+                                                    <Grid item xs={12}>
+                                                        <Grid container alignItems="center" justifyContent="space-between" sx={{ pt: 2, px: 2 }}>
+                                                            <Grid item>
+                                                                <Stack direction="row" spacing={2}>
+                                                                    <Typography variant="subtitle1">All Notification</Typography>
+
+                                                                </Stack>
+                                                            </Grid>
+                                                            <Grid item>
+                                                                <Typography component={Link} to="/manage/plan" onClick={Sidebarlight} variant="subtitle2" color="primary">
+                                                                    查看更多
+                                                                </Typography>
+                                                            </Grid>
+                                                        </Grid>
+                                                    </Grid>
+                                                    <Grid item xs={12}>
+
+                                                        <Grid container direction="column" spacing={2}>
+
+                                                            <Grid item xs={12} p={0}>
+                                                                <Divider sx={{ my: 0 }} />
+                                                            </Grid>
+                                                        </Grid>
+                                                        <NotificationList />
+                                                    </Grid>
+                                                </Grid>
+                                                <Divider />
+
+                                            </MainCard>
+                                        </>
+
+
+
+                                }
+
                             </ClickAwayListener>
                         </Paper>
                     </Transitions>

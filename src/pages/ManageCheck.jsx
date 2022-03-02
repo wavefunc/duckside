@@ -6,7 +6,7 @@
  * 
  * * * * * * * * * * * */
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Container, Row, Col, Tab, Nav, Button } from 'react-bootstrap';
 import { Search } from 'react-bootstrap-icons';
 
@@ -51,10 +51,12 @@ function ManageCheck(props) {
 
    const [chartData, setChartData] = useState([]);
    const [option, setOption] = useState({ x: "ast_date", y: "ast_sum", yLabels: "總資產" });
-   const [windowDimensions, setWindowDimensions] = useState();
-   const updateWindowDimensions = useCallback( (e) => {
-      // let innerHeight = windows.innerHeight;
-      setWindowDimensions(600);
+   const [chartHeight, setChartHeight] = useState('360px');
+   const container = useRef();
+   const updateWindowDimensions = useCallback((e) => {
+      // console.log(container.current.clientHeight);
+      let clientHeight = container.current.clientHeight;
+      setChartHeight(clientHeight);
    });
 
    useEffect(() => {
@@ -70,7 +72,7 @@ function ManageCheck(props) {
    }, [])
    useEffect(() => {
       window.addEventListener('resize', updateWindowDimensions);
-      return () => {window.removeEventListener('resize', updateWindowDimensions)}
+      return () => { window.removeEventListener('resize', updateWindowDimensions) }
    }, [])
    const handleSubmit = (values, actions) => {
       let dataToServer = { ...values };
@@ -84,7 +86,7 @@ function ManageCheck(props) {
    };
 
    return (
-      <Container fluid className="pt-3">
+      <Container fluid className="pt-3" ref={container}>
          <Row>
             <Col lg={8}>
                <Formik
@@ -129,13 +131,11 @@ function ManageCheck(props) {
                </Formik>
             </Col>
          </Row>
-         <Row>
-            <Col lg={12}>
-               <MyChartLine data={chartData}
-                  {...option} height={windowDimensions*0.8}
-               ></MyChartLine>
-            </Col>
-         </Row>
+         <div style={{ position: 'relative', height: '60vh', width: '100%' }}>
+            <MyChartLine data={chartData}
+               {...option}
+            ></MyChartLine>
+         </div>
       </Container >
    );
 }

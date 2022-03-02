@@ -14,9 +14,14 @@ let MemberInfo = () => {
         await Axios.post("http://localhost:5000/account/list", {
           acc_email: localStorage.getItem("loginState"),
         }).then((result) => {
-          setMemberInfo({ ...memberInfo, name: result.data.acc_name });
+          setMemberInfo({
+            ...memberInfo,
+            name: result.data.acc_name,
+            photo: result.data.acc_avatar,
+          });
         });
       };
+
       getMemberInfo();
       if (localStorage.getItem("loginState") === null) {
         setViweChange({
@@ -47,6 +52,7 @@ let MemberInfo = () => {
   let [memberInfo, setMemberInfo] = useState({
     email: localStorage.getItem("loginState"),
     name: "",
+    photo: "",
   });
   //changeInfo
   let [changeInfo, setChangeInfo] = useState({
@@ -54,6 +60,7 @@ let MemberInfo = () => {
     password: "",
     newpassword: "",
     againnewpassword: "",
+    photo: "",
   });
   // noticeState
   let [passwordNoticeState, setPasswordNoticeState] = useState({
@@ -98,7 +105,11 @@ let MemberInfo = () => {
     });
     await setChangeInfo({ ...changeInfo, againnewpassword: e.target.value });
   };
-
+  //照片input
+  let photoInpChange = async (e) => {
+    //從input中收到新上傳的圖片
+    setChangeInfo({ ...changeInfo, photo: e.target.files[0] });
+  };
   //送出button
   let nameButClick = async () => {
     await Axios.put("http://localhost:5000/account/updatename", {
@@ -170,7 +181,17 @@ let MemberInfo = () => {
       }
     });
   };
-
+  let photoButClick = async (e) => {
+    //大頭照上傳前處理
+    const formData = new FormData();
+    formData.append("image", changeInfo.photo);
+    formData.append("acc_email", memberInfo.email);
+    Axios.put("http://localhost:5000/account/updateavatar", formData).then(
+      () => {
+        window.location = "/member/info";
+      }
+    );
+  };
   //********************
   //State
   //forget
@@ -212,11 +233,10 @@ let MemberInfo = () => {
         await Axios.post("http://localhost:5000/account/whoResetPass", {
           acc_token: token,
         }).then((result) => {
-          console.log(result.data)
+          console.log(result.data);
           // window.location = "/";
         });
-
-      }else {
+      } else {
         //錯誤密碼格式
         setForgetNoticeState({
           ...forgetNoticeState,
@@ -241,7 +261,7 @@ let MemberInfo = () => {
               {/* <!-- Profile picture image--> */}
               <img
                 className="img-account-profile rounded-circle mb-2 w-100"
-                src="http://bootdey.com/img/Content/avatar/avatar1.png"
+                src={memberInfo.photo}
                 alt=""
               />
               {/* <!-- Profile picture help block--> */}
@@ -249,9 +269,21 @@ let MemberInfo = () => {
                 JPG or PNG no larger than 5 MB
               </div>
               {/* <!-- Profile picture upload button--> */}
-              <button className="btn btn-primary" type="button">
-                上傳照片
-              </button>
+              <div className="d-flex flex-column">
+                <input
+                  type="file"
+                  id="myFile"
+                  className="filename mb-4"
+                  onChange={photoInpChange}
+                ></input>
+                <button
+                  className="btn btn-primary"
+                  type="button"
+                  onClick={photoButClick}
+                >
+                  上傳照片
+                </button>
+              </div>
             </div>
           </div>
         </div>
