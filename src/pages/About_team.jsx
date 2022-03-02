@@ -11,10 +11,10 @@ class About_team extends Component {
             <Row>
                <Col xs={12} md={6} lg={4}>
                   <Card>
-                     <Card.Img variant="top" src="\assets\about_team\Ren.jpg" />
+                     <Card.Img style={{ height: '35vh', width: '100%', objectFit: 'contain' }} variant="top" src="\assets\about_team\Ren.jpg" />
                      <Card.Body>
-                        <Card.Title>鄭人豪</Card.Title>
-                        <Card.Text>
+                        <Card.Title style={{ fontSize: '6vh', textAlign: 'center', textAlign: 'center' }}>鄭人豪</Card.Title>
+                        <Card.Text style={{ fontSize: '4vh', textAlign: 'center' }}>
                            -投資管理功能<br />
                            -股價爬蟲程式<br />
                            -規劃網站目標<br />
@@ -25,10 +25,10 @@ class About_team extends Component {
                </Col>
                <Col xs={12} md={6} lg={4}>
                   <Card>
-                     <Card.Img variant="top" src="\assets\about_team\lin.jpg" />
+                     <Card.Img style={{ height: '35vh', width: '100%', objectFit: 'contain' }} variant="top" src="\assets\about_team\lin.jpg" />
                      <Card.Body>
-                        <Card.Title>李巧琳</Card.Title>
-                        <Card.Text>
+                        <Card.Title style={{ fontSize: '6vh', textAlign: 'center' }}>李巧琳</Card.Title>
+                        <Card.Text style={{ fontSize: '4vh', textAlign: 'center' }}>
                            -會員登入<br />
                            -會員註冊<br />
                            -會員資料維護<br />
@@ -39,49 +39,52 @@ class About_team extends Component {
                </Col>
                <Col xs={12} md={6} lg={4}>
                   <Card>
-                     <Card.Img variant="top" src="\assets\about_team\pei.jpg" />
+                     <Card.Img style={{ height: '35vh', width: '100%', objectFit: 'contain' }} variant="top" src="\assets\about_team\pei.png" />
                      <Card.Body>
-                        <Card.Title>蔡沛珊</Card.Title>
-                        <Card.Text>
+                        <Card.Title style={{ fontSize: '6vh', textAlign: 'center' }}>蔡沛珊</Card.Title>
+                        <Card.Text style={{ fontSize: '4vh', textAlign: 'center' }}>
                            -主視覺/外觀<br />
                            -導覽列通知功能<br />
-                           -網站導覽頁
+                           -網站導覽頁<br />
+                           &nbsp;
                         </Card.Text>
                      </Card.Body>
                   </Card>
                </Col>
                <Col xs={12} md={6} lg={4}>
                   <Card>
-                     <Card.Img variant="top" src="\assets\about_team\kai.jpg" />
+                     <Card.Img style={{ height: '35vh', width: '100%', objectFit: 'contain' }} variant="top" src="\assets\about_team\kai.jpg" />
                      <Card.Body>
-                        <Card.Title>陳鎧洋</Card.Title>
-                        <Card.Text>
+                        <Card.Title style={{ fontSize: '6vh', textAlign: 'center' }}>陳鎧洋</Card.Title>
+                        <Card.Text style={{ fontSize: '4vh', textAlign: 'center' }}>
                            -選擇關卡畫面<br />
                            -模擬投資遊戲<br />
-                           -遊戲積分結算
+                           -遊戲積分結算<br />
+                           &nbsp;
                         </Card.Text>
                      </Card.Body>
                   </Card>
                </Col>
                <Col xs={12} md={6} lg={4}>
                   <Card>
-                     <Card.Img variant="top" src="\assets\about_team\ChingHsuanLi.jpg" />
+                     <Card.Img style={{ height: '35vh', width: '100%', objectFit: 'contain' }} variant="top" src="\assets\about_team\ChingHsuanLi.jpg" />
                      <Card.Body>
-                        <Card.Title>李晴暄</Card.Title>
-                        <Card.Text>
+                        <Card.Title style={{ fontSize: '6vh', textAlign: 'center' }}>李晴暄</Card.Title>
+                        <Card.Text style={{ fontSize: '4vh', textAlign: 'center' }}>
                            -遊戲流程規劃<br />
                            -Logo設計<br />
-                           -小鴨房間畫面
+                           -小鴨房間畫面<br />
+                           &nbsp;
                         </Card.Text>
                      </Card.Body>
                   </Card>
                </Col>
                <Col xs={12} md={6} lg={4}>
                   <Card>
-                     <Card.Img variant="top" src="\assets\about_team\wavefunc.jpg" />
+                     <Card.Img style={{ height: '35vh', width: '100%', objectFit: 'contain' }} variant="top" src="\assets\about_team\wavefunc.jpg" />
                      <Card.Body>
-                        <Card.Title>李冠樺</Card.Title>
-                        <Card.Text>
+                        <Card.Title style={{ fontSize: '6vh', textAlign: 'center' }}>李冠樺</Card.Title>
+                        <Card.Text style={{ fontSize: '4vh', textAlign: 'center' }}>
                            -導入 git<br />
                            -建立檔案架構<br />
                            -架設資料庫<br />
