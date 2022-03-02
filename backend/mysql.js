@@ -1,14 +1,15 @@
 // ----- 冠樺 ----- //
 
 var mysql = require('mysql');
+require('dotenv').config();   // 使用環境變數
 
 // 建立 mysql 連線池
 var pool = mysql.createPool({
-   host: '184.168.115.208',
-   user: 'duckside',
-   password: 'iii23265860',
-   database: 'duckside',
-   port: 3306,
+   host: process.env.DB_HOST,
+   user: process.env.DB_USER,
+   password: process.env.DB_PASSWORD,
+   database: process.env.DB_DATABASE,
+   port: process.env.DB_PORT,
    multipleStatements: true,
    // 無可用連線時是否等待pool連線釋放(預設為true)
    waitForConnections: true,

@@ -1,24 +1,17 @@
 // ----- 冠樺 ----- //
 
-// 以 Express 建立 Web伺服器
-var express = require('express');
+var express = require('express'); // 以 Express 建立 Web伺服器
 var app = express();
+var cors = require('cors'); // 引用 cors 解決跨域問題
+var { query } = require('./mysql.js'); // 建立 MySQL 連線
+require('dotenv').config(); // 使用環境變數
 
-// 部署至 Heroku 會用到
-app.use(express.static('backend/build'));
-
-// 引用 cors 解決跨域問題
-var cors = require('cors');
+app.use(express.static('backend/build')); // 部署至 Heroku 會用到
 app.use(cors());
-
-// 獲取前端的變數
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true })); // 獲取前端的變數
 app.use(express.static('./public'))
 app.use(express.static('../node_modules'))
 app.use(express.json());
-
-// 建立 MySQL 連線
-var { query } = require('./mysql.js');
 
 // 引用各資料表的 router
 var routers = [
@@ -29,7 +22,6 @@ var routers = [
     './routerTransaction',
     './routerGameRoom',
     './routerGameDaily',
-    // './routerTwStock',
     './routerBackend'
 ]
 
