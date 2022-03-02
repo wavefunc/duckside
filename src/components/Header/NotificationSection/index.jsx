@@ -64,7 +64,6 @@ const NotificationSection = () => {
 
     const badgeChange = (event) => {
         setBadge(0);
-        console.log(event)
     }
 
     const Sidebarlight = () => {
@@ -72,9 +71,7 @@ const NotificationSection = () => {
         setOpen(false);
     }
 
-    document.onclick = function (event) {
-        console.log(event)
-    }
+    
 
 
 
