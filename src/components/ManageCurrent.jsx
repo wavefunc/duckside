@@ -67,7 +67,9 @@ export const MyCardDeck = (props) => {
                 <Card.Header style={{ backgroundColor: `hsl(50, 88%, ${-card.weight * 40 + 95}%)` }} className="m-0"></Card.Header>
                 <Card.Body>
                     <Card.Title as='h6' className="">
-                        {`${card.title} ${(Math.round(card.weight * 10000) / 100.0 + "%")}`}
+                        {card.title}
+                        <br/>
+                        {Math.round(card.weight * 10000) / 100.0 + "%"}
                     </Card.Title>
                     <Card.Text>
                         {`${card.value.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")} `}
