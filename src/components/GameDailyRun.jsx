@@ -27,7 +27,7 @@ ChartJS.register(
    Legend
 );
 
-
+localStorage.setItem('loginState', 's520334455@gmail.com');
 function GameDailyRun() {
 
    const [FindShow, setFindShow] = useState(false); //查詢
@@ -35,11 +35,12 @@ function GameDailyRun() {
    const [NextShow, setNextShow] = useState(false); //下一關
    const [chartData, setChartData] = useState([]);
    const [stockList, setStockList] = useState([]);
+   const [dataChange, setDataChange] = useState("2019/01/02");
 
    const inputAmount = useRef();
    const inputStockId = useRef();
 
-
+   //抓取股市資料
    const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
    const getPrice = () => {
       const fakedata = {
@@ -188,15 +189,29 @@ function GameDailyRun() {
       setStockList(newList);
    }
 
+   const nextLevels = () => {
+      const levelsDate = "2019/01/03"
+      setDataChange(levelsDate);
+      setNextShow(false);
+   }
+
 
 
    return (
       <>
          <div className="header">
-            <span className="headerSide">2019/01/02 交易建立</span>
-            <a href="http://localhost:3000/game/daily">
-               <button className="headerBack" ><span className="header-Back-text">返回關卡</span> </button>
-            </a>
+            <Container>
+               <Row>
+                  <Col>
+                     <span className="headerSide">{`${dataChange}交易建立`}</span>
+                  </Col>
+                  <Col>
+                     <a href="http://localhost:3000/game/daily">
+                        <button className="headerBack" ><span className="header-Back-text">返回關卡</span> </button>
+                     </a>
+                  </Col>
+               </Row>
+            </Container>
             <div>
                <ul>
                   <li className="testinputnew">
@@ -223,7 +238,7 @@ function GameDailyRun() {
                            <span className="button-plus-text">賣出</span>
                         </button>
 
-                        <span className="haveMoney">目前持有資產：<span></span></span>
+                        <span className="haveMoney">目前持有資產：</span>
                      </span>
                   </li>
                </ul>
@@ -234,7 +249,7 @@ function GameDailyRun() {
                         <img src="/assets/images/duck.svg" className="duckPict" />
                      </Col>
                      <Col>
-                        <div style={{ overflow: "scroll" }} className="testInput">
+                        <div style={{ overflowY: "scroll" ,overflowX:"hidden" }} className="testInput">
                            <ul >
                               {stockList.map((v) => (<li>證券代號 / 名稱 :{v.inputStockId} 買進部位 :{v.inputAmount}</li>))}
                            </ul>
@@ -282,10 +297,10 @@ function GameDailyRun() {
             className="modalMove">
 
             <div className="jumpBody">
-               <div className="jumpNextTitle"><span className="jumpTotle"> 今日結算</span></div>
+               <div className="jumpNextTitle"><span className="jumpTotle">今日結算</span></div>
                <div className="jumpNextGet">今日獲利％數： <span className="jumpScore">123</span></div>
                <div className="jumpNextGet">目前持有資產： <span className="jumpScore">123</span></div>
-               <button className="jumpClose" onClick={() => { setNextShow(false) }}>關閉</button>
+               <button className="jumpClose" onClick={nextLevels}>繼續</button>
             </div>
          </Modal>
 
