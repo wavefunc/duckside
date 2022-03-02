@@ -138,7 +138,7 @@ export function MyChartLine({ data, x, y, yLabels, ...props }) {
         xAxisKey: x,
     };
 
-    const labels = data.map((v) => v[x]);
+    const labels = data ? data.map((v) => v[x]) : undefined;
     const datasets = typeof y === "string" ? [
         {
             label: yLabels,

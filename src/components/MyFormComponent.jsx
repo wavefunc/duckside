@@ -1,20 +1,32 @@
+/********
+ * 注意: formik相關元件需用<Formik>包起來
+ * 
+ * 
+*********/
+
 import { useField } from 'formik';
 import { Form, InputGroup, Toast } from 'react-bootstrap';
 import { CheckSquare } from 'react-bootstrap-icons';
 import dt from "date-and-time";
 import React, { useEffect, useRef } from 'react';
 
-
+// Formik
 export const MyInput = ({ label, list, getList, setList, helptext, ...props }) => {
     const [field, meta] = useField(props);
     let didChanged = useRef(false);
     useEffect(() => {
+        // 透過Formik的field來監控本input值的變動,
+        // input如具有初始值, 有datalist, 且有驗證一定要從axios來的datalist中選取
+        // 在剛重置表單的情況下, 有初始值, 但沒有datalist, 導致不修改input內容觸發請求將無法通過驗證
         if (list && didChanged.current) {
+            // 排除第一次render不觸發
             console.log('MyInput useEffect getlist then setlist(callback)');
             getList(field.value, setList);
             return
         }
         didChanged.current = true;
+
+        // 初始值進來時將觸發
     }, [field.value]);
     return (
         <Form.Group className={props.inline ? "d-inline-block ml-1 mr-2" : "ml-1 mb-2"}>
@@ -55,7 +67,6 @@ export const MyInput = ({ label, list, getList, setList, helptext, ...props }) =
         </Form.Group>
     );
 };
-
 export const MySelect = ({ children, label, ...props }) => {
     const [field, meta] = useField(props);
     return (
@@ -92,8 +103,6 @@ export const MySelect = ({ children, label, ...props }) => {
         </Form.Group>
     );
 };
-
-
 export const MyFormikObserver = (props) => {
     // <Formik>(props)=>{  <Form> 使用於此處  </Form> }<Formik>
     // 將想要監控的值傳入MyFormikObserver的value屬性
@@ -104,6 +113,8 @@ export const MyFormikObserver = (props) => {
     return null
 }
 
+
+// Toast
 export const MyOkToast = (props) => {
     return (
         <div
@@ -137,6 +148,117 @@ export const MyOkToast = (props) => {
         </div>
     )
 }
+
+// 純元件
+export const MySelectPlain = ({ children, label, ...props }) => {
+    if (label) {
+        return (
+            <Form.Group className={props.inline ? "d-inline-block ml-1 mr-2" : "ml-1 mb-2"}>
+                <Form.Label>{label}</Form.Label>
+                <InputGroup>
+                    {props.prepend ? (
+                        <InputGroup.Prepend>
+                            <InputGroup.Text id={`prependId${props.id}`}>{props.prepend}</InputGroup.Text>
+                        </InputGroup.Prepend>
+                    ) : null}
+                    <Form.Control
+                        as='select'
+                        {...props}
+                        aria-describedby={`prependId${props.id}`}
+                    >
+                        {typeof children[0] === 'string' ?
+                            children.map((v, i) => <option key={i} value={v}>{v}</option>) :
+                            children.map((v) => <option key={v.key} value={v.value}>{v.value}</option>)
+                        }
+                    </Form.Control>
+                </InputGroup>
+            </Form.Group>
+        );
+    } else {
+        return (
+            <InputGroup>
+                {props.prepend ? (
+                    <InputGroup.Prepend>
+                        <InputGroup.Text id={`prependId${props.id}`}>{props.prepend}</InputGroup.Text>
+                    </InputGroup.Prepend>
+                ) : null}
+                <Form.Control
+                    as='select' {...props}
+                    aria-describedby={`prependId${props.id}`}
+                >
+                    {typeof children[0] === 'string' ?
+                        children.map((v, i) => <option key={i} value={v}>{v}</option>) :
+                        children.map((v) => <option key={v.key} value={v.value}>{v.value}</option>)
+                    }
+                </Form.Control>
+            </InputGroup>
+        );
+    };
+}
+export const MyInputPlain = ({ label, list, ...props }) => {
+    if (label) {
+        return (
+            <Form.Group className={props.inline ? "d-inline-block ml-1 mr-2" : "ml-1 mb-2"}>
+                <Form.Label htmlFor={props.id || props.name}>{label}</Form.Label>
+                <InputGroup hasValidation className="d-flex flex-column">
+                    <Form.Control
+                        {...props}
+                        list={`list${props.id}`}
+                        aria-describedby={`prep${props.id} apnd${props.id} helptext${props.id}`}
+                    />
+                    {props.prepend ? (
+                        <InputGroup.Prepend>
+                            <InputGroup.Text id={`prep${props.id}`}>{props.prepend}</InputGroup.Text>
+                        </InputGroup.Prepend>
+                    ) : null}
+                    {props.append ? (
+                        <InputGroup.Append>
+                            <InputGroup.Text id={`apnd${props.id}`}>{props.append}</InputGroup.Text>
+                        </InputGroup.Append>
+                    ) : null}
+                    {props.helptext ? <Form.Text id={`helptext${props.id}`} muted>
+                        {props.helptext}
+                    </Form.Text> : null}
+                </InputGroup>
+                {list ? (
+                    <datalist id={`list${props.id}`}>
+                        {list.map((v, i) =>
+                            <option key={i} value={v} />
+                        )}
+                    </datalist>) : null}
+            </Form.Group>
+        );
+    } else {
+        return (
+            <InputGroup hasValidation className="d-flex flex-column">
+                <Form.Control
+                    {...props}
+                    list={`list${props.id}`}
+                    aria-describedby={`prep${props.id} apnd${props.id} helptext${props.id}`}
+                />
+                {props.prepend ? (
+                    <InputGroup.Prepend>
+                        <InputGroup.Text id={`prep${props.id}`}>{props.prepend}</InputGroup.Text>
+                    </InputGroup.Prepend>
+                ) : null}
+                {props.append ? (
+                    <InputGroup.Append>
+                        <InputGroup.Text id={`apnd${props.id}`}>{props.append}</InputGroup.Text>
+                    </InputGroup.Append>
+                ) : null}
+                {props.helptext ? <Form.Text id={`helptext${props.id}`} muted>
+                    {props.helptext}
+                </Form.Text> : null}
+                {list ? (
+                    <datalist id={`list${props.id}`}>
+                        {list.map((v, i) =>
+                            <option key={i} value={v} />
+                        )}
+                    </datalist>) : null}
+            </InputGroup>
+        )
+    }
+};
 
 /***********
 

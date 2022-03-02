@@ -50,26 +50,21 @@ function MyCurrentPosition({ url, dataToServer, row, col = null, ...props }) {
     );
 }
 
-export const MyCardDeck = () => {
-    const [cardInfo, setData] = useState([]);
-    console.log(cardInfo);
-
-    useEffect(() => {
-        setData([
-            { title: '總資產', value: 1206000, weight: 1 },
-            { title: '現金', value: 453000, weight: 0.376 },
-            { title: '證券', value: 750000, weight: 0.622 },
-            { title: '期權', value: 50000, weight: 0.042 },
-            { title: '其他資產', value: 100000, weight: 0.008 },
-            { title: '資券調整', value: -7000, weight: -0.006 },
-            { title: '其他調整', value: 50000, weight: -0.042 },
-        ])
-    }, []);
+export const MyCardDeck = (props) => {
+    const data = props.data || [
+        { title: '總資產', value: 1206000, weight: 1 },
+        { title: '現金', value: 453000, weight: 0.376 },
+        { title: '證券', value: 750000, weight: 0.622 },
+        { title: '期權', value: 50000, weight: 0.042 },
+        { title: '其他資產', value: 100000, weight: 0.008 },
+        { title: '資券調整', value: -7000, weight: -0.006 },
+        { title: '其他調整', value: 50000, weight: -0.042 },
+    ];
 
     const renderCard = (card, index) => {
         return (
             <Card key={index} className="p-0">
-                <Card.Header style={{backgroundColor: `hsl(50, 88%, ${-card.weight*40+95}%)`}} className="m-0"></Card.Header>
+                <Card.Header style={{ backgroundColor: `hsl(50, 88%, ${-card.weight * 40 + 95}%)` }} className="m-0"></Card.Header>
                 <Card.Body>
                     <Card.Title as='h6' className="">
                         {`${card.title} ${(Math.round(card.weight * 10000) / 100.0 + "%")}`}
@@ -82,7 +77,7 @@ export const MyCardDeck = () => {
         );
     };
 
-    return <CardDeck className="row">{cardInfo.map(renderCard)}</CardDeck>;
+    return <CardDeck className="row">{data && data.map(renderCard)}</CardDeck>;
 };
 
 export default MyCurrentPosition;
