@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import PubSub from 'pubsub-js';
+import Axios from "axios";
 
 import { useTheme } from '@mui/material/styles';
 import {
@@ -94,8 +95,11 @@ const ProfileSection = () => {
         prevOpen.current = listOpen;
     }, [listOpen]);
 
-
     let loginState = localStorage.getItem("loginState");
+    
+    //抓取大頭照State
+    const [memberPhoto, setMemberPhoto] = useState("");
+
     useEffect(() => {
         PubSub.subscribe('Path Name', () => {
             if (loginState === null) {
@@ -104,6 +108,12 @@ const ProfileSection = () => {
                 setShowLogin(false);
             }
         })
+        //抓取大頭照Axios
+        Axios.post("http://localhost:5000/account/list", {
+            acc_email: localStorage.getItem("loginState"),
+        }).then((result) => {
+            setMemberPhoto(result.data.acc_avatar)
+        });
     }, [loginState])
 
     return (
@@ -131,7 +141,7 @@ const ProfileSection = () => {
                 icon={
                     // 頭貼，src更換照片
                     <Avatar
-                        src=""
+                        src={memberPhoto}
                         sx={{
                             ...theme.typography.mediumAvatar,
                             margin: '8px 0 8px 8px !important',
