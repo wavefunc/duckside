@@ -1,7 +1,47 @@
-import React, { Component } from 'react';
 import "../css/GameRoomMain_style.css";
+import Axios from "axios";
+import React, { useState, useEffect } from "react";
+import { display } from "@mui/system";
 
 let GameRoomMain = (props) =>{
+    const [funitureHave, setfunitureHave] = useState({
+        light:"",
+        basketball:"",
+        bathTube:"",
+        TV:"",
+        clock:"",
+        cabinet:"",
+        femaleDuck:"",
+        protrait:"",
+        glasses:"",
+        weight:"",
+        mirror:""
+    });
+
+    let putInRoom = async() => {
+        // console.log(furn_id);
+        await Axios.put('http://localhost:5000/acc_furn/placing',{
+            acc_email:localStorage.getItem("loginState"),
+            furn_id:"light"
+        }).then(
+            Axios.post('http://localhost:5000/acc_furn/storeList', {
+                acc_email:localStorage.getItem("loginState"),
+     
+             }).then( (result) => {
+                setfunitureHave(result.data);
+             })
+        )
+    }
+
+    useEffect( () => {
+        Axios.post('http://localhost:5000/acc_furn/storeList', {
+           acc_email:localStorage.getItem("loginState"),
+
+        }).then( (result) => {
+           setfunitureHave(result.data);
+           console.log(result.data)
+        })
+      },[])
 
 
     return(
@@ -256,7 +296,7 @@ let GameRoomMain = (props) =>{
                 <circle id="Ellipse_38-2" dataName="Ellipse 38" cx="6.93" cy="6.93" r="6.93" transform="translate(1739 739.92)" fill="#760202"/>
             </g>
             </g>
-            <g id="light" transform="translate(569.222 -103.5)">
+            <g id="light" transform="translate(569.222 -103.5)"  >
             <path id="Path_4" dataName="Path 4" d="M0,2.318S107.032,138.249,260.438,143.685C451.483,142.336,589.5,0,589.5,0" transform="translate(62.5 357.5)" fill="none" stroke="#707070" strokeWidth="4"/>
             <line id="Line_16" dataName="Line 16" y2="29.37" transform="translate(96.066 396.748)" fill="none" stroke="#707070" strokeWidth="4"/>
             <rect id="Rectangle_23" dataName="Rectangle 23" width="12.362" height="18.543" transform="translate(90.148 416.025)" fill="#363636"/>
@@ -488,7 +528,7 @@ let GameRoomMain = (props) =>{
                 
                 <div id="cardBox">
                 <div id="littleCardBox" >
-                <li id="storageCard1" style={{cursor:"pointer",display:props.funitureUse.light==="block"?"none":"block"}}>
+                <li id="storageCard1" style={{cursor:"pointer" ,display:funitureHave.light}} onClick={putInRoom}>
                 <svg width="130" height="130" viewBox="0 0 130 130" >
                 <g id="lightcCard" transform="translate(-629 -445)">
                     <rect id="Rectangle_125" dataName="Rectangle 125" width="130" height="130" transform="translate(629 445)" fill="#fff"/>
@@ -540,7 +580,7 @@ let GameRoomMain = (props) =>{
 
 
                 </li>
-                <li id="storageCard2" style={{cursor:"pointer",display:props.funitureUse.light==="block"?"none":"block"}}>
+                <li id="storageCard2" >
                 <svg width="130" height="130" viewBox="0 0 130 130">
                 <g id="basketballCard" transform="translate(-798 -445)">
                     <rect id="Rectangle_122" dataName="Rectangle 122" width="130" height="130" transform="translate(798 445)" fill="#fff"/>
@@ -556,7 +596,7 @@ let GameRoomMain = (props) =>{
 
 
                 </li>
-                <li id="storageCard3" style={{cursor:"pointer",display:props.funitureUse.light==="block"?"none":"block"}}>
+                <li id="storageCard3" >
                 <svg width="130" height="130" viewBox="0 0 130 130">
                 <g id="bathCard" transform="translate(-967 -445)">
                     <rect id="Rectangle_123" dataName="Rectangle 123" width="130" height="130" transform="translate(967 445)" fill="#fff"/>
