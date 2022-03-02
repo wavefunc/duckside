@@ -137,7 +137,7 @@ router.put('/account/updatename', async (req, res) => {
 const upload = multer({
    storage: multer.memoryStorage(),
    limits: {
-      fileSize: 2 * 1024 * 1024, // 限制 2MB
+      fileSize: 5 * 1024 * 1024, // 限制 5MB
    },
    fileFilter(req, file, callback) { // 限制檔案格式為 image
       if (!file.mimetype.match(/^image/)) {

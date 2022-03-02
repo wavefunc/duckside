@@ -87,7 +87,9 @@ let GameStoreFirstPage = (props) => {
                   </g>
 
 
-                  <g id="BuyBtn" onClick={showModal} style={{cursor:"pointer" , display:props.funitureHave.light ==="block"?"none":"block"}}>
+                  <g id="BuyBtn" onClick={showModal} style={{cursor:"pointer"  }}>
+                  {/* // ,display:props.funitureHave.light ==="block"?"none":"block"}} */}
+                 
                      <rect id="Rectangle_119" dataName="Rectangle 119" width="111" height="54" rx="20" transform="translate(307 540)" fill="#bc2121"/>
                      <text id="購買" transform="translate(333 578)" fill="#faf3e2" fontSize="30" fontFamily="PingFangTC-Semibold, PingFang TC" fontWeight="600"><tspan x="0" y="0">購買</tspan></text>
                   </g>
@@ -114,7 +116,8 @@ let GameStoreFirstPage = (props) => {
                   <path id="Icon_simple-cashapp" dataName="Icon simple-cashapp" d="M35.385,5.2A7.65,7.65,0,0,0,30.81.63C28.845,0,27.06,0,23.43,0H12.54C8.94,0,7.125,0,5.19.6A7.65,7.65,0,0,0,.615,5.19C0,7.14,0,8.94,0,12.54v10.9c0,3.615,0,5.4.6,7.35A7.65,7.65,0,0,0,5.175,35.37c1.95.615,3.75.615,7.35.615h10.92c3.615,0,5.415,0,7.35-.6a7.65,7.65,0,0,0,4.59-4.59c.615-1.95.615-3.75.615-7.35V12.57c0-3.615,0-5.415-.615-7.365ZM26.13,12.15l-1.4,1.4a.75.75,0,0,1-1,.015,7.5,7.5,0,0,0-4.83-1.77c-1.455,0-2.91.48-2.91,1.815s1.56,1.8,3.36,2.475c3.15,1.05,5.76,2.37,5.76,5.46,0,3.36-2.61,5.67-6.87,5.925l-.39,1.8a.735.735,0,0,1-.72.585H14.445l-.135-.015a.75.75,0,0,1-.57-.885l.42-1.905A9.81,9.81,0,0,1,9.84,24.69v-.015a.72.72,0,0,1,0-1.02l1.5-1.455a.735.735,0,0,1,1.005,0,7.254,7.254,0,0,0,5.085,1.98c1.95,0,3.255-.825,3.255-2.13s-1.32-1.65-3.81-2.58c-2.64-.945-5.145-2.28-5.145-5.4,0-3.63,3.015-5.4,6.585-5.565L18.69,6.66a.72.72,0,0,1,.72-.57h2.67l.15.015a.718.718,0,0,1,.555.855L22.38,9.015A11.257,11.257,0,0,1,26.1,11.1l.03.03a.715.715,0,0,1,0,1.02Z" transform="translate(545.365 546.007)" fill="#dec646"/>
                   <text id="_300" dataName="300" transform="translate(594 579)" fill="#520707" fontSize="40" fontFamily="HelveticaNeue-Bold, Helvetica Neue" fontWeight="700"><tspan x="0" y="0">300</tspan></text>
                   <text id="籃球" transform="translate(529 350)" fill="#520707" fontSize="40" fontFamily="PingFangTC-Regular, PingFang TC"><tspan x="0" y="0">籃球</tspan></text>
-                  <g id="BuyBtn" transform="translate(411)" onClick={showModal} style={{cursor:"pointer" ,display:props.funitureHave.basketball ==="block"?"none":"block"}}>
+                  <g id="BuyBtn" transform="translate(411)" onClick={showModal} style={{cursor:"pointer" }}>
+                  {/* // ,display:props.funitureHave.basketball ==="block"?"none":"block"}} */}
                      <a href="#">
                      <rect id="Rectangle_119" dataName="Rectangle 119" width="111" height="54" rx="20" transform="translate(307 540)" fill="#bc2121"/>
                      <text id="購買" transform="translate(333 578)" fill="#faf3e2" fontSize="30" fontFamily="PingFangTC-Semibold, PingFang TC" fontWeight="600"><tspan x="0" y="0">購買</tspan></text>
@@ -151,7 +154,7 @@ let GameStoreFirstPage = (props) => {
                   <path id="Icon_simple-cashapp" dataName="Icon simple-cashapp" d="M35.385,5.2A7.65,7.65,0,0,0,30.81.63C28.845,0,27.06,0,23.43,0H12.54C8.94,0,7.125,0,5.19.6A7.65,7.65,0,0,0,.615,5.19C0,7.14,0,8.94,0,12.54v10.9c0,3.615,0,5.4.6,7.35A7.65,7.65,0,0,0,5.175,35.37c1.95.615,3.75.615,7.35.615h10.92c3.615,0,5.415,0,7.35-.6a7.65,7.65,0,0,0,4.59-4.59c.615-1.95.615-3.75.615-7.35V12.57c0-3.615,0-5.415-.615-7.365ZM26.13,12.15l-1.4,1.4a.75.75,0,0,1-1,.015,7.5,7.5,0,0,0-4.83-1.77c-1.455,0-2.91.48-2.91,1.815s1.56,1.8,3.36,2.475c3.15,1.05,5.76,2.37,5.76,5.46,0,3.36-2.61,5.67-6.87,5.925l-.39,1.8a.735.735,0,0,1-.72.585H14.445l-.135-.015a.75.75,0,0,1-.57-.885l.42-1.905A9.81,9.81,0,0,1,9.84,24.69v-.015a.72.72,0,0,1,0-1.02l1.5-1.455a.735.735,0,0,1,1.005,0,7.254,7.254,0,0,0,5.085,1.98c1.95,0,3.255-.825,3.255-2.13s-1.32-1.65-3.81-2.58c-2.64-.945-5.145-2.28-5.145-5.4,0-3.63,3.015-5.4,6.585-5.565L18.69,6.66a.72.72,0,0,1,.72-.57h2.67l.15.015a.718.718,0,0,1,.555.855L22.38,9.015A11.257,11.257,0,0,1,26.1,11.1l.03.03a.715.715,0,0,1,0,1.02Z" transform="translate(1355.365 546.007)" fill="#dec646"/>
                   <text id="_1200" dataName="1200" transform="translate(1404 579)" fill="#520707" fontSize="40" fontFamily="HelveticaNeue-Bold, Helvetica Neue" fontWeight="700"><tspan x="0" y="0">1200</tspan></text>
                   <text id="球池" transform="translate(1339 350)" fill="#520707" fontSize="40" fontFamily="PingFangTC-Regular, PingFang TC"><tspan x="0" y="0">球池</tspan></text>
-                  <g id="BuyBtn" transform="translate(1221)" onClick={showModal} style={{cursor:"pointer",display:props.funitureHave.bathTube ==="block"?"none":"block"}}>
+                  <g id="BuyBtn" transform="translate(1221)" onClick={showModal} style={{cursor:"pointer"}}>
                      <a href="#">
                      <rect id="Rectangle_119" dataName="Rectangle 119" width="111" height="54" rx="20" transform="translate(307 540)" fill="#bc2121"/>
                      <text id="購買" transform="translate(333 578)" fill="#faf3e2" fontSize="30" fontFamily="PingFangTC-Semibold, PingFang TC" fontWeight="600"><tspan x="0" y="0">購買</tspan></text>
@@ -214,7 +217,7 @@ let GameStoreFirstPage = (props) => {
                   <path id="Icon_simple-cashapp" dataName="Icon simple-cashapp" d="M35.385,5.2A7.65,7.65,0,0,0,30.81.63C28.845,0,27.06,0,23.43,0H12.54C8.94,0,7.125,0,5.19.6A7.65,7.65,0,0,0,.615,5.19C0,7.14,0,8.94,0,12.54v10.9c0,3.615,0,5.4.6,7.35A7.65,7.65,0,0,0,5.175,35.37c1.95.615,3.75.615,7.35.615h10.92c3.615,0,5.415,0,7.35-.6a7.65,7.65,0,0,0,4.59-4.59c.615-1.95.615-3.75.615-7.35V12.57c0-3.615,0-5.415-.615-7.365ZM26.13,12.15l-1.4,1.4a.75.75,0,0,1-1,.015,7.5,7.5,0,0,0-4.83-1.77c-1.455,0-2.91.48-2.91,1.815s1.56,1.8,3.36,2.475c3.15,1.05,5.76,2.37,5.76,5.46,0,3.36-2.61,5.67-6.87,5.925l-.39,1.8a.735.735,0,0,1-.72.585H14.445l-.135-.015a.75.75,0,0,1-.57-.885l.42-1.905A9.81,9.81,0,0,1,9.84,24.69v-.015a.72.72,0,0,1,0-1.02l1.5-1.455a.735.735,0,0,1,1.005,0,7.254,7.254,0,0,0,5.085,1.98c1.95,0,3.255-.825,3.255-2.13s-1.32-1.65-3.81-2.58c-2.64-.945-5.145-2.28-5.145-5.4,0-3.63,3.015-5.4,6.585-5.565L18.69,6.66a.72.72,0,0,1,.72-.57h2.67l.15.015a.718.718,0,0,1,.555.855L22.38,9.015A11.257,11.257,0,0,1,26.1,11.1l.03.03a.715.715,0,0,1,0,1.02Z" transform="translate(1355.365 546.007)" fill="#dec646"/>
                   <text id="_400" dataName="400" transform="translate(1404 579)" fill="#520707" fontSize="40" fontFamily="HelveticaNeue-Bold, Helvetica Neue" fontWeight="700"><tspan x="0" y="0">400</tspan></text>
                   <text id="電視" transform="translate(1339 350)" fill="#520707" fontSize="40" fontFamily="PingFangTC-Regular, PingFang TC"><tspan x="0" y="0">電視</tspan></text>
-                  <g id="BuyBtn" transform="translate(1221)" onClick={showModal} style={{cursor:"pointer",display:props.funitureHave.TV ==="block"?"none":"block"}}>
+                  <g id="BuyBtn" transform="translate(1221)" onClick={showModal} style={{cursor:"pointer"}}>
                      <a href="#">
                      <rect id="Rectangle_119" dataName="Rectangle 119" width="111" height="54" rx="20" transform="translate(307 540)" fill="#bc2121"/>
                      <text id="購買" transform="translate(333 578)" fill="#faf3e2" fontSize="30" fontFamily="PingFangTC-Semibold, PingFang TC" fontWeight="600"><tspan x="0" y="0">購買</tspan></text>
@@ -270,7 +273,7 @@ let GameStoreFirstPage = (props) => {
                   <path id="Icon_simple-cashapp" dataName="Icon simple-cashapp" d="M35.385,5.2A7.65,7.65,0,0,0,30.81.63C28.845,0,27.06,0,23.43,0H12.54C8.94,0,7.125,0,5.19.6A7.65,7.65,0,0,0,.615,5.19C0,7.14,0,8.94,0,12.54v10.9c0,3.615,0,5.4.6,7.35A7.65,7.65,0,0,0,5.175,35.37c1.95.615,3.75.615,7.35.615h10.92c3.615,0,5.415,0,7.35-.6a7.65,7.65,0,0,0,4.59-4.59c.615-1.95.615-3.75.615-7.35V12.57c0-3.615,0-5.415-.615-7.365ZM26.13,12.15l-1.4,1.4a.75.75,0,0,1-1,.015,7.5,7.5,0,0,0-4.83-1.77c-1.455,0-2.91.48-2.91,1.815s1.56,1.8,3.36,2.475c3.15,1.05,5.76,2.37,5.76,5.46,0,3.36-2.61,5.67-6.87,5.925l-.39,1.8a.735.735,0,0,1-.72.585H14.445l-.135-.015a.75.75,0,0,1-.57-.885l.42-1.905A9.81,9.81,0,0,1,9.84,24.69v-.015a.72.72,0,0,1,0-1.02l1.5-1.455a.735.735,0,0,1,1.005,0,7.254,7.254,0,0,0,5.085,1.98c1.95,0,3.255-.825,3.255-2.13s-1.32-1.65-3.81-2.58c-2.64-.945-5.145-2.28-5.145-5.4,0-3.63,3.015-5.4,6.585-5.565L18.69,6.66a.72.72,0,0,1,.72-.57h2.67l.15.015a.718.718,0,0,1,.555.855L22.38,9.015A11.257,11.257,0,0,1,26.1,11.1l.03.03a.715.715,0,0,1,0,1.02Z" transform="translate(1355.365 546.007)" fill="#dec646"/>
                   <text id="_300" dataName="300" transform="translate(1404 579)" fill="#520707" fontSize="40" fontFamily="HelveticaNeue-Bold, Helvetica Neue" fontWeight="700"><tspan x="0" y="0">300</tspan></text>
                   <text id="床頭櫃" transform="translate(1339 350)" fill="#520707" fontSize="40" fontFamily="PingFangTC-Regular, PingFang TC"><tspan x="0" y="0">床頭櫃</tspan></text>
-                  <g id="BuyBtn" transform="translate(1221)" style={{cursor:"pointer",display:props.funitureHave.cabinet ==="block"?"none":"block"}}>
+                  <g id="BuyBtn" transform="translate(1221)" style={{cursor:"pointer"}}>
                      <a href="#">
                      <rect id="Rectangle_119" dataName="Rectangle 119" width="111" height="54" rx="20" transform="translate(307 540)" fill="#bc2121"/>
                      <text id="購買" transform="translate(333 578)" fill="#faf3e2" fontSize="30" fontFamily="PingFangTC-Semibold, PingFang TC" fontWeight="600"><tspan x="0" y="0">購買</tspan></text>
@@ -358,7 +361,7 @@ let GameStoreFirstPage = (props) => {
                   <path id="Icon_simple-cashapp" dataName="Icon simple-cashapp" d="M35.385,5.2A7.65,7.65,0,0,0,30.81.63C28.845,0,27.06,0,23.43,0H12.54C8.94,0,7.125,0,5.19.6A7.65,7.65,0,0,0,.615,5.19C0,7.14,0,8.94,0,12.54v10.9c0,3.615,0,5.4.6,7.35A7.65,7.65,0,0,0,5.175,35.37c1.95.615,3.75.615,7.35.615h10.92c3.615,0,5.415,0,7.35-.6a7.65,7.65,0,0,0,4.59-4.59c.615-1.95.615-3.75.615-7.35V12.57c0-3.615,0-5.415-.615-7.365ZM26.13,12.15l-1.4,1.4a.75.75,0,0,1-1,.015,7.5,7.5,0,0,0-4.83-1.77c-1.455,0-2.91.48-2.91,1.815s1.56,1.8,3.36,2.475c3.15,1.05,5.76,2.37,5.76,5.46,0,3.36-2.61,5.67-6.87,5.925l-.39,1.8a.735.735,0,0,1-.72.585H14.445l-.135-.015a.75.75,0,0,1-.57-.885l.42-1.905A9.81,9.81,0,0,1,9.84,24.69v-.015a.72.72,0,0,1,0-1.02l1.5-1.455a.735.735,0,0,1,1.005,0,7.254,7.254,0,0,0,5.085,1.98c1.95,0,3.255-.825,3.255-2.13s-1.32-1.65-3.81-2.58c-2.64-.945-5.145-2.28-5.145-5.4,0-3.63,3.015-5.4,6.585-5.565L18.69,6.66a.72.72,0,0,1,.72-.57h2.67l.15.015a.718.718,0,0,1,.555.855L22.38,9.015A11.257,11.257,0,0,1,26.1,11.1l.03.03a.715.715,0,0,1,0,1.02Z" transform="translate(1355.365 546.007)" fill="#dec646"/>
                   <text id="_600" dataName="600" transform="translate(1404 579)" fill="#520707" fontSize="40" fontFamily="HelveticaNeue-Bold, Helvetica Neue" fontWeight="700"><tspan x="0" y="0">600</tspan></text>
                   <text id="鏡子" transform="translate(1339 350)" fill="#520707" fontSize="40" fontFamily="PingFangTC-Regular, PingFang TC"><tspan x="0" y="0">鏡子</tspan></text>
-                  <g id="BuyBtn" transform="translate(1221)" style={{cursor:"pointer",display:props.funitureHave.mirror ==="block"?"none":"block"}}>
+                  <g id="BuyBtn" transform="translate(1221)" style={{cursor:"pointer"}}>
                      <a href="#">
                      <rect id="Rectangle_119" dataName="Rectangle 119" width="111" height="54" rx="20" transform="translate(307 540)" fill="#bc2121"/>
                      <text id="購買" transform="translate(333 578)" fill="#faf3e2" fontSize="30" fontFamily="PingFangTC-Semibold, PingFang TC" fontWeight="600"><tspan x="0" y="0">購買</tspan></text>
@@ -366,7 +369,7 @@ let GameStoreFirstPage = (props) => {
                   </g>
                   {/* 鏡子 */}
                   <g id="鏡子-2" dataName="鏡子" transform="translate(2048.577 -3009)">
-                     <g dataType="innerShadowGroup">
+                     <g data-type="innerShadowGroup">
                      <g transform="matrix(1, 0, 0, 1, -731.58, 3296)" filter="url(#Subtraction_8)">
                         <path id="Subtraction_8-3" dataName="Subtraction 8" d="M2.352,52.838h0A39.423,39.423,0,0,1,3.738,22.622L17.053,40.378l-5.65-28.7A39.29,39.29,0,0,1,23.035,3.546L32.088,33.4l5.2-33.35C37.99.018,38.7,0,39.394,0a39.782,39.782,0,0,1,7,.62L51.51,33.4,59.9,5.745a39.677,39.677,0,0,1,6.663,5.12L60.749,40.378,74.662,21.825a39.188,39.188,0,0,1,3.053,8.4,39.637,39.637,0,0,1-1.28,22.611c-11.087-8.794-23.9-13.443-37.041-13.443S13.44,44.042,2.353,52.837Z" transform="translate(146.78 27)" fill="#ffd230"/>
                      </g>
@@ -374,7 +377,7 @@ let GameStoreFirstPage = (props) => {
                         <path id="Subtraction_8-4" dataName="Subtraction 8" d="M2.352,52.838h0A39.423,39.423,0,0,1,3.738,22.622L17.053,40.378l-5.65-28.7A39.29,39.29,0,0,1,23.035,3.546L32.088,33.4l5.2-33.35C37.99.018,38.7,0,39.394,0a39.782,39.782,0,0,1,7,.62L51.51,33.4,59.9,5.745a39.677,39.677,0,0,1,6.663,5.12L60.749,40.378,74.662,21.825a39.188,39.188,0,0,1,3.053,8.4,39.637,39.637,0,0,1-1.28,22.611c-11.087-8.794-23.9-13.443-37.041-13.443S13.44,44.042,2.353,52.837Z" transform="translate(146.78 27)" fill="#fff"/>
                      </g>
                      </g>
-                     <g dataType="innerShadowGroup">
+                     <g data-type="innerShadowGroup">
                      <g transform="matrix(1, 0, 0, 1, -731.58, 3296)" filter="url(#Path_736)">
                         <g id="Path_736-3" dataName="Path 736" transform="translate(116.58 65.74)" fill="rgba(102,229,255,0.86)">
                            <path d="M 69.92337799072266 167.2706146240234 C 36.88151168823242 167.2706146240234 10.0000114440918 131.9949798583984 10.0000114440918 88.63530731201172 C 10.0000114440918 45.27564239501953 36.88151168823242 10.00000762939453 69.92337799072266 10.00000762939453 C 102.9652481079102 10.00000762939453 129.8467407226562 45.27564239501953 129.8467407226562 88.63530731201172 C 129.8467407226562 131.9949798583984 102.9652481079102 167.2706146240234 69.92337799072266 167.2706146240234 Z" stroke="none"/>
@@ -427,7 +430,7 @@ let GameStoreFirstPage = (props) => {
                   <path id="Icon_simple-cashapp" dataName="Icon simple-cashapp" d="M35.385,5.2A7.65,7.65,0,0,0,30.81.63C28.845,0,27.06,0,23.43,0H12.54C8.94,0,7.125,0,5.19.6A7.65,7.65,0,0,0,.615,5.19C0,7.14,0,8.94,0,12.54v10.9c0,3.615,0,5.4.6,7.35A7.65,7.65,0,0,0,5.175,35.37c1.95.615,3.75.615,7.35.615h10.92c3.615,0,5.415,0,7.35-.6a7.65,7.65,0,0,0,4.59-4.59c.615-1.95.615-3.75.615-7.35V12.57c0-3.615,0-5.415-.615-7.365ZM26.13,12.15l-1.4,1.4a.75.75,0,0,1-1,.015,7.5,7.5,0,0,0-4.83-1.77c-1.455,0-2.91.48-2.91,1.815s1.56,1.8,3.36,2.475c3.15,1.05,5.76,2.37,5.76,5.46,0,3.36-2.61,5.67-6.87,5.925l-.39,1.8a.735.735,0,0,1-.72.585H14.445l-.135-.015a.75.75,0,0,1-.57-.885l.42-1.905A9.81,9.81,0,0,1,9.84,24.69v-.015a.72.72,0,0,1,0-1.02l1.5-1.455a.735.735,0,0,1,1.005,0,7.254,7.254,0,0,0,5.085,1.98c1.95,0,3.255-.825,3.255-2.13s-1.32-1.65-3.81-2.58c-2.64-.945-5.145-2.28-5.145-5.4,0-3.63,3.015-5.4,6.585-5.565L18.69,6.66a.72.72,0,0,1,.72-.57h2.67l.15.015a.718.718,0,0,1,.555.855L22.38,9.015A11.257,11.257,0,0,1,26.1,11.1l.03.03a.715.715,0,0,1,0,1.02Z" transform="translate(1355.365 546.007)" fill="#dec646"/>
                   <text id="_600" dataName="600" transform="translate(1404 579)" fill="#520707" fontSize="40" fontFamily="HelveticaNeue-Bold, Helvetica Neue" fontWeight="700"><tspan x="0" y="0">600</tspan></text>
                   <text id="小母鴨" transform="translate(1339 350)" fill="#520707" fontSize="40" fontFamily="PingFangTC-Regular, PingFang TC"><tspan x="0" y="0">小母鴨</tspan></text>
-                  <g id="BuyBtn" transform="translate(1221)" style={{cursor:"pointer",display:props.funitureHave.femaleDuck ==="block"?"none":"block"}}>
+                  <g id="BuyBtn" transform="translate(1221)" style={{cursor:"pointer"}}>
                      <a href="#">
                      <rect id="Rectangle_119" dataName="Rectangle 119" width="111" height="54" rx="20" transform="translate(307 540)" fill="#bc2121"/>
                      <text id="購買" transform="translate(333 578)" fill="#faf3e2" fontSize="30" fontFamily="PingFangTC-Semibold, PingFang TC" fontWeight="600"><tspan x="0" y="0">購買</tspan></text>
@@ -485,7 +488,7 @@ let GameStoreFirstPage = (props) => {
                   <path id="Icon_simple-cashapp" dataName="Icon simple-cashapp" d="M35.385,5.2A7.65,7.65,0,0,0,30.81.63C28.845,0,27.06,0,23.43,0H12.54C8.94,0,7.125,0,5.19.6A7.65,7.65,0,0,0,.615,5.19C0,7.14,0,8.94,0,12.54v10.9c0,3.615,0,5.4.6,7.35A7.65,7.65,0,0,0,5.175,35.37c1.95.615,3.75.615,7.35.615h10.92c3.615,0,5.415,0,7.35-.6a7.65,7.65,0,0,0,4.59-4.59c.615-1.95.615-3.75.615-7.35V12.57c0-3.615,0-5.415-.615-7.365ZM26.13,12.15l-1.4,1.4a.75.75,0,0,1-1,.015,7.5,7.5,0,0,0-4.83-1.77c-1.455,0-2.91.48-2.91,1.815s1.56,1.8,3.36,2.475c3.15,1.05,5.76,2.37,5.76,5.46,0,3.36-2.61,5.67-6.87,5.925l-.39,1.8a.735.735,0,0,1-.72.585H14.445l-.135-.015a.75.75,0,0,1-.57-.885l.42-1.905A9.81,9.81,0,0,1,9.84,24.69v-.015a.72.72,0,0,1,0-1.02l1.5-1.455a.735.735,0,0,1,1.005,0,7.254,7.254,0,0,0,5.085,1.98c1.95,0,3.255-.825,3.255-2.13s-1.32-1.65-3.81-2.58c-2.64-.945-5.145-2.28-5.145-5.4,0-3.63,3.015-5.4,6.585-5.565L18.69,6.66a.72.72,0,0,1,.72-.57h2.67l.15.015a.718.718,0,0,1,.555.855L22.38,9.015A11.257,11.257,0,0,1,26.1,11.1l.03.03a.715.715,0,0,1,0,1.02Z" transform="translate(1355.365 546.007)" fill="#dec646"/>
                   <text id="_300" dataName="300" transform="translate(1404 579)" fill="#520707" fontSize="40" fontFamily="HelveticaNeue-Bold, Helvetica Neue" fontWeight="700"><tspan x="0" y="0">300</tspan></text>
                   <text id="眼鏡" transform="translate(1339 350)" fill="#520707" fontSize="40" fontFamily="PingFangTC-Regular, PingFang TC"><tspan x="0" y="0">眼鏡</tspan></text>
-                  <g id="BuyBtn" transform="translate(1221)" style={{cursor:"pointer",display:props.funitureHave.glasses ==="block"?"none":"block"}}>
+                  <g id="BuyBtn" transform="translate(1221)" style={{cursor:"pointer"}}>
                      <a href="#">
                      <rect id="Rectangle_119" dataName="Rectangle 119" width="111" height="54" rx="20" transform="translate(307 540)" fill="#bc2121"/>
                      <text id="購買" transform="translate(333 578)" fill="#faf3e2" fontSize="30" fontFamily="PingFangTC-Semibold, PingFang TC" fontWeight="600"><tspan x="0" y="0">購買</tspan></text>
@@ -546,7 +549,7 @@ let GameStoreFirstPage = (props) => {
                </filter>
             </defs>
             <g id="modal" transform="translate(-369 -166)">
-               <g dataType="innerShadowGroup">
+               <g data-type="innerShadowGroup">
                   <g transform="matrix(1, 0, 0, 1, 369, 166)" filter="url(#Rectangle_104)">
                   <rect id="Rectangle_104-3" dataName="Rectangle 104" width="1221" height="739" rx="30" transform="translate(9 57)" fill="#faf3e2"/>
                   </g>
