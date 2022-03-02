@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Badge from '@mui/material/Badge';
-import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import { useTheme } from '@mui/material/styles';
 import {
     Avatar,
@@ -64,9 +64,9 @@ const NotificationSection = () => {
                 sx={{
                     width: '20px',
                     ml: 2,
-                    mr: 5,
+                    mr: 6,
                     [theme.breakpoints.down('md')]: {
-                        mr: 2
+                        mr: 3
                     }
                 }}
             >
@@ -85,8 +85,8 @@ const NotificationSection = () => {
                                 color: 'black',
                                 borderRadius: '50%'
                             },
-                            width: '50px',
-                            height: '50px'
+                            width: '63px',
+                            height: '63px',
                         }}
                         ref={anchorRef}
                         aria-controls={open ? 'menu-list-grow' : undefined}
@@ -96,7 +96,7 @@ const NotificationSection = () => {
                     >
 
                         <Badge badgeContent={badge} color="error">
-                            <NotificationsNoneIcon />
+                            <NotificationsIcon sx={{fontSize:'32px'}}/>
                         </Badge>
 
                     </Avatar>
