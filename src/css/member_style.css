@@ -22,7 +22,8 @@
 }
 
 #formContainer.forget {
-  height: 560px;
+  height: 400px;
+  transform: translate(24%, 80%);
 }
 
 #formContainer.toggle {

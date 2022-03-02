@@ -44,8 +44,8 @@ const ProfileSection = () => {
         setShowRegister(!showregister);
     }
     function showLoginClose() {
-        setShowLogin(!showLogin);
-        setShowRegister(!showregister);
+        setShowLogin(false);
+        setShowRegister(false);
     }
     function showLoginOpen() {
         setShowLogin(true);
