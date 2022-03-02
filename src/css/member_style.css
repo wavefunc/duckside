@@ -17,8 +17,12 @@
   transform: translate(24%, 70%);
   display: flex;
   transition: 0.2s ease;
-  height: 520px;
+  height: 560px;
   transition-delay: 0.3s;
+}
+
+#formContainer.forget {
+  height: 560px;
 }
 
 #formContainer.toggle {
@@ -172,6 +176,7 @@
   font-weight: 600;
   color: #fff;
   cursor: pointer;
+  border-radius: 0.25rem;
 }
 
 .formRight form section button:hover {
@@ -431,9 +436,11 @@ legend {
 .fb {
   background-color: #3B5998!important;
   color: white!important;
+  padding: 10px!important;
 }
 
 .google {
   background-color: #dd4b39!important;
   color: white!important;
+  padding: 10px!important;
 }

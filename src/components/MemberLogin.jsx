@@ -167,15 +167,7 @@ let MemberLogin = (props) => {
                   />
                   <div className="border"></div>
                 </label>
-                <div className="d-flex flex-column mt-2 mb-3">
-                  <div className="fb btn">
-                    <i className="fa fa-facebook fa-fw"></i> Login with Facebook
-                  </div>
 
-                  <div className="google btn mt-2" onClick={googoleButClick}>
-                    <i className="fa fa-google fa-fw"></i> Login with Google
-                  </div>
-                </div>
                 <div className="d-flex justify-content-center">
                   <span
                     className="text-danger"
@@ -218,11 +210,20 @@ let MemberLogin = (props) => {
                   onClick={() => {
                     window.location = "/";
                   }}
-                  
                 >
                   返回
                 </button>
               </footer>
+              <hr />
+              <div className="d-flex flex-column mt-2 mb-3">
+                <div className="fb btn">
+                  <i className="fa fa-facebook fa-fw"></i> Login with Facebook
+                </div>
+                  
+                <div className="google btn mt-2" onClick={googoleButClick}>
+                  <i className="fa fa-google fa-fw"></i> Login with Google
+                </div>
+              </div>
             </form>
           </div>
         </div>

@@ -63,7 +63,7 @@ let MemberLogin = (props) => {
     >
       <Modal id="example-modal-sizes-title-lg"></Modal>
       <div id="formContainer_body">
-        <div id="formContainer" className="dwo">
+        <div id="formContainer" className="dwo forget">
           <div className="formLeft">
             <img src="/assets/images/member_photo.png" alt="頭相" />
           </div>
