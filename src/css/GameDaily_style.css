@@ -58,7 +58,6 @@
   width: 150px;
   height: 50px;
   border-radius: 15px;
-  margin-top:10px;
   margin-left: 340px;
   font-family: PingFangTC-Semibold, PingFang TC;
 }
@@ -75,13 +74,13 @@
 .headerSide{
   color: #E4E9EB;
   background-color:#3E88A8 ;
-  width: 300px;
+  width: 250px;
   height: 50px;
-  border-radius: 15px;
+  border-radius: 20px;
   margin-top:10px;
   margin-left: 10px;
   font-size:30px ;
-  padding:0 30px ;
+  padding:0 10px ;
   font-family: PingFangTC-Semibold, PingFang TC;
 }
 

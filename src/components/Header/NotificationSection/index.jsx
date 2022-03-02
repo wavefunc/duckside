@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import PubSub from 'pubsub-js';
 import { Link } from 'react-router-dom';
 import Badge from '@mui/material/Badge';
 import NotificationsIcon from '@mui/icons-material/Notifications';
@@ -52,11 +53,30 @@ const NotificationSection = () => {
     }, [open]);
 
 
-    const badgeChange = () => {
-        setBadge(0)
+    let loginState = localStorage.getItem("loginState");
+    useEffect(() => {
+        if (loginState === null) {
+            setBadge(0)
+        } else if (typeof loginState === "string") {
+            setBadge(2)
+        }
+    }, [loginState])
+
+    const badgeChange = (event) => {
+        setBadge(0);
+        console.log(event)
     }
 
-    let loginState = localStorage.getItem("loginState");
+    const Sidebarlight = () => {
+        PubSub.publish('Sidebar Index', 2);
+        setOpen(false);
+    }
+
+    document.onclick = function (event) {
+        console.log(event)
+    }
+
+
 
 
     return (
@@ -159,7 +179,7 @@ const NotificationSection = () => {
                                                                 </Stack>
                                                             </Grid>
                                                             <Grid item>
-                                                                <Typography component={Link} to="/manage/plan" variant="subtitle2" color="primary">
+                                                                <Typography component={Link} to="/manage/plan" onClick={Sidebarlight} variant="subtitle2" color="primary">
                                                                     查看更多
                                                                 </Typography>
                                                             </Grid>
