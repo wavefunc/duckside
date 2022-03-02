@@ -103,7 +103,7 @@ const NotificationList = () => {
                 </Grid>
             </ListItemWrapper>
             <Divider />
-            <ListItemWrapper>
+            {/* <ListItemWrapper>
                 <ListItem alignItems="center">
                     <ListItemAvatar>
                         
@@ -157,7 +157,7 @@ const NotificationList = () => {
                    
                 </Grid>
             </ListItemWrapper>
-            <Divider />
+            <Divider /> */}
             
         </List>
     );
