@@ -179,7 +179,7 @@ function Layout() {
             }}
           >
             <Link underline="none" href='/'>
-              <img src="/assets/images/alllogo.png" alt="logo" style={{paddingTop:'10px'}}/>
+              <img src="/assets/images/alllogo.png" alt="logo" style={{height:'110px',paddingTop:'10px'}}/>
             </Link>
 
             <IconButton onClick={toggleDrawer}>
