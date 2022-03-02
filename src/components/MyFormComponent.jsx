@@ -25,8 +25,6 @@ export const MyInput = ({ label, list, getList, setList, helptext, ...props }) =
             return
         }
         didChanged.current = true;
-
-        // 初始值進來時將觸發
     }, [field.value]);
     return (
         <Form.Group className={props.inline ? "d-inline-block ml-1 mr-2" : "ml-1 mb-2"}>
@@ -200,7 +198,7 @@ export const MyInputPlain = ({ label, list, ...props }) => {
         return (
             <Form.Group className={props.inline ? "d-inline-block ml-1 mr-2" : "ml-1 mb-2"}>
                 <Form.Label htmlFor={props.id || props.name}>{label}</Form.Label>
-                <InputGroup hasValidation className="d-flex flex-column">
+                <InputGroup className="d-flex flex-column">
                     <Form.Control
                         {...props}
                         list={`list${props.id}`}
@@ -230,7 +228,7 @@ export const MyInputPlain = ({ label, list, ...props }) => {
         );
     } else {
         return (
-            <InputGroup hasValidation className="d-flex flex-column">
+            <InputGroup className="d-flex flex-column">
                 <Form.Control
                     {...props}
                     list={`list${props.id}`}

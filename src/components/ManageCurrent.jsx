@@ -76,8 +76,11 @@ export const MyCardDeck = (props) => {
             </Card>
         );
     };
-
-    return <CardDeck className="row">{data && data.map(renderCard)}</CardDeck>;
+    try {
+        return <CardDeck className="row">{data && data.map(renderCard)}</CardDeck>;
+    } catch {
+        return "資料格式錯誤"
+    }
 };
 
 export default MyCurrentPosition;

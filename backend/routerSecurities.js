@@ -36,19 +36,19 @@ router.get('/securities/datalist/:key', (req, res) => {
 });
 
 // *****************************************************
-// 依stockId及日期區間(period1至period2) 
-// 抓該股票日成交資料, 繪製技術線圖
+// 依stockId及日期區間(起日period1 迄日period2 格式YYYYMMDD) 
+// 抓取股票日成交資料, 整理成繪製技術線圖所需格式
 // *****************************************************
 router.post('/securities/candlestick', function (req, res) {
     console.log(JSON.stringify(req.body));
     getYahoo(req.body.stockId, req.body.period1, req.body.period2)
-        .then(function (MI) {
-            res.send(MI);
+        .then(function (stockDay) {
+            res.send(stockDay);
         });
 })
 // *****************************************************
-// 依stockId及日期區間(period1至period2) 
-// 抓該股票在這期間的日成交資料
+// 依stockId及日期區間(起日period1 迄日period2 格式YYYYMMDD) 
+// 抓該股票在這期間的日成交資料, 整理成方便呈現在圖表的格式
 // *****************************************************
 router.post('/securities/stockDay', function (req, res) {
     getYahoo(req.body.stockId, req.body.period1, req.body.period2)
@@ -62,7 +62,9 @@ router.post('/securities/stockDay', function (req, res) {
 // 依 dateQuery 抓該天所有股票成交資料 (打包成MI物件)
 // *****************************************************
 router.post('/securities/marketInfo', function (req, res) {
-    getTwse(req.body.dateQuery).then((MI) => {
+    let Ymd = req.body.dateQuery.replace(/-/g,'');
+    console.log(Ymd);
+    getTwse(Ymd).then((MI) => {
         res.send(MI);
     }).catch((e) => {
         res.send('Server Busy');

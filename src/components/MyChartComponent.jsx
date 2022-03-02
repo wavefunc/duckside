@@ -11,7 +11,6 @@
     TimeSeriesScale,
     Filler,
 } from 'chart.js';
-import { useEffect, useState } from 'react';
 import { Line, Pie } from 'react-chartjs-2';
 import 'chartjs-adapter-date-fns';
 
@@ -29,6 +28,7 @@ ChartJS.register(
     Filler
 );
 
+// 折線圖基本設定 (資產變動圖使用)
 const options = {
     // onResize: (myChart, size)=> {
     //     console.log(myChart);
@@ -113,6 +113,9 @@ const options = {
         }
     }
 };
+// 圓餅圖基本設定
+
+// 假資料: 圓餅圖
 const data2 = {
     labels: ['台積電', '元大台灣50', '富邦台50'],
     datasets: [
@@ -172,4 +175,3 @@ export function MyChartLine({ data, x, y, yLabels, ...props }) {
 export function MyChartPie({ url, dataToServer, ...props }) {
     return <Pie options={options} data={data2} />;
 }
-
