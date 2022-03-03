@@ -18,30 +18,24 @@ let GameRoomMain = (props) =>{
         mirror:""
     });
 
-    let putInRoom = async() => {
-        // console.log(furn_id);
+    let putInRoom = async(e) => {
+        console.log(e.currentTarget.dataset.furnid);
         await Axios.put('http://localhost:5000/acc_furn/placing',{
             acc_email:localStorage.getItem("loginState"),
-            furn_id:"light"
-        }).then(
-            Axios.post('http://localhost:5000/acc_furn/storeList', {
-                acc_email:localStorage.getItem("loginState"),
-     
-             }).then( (result) => {
-                setfunitureHave(result.data);
-             })
-        )
+            furn_id: e.currentTarget.dataset.furnid
+        })
+
     }
 
     useEffect( () => {
-        Axios.post('http://localhost:5000/acc_furn/storeList', {
+        Axios.post('http://localhost:5000/acc_furn/storageList', {
            acc_email:localStorage.getItem("loginState"),
 
         }).then( (result) => {
            setfunitureHave(result.data);
            console.log(result.data)
         })
-      },[])
+      })
 
 
     return(
@@ -198,7 +192,7 @@ let GameRoomMain = (props) =>{
         <g id="我的房間" clipPath="url(#clip-我的房間)">
             <rect width="1920" height="1080" fill="#f5f5cc"/>
             <line id="地平線" x2="1920" transform="translate(0 676)" fill="none" stroke="#53480b" strokeWidth="6"/>
-            <g id="籃球" transform="translate(-148.503 118.416)" style={{display:"none"}}>
+            <g id="籃球" transform="translate(-148.503 118.416)">
             <circle id="Ellipse_6" dataName="Ellipse 6" cx="63.29" cy="63.29" r="63.29" transform="translate(169 737)" fill="#ef8d37"/>
             <line id="Line_25" dataName="Line 25" x2="126.579" transform="translate(169 800.29)" fill="none" stroke="#707070" strokeWidth="7"/>
             <path id="Path_6" dataName="Path 6" d="M0,0S17.577,24.346,18.345,48,3.072,94.627,3.072,94.627" transform="translate(188.97 754.512)" fill="none" stroke="#707070" strokeWidth="7"/>
@@ -296,7 +290,7 @@ let GameRoomMain = (props) =>{
                 <circle id="Ellipse_38-2" dataName="Ellipse 38" cx="6.93" cy="6.93" r="6.93" transform="translate(1739 739.92)" fill="#760202"/>
             </g>
             </g>
-            <g id="light" transform="translate(569.222 -103.5)"  >
+            <g id="light" transform="translate(569.222 -103.5)" style={{display:funitureHave.light==="block"?"none":"block"}}>
             <path id="Path_4" dataName="Path 4" d="M0,2.318S107.032,138.249,260.438,143.685C451.483,142.336,589.5,0,589.5,0" transform="translate(62.5 357.5)" fill="none" stroke="#707070" strokeWidth="4"/>
             <line id="Line_16" dataName="Line 16" y2="29.37" transform="translate(96.066 396.748)" fill="none" stroke="#707070" strokeWidth="4"/>
             <rect id="Rectangle_23" dataName="Rectangle 23" width="12.362" height="18.543" transform="translate(90.148 416.025)" fill="#363636"/>
@@ -528,7 +522,7 @@ let GameRoomMain = (props) =>{
                 
                 <div id="cardBox">
                 <div id="littleCardBox" >
-                <li id="storageCard1" style={{cursor:"pointer" ,display:funitureHave.light}} onClick={putInRoom}>
+                <li id="storageCard1" data-furnid="light" style={{cursor:"pointer" ,display:funitureHave.light}} onClick={putInRoom}>
                 <svg width="130" height="130" viewBox="0 0 130 130" >
                 <g id="lightcCard" transform="translate(-629 -445)">
                     <rect id="Rectangle_125" dataName="Rectangle 125" width="130" height="130" transform="translate(629 445)" fill="#fff"/>
@@ -580,7 +574,7 @@ let GameRoomMain = (props) =>{
 
 
                 </li>
-                <li id="storageCard2" >
+                <li id="storageCard2" data-furnid="basketball" style={{cursor:"pointer" ,display:funitureHave.basketball}} onClick={putInRoom}>
                 <svg width="130" height="130" viewBox="0 0 130 130">
                 <g id="basketballCard" transform="translate(-798 -445)">
                     <rect id="Rectangle_122" dataName="Rectangle 122" width="130" height="130" transform="translate(798 445)" fill="#fff"/>
@@ -596,7 +590,7 @@ let GameRoomMain = (props) =>{
 
 
                 </li>
-                <li id="storageCard3" >
+                <li id="storageCard3" data-furnid="bathTube" style={{cursor:"pointer" ,display:funitureHave.bathTube}} onClick={putInRoom}>
                 <svg width="130" height="130" viewBox="0 0 130 130">
                 <g id="bathCard" transform="translate(-967 -445)">
                     <rect id="Rectangle_123" dataName="Rectangle 123" width="130" height="130" transform="translate(967 445)" fill="#fff"/>
@@ -638,7 +632,7 @@ let GameRoomMain = (props) =>{
 
 
                 </li>
-                <li id="storageCard4">
+                <li id="storageCard4" data-furnid="TV" style={{cursor:"pointer" ,display:funitureHave.TV}} onClick={putInRoom}>
                 <svg width="130" height="130" viewBox="0 0 130 130">
                 <g id="tvCard" transform="translate(-1136 -445)">
                     <rect id="Rectangle_124" dataName="Rectangle 124" width="130" height="130" transform="translate(1136 445)" fill="#fff"/>
@@ -658,7 +652,7 @@ let GameRoomMain = (props) =>{
                 </svg>
 
                 </li>
-                <li id="storageCard5">
+                <li id="storageCard5" data-furnid="cabinet" style={{cursor:"pointer" ,display:funitureHave.cabinet}} onClick={putInRoom}>
                 <svg width="130" height="130" viewBox="0 0 130 130">
                 <defs>
                     <filter id="Ellipse_37" x="54.102" y="21.768" width="22.218" height="21.796" filterUnits="userSpaceOnUse">
@@ -698,7 +692,7 @@ let GameRoomMain = (props) =>{
 
 
                 </li>
-                <li id="storageCard6">
+                <li id="storageCard6" data-furnid="mirror" style={{cursor:"pointer" ,display:funitureHave.mirror}} onClick={putInRoom}>
                 <svg width="130" height="130.262" viewBox="0 0 130 130.262">
                 <defs>
                     <filter id="Subtraction_8" x="36.412" y="5.739" width="56.853" height="44.057" filterUnits="userSpaceOnUse">
@@ -790,7 +784,7 @@ let GameRoomMain = (props) =>{
 
 
                 </li>
-                <li id="storageCard7">
+                <li id="storageCard7" data-furnid="femaleDuck" style={{cursor:"pointer" ,display:funitureHave.femaleDuck}} onClick={putInRoom}>
                 <svg width="130" height="130" viewBox="0 0 130 130">
                 <g id="duckCard" transform="translate(-967 -630)">
                     <rect id="Rectangle_128" dataName="Rectangle 128" width="130" height="130" transform="translate(967 630)" fill="#fff"/>
@@ -825,7 +819,7 @@ let GameRoomMain = (props) =>{
                 </svg>
 
                 </li>
-                <li id="storageCard8">
+                <li id="storageCard8" data-furnid="glasses" style={{cursor:"pointer" ,display:funitureHave.glasses}} onClick={putInRoom}>
                 <svg width="130" height="130" viewBox="0 0 130 130">
                 <g id="glassCard" transform="translate(-1136 -630)">
                     <rect id="Rectangle_129" dataName="Rectangle 129" width="130" height="130" transform="translate(1136 630)" fill="#fff"/>
@@ -844,7 +838,7 @@ let GameRoomMain = (props) =>{
                 </svg>
 
                 </li>
-                <li id="storageCard9">
+                <li id="storageCard9" data-furnid="protrait" style={{cursor:"pointer" ,display:funitureHave.protrait}} onClick={putInRoom}>
                 <svg width="130" height="130" viewBox="0 0 130 130">
                 <g id="protraitCard" transform="translate(-629 -799)">
                     <rect id="Rectangle_130" dataName="Rectangle 130" width="130" height="130" transform="translate(629 799)" fill="#fff"/>
@@ -882,7 +876,7 @@ let GameRoomMain = (props) =>{
                 </svg>
 
                 </li>
-                <li id="storageCard10">
+                <li id="storageCard10" data-furnid="clock" style={{cursor:"pointer" ,display:funitureHave.clock}} onClick={putInRoom}>
                 <svg width="130" height="130" viewBox="0 0 130 130">
                 <g id="clockCard" transform="translate(-798 -799)">
                     <rect id="Rectangle_131" dataName="Rectangle 131" width="130" height="130" transform="translate(798 799)" fill="#fff"/>
@@ -895,7 +889,7 @@ let GameRoomMain = (props) =>{
                 </svg>
 
                 </li>
-                <li id="storageCard11">
+                <li id="storageCard11" data-furnid="weight" style={{cursor:"pointer" ,display:funitureHave.weight}} onClick={putInRoom}>
                 <svg width="130" height="130" viewBox="0 0 130 130">
                 <defs>
                     <filter id="Rectangle_84">

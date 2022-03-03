@@ -14,7 +14,7 @@
     color: #418FAC;
     display:  inline-flex;
 	font: bold 200% Consolas, Monaco, monospace;
-	font-size: 43px;
+	font-size: 44px;
 	width: 11em;
 	white-space: nowrap;
 	overflow: hidden;
@@ -25,14 +25,14 @@
 
 .dialog-bottom {
 	position:relative;
-	top:150px;
+	top:130px;
 	left:45%;
     background: rgba(255,255,255,0.9);
     height: 70px;
     margin-bottom: 10px;
     position: relative;
-    width: 500px;
-	height: 100px;
+    width: 510px;
+	height: 120px;
 	border-radius: 20px;
 }
 .dialog-bottom::after {
@@ -57,7 +57,8 @@
     width: 0px;
 }
 
-@media screen and (max-width: 950px){
+
+@media screen and (max-width: 1200px){
     .typing{
         font-size: 17.5px;
     }
@@ -68,6 +69,4 @@
         width: 215px;
         height: 68px;
     }
-
-
 }
