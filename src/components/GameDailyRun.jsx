@@ -6,6 +6,7 @@ import { Row, Modal, ModalBody, Col, Container } from 'react-bootstrap';
 import "../css/GameDaily_style.css"
 import { PlusCircle, Search, DashCircle, Gift } from "react-bootstrap-icons"
 import { Bar, Chart } from 'react-chartjs-2';
+import {Link } from "react-router-dom"
 import Table from 'react-bootstrap/Table'
 import {
    Chart as ChartJS,
@@ -220,12 +221,15 @@ function GameDailyRun() {
       
    }
 
-
    const getTotalScore = () => {
       setGetTotalPercentage((haveMoney-100))
       setGetTotalPoint((haveMoney-100)*20)
       setGiftDisplay(true)
    }
+   
+   // const backToSelect =() => {
+   //    window.location = "/game/daily";
+   // }
 
    return (
       <>
@@ -359,7 +363,7 @@ function GameDailyRun() {
                <div className="jumpTitle"><span className="jumpTotle"> 結算版</span></div>
                <div className="jumpGet">總獲得％數：{`${getTotalPercentage}%`}</div>
                <div className="jumpGet">總獲得積分：{`${getTotalPoint}`}</div>
-               <button className="jumpClose" onClick={() => { setGiftDisplay(false) }}>關閉</button>
+               <button className="jumpClose" onClick={() => { setGiftDisplay(false) }}><Link to="/game/daily">領取</Link></button>
             </div>
          </Modal>
       </>
