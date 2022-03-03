@@ -48,27 +48,27 @@ function GameDailyRun() {
 
 
    //抓取股市資料
-   let labels= [ '2018/12/22', '2018/12/24', '2018/12/25', '2018/12/26', '2018/12/27','2018/12/28','2019/01/02'];
+   let labels = ['2018/12/22', '2018/12/24', '2018/12/25', '2018/12/26', '2018/12/27', '2018/12/28', '2019/01/02'];
    const getPrice = () => {
       const fakedata = {
-         labels: [ '2018/12/22', '2018/12/24', '2018/12/25', '2018/12/26', '2018/12/27','2018/12/28','2019/01/02'],
+         labels: ['2018/12/22', '2018/12/24', '2018/12/25', '2018/12/26', '2018/12/27', '2018/12/28', '2019/01/02'],
          datasets: [
             {
                type: 'bar',
                label: '買價',
-               data: labels.map(() => Math.floor((3-Math.random())*100)),
+               data: labels.map(() => Math.floor((3 - Math.random()) * 100)),
                backgroundColor: 'rgba(255, 30, 32)',
             },
             {
                type: 'line',
                label: '走勢',
-               data: labels.map(() => Math.floor((0.5-Math.random())*300)),
+               data: labels.map(() => Math.floor((0.5 - Math.random()) * 300)),
                backgroundColor: 'rgba(53, 30, 235)',
             },
             {
                type: 'bar',
                label: '賣價',
-               data: labels.map(() => Math.floor((2-Math.random())*150)),
+               data: labels.map(() => Math.floor((2 - Math.random()) * 150)),
                backgroundColor: 'rgb(53, 136, 20)',
             }
          ],
@@ -208,21 +208,22 @@ function GameDailyRun() {
       setModalDisplay(false);
    }
 
-
+   let testValue = 100 - Math.floor((0.5 - Math.random()) * 100);
    const nextLevels = () => {
-      let newValue = 90;
+      let newValue = testValue;
       moneyYesterday.current = haveMoney;
-      let pct = (90 / moneyYesterday.current - 1) * 100;
+      let pct = (testValue / moneyYesterday.current - 1) * 100;
       setCurrentData((currentDate) => currentDate + 1);
       setGetPercentage(Math.round(pct).toString());
       setHaveMoney(newValue);
-
       setModalDisplay(true);
+      
    }
 
-   const getTotalScore = () => {
 
-      setGetTotalPoint(getTotalPercentage * 20)
+   const getTotalScore = () => {
+      setGetTotalPercentage((haveMoney-100))
+      setGetTotalPoint((haveMoney-100)*20)
       setGiftDisplay(true)
    }
 
