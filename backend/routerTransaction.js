@@ -112,7 +112,7 @@ router.post('/transaction/inventory', async (req, res) => {
       FROM transaction txn 
       INNER JOIN securities sec ON txn.sec_id = sec.sec_id
       WHERE txn.acc_id = ? AND txn.txn_date <= ?
-      GROUP BY txn.sec_id
+      GROUP BY txn.sec_id HAVING total >0
    `
    query(strQuery, [acc_id, req.body.dateQuery], (err, rows) => {
       if (err) {
