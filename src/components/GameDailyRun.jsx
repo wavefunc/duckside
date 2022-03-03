@@ -6,6 +6,7 @@ import { Row, Modal, ModalBody, Col, Container } from 'react-bootstrap';
 import "../css/GameDaily_style.css"
 import { PlusCircle, Search, DashCircle, Gift } from "react-bootstrap-icons"
 import { Bar, Chart } from 'react-chartjs-2';
+import { Link } from "react-router-dom"
 import Table from 'react-bootstrap/Table'
 import {
    Chart as ChartJS,
@@ -48,27 +49,28 @@ function GameDailyRun() {
 
 
    //抓取股市資料
+   let labels = ['2018/12/22', '2018/12/24', '2018/12/25', '2018/12/26', '2018/12/27', '2018/12/28', '2019/01/02'];
    const getPrice = () => {
       const fakedata = {
-         labels: [ '2018/12/22', '2018/12/24', '2018/12/25', '2018/12/26', '2018/12/27','2018/12/28','2019/01/02'],
+         labels: ['2018/12/22', '2018/12/24', '2018/12/25', '2018/12/26', '2018/12/27', '2018/12/28', '2019/01/02'],
          datasets: [
             {
                type: 'bar',
-               label: 'Dataset 1',
-               data: [100, 200, 30, 400, 500, 60, 700],
-               backgroundColor: 'rgba(255, 99, 132)',
+               label: '買價',
+               data: labels.map(() => Math.floor((3 - Math.random()) * 100)),
+               backgroundColor: 'rgba(255, 30, 32)',
             },
             {
                type: 'line',
-               label: 'Dataset 2',
-               data: [20, 300, 40, 500, 60, 700, 80],
-               backgroundColor: 'rgba(53, 162, 235)',
+               label: '走勢',
+               data: labels.map(() => Math.floor((0.5 - Math.random()) * 300)),
+               backgroundColor: 'rgba(53, 30, 235)',
             },
             {
                type: 'bar',
-               label: 'Dataset 2',
-               data: [-200, -30, -400, -50, -380, -70, -100],
-               backgroundColor: 'rgb(53, 162, 235)',
+               label: '賣價',
+               data: labels.map(() => Math.floor((2 - Math.random()) * 150)),
+               backgroundColor: 'rgb(53, 136, 20)',
             }
          ],
       };
@@ -207,23 +209,27 @@ function GameDailyRun() {
       setModalDisplay(false);
    }
 
-
+   let testValue = 100 - Math.floor((-Math.random()) * 100);
    const nextLevels = () => {
-      let newValue = 90;
+      let newValue = testValue;
       moneyYesterday.current = haveMoney;
-      let pct = (90 / moneyYesterday.current - 1) * 100;
+      let pct = (testValue / moneyYesterday.current - 1) * 100;
       setCurrentData((currentDate) => currentDate + 1);
       setGetPercentage(Math.round(pct).toString());
       setHaveMoney(newValue);
-
       setModalDisplay(true);
+
    }
 
    const getTotalScore = () => {
-
-      setGetTotalPoint(getTotalPercentage * 20)
+      setGetTotalPercentage((haveMoney - 100))
+      setGetTotalPoint((haveMoney - 100) * 20)
       setGiftDisplay(true)
    }
+
+   // const backToSelect =() => {
+   //    window.location = "/game/daily";
+   // }
 
    return (
       <>
@@ -234,9 +240,9 @@ function GameDailyRun() {
                      <span className="headerSide">{`2019/1/${currentDate}交易建立`}</span>
                   </Col>
                   <Col>
-                     <a href="http://localhost:3000/game/daily">
+                     <Link to="/game/daily">
                         <button className="headerBack" ><span className="header-Back-text">返回關卡</span> </button>
-                     </a>
+                     </Link>
                   </Col>
                </Row>
             </Container>
@@ -357,7 +363,7 @@ function GameDailyRun() {
                <div className="jumpTitle"><span className="jumpTotle"> 結算版</span></div>
                <div className="jumpGet">總獲得％數：{`${getTotalPercentage}%`}</div>
                <div className="jumpGet">總獲得積分：{`${getTotalPoint}`}</div>
-               <button className="jumpClose" onClick={() => { setGiftDisplay(false) }}>關閉</button>
+               <button className="jumpClose" onClick={() => { setGiftDisplay(false) }}><Link to="/game/daily">領取</Link></button>
             </div>
          </Modal>
       </>
