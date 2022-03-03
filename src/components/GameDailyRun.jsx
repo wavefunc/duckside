@@ -6,7 +6,7 @@ import { Row, Modal, ModalBody, Col, Container } from 'react-bootstrap';
 import "../css/GameDaily_style.css"
 import { PlusCircle, Search, DashCircle, Gift } from "react-bootstrap-icons"
 import { Bar, Chart } from 'react-chartjs-2';
-import {Link } from "react-router-dom"
+import { Link } from "react-router-dom"
 import Table from 'react-bootstrap/Table'
 import {
    Chart as ChartJS,
@@ -218,15 +218,15 @@ function GameDailyRun() {
       setGetPercentage(Math.round(pct).toString());
       setHaveMoney(newValue);
       setModalDisplay(true);
-      
+
    }
 
    const getTotalScore = () => {
-      setGetTotalPercentage((haveMoney-100))
-      setGetTotalPoint((haveMoney-100)*20)
+      setGetTotalPercentage((haveMoney - 100))
+      setGetTotalPoint((haveMoney - 100) * 20)
       setGiftDisplay(true)
    }
-   
+
    // const backToSelect =() => {
    //    window.location = "/game/daily";
    // }
@@ -240,9 +240,9 @@ function GameDailyRun() {
                      <span className="headerSide">{`2019/1/${currentDate}交易建立`}</span>
                   </Col>
                   <Col>
-                     <a href="http://localhost:3000/game/daily">
+                     <Link to="/game/daily">
                         <button className="headerBack" ><span className="header-Back-text">返回關卡</span> </button>
-                     </a>
+                     </Link>
                   </Col>
                </Row>
             </Container>

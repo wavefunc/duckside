@@ -3,6 +3,7 @@
 import { Axios } from 'axios';
 import React, { Component } from 'react';
 import { Row, Modal } from 'react-bootstrap';
+import {Link } from "react-router-dom"
 
 function MyVerticallyCenteredModal(props) {
    return (
@@ -37,7 +38,7 @@ function MyVerticallyCenteredModal(props) {
                         <tspan y="0" fontFamily="Helvetica-Bold, Helvetica" fontWeight="700">3 Month</tspan>
                      </text>
 
-                     <a href="http://localhost:3000/game/dailyrun">
+                     <Link to="/game/dailyrun">
                         <g id="進入關卡_按鈕" data-name="進入關卡 按鈕" transform="translate(-33 41)">
                            <rect id="Rectangle_106" data-name="Rectangle 106" width="463" height="142" rx="30"
                               transform="translate(583 765)" fill="#3e88a8" />
@@ -46,7 +47,7 @@ function MyVerticallyCenteredModal(props) {
                               <tspan x="0" y="0">進入關卡</tspan>
                            </text>
                         </g>
-                     </a>
+                     </Link>
 
                      <g>
                         <a href="javascript:void(0)" id="closebt" onClick={props.onHide}>
