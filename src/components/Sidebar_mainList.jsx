@@ -39,6 +39,12 @@ export default function MainListItem() {
         setSelectedIndex(data)
     })
 
+    const [pathName, setPathName] = React.useState("");
+    const pathClick = (event, index) => {
+        setPathName(index);
+        PubSub.publish('Path', index);
+    }
+
 
     return (
         <React.Fragment>
@@ -46,7 +52,7 @@ export default function MainListItem() {
             <ListSubheader component="div" inset sx={{ bgcolor: '#ecdfb1' }}>
                 投資管理
             </ListSubheader>
-            <NavLink to="/manage/dashboard" style={{ color: 'black' }}>
+            <NavLink to="/manage/dashboard" style={{ color: 'black' }} onClick={(event) => pathClick(event, "/manage/dashboard")}>
                 <ListItemButton onClick={(event) => handleListItemClick(event, 1)}
                     sx={{
                         boxShadow: selectedIndex === 1 ? 'inset 0 -2px 5px rgba(0,0,0,0.15),inset 0 2px 5px rgba(0,0,0,0.15)' : null,
@@ -58,7 +64,7 @@ export default function MainListItem() {
                     <ListItemText primary="總覽" />
                 </ListItemButton>
             </NavLink>
-            <NavLink to="/manage/plan" style={{ color: 'black' }}>
+            <NavLink to="/manage/plan" style={{ color: 'black' }} onClick={(event) => pathClick(event, "/manage/plan")}>
                 <ListItemButton onClick={(event) => handleListItemClick(event, 2)}
                     sx={{
                         boxShadow: selectedIndex === 2 ? 'inset 0 -2px 5px rgba(0,0,0,0.15),inset 0 2px 5px rgba(0,0,0,0.15)' : null,
@@ -71,7 +77,7 @@ export default function MainListItem() {
                 </ListItemButton>
             </NavLink>
 
-            <NavLink to="/manage/transaction" style={{ color: 'black' }}>
+            <NavLink to="/manage/transaction" style={{ color: 'black' }} onClick={(event) => pathClick(event, "/manage/transaction")}>
                 <ListItemButton onClick={(event) => handleListItemClick(event, 3)}
                     sx={{
                         boxShadow: selectedIndex === 3 ? 'inset 0 -2px 5px rgba(0,0,0,0.15),inset 0 2px 5px rgba(0,0,0,0.15)' : null,
@@ -84,7 +90,7 @@ export default function MainListItem() {
                 </ListItemButton>
             </NavLink>
 
-            <NavLink to="/manage/asset" style={{ color: 'black' }}>
+            <NavLink to="/manage/asset" style={{ color: 'black' }} onClick={(event) => pathClick(event, "/manage/asset")}>
                 <ListItemButton onClick={(event) => handleListItemClick(event, 4)}
                     sx={{
                         boxShadow: selectedIndex === 4 ? 'inset 0 -2px 5px rgba(0,0,0,0.15),inset 0 2px 5px rgba(0,0,0,0.15)' : null,
@@ -98,7 +104,7 @@ export default function MainListItem() {
             </NavLink>
 
 
-            <NavLink to="/manage/check" style={{ color: 'black' }}>
+            <NavLink to="/manage/check" style={{ color: 'black' }} onClick={(event) => pathClick(event, "/manage/check")}>
                 <ListItemButton onClick={(event) => handleListItemClick(event, 5)}
                     sx={{
                         boxShadow: selectedIndex === 5 ? 'inset 0 -2px 5px rgba(0,0,0,0.15),inset 0 2px 5px rgba(0,0,0,0.15)' : null,

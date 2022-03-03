@@ -14,6 +14,7 @@ import MyCurrentPosition, { MyCardDeck } from '../components/ManageCurrent.jsx';
 import ManageRecent from '../components/ManageRecent.jsx';
 import { MyChartPie } from '../components/MyChartComponent.jsx'
 import { MyCandleLookup } from '../components/MyLookupComponent.jsx'
+import Breadcrumb from '../components/Breadcrumb'
 
 const acc_email = localStorage.getItem('loginState');
 const dateQuery = dt.format(new Date(), 'YYYY-MM-DD');
@@ -66,10 +67,10 @@ function ManageDashboard(props) {
    const [dataPie, setDataPie] = useState([]);
 
    const data2 = {
-      labels: dataPie.map((v) => v.sec_name),
+      labels: dataPie.map(v => v.sec_name),
       datasets: [
          {
-            data: dataPie.map((v) => v.marketValue),
+            data: dataPie.map(v => v.sec_name),
             backgroundColor: [
                'rgba(255, 99, 132, 0.2)',
                'rgba(255, 159, 64, 0.2)',
@@ -136,6 +137,7 @@ function ManageDashboard(props) {
 
    return (
       <Container fluid className="pt-3">
+         <Breadcrumb />
          <MyCardDeck data={dataCard} />
          <br />
          <Row>

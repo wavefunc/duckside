@@ -16,6 +16,7 @@ import dt from 'date-and-time';
 
 import { MyInput, MySelect } from '../components/MyFormComponent';
 import { MyChartLine } from '../components/MyChartComponent.jsx';
+import Breadcrumb from '../components/Breadcrumb';
 
 const acc_email = localStorage.getItem('loginState');
 const urlPostRecent = 'http://localhost:5000/asset/recent';
@@ -73,6 +74,7 @@ function ManageCheck(props) {
 
    return (
       <Container fluid className="pt-3" ref={container}>
+         <Breadcrumb />
          <Row>
             <Col lg={8}>
                <Formik

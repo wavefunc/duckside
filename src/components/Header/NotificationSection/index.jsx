@@ -62,7 +62,7 @@ const NotificationSection = () => {
         }
     }, [loginState])
 
-    const badgeChange = (event) => {
+    const badgeChange = () => {
         setBadge(0);
     }
 

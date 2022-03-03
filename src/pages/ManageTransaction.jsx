@@ -16,6 +16,7 @@ import dt from 'date-and-time';
 import { MyInput, MySelect, MyOkToast } from '../components/MyFormComponent';
 import MyCurrentPosition from '../components/ManageCurrent.jsx';
 import ManageRecent from '../components/ManageRecent.jsx';
+import Breadcrumb from '../components/Breadcrumb'
 
 const acc_email = localStorage.getItem('loginState');
 const urlPostRecent = 'http://localhost:5000/transaction/recent';
@@ -191,7 +192,8 @@ function ManageTransaction(props) {
    }
 
    return (
-      <Container fluid  className="pt-3">
+      <Container fluid className="pt-3">
+         <Breadcrumb />
          <Row className='pr-2'>
             <Col lg={8}>
                <Formik
@@ -487,7 +489,7 @@ function ManageTransaction(props) {
                      <Nav.Item>
                         <Nav.Link eventKey="disabled" disabled bsPrefix='btn btn-basic ml-1'>按住shift點選欄位可多重排序</Nav.Link>
                      </Nav.Item>
-                     <MyOkToast show={showToast} closeToast={()=>{setShowToast(false)}} />
+                     <MyOkToast show={showToast} closeToast={() => { setShowToast(false) }} />
                   </Nav>
                   <Tab.Content>
                      <Tab.Pane eventKey="first">
