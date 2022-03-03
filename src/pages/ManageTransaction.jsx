@@ -124,9 +124,8 @@ function ManageTransaction(props) {
          acc_email: acc_email,
          ...values
       };
-      console.log(`dataToServer: ${JSON.stringify(dataToServer)}`);
       axios.post(urlPostCreate, dataToServer).then((res) => {
-         console.log(res.data);
+         console.log(JSON.stringify(res.data));
          let newInitValues = resetInputs({ ...values });
          actions.resetForm({ values: newInitValues });
          actions.setSubmitting(false);
