@@ -294,7 +294,7 @@ let MemberInfo = () => {
                   onChange={photoInpChange}
                 ></input>
                 <button
-                  className="btn btn-primary"
+                  className="btn btn-warning"
                   type="button"
                   onClick={photoButClick}
                 >
@@ -344,7 +344,7 @@ let MemberInfo = () => {
                     />
                   </div>
                   <button
-                    className="btn btn-primary mb-3 ml-3 mt-4"
+                    className="btn btn-warning mb-3 ml-3 mt-4"
                     type="button"
                     onClick={nameButClick}
                   >
@@ -405,7 +405,7 @@ let MemberInfo = () => {
                   {passwordNoticeState.text}
                 </span>
                 <button
-                  className="btn btn-primary mt-2"
+                  className="btn btn-warning mt-2"
                   type="button"
                   onClick={passwordButClick}
                 >
@@ -458,7 +458,7 @@ let MemberInfo = () => {
                   {forgetNoticeState.text}
                 </span>
                 <button
-                  className="btn btn-primary mt-2"
+                  className="btn btn-warning mt-2"
                   type="button"
                   onClick={forgetButClick}
                 >

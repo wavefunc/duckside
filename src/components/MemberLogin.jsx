@@ -8,7 +8,12 @@ import Modal from "react-bootstrap/Modal";
 // Firebase
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "@firebase/auth";
+import {
+  getAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  FacebookAuthProvider,
+} from "@firebase/auth";
 
 let MemberLogin = (props) => {
   //********************
@@ -26,10 +31,6 @@ let MemberLogin = (props) => {
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
-
-  const provider = new GoogleAuthProvider();
-
-  const auth = getAuth();
 
   //********************
   //State
@@ -106,6 +107,11 @@ let MemberLogin = (props) => {
   };
 
   // Firebase
+  //google
+  const provider = new GoogleAuthProvider();
+
+  const auth = getAuth();
+
   let googoleButClick = async () => {
     await signInWithPopup(auth, provider)
       .then((result) => {
@@ -129,6 +135,8 @@ let MemberLogin = (props) => {
             local.setItem("memberName", user.displayName);
           }
           props.close();
+          //reload
+          window.location.reload();
         });
       })
       .catch((error) => {
@@ -142,6 +150,44 @@ let MemberLogin = (props) => {
         // ...
       });
   };
+  //FB
+  //尚未驗證
+  const providerFB = new FacebookAuthProvider();
+  providerFB.addScope("user_birthday");
+
+  auth.languageCode = "it";
+  // To apply the default browser preference instead of explicitly setting it.
+  // firebase.auth().useDeviceLanguage();
+
+  providerFB.setCustomParameters({
+    display: "popup",
+  });
+
+  let fbButClick = async () => {
+    await signInWithPopup(auth, providerFB)
+      .then((result) => {
+        // The signed-in user info.
+        const user = result.user;
+
+        // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+        const credential = FacebookAuthProvider.credentialFromResult(result);
+        const accessToken = credential.accessToken;
+
+        // ...
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.email;
+        // The AuthCredential type that was used.
+        const credential = FacebookAuthProvider.credentialFromError(error);
+
+        // ...
+      });
+  };
+
   return (
     <Modal
       size="sm"
@@ -232,7 +278,7 @@ let MemberLogin = (props) => {
               </footer>
               <hr />
               <div className="d-flex flex-column mt-2 mb-3">
-                <div className="fb btn">
+                <div className="fb btn" onClick={fbButClick}>
                   <i className="fa fa-facebook fa-fw"></i> Login with Facebook
                 </div>
 
