@@ -9,7 +9,7 @@ class Homepage extends Component {
          <div>
             <div style={{background:'#F5F5CC'}}>
                <HomePageWord />
-               <svg width="100%" viewBox="0 0 1920 1080">
+               <svg width="100%" height="61vh" viewBox="0 0 1920 1080">
                   <defs>
                      <filter id="Ellipse_37" x="1730" y="632.743" width="31.86" height="30.474" filterUnits="userSpaceOnUse">
                         <feOffset dy="3" input="SourceAlpha" />

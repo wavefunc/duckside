@@ -9,12 +9,12 @@
 
 .typing {
 	position: relative;
-    top: 31px;
+    top: 27px;
     left: 20px;
     color: #418FAC;
     display:  inline-flex;
 	font: bold 200% Consolas, Monaco, monospace;
-	font-size: 48px;
+	font-size: 43px;
 	width: 11em;
 	white-space: nowrap;
 	overflow: hidden;
@@ -25,14 +25,14 @@
 
 .dialog-bottom {
 	position:relative;
-	top:230px;
+	top:150px;
 	left:45%;
     background: rgba(255,255,255,0.9);
     height: 70px;
     margin-bottom: 10px;
     position: relative;
-    width: 580px;
-	height: 120px;
+    width: 500px;
+	height: 100px;
 	border-radius: 20px;
 }
 .dialog-bottom::after {
@@ -55,4 +55,19 @@
         left: 46px;
         left: 30px;
     width: 0px;
+}
+
+@media screen and (max-width: 950px){
+    .typing{
+        font-size: 17.5px;
+    }
+    .dialog-bottom{
+        position:relative;
+	    top:150px;
+	    left:35%;
+        width: 215px;
+        height: 68px;
+    }
+
+
 }

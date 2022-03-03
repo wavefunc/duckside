@@ -91,7 +91,7 @@ const mdTheme = createTheme({
 
 });
 
-const widthBreakpoint = 950;
+const widthBreakpoint = 900;
 
 function Layout() {
   const [open, setOpen] = React.useState(true);
