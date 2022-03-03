@@ -41,19 +41,17 @@
  
     /* 設定邊框大小可拼湊出任意形狀的三角形 */
     border-width: 13px 8px;
- 
     bottom: -20px;
  
     /* 必須指定，才能顯示內容 */
     content: "";
- 
     height: 0px;
 
  
     /* 必須指定，否則會變梯形 */
     position: absolute;
-        left: 46px;
-        left: 30px;
+    left: 46px;
+    left: 30px;
     width: 0px;
 }
 
