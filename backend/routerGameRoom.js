@@ -31,33 +31,27 @@ router.put('/acc_furn/buying', async (req, res) => {
    // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
    var acc_id = await checkAccount(req.body.acc_email, res);
 
-   // let strQueryIsMoneyEnough = `
-   //    SELECT IF(
-   //       (SELECT SUM(pt_scoring) total 
-   //          FROM point_record 
-   //          WHERE acc_id = ?)
-   //       >
-   //       (SELECT furn_price 
-   //          FROM furniture 
-   //          WHERE furn_id = ?),
-   //       true,
-   //       false
-   //    ) isEnough
-   // `;
+   let strQueryIsMoneyEnough = `
+      SELECT 
+         IF(
+            (SELECT SUM(pt_scoring) total FROM point_record WHERE acc_id = ?)
+            > (SELECT furn_price FROM furniture WHERE furn_id = ?),
+            true, false
+         ) isEnough
+   `;
 
-   // await queryTest(strQueryIsMoneyEnough, [acc_id, req.body.furn_id], (err, rows) => {
-   //    if (err) {
-   //       res.end(err);
-   //    } else {
-   //       if (rows[0].isEnough) {
-   //          console.log(conn);
-   //          console.log('Money is enough');
-   //       } else {
-   //          res.send('Money is not enough');
-   //       }
-   //    }
-   // });
+   await query(strQueryIsMoneyEnough,
+      [acc_id, req.body.furn_id],
+      (err, rows) => {
+         err ?
+            res.send(err) :
+            rows[0].isEnough ?
+               updateFurnAndPoint(acc_id, req.body.furn_id, res) :
+               res.send('Money is not enough');
+      });
+});
 
+function updateFurnAndPoint(acc_id, furn_id, res) {
    let strQueryBought = `UPDATE acc_furn SET acc_furn_bought = 1 
       WHERE acc_id = ? AND furn_id = ?;`;
 
@@ -66,19 +60,20 @@ router.put('/acc_furn/buying', async (req, res) => {
       VALUES (?, NOW(),
          -1 * (SELECT furn_price FROM furniture WHERE furn_id = ?)
       )`;
+
    query(
       strQueryBought + strQuerySetPoint,
-      [acc_id, req.body.furn_id, acc_id, req.body.furn_id],
-      (err) => {
+      [acc_id, furn_id, acc_id, furn_id],
+      err => {
          res.send(
             err ?
                err :
                `Successfully updated acc_furn on 
-                  acc_id = ${acc_id} and furn_id = ${req.body.furn_id}`
+                  acc_id = ${acc_id} and furn_id = ${furn_id}`
          );
       }
    );
-});
+}
 
 // **********************************************************
 // 房間擺放家具時，修改會員家具的 acc_furn_placed 為 1
