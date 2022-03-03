@@ -1,4 +1,4 @@
-﻿import {
+import {
     Chart as ChartJS,
     CategoryScale,
     LinearScale,
@@ -11,7 +11,7 @@
     Filler,
 } from 'chart.js';
 import { Button, Modal, Form, InputGroup, FormControl } from 'react-bootstrap';
-import { Search, BarChartSteps, ZoomIn, ZoomOut, ChevronRight, ChevronLeft, ChevronDoubleRight, ChevronDoubleLeft, FileX } from 'react-bootstrap-icons';
+import { Search, BarChartSteps, ZoomIn, ZoomOut, ChevronRight, ChevronLeft, ChevronDoubleRight, ChevronDoubleLeft } from 'react-bootstrap-icons';
 import dt from 'date-and-time';
 import { Bar } from 'react-chartjs-2';
 import { useEffect, useState, useRef } from 'react';
@@ -39,7 +39,7 @@ const initialOptions = {
             ticks: {
                 source: "labels",
                 callback: (v, i, arr) => {
-                    if (i == 0) {
+                    if (i === 0) {
                         return v;
                     } else {
                         let currentYmdArr = v.split('/');
@@ -116,7 +116,6 @@ const shadow_red = 'rgba(255, 196, 196)';
 const shadow_green = 'rgba(196, 255, 196)';
 const shadow_gray = 'rgba(144, 144, 144)';
 
-
 const urlGetDatalist = 'http://localhost:5000/securities/datalist/';
 const urlpostCandle = 'http://localhost:5000/securities/candlestick';
 
@@ -144,6 +143,8 @@ const getBodyColor = function (ayy) {
                 return body_green;
             case 0:
                 return body_gray;
+            default:
+                return body_gray;
         }
     })
 };
@@ -156,6 +157,8 @@ const getShadowColor = function (ayy) {
                 return shadow_green;
             case 0:
                 return shadow_gray;
+            default:
+                return shadow_gray;
         }
     })
 };
@@ -166,8 +169,8 @@ export function MyCandleLookup(props) {
     const [validated, setValidated] = useState(false);
 
     const [dataCandle, setDataCandle] = useState(false);
-    const [minDateIdx, setMinDateIdx] = useState(0);
-    const [maxDateIdx, setMaxDateIdx] = useState(0);
+    // const [minDateIdx, setMinDateIdx] = useState(0);
+    // const [maxDateIdx, setMaxDateIdx] = useState(0);
     const [options, setOptions] = useState(initialOptions);
     const [showCandle, setShowCandle] = useState(false);
 
@@ -216,14 +219,6 @@ export function MyCandleLookup(props) {
             console.log(`${minDateIdx - i}-${maxDateIdx - i}`);
         }
         setOptions(newOptions);
-
-
-        return;
-        let minDate = new Date(options.scales.x.min);
-        let maxDate = new Date(options.scales.x.max);
-        let minDateStr = dt.format(minDate, "YYYY-MM-DD")
-        let maxDateStr = dt.format(maxDate, "YYYY-MM-DD")
-
     }
     function dataRangeZoomOut(d = 1) {
         let newOptions = { ...options };
@@ -231,7 +226,7 @@ export function MyCandleLookup(props) {
         let maxDateIdx = dataCandle.dates.indexOf(newOptions.scales.x.max);
         console.log(`${minDateIdx}-${maxDateIdx}`);
 
-        for (let pedo = 0, i = 0, j = 0; pedo < d; pedo++) {
+        for (let pedo = 0, i = 0; pedo < d; pedo++) {
             if (dataCandle.dates[maxDateIdx + 1] && i++ < d / 2) {
                 maxDateIdx += 1;
                 continue;
@@ -258,7 +253,7 @@ export function MyCandleLookup(props) {
         console.log(`${minDateIdx}-${maxDateIdx}`);
 
         for (let pedo = 0; pedo < d && maxDateIdx - minDateIdx >= 10; pedo++) {
-            if (pedo % 2 == 0) {
+            if (pedo % 2 === 0) {
                 maxDateIdx -= 1;
                 console.log('maxDateIdx-1');
                 continue;
@@ -276,7 +271,7 @@ export function MyCandleLookup(props) {
     }
     return (
         <>
-            <Form inline noValidate className='mt-2' validated={validated}>
+            <Form inline noValidate className='mt-2 d-inline' validated={validated}>
                 <Form.Label htmlFor="inlineFormInputName2" srOnly>
                     K線速查
                 </Form.Label>
@@ -288,7 +283,7 @@ export function MyCandleLookup(props) {
                     </InputGroup.Prepend>
                     <FormControl
                         id="sec_str" name="sec_str" ref={inputSecStr}
-                        placeholder='請輸入關鍵字'
+                        placeholder='查詢技術線圖'
                         onChange={({ target }) => getDatalist(target.value, setDatalist)}
                         list='lookupCandle'
                     />

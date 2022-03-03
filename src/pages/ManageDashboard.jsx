@@ -5,9 +5,8 @@
  * 
  * * * * * * * * * * * */
 
-import React, { useEffect, useState, useRef } from 'react';
-import { Container, Row, Col, Button, Form, Modal } from 'react-bootstrap';
-import { Search } from 'react-bootstrap-icons';
+import React, { useEffect, useState } from 'react';
+import { Container, Row, Col, Tab, Nav } from 'react-bootstrap';
 import axios from 'axios';
 import dt from 'date-and-time';
 
@@ -24,11 +23,29 @@ const urlPostPlan = 'http://localhost:5000/plan/recent';
 const urlPostMarketInfo = 'http://localhost:5000/securities/marketInfo';
 
 // 主表使用
-// 庫存現況 要加掛市價欄
+// 庫存現況
 const colInventory = [
-   { id: 'sec_id', name: '代號' },
-   { id: 'sec_name', name: '名稱' },
-   { id: 'total', name: '庫存數量' },
+   { id: 'sec_id', name: '代號', width: '10%' },
+   { id: 'sec_name', name: '名稱', width: '20%' },
+   {
+      id: 'marketPrice', name: '現價', width: '10%',
+      formatter: (cell, row) => {
+         return row.cells[0].data
+      }
+   },
+   {
+      id: 'marketPriceChange', name: '漲跌', width: '10%',
+      formatter: (cell, row) => {
+         return row.cells[0].data
+      }
+   },
+   { id: 'total', name: '庫存數量', width: '10%' },
+   {
+      id: 'marketValue', name: '市值', width: '10%',
+      formatter: (cell, row) => {
+         return row.cells[0].data
+      }
+   },
 ];
 // 最近計畫
 const colPlan = [
@@ -92,6 +109,7 @@ function ManageDashboard(props) {
       axios.post(urlPostMarketInfo, dataToServer).then((res) => {
          if (beingMounted) {
             setMarketInfo(res.data);
+            // console.log(res.data.priceClose(2330));
             console.log(res.data);
          }
       });
@@ -104,20 +122,39 @@ function ManageDashboard(props) {
          <br />
          <Row>
             <Col lg={8}>
-               <MyCurrentPosition col={colInventory} className={{ table: 'table table-sm' }}
-                  url={urlPostInventory}
-                  dataToServer={{ acc_email: acc_email, dateQuery: dateQuery }}
-               ></MyCurrentPosition>
-               <ManageRecent row={10} col={colPlan}
-                  url={urlPostPlan} dataToServer={{ acc_email: acc_email, amount: 10 }}
-               ></ManageRecent>
+               <Tab.Container id="left-tabs-example" defaultActiveKey="first" mountOnEnter={true}>
+                  <Nav variant="pills">
+                     <Nav.Item>
+                        <Nav.Link eventKey="first" bsPrefix='btn btn-light ml-1'>庫存現況</Nav.Link>
+                     </Nav.Item>
+                     <Nav.Item>
+                        <Nav.Link eventKey="second" bsPrefix='btn btn-light ml-1'>最近計畫</Nav.Link>
+                     </Nav.Item>
+                     <Nav.Item className="flex-grow-1">
+                        <Nav.Link eventKey="disabled" disabled bsPrefix='btn btn-basic ml-1'></Nav.Link>
+                     </Nav.Item>
+                     <Nav.Item className='pr-1'>
+                        <MyCandleLookup></MyCandleLookup>
+                     </Nav.Item>
+                  </Nav>
+                  <Tab.Content>
+                     <Tab.Pane eventKey="first">
+                        <MyCurrentPosition col={colInventory} className={{ table: 'table table-sm' }}
+                           url={urlPostInventory}
+                           dataToServer={{ acc_email: acc_email, dateQuery: dateQuery }}
+                        ></MyCurrentPosition>
+                     </Tab.Pane>
+                     <Tab.Pane eventKey="second">
+                        <ManageRecent row={10} col={colPlan}
+                           url={urlPostPlan} dataToServer={{ acc_email: acc_email, amount: 10 }}
+                        ></ManageRecent>
+                     </Tab.Pane>
+                  </Tab.Content>
+               </Tab.Container>
+
             </Col>
             <Col lg={4}>
-               <MyCandleLookup></MyCandleLookup>
-               {/* <MyChartPie></MyChartPie>
-               <ManageCurrent col={col2} className={{ table: 'table table-sm' }}
-                  url={urlPostInventory} dataToServer={{ acc_email: acc_email, dateQuery: dateQuery }}
-               ></ManageCurrent> */}
+               <MyChartPie></MyChartPie>
             </Col>
          </Row>
          <Row>

@@ -1,4 +1,4 @@
-﻿import {
+import {
     Chart as ChartJS,
     CategoryScale,
     LinearScale,
@@ -43,7 +43,7 @@ const options = {
                 },
                 callback: (v, i, arr) => {
                     let currentYmdArr = v.split('-');
-                    if (i == 0) {
+                    if (i === 0) {
                         return `${currentYmdArr[0]}/${currentYmdArr[1]}/${currentYmdArr[2]}`;
                     } else {
                         // return `${currentYmdArr[1]}/${currentYmdArr[2]}`
@@ -109,6 +109,43 @@ const options = {
     }
 };
 // 圓餅圖基本設定
+const options2 = {
+    // maintainAspectRatio: false,
+    responsive: true,
+    layout: {
+        padding: 12
+    },
+    interaction: {
+        intersect: false,
+        mode: 'index',
+    },
+    plugins: {
+        legend: {
+            align: 'center',
+            labels: {
+                font: {
+                    size: 18
+                },
+                textAlign:'left'
+            }
+        },
+        title: {
+            display: false,
+        },
+        // tooltip: {
+        //     callbacks: {
+        //         title: (i) => {
+        //             let tempIdx = i[0].label.lastIndexOf(',')
+        //             return i[0].label.slice(0, tempIdx);
+        //         },
+                //         label: (i) => {
+                //             return [i.dataset.label, i.raw];
+                //         }
+            // }
+        // }
+    }
+};
+
 
 // 假資料: 圓餅圖
 const data2 = {
@@ -168,5 +205,5 @@ export function MyChartLine({ data, x, y, yLabels, ...props }) {
 }
 
 export function MyChartPie({ url, dataToServer, ...props }) {
-    return <Pie options={options} data={data2} />;
+    return <Pie data={data2} options={options2} />;
 }

@@ -1,4 +1,4 @@
-﻿/* ***人豪***
+/* ***人豪***
  * 1. 從父元件接收 url [, dataToServer] 以axios抓取data呈現在表格
  * 2. 如沒收到url, 則以props.data作為data
  * 3. 如沒收到url, 且沒收到data或data.length=0, 則return null
@@ -39,10 +39,8 @@ function MyCurrentPosition({ url, dataToServer, row, col = null, ...props }) {
                 data={row ? data.slice(0, row) : data}
                 sort={true}
                 style={{
-                    table: {
-                        'width': '96%',
-                        'border-top': '1px solid #e2e2e2',
-                    },
+                    table: { 'width': '100%', 'border-top': '1px solid #e2e2e2', 'marginTop': '5px' },
+                    th: { 'backgroundColor': '#e7ebee', 'fontWeight': 'bolder' }
                 }}
                 resizable={true}
                 className={props.className ? { ...props.className } : {}}
@@ -68,7 +66,7 @@ export const MyCardDeck = (props) => {
                 <Card.Body>
                     <Card.Title as='h6' className="">
                         {card.title}
-                        <br/>
+                        <br />
                         {Math.round(card.weight * 10000) / 100.0 + "%"}
                     </Card.Title>
                     <Card.Text>
