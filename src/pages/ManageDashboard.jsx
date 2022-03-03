@@ -66,10 +66,10 @@ function ManageDashboard(props) {
    const [dataPie, setDataPie] = useState([]);
 
    const data2 = {
-      labels: dataPie.map(v=>v.sec_name),
+      labels: dataPie.map((v) => v.sec_name),
       datasets: [
          {
-            data: dataPie.map(v=>v.sec_name),
+            data: dataPie.map((v) => v.marketValue),
             backgroundColor: [
                'rgba(255, 99, 132, 0.2)',
                'rgba(255, 159, 64, 0.2)',
@@ -84,8 +84,6 @@ function ManageDashboard(props) {
          },
       ],
    };
-
-
 
    useEffect(() => {
       let beingMounted = true;
@@ -118,7 +116,11 @@ function ManageDashboard(props) {
       });
       axios.post(urlPostInventory, dataToServer).then((res) => {
          if (beingMounted) {
+            let dataSorted = res.data;
             console.log(res.data);
+            dataSorted = dataSorted.sort(function (a, b) {
+            return a.marketValue > b.marketValue ? 1 : -1;
+            });
             setDataPie(res.data);
          }
       });
