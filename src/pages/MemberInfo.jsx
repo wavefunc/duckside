@@ -124,7 +124,7 @@ let MemberInfo = () => {
       acc_email: memberInfo.email,
       acc_password: changeInfo.password,
     }).then((result) => {
-      //檢查欄位是否填寫
+      //沒有_檢查欄位是否填寫
       if (
         (changeInfo.password === "") |
         (changeInfo.newpassword === "") |
@@ -137,7 +137,9 @@ let MemberInfo = () => {
           color: "text-danger",
         });
       } else {
+        //有_檢查欄位是否填寫
         //錯誤舊密碼
+        console.log(result.data);
         if (result.data === "Password error") {
           setPasswordNoticeState({
             ...passwordNoticeState,
@@ -145,17 +147,19 @@ let MemberInfo = () => {
             text: "舊密碼錯誤，更改失敗！",
             color: "text-danger",
           });
-        } else if (
-          //成功更改密碼
-          result.data === "Password correct" &&
-          changeInfo.newpassword === changeInfo.againnewpassword
-        ) {
+        } else if (changeInfo.newpassword !== changeInfo.againnewpassword) {
+          //錯誤新密碼兩次不相同
+          setPasswordNoticeState({
+            ...passwordNoticeState,
+            show: "block",
+            text: "請確認兩次新密碼輸入是否相同，更改失敗！",
+            color: "text-danger",
+          });
+        } else {
           Axios.put("http://localhost:5000/account/updatepassword", {
             acc_email: memberInfo.email,
             acc_password: changeInfo.newpassword,
-          }).then((result) => {
-            console.log(result.data);
-          });
+          }).then((result) => {});
           setPasswordNoticeState({
             ...passwordNoticeState,
             show: "block",
@@ -168,14 +172,6 @@ let MemberInfo = () => {
             password: "",
             newpassword: "",
             againnewpassword: "",
-          });
-        } else {
-          //錯誤新密碼兩次不相同
-          setPasswordNoticeState({
-            ...passwordNoticeState,
-            show: "block",
-            text: "請確認兩次新密碼輸入是否相同，更改失敗！",
-            color: "text-danger",
           });
         }
       }
@@ -242,7 +238,7 @@ let MemberInfo = () => {
               color: "text-danger",
             });
           } else {
-            console.log("123")
+            console.log("123");
             setForgetInfo({ ...forgetInfo, email: result.data });
             Axios.put("http://localhost:5000/account/updatepassword", {
               acc_email: forgetInfo.email,
