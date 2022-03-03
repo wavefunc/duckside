@@ -291,7 +291,7 @@ function GameDailyRun() {
                               <thead className="thdPost">
                                  <tr>
                                     <th>證券代號/名稱</th>
-                                    <th>買進部位</th>
+                                    <th>買進股數</th>
 
                                  </tr>
                               </thead>
