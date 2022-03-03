@@ -208,7 +208,7 @@ function GameDailyRun() {
       setModalDisplay(false);
    }
 
-   let testValue = 100 - Math.floor((0.5 - Math.random()) * 100);
+   let testValue = 100 - Math.floor((-Math.random()) * 100);
    const nextLevels = () => {
       let newValue = testValue;
       moneyYesterday.current = haveMoney;
