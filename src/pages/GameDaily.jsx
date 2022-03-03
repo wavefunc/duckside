@@ -50,7 +50,7 @@ function MyVerticallyCenteredModal(props) {
                      </Link>
 
                      <g>
-                        <a href="javascript:void(0)" id="closebt" onClick={props.onHide}>
+                        <a  id="closebt" onClick={props.onHide}>
                            <g id="關閉_按鈕" data-name="關閉 按鈕" transform="translate(20 41)">
                               <rect id="Rectangle_105" data-name="Rectangle 105" width="325" height="142" rx="30"
                                  transform="translate(1109 765)" fill="#ac4c4c" />
@@ -113,7 +113,7 @@ function MyVerticallyCenteredModalTwo(e) {
                         </g>
 
                      <g>
-                        <a href="javascript:void(0)" id="closebt" onClick={e.onHide}>
+                        <a href="" id="closebt" onClick={e.onHide}>
                            <g id="關閉_按鈕" data-name="關閉 按鈕" transform="translate(20 41)">
                               <rect id="Rectangle_105" data-name="Rectangle 105" width="325" height="142" rx="30"
                                  transform="translate(1109 765)" fill="#ac4c4c" />
@@ -176,7 +176,7 @@ function MyVerticallyCenteredModalThree(v) {
                         </g>
 
                      <g>
-                        <a href="javascript:void(0)" id="closebt" onClick={v.onHide}>
+                        <a href="" id="closebt" onClick={v.onHide}>
                            <g id="關閉_按鈕" data-name="關閉 按鈕" transform="translate(20 41)">
                               <rect id="Rectangle_105" data-name="Rectangle 105" width="325" height="142" rx="30"
                                  transform="translate(1109 765)" fill="#ac4c4c" />
@@ -239,7 +239,7 @@ function MyVerticallyCenteredModalFour(p) {
                         </g>
 
                      <g>
-                        <a href="javascript:void(0)" id="closebt" onClick={p.onHide}>
+                        <a href="" id="closebt" onClick={p.onHide}>
                            <g id="關閉_按鈕" data-name="關閉 按鈕" transform="translate(20 41)">
                               <rect id="Rectangle_105" data-name="Rectangle 105" width="325" height="142" rx="30"
                                  transform="translate(1109 765)" fill="#ac4c4c" />
@@ -302,7 +302,7 @@ function MyVerticallyCenteredModalFive(a) {
                         </g>
 
                      <g>
-                        <a href="javascript:void(0)" id="closebt" onClick={a.onHide}>
+                        <a href="" id="closebt" onClick={a.onHide}>
                            <g id="關閉_按鈕" data-name="關閉 按鈕" transform="translate(20 41)">
                               <rect id="Rectangle_105" data-name="Rectangle 105" width="325" height="142" rx="30"
                                  transform="translate(1109 765)" fill="#ac4c4c" />
@@ -365,7 +365,7 @@ function MyVerticallyCenteredModalSix(b) {
                         </g>
 
                      <g>
-                        <a href="javascript:void(0)" id="closebt" onClick={b.onHide}>
+                        <a href="" id="closebt" onClick={b.onHide}>
                            <g id="關閉_按鈕" data-name="關閉 按鈕" transform="translate(20 41)">
                               <rect id="Rectangle_105" data-name="Rectangle 105" width="325" height="142" rx="30"
                                  transform="translate(1109 765)" fill="#ac4c4c" />
@@ -428,7 +428,7 @@ function MyVerticallyCenteredModalSeven(c) {
                         </g>
 
                      <g>
-                        <a href="javascript:void(0)" id="closebt" onClick={c.onHide}>
+                        <a href="" id="closebt" onClick={c.onHide}>
                            <g id="關閉_按鈕" data-name="關閉 按鈕" transform="translate(20 41)">
                               <rect id="Rectangle_105" data-name="Rectangle 105" width="325" height="142" rx="30"
                                  transform="translate(1109 765)" fill="#ac4c4c" />
@@ -491,7 +491,7 @@ function MyVerticallyCenteredModalEight(d) {
                         </g>
 
                      <g>
-                        <a href="javascript:void(0)" id="closebt" onClick={d.onHide}>
+                        <a href="" id="closebt" onClick={d.onHide}>
                            <g id="關閉_按鈕" data-name="關閉 按鈕" transform="translate(20 41)">
                               <rect id="Rectangle_105" data-name="Rectangle 105" width="325" height="142" rx="30"
                                  transform="translate(1109 765)" fill="#ac4c4c" />
