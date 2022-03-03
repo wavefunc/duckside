@@ -61,7 +61,7 @@ export const MyCardDeck = (props) => {
 
     const renderCard = (card, index) => {
         return (
-            <Card key={index} className="p-0">
+            <Card key={index} className="p-0 mt-0">
                 <Card.Header style={{ backgroundColor: `hsl(50, 88%, ${-card.weight * 40 + 95}%)` }} className="m-0"></Card.Header>
                 <Card.Body>
                     <Card.Title as='h6' className="">
