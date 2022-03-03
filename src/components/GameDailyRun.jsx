@@ -31,24 +31,26 @@ ChartJS.register(
 
 function GameDailyRun() {
 
-   const [FindShow, setFindShow] = useState(false); //查詢
-   const [GiftShow, setGiftShow] = useState(false); //領取獎勵
-   const [modalClose, setModalClose] = useState(false); //下一關
+   const [findDisplay, setFindDisplay] = useState(false); //查詢
+   const [giftDisplay, setGiftDisplay] = useState(false); //領取獎勵
+   const [modalDisplay, setModalDisplay] = useState(false); //下一關
    const [chartData, setChartData] = useState([]);
    const [stockList, setStockList] = useState([]);
    const [currentDate, setCurrentData] = useState(2);
    const [haveMoney, setHaveMoney] = useState("100");
    const moneyYesterday = useRef("100");
    const [getPercentage, setGetPercentage] = useState("");
+   const [getTotalPoint, setGetTotalPoint] = useState(0);
+   const [getTotalPercentage, setGetTotalPercentage] = useState(30);
 
    const inputAmount = useRef();
    const inputStockId = useRef();
 
-   //抓取股市資料
 
+   //抓取股市資料
    const getPrice = () => {
       const fakedata = {
-         labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+         labels: [ '2018/12/22', '2018/12/24', '2018/12/25', '2018/12/26', '2018/12/27','2018/12/28','2019/01/02'],
          datasets: [
             {
                type: 'bar',
@@ -65,15 +67,15 @@ function GameDailyRun() {
             {
                type: 'bar',
                label: 'Dataset 2',
-               data: [200, 30, 400, 50, 600, 700, 80],
+               data: [-200, -30, -400, -50, -380, -70, -100],
                backgroundColor: 'rgb(53, 162, 235)',
             }
          ],
       };
       setChartData(fakedata);
-      setFindShow(true);
+      setFindDisplay(true);
       // axios.get().then((res) => {
-      // setFindShow(res.data);
+      // setFindDisplay(res.data);
 
       // });
    }
@@ -202,25 +204,26 @@ function GameDailyRun() {
    }
 
    const continueLevels = () => {
-      setCurrentData((currentDate) => currentDate + 1);
-      setModalClose(false);
+      setModalDisplay(false);
    }
 
 
    const nextLevels = () => {
       let newValue = 90;
       moneyYesterday.current = haveMoney;
-      setHaveMoney(90);
-
       let pct = (90 / moneyYesterday.current - 1) * 100;
+      setCurrentData((currentDate) => currentDate + 1);
       setGetPercentage(Math.round(pct).toString());
+      setHaveMoney(newValue);
 
-      setModalClose(true);
+      setModalDisplay(true);
    }
 
+   const getTotalScore = () => {
 
-
-
+      setGetTotalPoint(getTotalPercentage * 20)
+      setGiftDisplay(true)
+   }
 
    return (
       <>
@@ -275,12 +278,16 @@ function GameDailyRun() {
                      </Col>
                      <Col>
                         <div style={{ overflowY: "scroll", overflowX: "hidden" }} className="testInput">
-                           <Table  bordered >
+                           <Table
+                              bordered
+                              striped
+
+                           >
                               <thead className="thdPost">
                                  <tr>
                                     <th>證券代號/名稱</th>
                                     <th>買進部位</th>
-                                    
+
                                  </tr>
                               </thead>
                               <tbody>
@@ -293,7 +300,7 @@ function GameDailyRun() {
                               <span >下一關</span>
                            </button>
 
-                           <button className="getButton-plus" onClick={() => { setGiftShow(true) }}>
+                           <button className="getButton-plus" onClick={getTotalScore}>
                               <span >領取獎勵</span>
                               <Gift className="getButton-gift-icon" />
                            </button>
@@ -314,8 +321,8 @@ function GameDailyRun() {
          <Modal
             centered
             size="lg"
-            show={FindShow}
-            onHide={() => setFindShow(false)}
+            show={findDisplay}
+            onHide={() => setFindDisplay(false)}
             aria-labelledby="example-modal-sizes-title-lg"
          >
             <Chart type='bar' options={options} data={chartData} />
@@ -324,8 +331,8 @@ function GameDailyRun() {
 
          <Modal
             size="md"
-            show={modalClose}
-            onHide={() => setModalClose(false)}
+            show={modalDisplay}
+            onHide={() => setModalDisplay(false)}
             aria-labelledby="example-modal-sizes-title-md"
             centered
             className="modalMove">
@@ -340,17 +347,17 @@ function GameDailyRun() {
 
          <Modal
             size="md"
-            show={GiftShow}
-            onHide={() => setGiftShow(false)}
+            show={giftDisplay}
+            onHide={() => setGiftDisplay(false)}
             aria-labelledby="example-modal-sizes-title-md"
             centered
             className="modalMove"
          >
             <div className="jumpBody">
                <div className="jumpTitle"><span className="jumpTotle"> 結算版</span></div>
-               <div className="jumpGet">總獲得％數： <span className="jumpScore">123</span></div>
-               <div className="jumpGet">總獲得積分： <span className="jumpScore">123</span></div>
-               <button className="jumpClose" onClick={() => { setGiftShow(false) }}>關閉</button>
+               <div className="jumpGet">總獲得％數：{`${getTotalPercentage}%`}</div>
+               <div className="jumpGet">總獲得積分：{`${getTotalPoint}`}</div>
+               <button className="jumpClose" onClick={() => { setGiftDisplay(false) }}>關閉</button>
             </div>
          </Modal>
       </>
