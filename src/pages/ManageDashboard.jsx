@@ -120,7 +120,7 @@ function ManageDashboard(props) {
             let dataSorted = res.data;
             console.log(res.data);
             dataSorted = dataSorted.sort(function (a, b) {
-            return a.marketValue > b.marketValue ? 1 : -1;
+               return a.marketValue > b.marketValue ? 1 : -1;
             });
             setDataPie(res.data);
          }
@@ -137,7 +137,9 @@ function ManageDashboard(props) {
 
    return (
       <Container fluid className="pt-3">
-         <Breadcrumb />
+         <Row>
+            <Breadcrumb />
+         </Row>
          <MyCardDeck data={dataCard} />
          <br />
          <Row>

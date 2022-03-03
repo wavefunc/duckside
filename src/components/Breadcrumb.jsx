@@ -5,7 +5,7 @@ import PubSub from 'pubsub-js';
 import { Link } from 'react-router-dom';
 
 function Breadcrumb() {
-   const [pathName, setPathName] = useState("");
+   const [pathName, setPathName] = useState("/manage/dashboard");
    PubSub.subscribe('Path', (msg, data) => {
       setPathName(data)
    })

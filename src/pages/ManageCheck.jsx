@@ -74,7 +74,9 @@ function ManageCheck(props) {
 
    return (
       <Container fluid className="pt-3" ref={container}>
-         <Breadcrumb />
+         <Row>
+            <Breadcrumb />
+         </Row>
          <Row>
             <Col lg={8}>
                <Formik

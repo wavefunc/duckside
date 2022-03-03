@@ -219,7 +219,9 @@ function Manageplan(props) {
 
    return (
       <Container fluid className="pt-3">
-         <Breadcrumb />
+         <Row>
+            <Breadcrumb />
+         </Row>
          <Row className='pr-2'>
             <Col lg={8}>
                <Formik
