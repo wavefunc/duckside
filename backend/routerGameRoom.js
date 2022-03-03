@@ -2,7 +2,7 @@
 
 var express = require('express');
 var router = express.Router();
-var { query, checkAccount } = require('./mysql.js');
+var { query, checkAccount, queryTest } = require('./mysql.js');
 
 // ************************
 // 列出 furniture 全部的資料
@@ -31,54 +31,53 @@ router.put('/acc_furn/buying', async (req, res) => {
    // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
    var acc_id = await checkAccount(req.body.acc_email, res);
 
-   let strQueryIsMoneyEnough = `
-      SELECT IF(
-         (SELECT SUM(pt_scoring) total 
-            FROM point_record 
-            WHERE acc_id = ?)
-         >
-         (SELECT furn_price 
-            FROM furniture 
-            WHERE furn_id = ?),
-         true,
-         false
-      ) isEnough
-   `;
+   // let strQueryIsMoneyEnough = `
+   //    SELECT IF(
+   //       (SELECT SUM(pt_scoring) total 
+   //          FROM point_record 
+   //          WHERE acc_id = ?)
+   //       >
+   //       (SELECT furn_price 
+   //          FROM furniture 
+   //          WHERE furn_id = ?),
+   //       true,
+   //       false
+   //    ) isEnough
+   // `;
 
-   await query(strQueryIsMoneyEnough, [acc_id, req.body.furn_id], (err, rows) => {
-      if (err) {
-         res.end(err);
-      } else {
-         if (rows[0].isEnough) {
-            console.log('enough');
-         } else {
-            res.send('not enough');
-         }
-
-      }
-   });
-
-
-   // let strQueryBought = `UPDATE acc_furn SET acc_furn_bought = 1 
-   //    WHERE acc_id = ? AND furn_id = ?;`;
-
-   // let strQuerySetPoint = `
-   //    INSERT INTO point_record (acc_id, pt_datetime, pt_scoring)
-   //    VALUES (?, NOW(),
-   //       -1 * (SELECT furn_price FROM furniture WHERE furn_id = ?)
-   //    )`;
-   // query(
-   //    strQueryBought + strQuerySetPoint,
-   //    [acc_id, req.body.furn_id, acc_id, req.body.furn_id],
-   //    (err) => {
-   //       res.send(
-   //          err ?
-   //             err :
-   //             `Successfully updated acc_furn on 
-   //                acc_id = ${acc_id} and furn_id = ${req.body.furn_id}`
-   //       );
+   // await queryTest(strQueryIsMoneyEnough, [acc_id, req.body.furn_id], (err, rows) => {
+   //    if (err) {
+   //       res.end(err);
+   //    } else {
+   //       if (rows[0].isEnough) {
+   //          console.log(conn);
+   //          console.log('Money is enough');
+   //       } else {
+   //          res.send('Money is not enough');
+   //       }
    //    }
-   // );
+   // });
+
+   let strQueryBought = `UPDATE acc_furn SET acc_furn_bought = 1 
+      WHERE acc_id = ? AND furn_id = ?;`;
+
+   let strQuerySetPoint = `
+      INSERT INTO point_record (acc_id, pt_datetime, pt_scoring)
+      VALUES (?, NOW(),
+         -1 * (SELECT furn_price FROM furniture WHERE furn_id = ?)
+      )`;
+   query(
+      strQueryBought + strQuerySetPoint,
+      [acc_id, req.body.furn_id, acc_id, req.body.furn_id],
+      (err) => {
+         res.send(
+            err ?
+               err :
+               `Successfully updated acc_furn on 
+                  acc_id = ${acc_id} and furn_id = ${req.body.furn_id}`
+         );
+      }
+   );
 });
 
 // **********************************************************

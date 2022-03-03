@@ -58,3 +58,21 @@ exports.checkAccount = async function (acc_email, res) {
       });
    });
 };
+
+// 一般 sql query 使用的函式
+exports.queryTest = async function (strQuery, options, callback) {
+   return new Promise((resolve, reject) => {
+
+      // 取得連線池的連線
+      pool.getConnection((err, conn) => {
+         if (err) {
+            reject(err);
+         } else {
+            conn.query(strQuery, options, callback(conn));
+            
+            // release connection。
+            conn.release();
+         }
+      });
+   });
+};
