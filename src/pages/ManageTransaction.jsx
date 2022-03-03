@@ -1,5 +1,4 @@
 /* * * * * 人豪 * * * * * 
- * 
  * 備忘:
  * const acc_email = ... 要換成localStorage
  * dataToEdit['sec_str']=`${dataToEdit.sec_id} 台積電`; 改寫成活的

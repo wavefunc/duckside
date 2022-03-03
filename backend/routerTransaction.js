@@ -3,6 +3,7 @@
 var express = require('express');
 var router = express.Router();
 var { query, checkAccount } = require('./mysql.js');
+var { getYahoo, getTwse } = require('./twstock.js');
 
 // *******************
 // 測試: 列出資料表全部的資料
@@ -12,7 +13,6 @@ router.get('/transaction/all', function (req, res) {
       res.send(rows);
    })
 });
-
 // *******************
 // 測試: 直接執行sql 
 // *******************
@@ -27,7 +27,6 @@ router.get('/testtesttest888', function (req, res) {
       res.send(err ? err : rows);
    })
 })
-
 
 // ********************************
 // 依 acc_email，新增該會員的一筆交易
@@ -102,7 +101,7 @@ router.delete('/transaction/delete', async (req, res) => {
 
 // ***************************************************************** 
 // 依 acc_email 跟 dateQuery 兩個變數，查詢某用戶截至某天為止的庫存      
-// 回傳各 securities 的合計數量                                       
+// 回傳各 securities 的合計數量、並附上市價及市值在 marketPrice marketValue 屬性
 // ***************************************************************** 
 router.post('/transaction/inventory', async (req, res) => {
    // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
@@ -116,8 +115,25 @@ router.post('/transaction/inventory', async (req, res) => {
       GROUP BY txn.sec_id
    `
    query(strQuery, [acc_id, req.body.dateQuery], (err, rows) => {
-      err ? res.send(err) : res.send(rows);
-   });
+      if (err) {
+         res.send(err)
+      } else {
+         let Ymd = req.body.dateQuery.replace(/-/g, '');
+         getTwse(Ymd).then((MI) => {
+            let rowsWithMI = rows.map((v) => {
+               let p = MI.priceClose(v.sec_id);
+               let pNetChange = MI.changeNet(v.sec_id);
+               v.marketPrice = p;
+               v.marketPriceChange = pNetChange;
+               v.marketPriceChangePct = pNetChange / (p - pNetChange);
+               v.marketValue = p * v.total;
+               // console.log(v);
+               return v;
+            });
+            res.send(rowsWithMI);
+         });
+      }
+   })
 });
 
 // ****************************************************
@@ -168,7 +184,7 @@ router.post('/transaction/daterange', async (req, res) => {
       SELECT * 
       FROM transaction txn 
       INNER JOIN securities sec
-      ON txn.sec_id = sec.sec_id 
+      ON txn.sec_id = sec.sec_id
       WHERE acc_id = ? ${strDateQuery1} ${strDateQuery2} 
       ORDER BY txn_date
    `;

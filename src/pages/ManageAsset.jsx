@@ -81,7 +81,7 @@ function ManageAsset(props) {
    console.log('--ManageAsset--');
    const [refreshState, setRefresh] = useState(true);
 
-   const [inputDate, setInputDate] = useState();
+   const [inputDate, setInputDate] = useState('');
    const [secValue, setSecValue] = useState("");
    const [editingValues, setEditingValues] = useState({});
 

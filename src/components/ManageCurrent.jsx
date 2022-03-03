@@ -10,7 +10,7 @@
 import { Grid } from 'gridjs-react';
 import { Card, CardDeck } from 'react-bootstrap';
 import "gridjs/dist/theme/mermaid.min.css";
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 function MyCurrentPosition({ url, dataToServer, row, col = null, ...props }) {
@@ -31,7 +31,7 @@ function MyCurrentPosition({ url, dataToServer, row, col = null, ...props }) {
             setData(props.data);
         }
         return () => { beingMounted = false };
-    }, [url, dataToServer.dateQuery, dataToServer.dateQuery, props.refreshState, props.data]);
+    }, [url, dataToServer, props.refreshState, props.data]);
     return (
         data && data.length ? (
             <Grid

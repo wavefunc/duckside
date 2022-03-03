@@ -62,11 +62,10 @@ router.post('/securities/stockDay', function (req, res) {
 // *****************************************************
 router.post('/securities/marketInfo', function (req, res) {
     let Ymd = req.body.dateQuery.replace(/-/g, '');
-    console.log(Ymd);
     getTwse(Ymd).then((MI) => {
         res.send(MI);
     }).catch((e) => {
-        console.log(e);
+        // console.log(e);
         res.send('Server Busy');
     });
 });
