@@ -56,13 +56,13 @@ function GameDailyRun() {
                type: 'bar',
                label: 'Dataset 1',
                data: [100, 200, 30, 400, 500, 60, 700],
-               backgroundColor: 'rgba(255, 99, 132, 0.5)',
+               backgroundColor: 'rgba(255, 99, 132)',
             },
             {
                type: 'line',
                label: 'Dataset 2',
                data: [20, 300, 40, 500, 60, 700, 80],
-               backgroundColor: 'rgba(53, 162, 235, 0.5)',
+               backgroundColor: 'rgba(53, 162, 235)',
             },
             {
                type: 'bar',

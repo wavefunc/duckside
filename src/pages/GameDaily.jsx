@@ -20,7 +20,7 @@ function MyVerticallyCenteredModal(props) {
                         transform="translate(484 157)" fill="#faf3e2" />
                      <text id="關卡條件-2" data-name="關卡條件" transform="translate(526 274)" fill="#520707" fontSize="80"
                         fontFamily="PingFangTC-Semibold, PingFang TC" fontWeight="600">
-                        <tspan x="0" y="0">關卡條件</tspan>
+                        <tspan x="0" y="0">關卡條件:關卡1</tspan>
                      </text>
                      <line id="Line_41" data-name="Line 41" x2="1032" transform="translate(485 314.5)" fill="none" stroke="#707070"
                         stroke-width="5" />
@@ -38,14 +38,14 @@ function MyVerticallyCenteredModal(props) {
                      </text>
 
                      <a href="http://localhost:3000/game/dailyrun">
-                     <g id="進入關卡_按鈕" data-name="進入關卡 按鈕" transform="translate(-33 41)">
-                        <rect id="Rectangle_106" data-name="Rectangle 106" width="463" height="142" rx="30"
-                           transform="translate(583 765)" fill="#3e88a8" />
-                        <text id="進入關卡" transform="translate(615 878)" fill="#fff" fontSize="100"
-                           fontFamily="'\.PingFangTC-Semibold', '\.PingFang TC'" fontWeight="600">
-                           <tspan x="0" y="0">進入關卡</tspan>
-                        </text>
-                     </g>
+                        <g id="進入關卡_按鈕" data-name="進入關卡 按鈕" transform="translate(-33 41)">
+                           <rect id="Rectangle_106" data-name="Rectangle 106" width="463" height="142" rx="30"
+                              transform="translate(583 765)" fill="#3e88a8" />
+                           <text id="進入關卡" transform="translate(615 878)" fill="#fff" fontSize="100"
+                              fontFamily="'\.PingFangTC-Semibold', '\.PingFang TC'" fontWeight="600">
+                              <tspan x="0" y="0">進入關卡</tspan>
+                           </text>
+                        </g>
                      </a>
 
                      <g>
@@ -69,8 +69,77 @@ function MyVerticallyCenteredModal(props) {
    );
 }
 
+
+function MyVerticallyCenteredModalTwo(e) {
+   return (
+      <Modal
+         {...e}
+         centered
+         size="sm"
+      >
+
+         <div id="light">
+            <g>
+               <svg width="700" height="345" viewBox="0 0 1033 845">
+                  <g id="關卡條件" transform="translate(-824 -157)">
+                     <rect id="Rectangle_118" data-name="Rectangle 118" width="1033" height="845" rx="10"
+                        transform="translate(484 157)" fill="#faf3e2" />
+                     <text id="關卡條件-2" data-name="關卡條件" transform="translate(526 274)" fill="#520707" fontSize="80"
+                        fontFamily="PingFangTC-Semibold, PingFang TC" fontWeight="600">
+                        <tspan x="0" y="0">關卡條件:關卡2</tspan>
+                     </text>
+                     <line id="Line_41" data-name="Line 41" x2="1032" transform="translate(485 314.5)" fill="none" stroke="#707070"
+                        stroke-width="5" />
+                     <text id="時間:" transform="translate(493 517)" fill="#520707" fontSize="80"
+                        fontFamily="PingFangTC-Semibold, PingFang TC" fontWeight="600">
+                        <tspan x="0" y="0">時間</tspan>
+                        <tspan y="0" fontFamily="Helvetica-Bold, Helvetica" fontWeight="700">:</tspan>
+                        <tspan y="0" fontFamily="Helvetica-Bold, Helvetica" fontWeight="700">2019/06/01-2020/08/01</tspan>
+                     </text>
+                     <text id="交易天數:" transform="translate(493 712)" fill="#520707" fontSize="80"
+                        fontFamily="PingFangTC-Semibold, PingFang TC" fontWeight="600">
+                        <tspan x="0" y="0">交易天數</tspan>
+                        <tspan y="0" fontFamily="Helvetica-Bold, Helvetica" fontWeight="700">:</tspan>
+                        <tspan y="0" fontFamily="Helvetica-Bold, Helvetica" fontWeight="700">2 Month</tspan>
+                     </text>
+
+                     <a href="http://localhost:3000/game/dailyrun">
+                        <g id="進入關卡_按鈕" data-name="進入關卡 按鈕" transform="translate(-33 41)">
+                           <rect id="Rectangle_106" data-name="Rectangle 106" width="463" height="142" rx="30"
+                              transform="translate(583 765)" fill="#3e88a8" />
+                           <text id="進入關卡" transform="translate(615 878)" fill="#fff" fontSize="100"
+                              fontFamily="'\.PingFangTC-Semibold', '\.PingFang TC'" fontWeight="600">
+                              <tspan x="0" y="0">進入關卡</tspan>
+                           </text>
+                        </g>
+                     </a>
+
+                     <g>
+                        <a href="javascript:void(0)" id="closebt" onClick={e.onHide}>
+                           <g id="關閉_按鈕" data-name="關閉 按鈕" transform="translate(20 41)">
+                              <rect id="Rectangle_105" data-name="Rectangle 105" width="325" height="142" rx="30"
+                                 transform="translate(1109 765)" fill="#ac4c4c" />
+                              <text id="關閉" transform="translate(1172 873)" fill="#fff" font-size="100"
+                                 font-family="'\.PingFangTC-Semibold', '\.PingFang TC'" font-weight="600">
+                                 <tspan x="0" y="0">關閉</tspan>
+                              </text>
+                           </g>
+                        </a>
+                     </g>
+
+                  </g>
+               </svg>
+            </g>
+         </div>
+      </Modal>
+   );
+}
+
+
+
 function GameDaily() {
    const [modalShow, setModalShow] = React.useState(false);
+   const [modalTwoShow, setModalTwoShow] = React.useState(false);
 
    return (
       <Row>
@@ -162,12 +231,14 @@ function GameDaily() {
 
                </a>
 
-               <g id="關卡2">
-                  <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#Rectangle_108)">
-                     <rect id="Rectangle_108-2" data-name="Rectangle 108" width="311" height="311" rx="30" transform="translate(605 265)" fill="#fff" />
+               <a variant="primary" onClick={() => setModalTwoShow(true)}>
+                  <g id="關卡2">
+                     <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#Rectangle_108)">
+                        <rect id="Rectangle_108-2" data-name="Rectangle 108" width="311" height="311" rx="30" transform="translate(605 265)" fill="#fff" />
+                     </g>
+                     <text id="_2" data-name="2" transform="translate(705 475)" fontSize="200" fontFamily="Helvetica-Bold, Helvetica" fontWeight="700"><tspan x="0" y="0">2</tspan></text>
                   </g>
-                  <text id="_2" data-name="2" transform="translate(705 475)" fontSize="200" fontFamily="Helvetica-Bold, Helvetica" fontWeight="700"><tspan x="0" y="0">2</tspan></text>
-               </g>
+               </a>
                <g id="關卡3">
                   <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#Rectangle_109)">
                      <rect id="Rectangle_109-2" data-name="Rectangle 109" width="311" height="311" rx="30" transform="translate(983 265)" fill="#fff" />
@@ -207,6 +278,12 @@ function GameDaily() {
                show={modalShow}
                onHide={() => setModalShow(false)}
             />
+
+            <MyVerticallyCenteredModalTwo
+               show={modalTwoShow}
+               onHide={() => setModalTwoShow(false)}
+            />
+
          </svg>
 
       </Row>
