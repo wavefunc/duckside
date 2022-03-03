@@ -24,32 +24,61 @@ router.get('/acc_furn/all', (req, res) => {
 
 // **********************************************************
 // 商店購買家具時，會員的該家具設為已購買(true)，並扣除會員的積分
+// 如果積分不夠買，會回傳 'Your money is not enough'
 // 前端傳入 acc_email, furn_id
 // **********************************************************
 router.put('/acc_furn/buying', async (req, res) => {
    // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
    var acc_id = await checkAccount(req.body.acc_email, res);
 
-   let strQueryBought = `UPDATE acc_furn SET acc_furn_bought = 1 
-      WHERE acc_id = ? AND furn_id = ?;`;
+   let strQueryIsMoneyEnough = `
+      SELECT IF(
+         (SELECT SUM(pt_scoring) total 
+            FROM point_record 
+            WHERE acc_id = ?)
+         >
+         (SELECT furn_price 
+            FROM furniture 
+            WHERE furn_id = ?),
+         true,
+         false
+      ) isEnough
+   `;
 
-   let strQuerySetPoint = `
-      INSERT INTO point_record (acc_id, pt_datetime, pt_scoring)
-      VALUES (?, NOW(),
-	      -1 * (SELECT furn_price FROM furniture WHERE furn_id = ?)
-      )`;
-   query(
-      strQueryBought + strQuerySetPoint,
-      [acc_id, req.body.furn_id, acc_id, req.body.furn_id],
-      (err) => {
-         res.send(
-            err ?
-               err :
-               `Successfully updated acc_furn on 
-                  acc_id = ${acc_id} and furn_id = ${req.body.furn_id}`
-         );
+   await query(strQueryIsMoneyEnough, [acc_id, req.body.furn_id], (err, rows) => {
+      if (err) {
+         res.end(err);
+      } else {
+         if (rows[0].isEnough) {
+            console.log('enough');
+         } else {
+            res.send('not enough');
+         }
+
       }
-   );
+   });
+
+
+   // let strQueryBought = `UPDATE acc_furn SET acc_furn_bought = 1 
+   //    WHERE acc_id = ? AND furn_id = ?;`;
+
+   // let strQuerySetPoint = `
+   //    INSERT INTO point_record (acc_id, pt_datetime, pt_scoring)
+   //    VALUES (?, NOW(),
+   //       -1 * (SELECT furn_price FROM furniture WHERE furn_id = ?)
+   //    )`;
+   // query(
+   //    strQueryBought + strQuerySetPoint,
+   //    [acc_id, req.body.furn_id, acc_id, req.body.furn_id],
+   //    (err) => {
+   //       res.send(
+   //          err ?
+   //             err :
+   //             `Successfully updated acc_furn on 
+   //                acc_id = ${acc_id} and furn_id = ${req.body.furn_id}`
+   //       );
+   //    }
+   // );
 });
 
 // **********************************************************
