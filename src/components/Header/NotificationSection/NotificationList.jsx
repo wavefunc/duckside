@@ -58,7 +58,7 @@ const NotificationList = () => {
                     <ListItemAvatar>
                     <Avatar alt="John Doe" src={User1} sx={{ bgcolor: "#53B8C5" }} />
                     </ListItemAvatar>
-                    <ListItemText primary="系統通知" />
+                    <ListItemText primary="2330 台積電" />
                     <ListItemSecondaryAction>
                         <Grid container justifyContent="flex-end">
                             <Grid item xs={12}>
@@ -71,7 +71,7 @@ const NotificationList = () => {
                 </ListItem>
                 <Grid container direction="column" className="list-container">
                     <Grid item xs={12} sx={{ pb: 2 }}>
-                        <Typography variant="subtitle2">It is a long established fact that a reader will be distracted</Typography>
+                        <Typography variant="subtitle2">現在價格602元，已到達合理價格。</Typography>
                     </Grid>
                    
                 </Grid>
@@ -84,12 +84,12 @@ const NotificationList = () => {
                             <Avatar alt="John Doe" src={User1} sx={{ bgcolor: "#53B8C5" }} />
                         
                     </ListItemAvatar>
-                    <ListItemText primary={<Typography variant="subtitle1">系統通知</Typography>} />
+                    <ListItemText primary={<Typography variant="subtitle1">2603 長榮</Typography>} />
                     <ListItemSecondaryAction>
                         <Grid container justifyContent="flex-end">
                             <Grid item xs={12}>
                                 <Typography variant="caption" display="block" gutterBottom>
-                                    2 min ago
+                                    1 min ago
                                 </Typography>
                             </Grid>
                         </Grid>
@@ -97,7 +97,7 @@ const NotificationList = () => {
                 </ListItem>
                 <Grid container direction="column" className="list-container">
                     <Grid item xs={12} sx={{ pb: 2 }}>
-                        <Typography variant="subtitle2">We have successfully received your request.</Typography>
+                        <Typography variant="subtitle2">現在價格160，已到達合理價格。</Typography>
                     </Grid>
                     
                 </Grid>
