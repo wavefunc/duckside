@@ -534,7 +534,7 @@ async function getTwse(Ymd, stockId, periods) {
             await MI.initialize();
             Ymd = dt.format((dt.addDays(dt.parse(Ymd, 'YYYYMMDD'), -1)), 'YYYYMMDD');
         } while (MI.stat === "No Trading");
-        console.log(`市價抓取是否成功: ${MI.stat}`);
+        console.log(`twstock.js: marketInfo資料抓取狀態: ${MI.stat}`);
         return MI;
     }
 }
