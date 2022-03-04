@@ -43,7 +43,8 @@ function MyCurrentPosition({ url, dataToServer, row, col = null, ...props }) {
                 sort={true}
                 style={{
                     table: { 'width': '100%', 'border-top': '1px solid #e2e2e2', 'marginTop': '5px' },
-                    th: { 'backgroundColor': '#e7ebee', 'fontWeight': 'bolder' }
+                    th: { 'backgroundColor': '#e7ebee', 'fontWeight': 'bolder' },
+                    td: { 'font-size': '18px', 'text-align': 'left', 'padding-left': '10px','padding-right':'10px' }
                 }}
                 resizable={true}
                 className={props.className ? { ...props.className } : {}}

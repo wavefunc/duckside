@@ -1,8 +1,6 @@
 /* * * * * 人豪 * * * * * 
  * 
  * 
- * 
- * 
  * * * * * * * * * * * */
 
 import React, { useEffect, useState } from 'react';
@@ -10,6 +8,7 @@ import { Container, Row, Col, Tab, Nav, Button, Modal, Card } from 'react-bootst
 import { Formik, Form } from 'formik';
 import axios from 'axios';
 import dt from 'date-and-time';
+import { h } from "gridjs";
 
 import { MyFormikObserver, MyInput, MySelect, MyOkToast } from '../components/MyFormComponent';
 import ManageRecent from '../components/ManageRecent.jsx';
@@ -56,18 +55,27 @@ const getDatalist = (inputStr, callback) => {
 const col = [
    { id: 'plan_id', name: 'asd_id', hidden: true },
    {
-      id: 'plan_date', name: '日期',
+      id: 'plan_date', name: '日期', width: '10%',
       formatter: (cell) => { let d = new Date(cell); return dt.format(d, 'YYYY-MM-DD'); },
    },
-   { id: 'sec_id', name: '代號' },
-   { id: 'sec_name', name: '名稱' },
-   { id: 'plan_strategy', name: '類型' },
+   { id: 'sec_id', name: '代號', width: '8%', },
+   { id: 'sec_name', name: '名稱', width: '10%', },
+   { id: 'plan_strategy', name: '類型', width: '18%', },
    { id: 'plan_param1', name: '參數', hidden: true },
    { id: 'plan_param2', name: '參數', hidden: true },
-   { id: 'plan_anchor', name: '參考價' },
-   { id: 'plan_stoploss', name: '停損' },
-   { id: 'plan_target', name: '目標' },
-   { id: 'plan_note', name: '筆記' },
+   {
+      id: 'plan_anchor', name: h('b', { style: { 'float': 'right', } }, '參考'), width: '8%',
+      formatter: (cell) => h('b', { style: { 'float': 'right', } }, cell.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","))
+   },
+   {
+      id: 'plan_stoploss', name: h('b', { style: { 'float': 'right', } }, '停損'), width: '8%',
+      formatter: (cell) => h('b', { style: { 'float': 'right', } }, cell.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","))
+   },
+   {
+      id: 'plan_target', name: h('b', { style: { 'float': 'right', } }, '目標'), width: '8%',
+      formatter: (cell) => h('b', { style: { 'float': 'right', } }, cell.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","))
+   },
+   { id: 'plan_note', name: '筆記', width: '15%', },
 ];
 
 

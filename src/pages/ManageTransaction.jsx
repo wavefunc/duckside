@@ -7,9 +7,8 @@
 
 import React, { useState } from 'react';
 import { Container, Row, Col, Tab, Nav, Button, Modal } from 'react-bootstrap';
-
 import { Formik, Form } from 'formik';
-
+import { h } from "gridjs";
 import axios from 'axios';
 import dt from 'date-and-time';
 
@@ -67,15 +66,24 @@ const getDatalist = (inputStr, callback) => {
 const col = [
    { id: 'txn_id', name: 'txn_id', hidden: true },
    {
-      id: 'txn_date', name: '日期',
+      id: 'txn_date', name: '日期', width: '10%',
       formatter: (cell) => { let d = new Date(cell); return dt.format(d, 'YYYY-MM-DD'); }
    },
-   { id: 'sec_id', name: '代號' },
-   { id: 'sec_name', name: '名稱' },
-   { id: 'txn_round', name: 'No', width: '85px' },
-   { id: 'txn_position', name: '類型' },
-   { id: 'txn_price', name: '價格' },
-   { id: 'txn_amount', name: '數量' },
+   { id: 'sec_id', name: '代號', width: '8%', },
+   { id: 'sec_name', name: '名稱', width: '10%', },
+   {
+      id: 'txn_round', name: '編號', width: '6%',
+      formatter: (cell) => h('b', { style: { 'margin-left': '10px', } }, cell)
+   },
+   { id: 'txn_position', name: '類型', width: '8%', },
+   {
+      id: 'txn_price', name: h('b', { style: { 'float': 'right', } }, '價格'), width: '8%',
+      formatter: (cell) => h('b', { style: { 'float': 'right', } }, cell.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","))
+   },
+   {
+      id: 'txn_amount', name: h('b', { style: { 'float': 'right', } }, '數量'), width: '8%',
+      formatter: (cell) => h('b', { style: { 'float': 'right', } }, cell.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","))
+   },
    { id: 'txn_note', name: '摘要' },
 ];
 

@@ -1,17 +1,9 @@
 /* * * * * 人豪 * * * * * 
  * 待辦
  * 1. 如輸入重複日期, 後端會擋掉, 要跳提示訊息提醒使用者先刪除舊資料或改以編輯方式進行
- * 2. 依日期抓取股價計算庫存市值, 並且將觸發條件移到"證券"input的onfocus
-
 
  * 備忘:
- * const acc_email = ... 要換成localStorage
- * 以下格式化欄位得出小計會讓刪修按鈕失效, 需另想辦法新增小計欄位, 
- *    { name: '小計', formatter: (cell,row) => {
-      let values = row.cells.map((v)=>v.data);
-      let total = values.slice(2,8).reduce((tot,num)=>tot+num);
-      return total.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-   }}
+ * 加千分位逗號 .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
  * 
  * * * * * * * * * * * */
 
@@ -20,6 +12,7 @@ import { Container, Row, Col, Tab, Nav, Button, Popover, OverlayTrigger, Modal }
 import { Formik, Form } from 'formik';
 import axios from 'axios';
 import dt from 'date-and-time';
+import { h } from "gridjs";
 
 import { MyFormikObserver, MyInput, MyOkToast } from '../components/MyFormComponent';
 import MyCurrentPosition from '../components/ManageCurrent.jsx';
@@ -61,17 +54,38 @@ const validate = (values) => {
 const col = [
    { id: 'ast_id', name: 'asd_id', hidden: true },
    {
-      id: 'ast_date', name: '日期',
+      id: 'ast_date', name: '日期', width: '10%',
       formatter: (cell) => { let d = new Date(cell); return dt.format(d, 'YYYY-MM-DD'); },
    },
-   { id: 'ast_cash', name: '現金' },
-   { id: 'ast_securities', name: '證券' },
-   { id: 'ast_option', name: '期權' },
-   { id: 'ast_others', name: '其他' },
-   { id: 'ast_borrowing', name: '資券調整' },
-   { id: 'ast_adjust', name: '其他調整' },
-   { id: 'ast_sum', name: '總計' },
-   { id: 'ast_note', name: '摘要' },
+   {
+      id: 'ast_cash', name: h('b', { style: { 'float': 'right', } }, '現金'), width: '10%',
+      formatter: (cell) => h('span', { style: { 'float': 'right', } }, cell.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","))
+   },
+   {
+      id: 'ast_securities', name: h('b', { style: { 'float': 'right', } }, '證券'), width: '10%',
+      formatter: (cell) => h('span', { style: { 'float': 'right', } }, cell.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","))
+   },
+   {
+      id: 'ast_option', name: h('b', { style: { 'float': 'right', } }, '期權'), width: '8%',
+      formatter: (cell) => h('span', { style: { 'float': 'right', } }, cell.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","))
+   },
+   {
+      id: 'ast_others', name: h('b', { style: { 'float': 'right', } }, '其他'), width: '8%',
+      formatter: (cell) => h('span', { style: { 'float': 'right', } }, cell.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","))
+   },
+   {
+      id: 'ast_borrowing', name: h('b', { style: { 'float': 'right', } }, '資券'), width: '8%',
+      formatter: (cell) => h('span', { style: { 'float': 'right', } }, cell.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","))
+   },
+   {
+      id: 'ast_adjust', name: h('b', { style: { 'float': 'right', } }, '調整'), width: '8%',
+      formatter: (cell) => h('span', { style: { 'float': 'right', } }, cell.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","))
+   },
+   {
+      id: 'ast_sum', name: h('b', { style: { 'float': 'right', } }, '總計'), width: '10%',
+      formatter: (cell) => h('b', { style: { 'float': 'right', } }, cell.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","))
+   },
+   { id: 'ast_note', name: '摘要', width: '12%', },
 ];
 
 // 副表欄位
@@ -162,11 +176,6 @@ function ManageAsset(props) {
          setSecValue(res.data.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
       });
    };
-
-   // useEffect(() => {
-   //    let rand = Math.floor(Math.random() * 1000) + 740000;
-   //    setSecValue(rand.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
-   // }, [inputDate]);
 
    const popover = (
       <Popover id='secValuePopover'>

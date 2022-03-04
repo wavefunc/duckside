@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Tab, Nav } from 'react-bootstrap';
 import axios from 'axios';
 import dt from 'date-and-time';
+import { h } from "gridjs";
 
 import MyCurrentPosition, { MyCardDeck } from '../components/ManageCurrent.jsx';
 import ManageRecent from '../components/ManageRecent.jsx';
@@ -23,21 +24,27 @@ const urlPostPlan = 'http://localhost:5000/dashboard/inventory';
 // 庫存現況表設定
 const colInventory = [
    { id: 'sec_id', name: '代號', width: '10%' },
-   { id: 'sec_name', name: '名稱', width: '20%' },
-   { id: 'total', name: '庫存數量', width: '15%' },
+   { id: 'sec_name', name: '名稱', width: '12%' },
    {
-      id: 'marketPrice', name: '現價', width: '10%',
+      id: 'total', name: h('b', { style: { 'float': 'right', } }, '庫存'), width: '12%',
+      formatter: (cell) => h('b', { style: { 'float': 'right', } }, cell.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","))
    },
    {
-      id: 'marketPriceChange', name: '漲跌', width: '10%',
+      id: 'marketPrice', name: h('b', { style: { 'float': 'right', } }, '現價'), width: '10%',
+      formatter: (cell) => h('span', { style: { 'float': 'right', } }, cell.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","))
    },
    {
-      id: 'marketPriceChangePct', name: '%', width: '10%',
-      formatter: (cell, row) => {
-         return Math.round(cell * 10000) / 100 + '%';
-      }
+      id: 'marketPriceChange', name: h('b', { style: { 'float': 'right', 'font-size':'15px' } }, '漲跌'), width: '10%',
+      formatter: (cell) => h('span', { style: { 'float': 'right', 'color': cell>0 ? 'red': 'green' } }, cell)
    },
-   { id: 'marketValue', name: '市值', width: '15%', },
+   {
+      id: 'marketPriceChangePct', name: h('b', { style: { 'float': 'right', 'font-size':'15px' } }, '漲跌幅'), width: '10%',
+      formatter: (cell, row) => h('span', { style: { 'float': 'right', 'color': cell>0 ? 'red': 'green' } }, Math.round(cell * 10000) / 100 + '%')
+   },
+   {
+      id: 'marketValue', name: h('b', { style: { 'float': 'right', } }, '市值'), width: '15%',
+      formatter: (cell) => h('b', { style: { 'float': 'right', } }, cell.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","))
+   },
 ];
 // 最近計畫
 const colPlan = [
@@ -67,8 +74,8 @@ function ManageDashboard(props) {
       labels: dataPosition.map(v => v.sec_name),
       datasets: [
          {
-            data: dataPosition.map((v,i) => v.marketValue),
-            backgroundColor: dataPosition.map((v,i)=>`hsl(${30+i*15}, 100%, ${55+i*11}%)`),
+            data: dataPosition.map((v, i) => v.marketValue),
+            backgroundColor: dataPosition.map((v, i) => `hsl(${30 + i * 15}, 100%, ${55 + i * 11}%)`),
             borderColor: 'hsl(15, 35%, 60%)',
             borderWidth: 2,
          },

@@ -8,6 +8,7 @@
  ********* */
 
 import { Grid, _ } from 'gridjs-react';
+import { h } from 'gridjs';
 import { PencilSquare, Trash } from 'react-bootstrap-icons';
 
 import "gridjs/dist/theme/mermaid.min.css";
@@ -54,7 +55,7 @@ function ManageRecent({ url, dataToServer, row, ...props }) {
         let myCol = props.col.map(x => x);
         if (props.edit || props.delete) {
             myCol.push({
-                name: '修改',
+                name: h('b', { style: { 'float': 'left', } }, '參考'), width: '8%',
                 formatter: (cell, row) => {
                     return [
                         props.edit ? _(<PencilSquare onClick={() => props.edit(row.cells)} cursor="pointer" className='mr-2' />, "i") : null,
@@ -75,8 +76,10 @@ function ManageRecent({ url, dataToServer, row, ...props }) {
             pagination={row ? false : { enabled: true, limit: 50 }}
             resizable={true}
             style={{
-                table: { 'width': '100%', 'border-top': '1px solid #e2e2e2', 'marginTop': '5px' },
-                th: { 'backgroundColor': '#e7ebee', 'fontWeight': 'bolder' }
+                container: { 'margin-top': '5px' },
+                table: { 'width': '100%', 'border-top': '1px solid #e2e2e2', },
+                th: { 'backgroundColor': '#e7ebee', 'font-size': '18px', 'fontWeight': 'bold', 'padding-left': '10px' },
+                td: { 'font-size': '15px', 'text-align': 'left', 'padding-left': '10px' }
             }}
         /> : null
     )
