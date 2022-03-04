@@ -225,6 +225,8 @@ let MemberRegister = (props) => {
               });
               setShowsuccess("none");
               //clear all data
+              //reload
+            window.location.reload();
             }
           }, 1000);
           //localStorage
@@ -232,8 +234,7 @@ let MemberRegister = (props) => {
             var local = window.localStorage;
             local.setItem("loginState", memberInfo.email);
             local.setItem("memberName", memberInfo.name);
-            //reload
-            window.location.reload();
+            
           }
         } else {
           // console.log("註冊失敗!");

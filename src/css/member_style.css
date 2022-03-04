@@ -17,7 +17,7 @@
   transform: translate(24%, 70%);
   display: flex;
   transition: 0.2s ease;
-  height: 560px;
+  height: 600px;
   transition-delay: 0.3s;
 }
 
@@ -27,7 +27,7 @@
 }
 
 #formContainer.toggle {
-  height: 576px;
+  height: 620px;
   transition-delay: 0s;
 }
 
