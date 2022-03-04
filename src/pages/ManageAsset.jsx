@@ -30,13 +30,13 @@ const urlPostMarketValue = 'http://localhost:5000/marketInfo/inventory';
 // 表單設定
 const initialValues = {
    ast_date: dt.format(new Date(), 'YYYY-MM-DD'),
-   ast_cash: 453000,
-   ast_securities: 750000,
-   ast_option: 50000,
-   ast_others: 100000,
-   ast_borrowing: -7000,
-   ast_adjust: -50000,
-   ast_note: "",
+   ast_cash: 3535914,
+   ast_securities: "",
+   ast_option: 0,
+   ast_others: 200000,
+   ast_borrowing: 0,
+   ast_adjust: 195000,
+   ast_note: "老師說的",
 };
 
 const validate = (values) => {
@@ -93,6 +93,7 @@ const col2 = [
    { id: 'sec_id', name: '代號' },
    { id: 'sec_name', name: '名稱' },
    { id: 'total', name: '庫存數量' },
+   { id: 'sec_market', name: '市場別', hidden:true },
 ];
 
 function ManageAsset(props) {
@@ -115,7 +116,7 @@ function ManageAsset(props) {
       console.log('handleShowEdit');
       let values = cells.map((v) => v.data);
       let dataToEdit = col.reduce((target, elm, idx) => {
-         target[elm.id] = elm.formatter ? elm.formatter(values[idx]) : values[idx];
+         target[elm.id] = elm.formatter && typeof elm.formatter(values[idx]) !== 'object' ? elm.formatter(values[idx]) : values[idx];
          return target;
       }, {});
       setEditingValues(dataToEdit);
@@ -142,7 +143,7 @@ function ManageAsset(props) {
    const handleShowDelete = (cells) => {
       let values = cells.map((v) => v.data);
       let dataToDelete = col.reduce((target, elm, idx) => {
-         target[elm.id] = elm.formatter ? elm.formatter(values[idx]) : values[idx];
+         target[elm.id] = elm.formatter && typeof elm.formatter(values[idx]) !== 'object' ? elm.formatter(values[idx]) : values[idx];
          return target;
       }, {});
       setEditingValues(dataToDelete);

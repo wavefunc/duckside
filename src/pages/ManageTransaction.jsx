@@ -144,7 +144,7 @@ function ManageTransaction(props) {
    const handleShowEdit = (cells) => {
       let values = cells.map((v) => v.data);
       let dataToEdit = col.reduce((target, elm, idx) => {
-         target[elm.id] = elm.formatter ? elm.formatter(values[idx]) : values[idx];
+         target[elm.id] = elm.formatter && typeof elm.formatter(values[idx]) !== 'object' ? elm.formatter(values[idx]) : values[idx];
          return target;
       }, {});
       dataToEdit['sec_str'] = `${dataToEdit.sec_id} 台積電`;
@@ -174,7 +174,7 @@ function ManageTransaction(props) {
    const handleShowDelete = (cells) => {
       let values = cells.map((v) => v.data);
       let dataToDelete = col.reduce((target, elm, idx) => {
-         target[elm.id] = elm.formatter ? elm.formatter(values[idx]) : values[idx];
+         target[elm.id] = elm.formatter && typeof elm.formatter(values[idx]) !== 'object' ? elm.formatter(values[idx]) : values[idx];
          return target;
       }, {});
       dataToDelete['sec_str'] = `${dataToDelete.sec_id} 台積電`;

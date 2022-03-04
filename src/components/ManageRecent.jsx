@@ -20,6 +20,7 @@ function ManageRecent({ url, dataToServer, row, ...props }) {
     const dataToServerRef = useRef(dataToServer);
     const [col, setCol] = useState([]);
     console.log(`ManageRecent: data*${data.length}`);
+    console.log(data);
     useEffect(() => {
         let beingMounted = true;
         if (url) {
@@ -55,6 +56,7 @@ function ManageRecent({ url, dataToServer, row, ...props }) {
         let myCol = props.col.map(x => x);
         if (props.edit || props.delete) {
             myCol.push({
+                id:'action',
                 name: h('b', { style: { 'float': 'left', } }, '參考'), width: '8%',
                 formatter: (cell, row) => {
                     return [

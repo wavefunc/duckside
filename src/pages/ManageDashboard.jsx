@@ -19,7 +19,7 @@ const acc_email = localStorage.getItem('loginState');
 const dateQuery = dt.format(new Date(), 'YYYY-MM-DD');
 const urlPostAsset = 'http://localhost:5000/asset/someday';
 const urlPostInventory = 'http://localhost:5000/dashboard/inventory';
-const urlPostPlan = 'http://localhost:5000/dashboard/inventory';
+const urlPostPlan = 'http://localhost:5000/dashboard/plan';
 
 // 庫存現況表設定
 const colInventory = [
@@ -34,12 +34,12 @@ const colInventory = [
       formatter: (cell) => h('span', { style: { 'float': 'right', } }, cell.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","))
    },
    {
-      id: 'marketPriceChange', name: h('b', { style: { 'float': 'right', 'font-size':'15px' } }, '漲跌'), width: '10%',
-      formatter: (cell) => h('span', { style: { 'float': 'right', 'color': cell>0 ? 'red': 'green' } }, cell)
+      id: 'marketPriceChange', name: h('b', { style: { 'float': 'right', 'font-size': '15px' } }, '漲跌'), width: '10%',
+      formatter: (cell) => h('span', { style: { 'float': 'right', 'color': cell > 0 ? 'red' : 'green' } }, cell)
    },
    {
-      id: 'marketPriceChangePct', name: h('b', { style: { 'float': 'right', 'font-size':'15px' } }, '漲跌幅'), width: '10%',
-      formatter: (cell, row) => h('span', { style: { 'float': 'right', 'color': cell>0 ? 'red': 'green' } }, Math.round(cell * 10000) / 100 + '%')
+      id: 'marketPriceChangePct', name: h('b', { style: { 'float': 'right', 'font-size': '15px' } }, '漲跌幅'), width: '10%',
+      formatter: (cell, row) => h('span', { style: { 'float': 'right', 'color': cell > 0 ? 'red' : 'green' } }, Math.round(cell * 10000) / 100 + '%')
    },
    {
       id: 'marketValue', name: h('b', { style: { 'float': 'right', } }, '市值'), width: '15%',
@@ -50,18 +50,28 @@ const colInventory = [
 const colPlan = [
    { id: 'plan_id', name: 'asd_id', hidden: true },
    {
-      id: 'plan_date', name: '日期', width: '12%',
+      id: 'plan_date', name: '日期', width: '10%',
       formatter: (cell) => { let d = new Date(cell); return dt.format(d, 'M/D'); },
    },
-   { id: 'sec_id', name: '代號', width: '10%' },
+   { id: 'sec_id', name: '代號', width: '12%' },
    { id: 'sec_name', name: '名稱', width: '15%' },
    { id: 'plan_strategy', name: '類型', hidden: true },
    { id: 'plan_param1', name: '參數', hidden: true },
    { id: 'plan_param2', name: '參數', hidden: true },
-   { id: 'plan_anchor', name: '參考', width: '12%' },
-   { id: 'plan_stoploss', name: '停損', width: '12%' },
-   { id: 'plan_target', name: '目標', width: '12%' },
-   { id: 'marketPrice', name: '現價', width: '12%' },
+   {
+      id: 'plan_anchor', name: '參考', width: '12%', formatter: (cell) => h('b', { style: { 'float': 'right', } }, cell.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","))
+   },
+   {
+      id: 'plan_stoploss', name: '停損', width: '12%', formatter: (cell) => h('b', { style: { 'float': 'right', } }, cell.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","))
+   },
+   {
+      id: 'plan_target', name: '目標', width: '12%',
+      formatter: (cell) => h('b', { style: { 'float': 'right', } }, cell.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","))
+   },
+   {
+      id: 'marketPrice', name: '現價', width: '12%',
+      formatter: (cell) => h('b', { style: { 'float': 'right', } }, cell.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","))
+   },
    { id: 'plan_note', name: '筆記', width: '15%' },
 ];
 
