@@ -180,7 +180,7 @@ let MemberRegister = (props) => {
         acc_password: memberInfo.password,
         acc_name: memberInfo.name,
       }).then((result) => {
-        console.log(result.data)
+        console.log(result.data);
         if (result.data === "Added successfully") {
           // console.log("註冊成功!");
           setNoticeState({
@@ -231,11 +231,9 @@ let MemberRegister = (props) => {
           if (window.localStorage) {
             var local = window.localStorage;
             local.setItem("loginState", memberInfo.email);
-
-            // localStorage.removeItem("name"); //清除
-            // localStorage.clear(); //全部清除
-            // let a = localStorage.getItem("loginState");
-            // console.log(a);
+            local.setItem("memberName", memberInfo.name);
+            //reload
+            window.location.reload();
           }
         } else {
           // console.log("註冊失敗!");
