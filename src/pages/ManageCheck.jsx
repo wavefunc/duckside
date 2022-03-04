@@ -117,7 +117,7 @@ function ManageCheck(props) {
                         <Search className="mb-1 mr-1" />
                         <span>查詢</span>
                      </Button>
-                     <span className='text-muted font-weight-light ml-4' style={{fontSize:'18px'}}>*點選標籤顯示或隱藏資料</span>
+                     <span className='text-muted font-weight-light ml-4' style={{fontSize:'15px'}}>*點選標籤顯示或隱藏資料</span>
                   </Form>
                </Formik>
             </Col>
