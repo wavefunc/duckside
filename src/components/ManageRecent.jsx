@@ -28,11 +28,13 @@ function ManageRecent({ url, dataToServer, row, ...props }) {
                 axios.post(url, dataToServer).then((res) => {
                     if (beingMounted) {
                         setData(res.data);
+                        /*
                         console.log((res.data).map((v) => (
-                            // `(${v.acc_id}, ${v.sec_id}, ${v.txn_round}, ${v.txn_position}, ${v.txn_date}, ${v.txn_price}, ${v.txn_amount}, ${v.txn_note})`
-                            // `(${v.acc_id}, ${v.sec_id}, ${v.plan_date}, ${v.plan_strategy}, ${v.plan_param1}, ${v.plan_param2}, ${v.plan_anchor}, ${v.plan_stoploss}, ${v.plan_target}, ${v.plan_note})`
+                            `(${v.acc_id}, ${v.sec_id}, ${v.txn_round}, ${v.txn_position}, ${v.txn_date}, ${v.txn_price}, ${v.txn_amount}, ${v.txn_note})`
+                            `(${v.acc_id}, ${v.sec_id}, ${v.plan_date}, ${v.plan_strategy}, ${v.plan_param1}, ${v.plan_param2}, ${v.plan_anchor}, ${v.plan_stoploss}, ${v.plan_target}, ${v.plan_note})`
                             `(4, '${v.ast_date.slice(0,10)}', ${v.ast_securities}, ${v.ast_cash}, ${v.ast_borrowing}, ${v.ast_option}, ${v.ast_others}, ${v.ast_adjust},"")`
                         )).join(','));
+                        */
                     }
                 })
             } else {

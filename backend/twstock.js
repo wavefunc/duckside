@@ -93,26 +93,30 @@ class twseMarketInfo {
         // Note: performing an asynchronous call to its completion in the constructor is not an option,
     }
     async initialize() {
-        var res = await this.responsePromise;
-        if (res.data.stat !== "OK") {
-            console.log(res.data);
-            this.stat = "No Trading";
-        } else {
-            var data = transpose(res.data.data9);
-            // 資料量大, 只以字串存放, 不全部轉成數值
-            this._stockId = data[0];
-            this._stockName = data[1];
-            this._volShare = data[2];
-            this._volDeal = data[3];
-            this._volDollar = data[4];
-            this._priceOpen = data[5];
-            this._priceHigh = data[6];
-            this._priceLow = data[7];
-            this._priceClose = data[8];
-            this._changeDir = data[9];
-            this._changeAbs = data[10];
-            this._ratioPE = data[15];
-            this._fields = res.data['fields9'];
+        try {
+            var res = await this.responsePromise;
+            if (res.data.stat !== "OK") {
+                this.stat = "No Trading";
+            } else {
+                var data = transpose(res.data.data9);
+                // 資料量大, 只以字串存放, 不全部轉成數值
+                this.stat = res.data.stat;
+                this._stockId = data[0];
+                this._stockName = data[1];
+                this._volShare = data[2];
+                this._volDeal = data[3];
+                this._volDollar = data[4];
+                this._priceOpen = data[5];
+                this._priceHigh = data[6];
+                this._priceLow = data[7];
+                this._priceClose = data[8];
+                this._changeDir = data[9];
+                this._changeAbs = data[10];
+                this._ratioPE = data[15];
+                this._fields = res.data['fields9'];
+            }
+        } catch {
+            this.stat = "our IP is blocked";
         }
     }
     stockId(IdStr) {
@@ -282,7 +286,7 @@ class twseStockDay {
         var period = dt.parse(Ymd, 'YYYYMMDD', true);
         var manyRequest = async function (ms) {
             for (var i = 0; i <= this._periods; i++) {
-                console.log(`requestData${i + 1}: ${Ymd}`);
+                // console.log(`requestData${i + 1}: ${Ymd}`);
                 this.responsePromise[i] = axios(getUrl(Ymd));
                 period.setMonth(period.getMonth() - 1);
                 Ymd = dt.format(period, "YYYYMMDD");
@@ -483,7 +487,7 @@ class yahooStockDay {
 
     }
     async initialize() {
-        console.log("init");
+        // console.log("init");
         try {
             var res = await this.responsePromise;
         } catch (e) {
@@ -530,6 +534,7 @@ async function getTwse(Ymd, stockId, periods) {
             await MI.initialize();
             Ymd = dt.format((dt.addDays(dt.parse(Ymd, 'YYYYMMDD'), -1)), 'YYYYMMDD');
         } while (MI.stat === "No Trading");
+        console.log(`市價抓取是否成功: ${MI.stat}`);
         return MI;
     }
 }
@@ -550,8 +555,8 @@ async function getYahoo(stockId, period1, period2) {
         // 處理方法: 自動將迄時加1天, 抓取至2022/1/27 00:00:00
     }
     do {
-        console.log(period1);
-        console.log(period2);
+        // console.log(period1);
+        // console.log(period2);
         if (isNaN(period1) || isNaN(period2)) {
             console.log('Invalid Date...');
             return 'Invalid Date...';

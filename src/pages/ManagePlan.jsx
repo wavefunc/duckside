@@ -14,6 +14,7 @@ import dt from 'date-and-time';
 import { MyFormikObserver, MyInput, MySelect, MyOkToast } from '../components/MyFormComponent';
 import ManageRecent from '../components/ManageRecent.jsx';
 import myPlanHelper from '../components/MyPlanHelper.jsx';
+import Breadcrumb from '../components/Breadcrumb'
 
 const acc_email = localStorage.getItem('loginState');
 const urlPostRecent = 'http://localhost:5000/plan/recent';
@@ -218,6 +219,9 @@ function Manageplan(props) {
 
    return (
       <Container fluid className="pt-3">
+         <Row>
+            <Breadcrumb />
+         </Row>
          <Row className='pr-2'>
             <Col lg={8}>
                <Formik

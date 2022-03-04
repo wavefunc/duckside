@@ -1,11 +1,11 @@
 // ----- 晴暄、鎧洋 ----- //
 
-import axios, { Axios } from 'axios';
-import React, { Component, useRef, useState } from 'react';
-import { Row, Modal, ModalBody, Col, Container } from 'react-bootstrap';
+import React, {useRef, useState } from 'react';
+import { Row, Modal, Col, Container } from 'react-bootstrap';
 import "../css/GameDaily_style.css"
 import { PlusCircle, Search, DashCircle, Gift } from "react-bootstrap-icons"
-import { Bar, Chart } from 'react-chartjs-2';
+import { Chart } from 'react-chartjs-2';
+import { Link } from "react-router-dom"
 import Table from 'react-bootstrap/Table'
 import {
    Chart as ChartJS,
@@ -99,7 +99,7 @@ function GameDailyRun() {
                ticks: {
                   source: "labels",
                   callback: (v, i, arr) => {
-                     if (i == 0) {
+                     if (i === 0) {
                         return v;
                      } else {
                         let currentYmdArr = v.split('/');
@@ -217,15 +217,18 @@ function GameDailyRun() {
       setGetPercentage(Math.round(pct).toString());
       setHaveMoney(newValue);
       setModalDisplay(true);
-      
-   }
 
+   }
 
    const getTotalScore = () => {
-      setGetTotalPercentage((haveMoney-100))
-      setGetTotalPoint((haveMoney-100)*20)
+      setGetTotalPercentage((haveMoney - 100))
+      setGetTotalPoint((haveMoney - 100) * 20)
       setGiftDisplay(true)
    }
+
+   // const backToSelect =() => {
+   //    window.location = "/game/daily";
+   // }
 
    return (
       <>
@@ -236,9 +239,9 @@ function GameDailyRun() {
                      <span className="headerSide">{`2019/1/${currentDate}交易建立`}</span>
                   </Col>
                   <Col>
-                     <a href="http://localhost:3000/game/daily">
+                     <Link to="/game/daily">
                         <button className="headerBack" ><span className="header-Back-text">返回關卡</span> </button>
-                     </a>
+                     </Link>
                   </Col>
                </Row>
             </Container>
@@ -260,11 +263,11 @@ function GameDailyRun() {
                      <span className="buyTitle">買進股數 :
                         <input type="text" className="testEnterOne" id="numBuy" ref={inputAmount} />
                         <button className="button-plus" onClick={buyTwstock}>
-                           <PlusCircle className="button-plus-icon" />
+                           <PlusCircle className="button-plus-icon" key="1"/>
                            <span className="button-plus-text">買進</span>
                         </button>
                         <button className="button-plus" onClick={sellTwstock}>
-                           <DashCircle className="button-plus-icon" />
+                           <DashCircle className="button-plus-icon" key="2"/>
                            <span className="button-plus-text">賣出</span>
                         </button>
 
@@ -276,7 +279,7 @@ function GameDailyRun() {
                <Container>
                   <Row>
                      <Col>
-                        <img src="/assets/images/duck.svg" className="duckPict" />
+                        <img src="/assets/images/duck.svg" className="duckPict" alt="duckPict"/>
                      </Col>
                      <Col>
                         <div style={{ overflowY: "scroll", overflowX: "hidden" }} className="testInput">
@@ -288,7 +291,7 @@ function GameDailyRun() {
                               <thead className="thdPost">
                                  <tr>
                                     <th>證券代號/名稱</th>
-                                    <th>買進部位</th>
+                                    <th>買進股數</th>
 
                                  </tr>
                               </thead>
@@ -327,7 +330,7 @@ function GameDailyRun() {
             onHide={() => setFindDisplay(false)}
             aria-labelledby="example-modal-sizes-title-lg"
          >
-            <Chart type='bar' options={options} data={chartData} />
+            <Chart type='bar' options={options} data={chartData} key="3"/>
 
          </Modal>
 
@@ -359,7 +362,7 @@ function GameDailyRun() {
                <div className="jumpTitle"><span className="jumpTotle"> 結算版</span></div>
                <div className="jumpGet">總獲得％數：{`${getTotalPercentage}%`}</div>
                <div className="jumpGet">總獲得積分：{`${getTotalPoint}`}</div>
-               <button className="jumpClose" onClick={() => { setGiftDisplay(false) }}>關閉</button>
+               <button className="jumpClose" onClick={() => { setGiftDisplay(false) }}><Link to="/game/daily">領取</Link></button>
             </div>
          </Modal>
       </>

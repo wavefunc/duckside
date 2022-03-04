@@ -1,7 +1,8 @@
 // ----- 冠樺 ----- //
-// ----- 後端專用語法 ----//
+// ----- 後端測試專用語法 ----//
 
 var express = require('express');
+const { Rss } = require('react-bootstrap-icons');
 var router = express.Router();
 var { query } = require('./mysql.js');
 
@@ -18,9 +19,23 @@ router.get('/account/defaultFurn/:acc_id', async (req, res) => {
 
    query(strQuery, [], (err) => {
       err ?
-      res.send(err) :
-      res.send('Successfully added default furniture with acc_id: ' + req.params.acc_id);
+         res.send(err) :
+         res.send('Successfully added default furniture with acc_id: ' + req.params.acc_id);
    });
 });
+
+// 幫會員增加積分
+router.get('/addpoint/:acc_id/:point', async (req, res) => {
+   let strQuery = `
+      INSERT INTO point_record (pt_id, acc_id, pt_datetime, pt_scoring) 
+      VALUES (NULL, ?, NOW(), ?)
+   `
+   query(strQuery, [req.params.acc_id, req.params.point], err => {
+      err ?
+         res.send(err) :
+         res.send('ok');
+   });
+});
+
 
 module.exports = router;

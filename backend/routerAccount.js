@@ -32,7 +32,12 @@ router.post('/account/create', async (req, res) => {
    aryFurnId.forEach((val) => {
       strQuery2 += `(NULL, (SELECT acc_id from account where acc_email = '${req.body.acc_email}'), '${val}'),`;
    });
-   strQuery2 = strQuery2.slice(0, -1);
+   strQuery2 = strQuery2.slice(0, -1) + ';';
+
+   // 建立會員就給預設的積分 1000
+   let strQuery3 = `INSERT INTO point_record (acc_id, pt_datetime, pt_scoring) VALUES 
+      ((SELECT acc_id from account where acc_email = '${req.body.acc_email}'), NOW(), 1000)
+   `;
 
    // 將密碼加密後再存入 DB
    var hashPassword;
@@ -50,7 +55,7 @@ router.post('/account/create', async (req, res) => {
    };
    await encryptPassword();
 
-   await query(strQuery1 + strQuery2,
+   await query(strQuery1 + strQuery2 + strQuery3,
       [req.body.acc_email, hashPassword, req.body.acc_name],
       (err) => err ? res.send(err) : res.send('Added successfully')
    );

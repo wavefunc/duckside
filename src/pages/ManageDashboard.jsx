@@ -1,7 +1,5 @@
 /* * * * * 人豪 * * * * * 
  * 
- * 備忘:
- * const acc_email = ... 要換成localStorage
  * 
  * * * * * * * * * * * */
 
@@ -14,62 +12,79 @@ import MyCurrentPosition, { MyCardDeck } from '../components/ManageCurrent.jsx';
 import ManageRecent from '../components/ManageRecent.jsx';
 import { MyChartPie } from '../components/MyChartComponent.jsx'
 import { MyCandleLookup } from '../components/MyLookupComponent.jsx'
+import Breadcrumb from '../components/Breadcrumb'
 
 const acc_email = localStorage.getItem('loginState');
 const dateQuery = dt.format(new Date(), 'YYYY-MM-DD');
 const urlPostAsset = 'http://localhost:5000/asset/someday';
 const urlPostInventory = 'http://localhost:5000/transaction/inventory';
-const urlPostPlan = 'http://localhost:5000/plan/recent';
-const urlPostMarketInfo = 'http://localhost:5000/securities/marketInfo';
+const urlPostPlan = 'http://localhost:5000/plan/current';
 
-// 主表使用
-// 庫存現況
+// 庫存現況表設定
 const colInventory = [
    { id: 'sec_id', name: '代號', width: '10%' },
    { id: 'sec_name', name: '名稱', width: '20%' },
+   { id: 'total', name: '庫存數量', width: '15%' },
    {
       id: 'marketPrice', name: '現價', width: '10%',
-      formatter: (cell, row) => {
-         return row.cells[0].data
-      }
    },
    {
       id: 'marketPriceChange', name: '漲跌', width: '10%',
-      formatter: (cell, row) => {
-         return row.cells[0].data
-      }
    },
-   { id: 'total', name: '庫存數量', width: '10%' },
    {
-      id: 'marketValue', name: '市值', width: '10%',
+      id: 'marketPriceChangePct', name: '%', width: '10%',
       formatter: (cell, row) => {
-         return row.cells[0].data
+         return Math.round(cell * 10000) / 100 + '%';
       }
    },
+   { id: 'marketValue', name: '市值', width: '15%', },
 ];
 // 最近計畫
 const colPlan = [
    { id: 'plan_id', name: 'asd_id', hidden: true },
    {
-      id: 'plan_date', name: '日期', width: '15%',
-      formatter: (cell) => { let d = new Date(cell); return dt.format(d, 'YYYY-MM-DD'); },
+      id: 'plan_date', name: '日期', width: '12%',
+      formatter: (cell) => { let d = new Date(cell); return dt.format(d, 'M/D'); },
    },
    { id: 'sec_id', name: '代號', width: '10%' },
    { id: 'sec_name', name: '名稱', width: '15%' },
    { id: 'plan_strategy', name: '類型', hidden: true },
    { id: 'plan_param1', name: '參數', hidden: true },
    { id: 'plan_param2', name: '參數', hidden: true },
-   { id: 'plan_anchor', name: '參考價', width: '10%' },
-   { id: 'plan_stoploss', name: '停損', width: '10%' },
-   { id: 'plan_target', name: '目標', width: '10%' },
-   // { id: '', name: '現價', width: '10%' },
-   { id: 'plan_note', name: '筆記', width: '20%' },
+   { id: 'plan_anchor', name: '參考', width: '12%' },
+   { id: 'plan_stoploss', name: '停損', width: '12%' },
+   { id: 'plan_target', name: '目標', width: '12%' },
+   { id: 'marketPrice', name: '現價', width: '12%' },
+   { id: 'plan_note', name: '筆記', width: '15%' },
 ];
 
 function ManageDashboard(props) {
    const [dataCard, setDataCard] = useState([]);
-   const [dataPie, setDataPie] = useState([]);
-   const [marketInfo, setMarketInfo] = useState();
+   const [dataPlan, setDataPlan] = useState([]);
+   const [dataPosition, setDataPosition] = useState([]);
+
+   const dataPie = {
+      labels: dataPosition.map(v => v.sec_name),
+      datasets: [
+         {
+            data: dataPosition.map((v,i) => v.marketValue),
+            backgroundColor: dataPosition.map((v,i)=>`hsl(${30+i*15}, 100%, ${55+i*11}%)`),
+            // [
+            //    'hsl(30, 100%, 55%)',
+            //    'hsl(45, 100%, 66%)',
+            //    'hsl(60, 100%, 77%)',
+            // ],
+            borderColor: 'hsl(15, 35%, 60%)',
+            borderWidth: 2,
+            /*
+                'hsl(30, 88%, 66%)',
+                'hsl(40, 88%, 71%)',
+                'hsl(50, 88%, 76%)',
+            ],
+            */
+         },
+      ],
+   };
 
    useEffect(() => {
       let beingMounted = true;
@@ -102,22 +117,30 @@ function ManageDashboard(props) {
       });
       axios.post(urlPostInventory, dataToServer).then((res) => {
          if (beingMounted) {
-            console.log(res.data);
-            setDataPie(res.data);
+            let dataSorted = res.data.map(v => v);
+            // console.log(res.data);
+            dataSorted = dataSorted.sort(function (a, b) {
+               return a.marketValue < b.marketValue ? 1 : -1;
+            });
+            // console.log(dataSorted);
+            setDataPosition(dataSorted);
          }
       });
-      axios.post(urlPostMarketInfo, dataToServer).then((res) => {
+      axios.post(urlPostPlan, dataToServer).then((res) => {
          if (beingMounted) {
-            setMarketInfo(res.data);
-            // console.log(res.data.priceClose(2330));
             console.log(res.data);
+            setDataPlan(res.data);
          }
       });
+
       return () => { beingMounted = false };
    }, []);
 
    return (
-      <Container fluid className="pt-3">
+      <Container fluid className="pt-0">
+         <Row>
+            <Breadcrumb />
+         </Row>
          <MyCardDeck data={dataCard} />
          <br />
          <Row>
@@ -139,14 +162,12 @@ function ManageDashboard(props) {
                   </Nav>
                   <Tab.Content>
                      <Tab.Pane eventKey="first">
-                        <MyCurrentPosition col={colInventory} className={{ table: 'table table-sm' }}
-                           url={urlPostInventory}
-                           dataToServer={{ acc_email: acc_email, dateQuery: dateQuery }}
+                        <MyCurrentPosition className={{ table: 'table table-sm' }}
+                           data={dataPosition} col={colInventory}
                         ></MyCurrentPosition>
                      </Tab.Pane>
                      <Tab.Pane eventKey="second">
-                        <ManageRecent row={10} col={colPlan}
-                           url={urlPostPlan} dataToServer={{ acc_email: acc_email, amount: 10 }}
+                        <ManageRecent row={10} col={colPlan} data={dataPlan}
                         ></ManageRecent>
                      </Tab.Pane>
                   </Tab.Content>
@@ -154,7 +175,7 @@ function ManageDashboard(props) {
 
             </Col>
             <Col lg={4}>
-               <MyChartPie></MyChartPie>
+               <MyChartPie data={dataPie}></MyChartPie>
             </Col>
          </Row>
          <Row>

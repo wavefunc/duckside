@@ -5,12 +5,15 @@
  * 4. 如有收到row=10, 則只呈現前10筆資料（db給日期降冪, 即是最新10筆）
  * 5. 如沒收到col用來對應鍵名及欄名, 將使用原資料鍵名為欄名
  * 
+ * 選色
+ * `hsl(40, 96%, ${-card.weight * 50 + 95}%)`
+ * 
  ********* */
 
 import { Grid } from 'gridjs-react';
 import { Card, CardDeck } from 'react-bootstrap';
 import "gridjs/dist/theme/mermaid.min.css";
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 function MyCurrentPosition({ url, dataToServer, row, col = null, ...props }) {
@@ -31,7 +34,7 @@ function MyCurrentPosition({ url, dataToServer, row, col = null, ...props }) {
             setData(props.data);
         }
         return () => { beingMounted = false };
-    }, [url, dataToServer.dateQuery, dataToServer.dateQuery, props.refreshState, props.data]);
+    }, [url, dataToServer, props.refreshState, props.data]);
     return (
         data && data.length ? (
             <Grid
@@ -61,8 +64,8 @@ export const MyCardDeck = (props) => {
 
     const renderCard = (card, index) => {
         return (
-            <Card key={index} className="p-0">
-                <Card.Header style={{ backgroundColor: `hsl(50, 88%, ${-card.weight * 40 + 95}%)` }} className="m-0"></Card.Header>
+            <Card key={index} className="p-0 mt-0">
+                <Card.Header style={{ backgroundColor: `hsl(40, 96%, ${-card.weight * 50 + 95}%)` }} className="m-0"></Card.Header>
                 <Card.Body>
                     <Card.Title as='h6' className="">
                         {card.title}

@@ -3,6 +3,7 @@
 import { Axios } from 'axios';
 import React, { Component } from 'react';
 import { Row, Modal } from 'react-bootstrap';
+import {Link } from "react-router-dom"
 
 function MyVerticallyCenteredModal(props) {
    return (
@@ -23,7 +24,7 @@ function MyVerticallyCenteredModal(props) {
                         <tspan x="0" y="0">關卡條件:關卡1</tspan>
                      </text>
                      <line id="Line_41" data-name="Line 41" x2="1032" transform="translate(485 314.5)" fill="none" stroke="#707070"
-                        stroke-width="5" />
+                        strokeWidth="5" />
                      <text id="時間:" transform="translate(493 517)" fill="#520707" fontSize="80"
                         fontFamily="PingFangTC-Semibold, PingFang TC" fontWeight="600">
                         <tspan x="0" y="0">時間</tspan>
@@ -37,7 +38,7 @@ function MyVerticallyCenteredModal(props) {
                         <tspan y="0" fontFamily="Helvetica-Bold, Helvetica" fontWeight="700">3 Month</tspan>
                      </text>
 
-                     <a href="http://localhost:3000/game/dailyrun">
+                     <Link to="/game/dailyrun">
                         <g id="進入關卡_按鈕" data-name="進入關卡 按鈕" transform="translate(-33 41)">
                            <rect id="Rectangle_106" data-name="Rectangle 106" width="463" height="142" rx="30"
                               transform="translate(583 765)" fill="#3e88a8" />
@@ -46,15 +47,15 @@ function MyVerticallyCenteredModal(props) {
                               <tspan x="0" y="0">進入關卡</tspan>
                            </text>
                         </g>
-                     </a>
+                     </Link>
 
                      <g>
-                        <a href="javascript:void(0)" id="closebt" onClick={props.onHide}>
+                        <a  id="closebt" onClick={props.onHide}>
                            <g id="關閉_按鈕" data-name="關閉 按鈕" transform="translate(20 41)">
                               <rect id="Rectangle_105" data-name="Rectangle 105" width="325" height="142" rx="30"
                                  transform="translate(1109 765)" fill="#ac4c4c" />
-                              <text id="關閉" transform="translate(1172 873)" fill="#fff" font-size="100"
-                                 font-family="'\.PingFangTC-Semibold', '\.PingFang TC'" font-weight="600">
+                              <text id="關閉" transform="translate(1172 873)" fill="#fff" fontSize="100"
+                                 fontFamily="'\.PingFangTC-Semibold', '\.PingFang TC'" fontWeight="600">
                                  <tspan x="0" y="0">關閉</tspan>
                               </text>
                            </g>
@@ -88,7 +89,7 @@ function MyVerticallyCenteredModalTwo(e) {
                         <tspan x="0" y="0">關卡條件:關卡2</tspan>
                      </text>
                      <line id="Line_41" data-name="Line 41" x2="1032" transform="translate(485 314.5)" fill="none" stroke="#707070"
-                        stroke-width="5" />
+                        strokeWidth="5" />
                      <text id="時間:" transform="translate(493 517)" fill="#520707" fontSize="80"
                         fontFamily="PingFangTC-Semibold, PingFang TC" fontWeight="600">
                         <tspan x="0" y="0">時間</tspan>
@@ -112,12 +113,12 @@ function MyVerticallyCenteredModalTwo(e) {
                         </g>
 
                      <g>
-                        <a href="javascript:void(0)" id="closebt" onClick={e.onHide}>
+                        <a href="" id="closebt" onClick={e.onHide}>
                            <g id="關閉_按鈕" data-name="關閉 按鈕" transform="translate(20 41)">
                               <rect id="Rectangle_105" data-name="Rectangle 105" width="325" height="142" rx="30"
                                  transform="translate(1109 765)" fill="#ac4c4c" />
-                              <text id="關閉" transform="translate(1172 873)" fill="#fff" font-size="100"
-                                 font-family="'\.PingFangTC-Semibold', '\.PingFang TC'" font-weight="600">
+                              <text id="關閉" transform="translate(1172 873)" fill="#fff" fontSize="100"
+                                 fontFamily="'\.PingFangTC-Semibold', '\.PingFang TC'" fontWeight="600">
                                  <tspan x="0" y="0">關閉</tspan>
                               </text>
                            </g>
@@ -151,7 +152,7 @@ function MyVerticallyCenteredModalThree(v) {
                         <tspan x="0" y="0">關卡條件:關卡3</tspan>
                      </text>
                      <line id="Line_41" data-name="Line 41" x2="1032" transform="translate(485 314.5)" fill="none" stroke="#707070"
-                        stroke-width="5" />
+                        strokeWidth="5" />
                      <text id="時間:" transform="translate(493 517)" fill="#520707" fontSize="80"
                         fontFamily="PingFangTC-Semibold, PingFang TC" fontWeight="600">
                         <tspan x="0" y="0">時間</tspan>
@@ -175,12 +176,12 @@ function MyVerticallyCenteredModalThree(v) {
                         </g>
 
                      <g>
-                        <a href="javascript:void(0)" id="closebt" onClick={v.onHide}>
+                        <a href="" id="closebt" onClick={v.onHide}>
                            <g id="關閉_按鈕" data-name="關閉 按鈕" transform="translate(20 41)">
                               <rect id="Rectangle_105" data-name="Rectangle 105" width="325" height="142" rx="30"
                                  transform="translate(1109 765)" fill="#ac4c4c" />
-                              <text id="關閉" transform="translate(1172 873)" fill="#fff" font-size="100"
-                                 font-family="'\.PingFangTC-Semibold', '\.PingFang TC'" font-weight="600">
+                              <text id="關閉" transform="translate(1172 873)" fill="#fff" fontSize="100"
+                                 fontFamily="'\.PingFangTC-Semibold', '\.PingFang TC'" fontWeight="600">
                                  <tspan x="0" y="0">關閉</tspan>
                               </text>
                            </g>
@@ -214,7 +215,7 @@ function MyVerticallyCenteredModalFour(p) {
                         <tspan x="0" y="0">關卡條件:關卡4</tspan>
                      </text>
                      <line id="Line_41" data-name="Line 41" x2="1032" transform="translate(485 314.5)" fill="none" stroke="#707070"
-                        stroke-width="5" />
+                        strokeWidth="5" />
                      <text id="時間:" transform="translate(493 517)" fill="#520707" fontSize="80"
                         fontFamily="PingFangTC-Semibold, PingFang TC" fontWeight="600">
                         <tspan x="0" y="0">時間</tspan>
@@ -238,12 +239,12 @@ function MyVerticallyCenteredModalFour(p) {
                         </g>
 
                      <g>
-                        <a href="javascript:void(0)" id="closebt" onClick={p.onHide}>
+                        <a href="" id="closebt" onClick={p.onHide}>
                            <g id="關閉_按鈕" data-name="關閉 按鈕" transform="translate(20 41)">
                               <rect id="Rectangle_105" data-name="Rectangle 105" width="325" height="142" rx="30"
                                  transform="translate(1109 765)" fill="#ac4c4c" />
-                              <text id="關閉" transform="translate(1172 873)" fill="#fff" font-size="100"
-                                 font-family="'\.PingFangTC-Semibold', '\.PingFang TC'" font-weight="600">
+                              <text id="關閉" transform="translate(1172 873)" fill="#fff" fontSize="100"
+                                 fontFamily="'\.PingFangTC-Semibold', '\.PingFang TC'" fontWeight="600">
                                  <tspan x="0" y="0">關閉</tspan>
                               </text>
                            </g>
@@ -277,7 +278,7 @@ function MyVerticallyCenteredModalFive(a) {
                         <tspan x="0" y="0">關卡條件:關卡5</tspan>
                      </text>
                      <line id="Line_41" data-name="Line 41" x2="1032" transform="translate(485 314.5)" fill="none" stroke="#707070"
-                        stroke-width="5" />
+                        strokeWidth="5" />
                      <text id="時間:" transform="translate(493 517)" fill="#520707" fontSize="80"
                         fontFamily="PingFangTC-Semibold, PingFang TC" fontWeight="600">
                         <tspan x="0" y="0">時間</tspan>
@@ -301,12 +302,12 @@ function MyVerticallyCenteredModalFive(a) {
                         </g>
 
                      <g>
-                        <a href="javascript:void(0)" id="closebt" onClick={a.onHide}>
+                        <a href="" id="closebt" onClick={a.onHide}>
                            <g id="關閉_按鈕" data-name="關閉 按鈕" transform="translate(20 41)">
                               <rect id="Rectangle_105" data-name="Rectangle 105" width="325" height="142" rx="30"
                                  transform="translate(1109 765)" fill="#ac4c4c" />
-                              <text id="關閉" transform="translate(1172 873)" fill="#fff" font-size="100"
-                                 font-family="'\.PingFangTC-Semibold', '\.PingFang TC'" font-weight="600">
+                              <text id="關閉" transform="translate(1172 873)" fill="#fff" fontSize="100"
+                                 fontFamily="'\.PingFangTC-Semibold', '\.PingFang TC'" fontWeight="600">
                                  <tspan x="0" y="0">關閉</tspan>
                               </text>
                            </g>
@@ -340,7 +341,7 @@ function MyVerticallyCenteredModalSix(b) {
                         <tspan x="0" y="0">關卡條件:關卡6</tspan>
                      </text>
                      <line id="Line_41" data-name="Line 41" x2="1032" transform="translate(485 314.5)" fill="none" stroke="#707070"
-                        stroke-width="5" />
+                        strokeWidth="5" />
                      <text id="時間:" transform="translate(493 517)" fill="#520707" fontSize="80"
                         fontFamily="PingFangTC-Semibold, PingFang TC" fontWeight="600">
                         <tspan x="0" y="0">時間</tspan>
@@ -364,12 +365,12 @@ function MyVerticallyCenteredModalSix(b) {
                         </g>
 
                      <g>
-                        <a href="javascript:void(0)" id="closebt" onClick={b.onHide}>
+                        <a href="" id="closebt" onClick={b.onHide}>
                            <g id="關閉_按鈕" data-name="關閉 按鈕" transform="translate(20 41)">
                               <rect id="Rectangle_105" data-name="Rectangle 105" width="325" height="142" rx="30"
                                  transform="translate(1109 765)" fill="#ac4c4c" />
-                              <text id="關閉" transform="translate(1172 873)" fill="#fff" font-size="100"
-                                 font-family="'\.PingFangTC-Semibold', '\.PingFang TC'" font-weight="600">
+                              <text id="關閉" transform="translate(1172 873)" fill="#fff" fontSize="100"
+                                 fontFamily="'\.PingFangTC-Semibold', '\.PingFang TC'" fontWeight="600">
                                  <tspan x="0" y="0">關閉</tspan>
                               </text>
                            </g>
@@ -403,7 +404,7 @@ function MyVerticallyCenteredModalSeven(c) {
                         <tspan x="0" y="0">關卡條件:關卡7</tspan>
                      </text>
                      <line id="Line_41" data-name="Line 41" x2="1032" transform="translate(485 314.5)" fill="none" stroke="#707070"
-                        stroke-width="5" />
+                        strokeWidth="5" />
                      <text id="時間:" transform="translate(493 517)" fill="#520707" fontSize="80"
                         fontFamily="PingFangTC-Semibold, PingFang TC" fontWeight="600">
                         <tspan x="0" y="0">時間</tspan>
@@ -427,12 +428,12 @@ function MyVerticallyCenteredModalSeven(c) {
                         </g>
 
                      <g>
-                        <a href="javascript:void(0)" id="closebt" onClick={c.onHide}>
+                        <a href="" id="closebt" onClick={c.onHide}>
                            <g id="關閉_按鈕" data-name="關閉 按鈕" transform="translate(20 41)">
                               <rect id="Rectangle_105" data-name="Rectangle 105" width="325" height="142" rx="30"
                                  transform="translate(1109 765)" fill="#ac4c4c" />
-                              <text id="關閉" transform="translate(1172 873)" fill="#fff" font-size="100"
-                                 font-family="'\.PingFangTC-Semibold', '\.PingFang TC'" font-weight="600">
+                              <text id="關閉" transform="translate(1172 873)" fill="#fff" fontSize="100"
+                                 fontFamily="'\.PingFangTC-Semibold', '\.PingFang TC'" fontWeight="600">
                                  <tspan x="0" y="0">關閉</tspan>
                               </text>
                            </g>
@@ -466,7 +467,7 @@ function MyVerticallyCenteredModalEight(d) {
                         <tspan x="0" y="0">關卡條件:關卡8</tspan>
                      </text>
                      <line id="Line_41" data-name="Line 41" x2="1032" transform="translate(485 314.5)" fill="none" stroke="#707070"
-                        stroke-width="5" />
+                        strokeWidth="5" />
                      <text id="時間:" transform="translate(493 517)" fill="#520707" fontSize="80"
                         fontFamily="PingFangTC-Semibold, PingFang TC" fontWeight="600">
                         <tspan x="0" y="0">時間</tspan>
@@ -490,12 +491,12 @@ function MyVerticallyCenteredModalEight(d) {
                         </g>
 
                      <g>
-                        <a href="javascript:void(0)" id="closebt" onClick={d.onHide}>
+                        <a href="" id="closebt" onClick={d.onHide}>
                            <g id="關閉_按鈕" data-name="關閉 按鈕" transform="translate(20 41)">
                               <rect id="Rectangle_105" data-name="Rectangle 105" width="325" height="142" rx="30"
                                  transform="translate(1109 765)" fill="#ac4c4c" />
-                              <text id="關閉" transform="translate(1172 873)" fill="#fff" font-size="100"
-                                 font-family="'\.PingFangTC-Semibold', '\.PingFang TC'" font-weight="600">
+                              <text id="關閉" transform="translate(1172 873)" fill="#fff" fontSize="100"
+                                 fontFamily="'\.PingFangTC-Semibold', '\.PingFang TC'" fontWeight="600">
                                  <tspan x="0" y="0">關閉</tspan>
                               </text>
                            </g>

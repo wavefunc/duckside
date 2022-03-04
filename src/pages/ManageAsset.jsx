@@ -1,6 +1,7 @@
 /* * * * * 人豪 * * * * * 
  * 待辦
  * 1. 如輸入重複日期, 後端會擋掉, 要跳提示訊息提醒使用者先刪除舊資料或改以編輯方式進行
+ * 2. 依日期抓取股價計算庫存市值, 並且將觸發條件移到"證券"input的onfocus
 
 
  * 備忘:
@@ -23,6 +24,8 @@ import dt from 'date-and-time';
 import { MyFormikObserver, MyInput, MyOkToast } from '../components/MyFormComponent';
 import MyCurrentPosition from '../components/ManageCurrent.jsx';
 import ManageRecent from '../components/ManageRecent.jsx';
+import Breadcrumb from '../components/Breadcrumb';
+
 const acc_email = localStorage.getItem('loginState');
 const urlPostRecent = 'http://localhost:5000/asset/recent';
 const urlPostCreate = 'http://localhost:5000/asset/create';
@@ -81,7 +84,7 @@ function ManageAsset(props) {
    console.log('--ManageAsset--');
    const [refreshState, setRefresh] = useState(true);
 
-   const [inputDate, setInputDate] = useState();
+   const [inputDate, setInputDate] = useState('');
    const [secValue, setSecValue] = useState("");
    const [editingValues, setEditingValues] = useState({});
 
@@ -163,7 +166,10 @@ function ManageAsset(props) {
    );
 
    return (
-      <Container fluid  className="pt-3">
+      <Container fluid className="pt-3">
+         <Row>
+            <Breadcrumb />
+         </Row>
          <Row className='pr-2'>
             <Col lg={8}>
                <Formik
@@ -464,7 +470,7 @@ function ManageAsset(props) {
                      <Nav.Item>
                         <Nav.Link eventKey="second" bsPrefix='btn btn-light ml-1'>顯示更多</Nav.Link>
                      </Nav.Item>
-                     <MyOkToast show={showToast} closeToast={()=>{setShowToast(false)}} />
+                     <MyOkToast show={showToast} closeToast={() => { setShowToast(false) }} />
                   </Nav>
                   <Tab.Content>
                      <Tab.Pane eventKey="first">

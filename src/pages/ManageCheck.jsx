@@ -7,7 +7,7 @@
  * * * * * * * * * * * */
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Container, Row, Col, Tab, Nav, Button } from 'react-bootstrap';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 import { Search } from 'react-bootstrap-icons';
 
 import { Formik, Form } from 'formik';
@@ -16,6 +16,7 @@ import dt from 'date-and-time';
 
 import { MyInput, MySelect } from '../components/MyFormComponent';
 import { MyChartLine } from '../components/MyChartComponent.jsx';
+import Breadcrumb from '../components/Breadcrumb';
 
 const acc_email = localStorage.getItem('loginState');
 const urlPostRecent = 'http://localhost:5000/asset/recent';
@@ -74,6 +75,9 @@ function ManageCheck(props) {
    return (
       <Container fluid className="pt-3" ref={container}>
          <Row>
+            <Breadcrumb />
+         </Row>
+         <Row>
             <Col lg={8}>
                <Formik
                   initialValues={initialValues}
@@ -113,6 +117,7 @@ function ManageCheck(props) {
                         <Search className="mb-1 mr-1" />
                         <span>查詢</span>
                      </Button>
+                     <span className='text-muted font-weight-light ml-4' style={{fontSize:'18px'}}>*點選標籤顯示或隱藏資料</span>
                   </Form>
                </Formik>
             </Col>

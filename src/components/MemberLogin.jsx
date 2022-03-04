@@ -19,13 +19,13 @@ let MemberLogin = (props) => {
   //********************
   // Firebase
   const firebaseConfig = {
-    apiKey: "AIzaSyAB1dis-KvEIutixhUL_qusP1pD8hjo3Dk",
-    authDomain: "duckside-55952.firebaseapp.com",
-    projectId: "duckside-55952",
-    storageBucket: "duckside-55952.appspot.com",
-    messagingSenderId: "937748556305",
-    appId: "1:937748556305:web:fa33b11f2d8363c5849fb0",
-    measurementId: "G-5Q3YKR831M",
+    apiKey: process.env.REACT_APP_API_KEY,
+    authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+    projectId: process.env.REACT_APP_PROJECT_ID,
+    storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+    messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+    appId: process.env.REACT_APP_APP_ID,
+    measurementId: process.env.REACT_APP_MEASUREMENT_ID
   };
 
   // Initialize Firebase
