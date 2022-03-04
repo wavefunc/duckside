@@ -3,7 +3,7 @@ import Axios from "axios";
 import React, { useState, useEffect } from "react";
 
 
-let GameRoomMain = (props) =>{
+let GameRoomMain = (props) => {
     const funiture = {
         light:"",
         basketball:"",
@@ -20,7 +20,7 @@ let GameRoomMain = (props) =>{
 
     const [funitureHave, setfunitureHave] = useState(funiture);
     const [funitureUse, setfunitureUse] = useState(funiture);
-    const [upToDate, setupToDate] = useState(true);
+    // const [upToDate, setupToDate] = useState(true);
 
     let putInRoom = async(e) => {
         // console.log(e.currentTarget.dataset.furnid);
@@ -28,7 +28,8 @@ let GameRoomMain = (props) =>{
             acc_email:localStorage.getItem("loginState"),
             furn_id: e.currentTarget.dataset.furnid
         })
-        setupToDate(false)
+        // setupToDate(false)
+        props.setUpToDate(true);
 
     }
 
@@ -38,7 +39,9 @@ let GameRoomMain = (props) =>{
             acc_email:localStorage.getItem("loginState"),
             furn_id: e.currentTarget.dataset.furnid
         })
-        setupToDate(false)
+        // setupToDate(false)
+        props.setUpToDate(true);
+        // console.log(props);
 
     }
     
@@ -58,8 +61,10 @@ let GameRoomMain = (props) =>{
            setfunitureUse(result.data);
         //    console.log(result.data)
         })
-        setupToDate(true)
-      },[upToDate])
+        // setupToDate(true)
+        props.setUpToDate(false);
+
+      },[props.upToDate])
 
 
     return(

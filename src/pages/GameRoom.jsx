@@ -13,9 +13,12 @@ let GameRoomPage = () => {
    const [showRoom, setShowRoom] = useState("block");
    const [showStore, setShowStore] = useState("none");
    const [showStorage, setshowStorage ]= useState("none");
+   const [upToDate, setUpToDate] = useState(false);
   
 
-       
+   let valueUpToDate = () => {
+      console.log(upToDate);
+   }
 
        
 
@@ -72,6 +75,8 @@ let GameRoomPage = () => {
          changePage={changePage} 
          showStoragePage={showStoragePage}
          showFirst={showFirst}
+         setUpToDate={setUpToDate}
+         upToDate={upToDate}
          > 
          </GameRoomMain>
          </div>
@@ -84,11 +89,15 @@ let GameRoomPage = () => {
          <GameStoreFirstPage 
          show={showFirst} 
          showtoggle={showtoggle} 
+         setUpToDate={setUpToDate}
+         upToDate={upToDate}
          ></GameStoreFirstPage>
 
          <GameStoreSecondPage 
          show={showSecond} 
-         showtoggle={showtoggle} 
+         showtoggle={showtoggle}
+         setUpToDate={setUpToDate}
+         upToDate={upToDate} 
          ></GameStoreSecondPage>
          </div>
       </React.Fragment>
