@@ -100,6 +100,7 @@ class twseMarketInfo {
             } else {
                 var data = transpose(res.data.data9);
                 // 資料量大, 只以字串存放, 不全部轉成數值
+                this.stat = res.data.stat;
                 this._stockId = data[0];
                 this._stockName = data[1];
                 this._volShare = data[2];
