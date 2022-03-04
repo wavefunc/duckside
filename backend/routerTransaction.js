@@ -101,7 +101,7 @@ router.delete('/transaction/delete', async (req, res) => {
 
 // ***************************************************************** 
 // 依 acc_email 跟 dateQuery 兩個變數，查詢某用戶截至某天為止的庫存      
-// 回傳各 securities 的合計數量、並附上市價及市值在 marketPrice marketValue 屬性
+// 回傳各 securities 的合計數量，沒有市價資料
 // ***************************************************************** 
 router.post('/transaction/inventory', async (req, res) => {
    // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
@@ -118,21 +118,8 @@ router.post('/transaction/inventory', async (req, res) => {
       if (err) {
          res.send(err)
       } else {
-         let Ymd = req.body.dateQuery.replace(/-/g, '');
-         getTwse(Ymd).then((MI) => {
-            let rowsWithMI = rows.map((v) => {
-               let p = MI.priceClose(v.sec_id);
-               let pNetChange = MI.changeNet(v.sec_id);
-               v.marketPrice = p;
-               v.marketPriceChange = pNetChange;
-               v.marketPriceChangePct = pNetChange / (p - pNetChange);
-               v.marketValue = p * v.total;
-               // console.log(v);
-               return v;
-            });
-            res.send(rowsWithMI);
-         });
-      }
+         res.send(rows);
+      };
    })
 });
 

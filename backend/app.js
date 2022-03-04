@@ -22,7 +22,8 @@ var routers = [
     './routerTransaction',
     './routerGameRoom',
     './routerGameDaily',
-    './routerBackend'
+    './routerBackend',
+    './routerMarketInfo'
 ]
 
 routers.forEach(val => { app.use('/', require(val)); })

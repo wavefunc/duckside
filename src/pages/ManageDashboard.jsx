@@ -17,8 +17,8 @@ import Breadcrumb from '../components/Breadcrumb'
 const acc_email = localStorage.getItem('loginState');
 const dateQuery = dt.format(new Date(), 'YYYY-MM-DD');
 const urlPostAsset = 'http://localhost:5000/asset/someday';
-const urlPostInventory = 'http://localhost:5000/transaction/inventory';
-const urlPostPlan = 'http://localhost:5000/plan/current';
+const urlPostInventory = 'http://localhost:5000/dashboard/inventory';
+const urlPostPlan = 'http://localhost:5000/dashboard/inventory';
 
 // 庫存現況表設定
 const colInventory = [
@@ -117,12 +117,12 @@ function ManageDashboard(props) {
       });
       axios.post(urlPostInventory, dataToServer).then((res) => {
          if (beingMounted) {
+            console.log(res.data);
             let dataSorted = res.data.map(v => v);
-            // console.log(res.data);
             dataSorted = dataSorted.sort(function (a, b) {
                return a.marketValue < b.marketValue ? 1 : -1;
             });
-            // console.log(dataSorted);
+            console.log(dataSorted);
             setDataPosition(dataSorted);
          }
       });

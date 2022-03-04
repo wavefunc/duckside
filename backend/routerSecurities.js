@@ -1,18 +1,8 @@
 // ----- 人豪 ----- //
-const dt = require('date-and-time');
 var express = require('express');
 var router = express.Router();
 var { query } = require('./mysql.js');
-
 var { getYahoo, getTwse } = require('./twstock.js');
-var todayYmd = dt.format(new Date(), 'YYYYMMDD')
-var todayMarketInfo = {};
-getTwse(todayYmd).then((result) => {
-    console.log(`抓取${todayYmd}市價: ${result.stat}`);
-    todayMarketInfo = result;
-}).catch((e) => {
-    res.send('出現未預期的錯誤');
-});
 
 // *******************
 // 列出資料表全部的資料
@@ -65,26 +55,6 @@ router.post('/securities/stockDay', function (req, res) {
         }).catch((e) => {
             res.send('Server Busy');
         });
-});
-// *****************************************************
-// 依 dateQuery 抓該天所有股票成交資料 (打包成MI物件)
-// *****************************************************
-router.post('/securities/marketInfo', function (req, res) {
-    let Ymd = req.body.dateQuery.replace(/-/g, '');
-    console.log(Ymd);
-    console.log(todayYmd);
-    console.log(Ymd === todayYmd);
-    if (Ymd === todayYmd) {
-        res.send(todayMarketInfo);
-    } else {
-        getTwse(Ymd).then((MI) => {
-            console.log(`抓取${Ymd}市價: ${MI.stat}`)
-            res.send(MI);
-        }).catch((e) => {
-            // console.log(e);
-            res.send('Server Busy');
-        });
-    }
 });
 
 module.exports = router;
