@@ -85,7 +85,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const mdTheme = createTheme({
   typography: {
     "fontFamily": `"Roboto", "Helvetica", "Arial", sans-serif`,
-    "fontSize": 15,
+    "fontSize": 18.5,
     "fontWeight": 'bold',
   },
 
@@ -111,7 +111,7 @@ function Layout() {
     }
   }, [width])
 
-  
+
 
 
 
@@ -179,7 +179,7 @@ function Layout() {
             }}
           >
             <Link underline="none" href='/'>
-              <img src="/assets/images/alllogo.png" alt="logo" style={{height:'110px',paddingTop:'10px'}}/>
+              <img src="/assets/images/alllogo.png" alt="logo" style={{ height: '110px', paddingTop: '10px' }} />
             </Link>
 
             <IconButton onClick={toggleDrawer}>
@@ -188,10 +188,10 @@ function Layout() {
           </Toolbar >
 
           <List component="nav" sx={{ bgcolor: '#ecdfb1', height: '100%' }} >
-            
-          {/*Sidebar List*/}
+
+            {/*Sidebar List*/}
             <MainListItem />
-            
+
           </List>
         </Drawer>
 
@@ -216,10 +216,6 @@ function Layout() {
                   <div className="content-wrap">
                     <div className="main">
                       <div className="container-fluid">
-                        {/* <div className="row"> */}
-                          {/* <PageTitle /> */}
-                          {/* <Breadcrumb /> */}
-                        {/* </div> */}
                         <section id="main-content">
                           <Outlet />
                         </section>
@@ -230,7 +226,7 @@ function Layout() {
                 </Paper>
               </Grid>
             </Grid>
-            
+
           </Container>
         </Box>
       </Box>
