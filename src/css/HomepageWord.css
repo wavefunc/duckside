@@ -58,13 +58,13 @@
 
 @media screen and (max-width: 1200px){
     .typing{
-        font-size: 17.5px;
+        font-size: 13.5px;
     }
     .dialog-bottom{
         position:relative;
 	    top:150px;
 	    left:35%;
-        width: 215px;
-        height: 70px;
+        width: 170px;
+        height: 75px;
     }
 }
