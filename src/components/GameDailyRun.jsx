@@ -271,7 +271,7 @@ function GameDailyRun() {
                            <span className="button-plus-text">賣出</span>
                         </button>
 
-                        <span className="haveMoney">目前持有現金資產：{`${haveMoney}W`}</span>
+                        <span className="haveMoney">目前持有資產：{`${haveMoney}W`}</span>
                      </span>
                   </li>
                </ul>
@@ -286,13 +286,11 @@ function GameDailyRun() {
                            <Table
                               bordered
                               striped
-
                            >
-                              <thead className="thdPost">
+                              <thead >
                                  <tr>
-                                    <th>證券代號/名稱</th>
-                                    <th>買進股數</th>
-
+                                    <td>證券代號/名稱</td>
+                                    <td>買進股數</td>
                                  </tr>
                               </thead>
                               <tbody>
