@@ -1,3 +1,11 @@
+/*
+選色參考
+`hsl(40, 96%, ${-card.weight * 50 + 95}%)`
+`borderColor: `hsl(30, 55%, 50%)`,
+`backgroundColor: `hsl(${40 + i * 5}, 95%, ${50 + i * 8}%)`,
+
+*/
+
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -126,7 +134,7 @@ const options2 = {
                 font: {
                     size: 18
                 },
-                textAlign:'left'
+                textAlign: 'left'
             }
         },
         title: {
@@ -138,32 +146,28 @@ const options2 = {
         //             let tempIdx = i[0].label.lastIndexOf(',')
         //             return i[0].label.slice(0, tempIdx);
         //         },
-                //         label: (i) => {
-                //             return [i.dataset.label, i.raw];
-                //         }
-            // }
+        //         label: (i) => {
+        //             return [i.dataset.label, i.raw];
+        //         }
+        // }
         // }
     }
 };
 
 
 // 假資料: 圓餅圖
-const data2 = {
+const demo = {
     labels: ['台積電', '元大台灣50', '富邦台50'],
     datasets: [
         {
             data: [312500, 213000, 40925],
             backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 159, 64, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
+                'hsl(30, 88%, 66%)',
+                'hsl(40, 88%, 71%)',
+                'hsl(50, 88%, 76%)',
             ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 159, 64, 1)',
-                'rgba(255, 206, 86, 1)',
-            ],
-            borderWidth: 1,
+            borderColor: 'hsl(15, 35%, 60%)',
+            borderWidth: 2,
         },
     ],
 };
@@ -179,22 +183,24 @@ export function MyChartLine({ data, x, y, yLabels, ...props }) {
             label: yLabels,
             data: data,
             borderColor: `hsl(50, 88%, 55%)`,
-            backgroundColor: `hsl(50, 88%, 95%)`,
+            backgroundColor: `hsl(50, 88%, 88%)`,
             fill: true,
             parsing: {
                 yAxisKey: y,
             }
         },
-    ] : y.map((v, i) => ({
-        label: yLabels[i],
-        data: data,
-        borderColor: `hsl(45, 88%, 60%)`,
-        backgroundColor: `hsl(55, 85%, ${77 + i * 5}%)`,
-        fill: true,
-        parsing: {
-            yAxisKey: v,
-        }
-    }));
+    ] : y.map((v, i) => {
+        return ({
+            label: yLabels[i],
+            data: data,
+            borderColor: `hsl(30, 55%, 50%)`,
+            backgroundColor: `hsl(${40 + i * 5}, 95%, ${50 + i * 8}%)`,
+            fill: true,
+            parsing: {
+                yAxisKey: v,
+            }
+        })
+    });
 
     return (
         <Line options={options} {...props} data={{
@@ -204,6 +210,6 @@ export function MyChartLine({ data, x, y, yLabels, ...props }) {
     );
 }
 
-export function MyChartPie({ url, dataToServer, ...props }) {
-    return <Pie data={data2} options={options2} />;
+export function MyChartPie({ url, dataToServer, data, ...props }) {
+    return <Pie data={data ? data : demo} options={options2} {...props} />;
 }

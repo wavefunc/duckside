@@ -1,7 +1,5 @@
 /* * * * * 人豪 * * * * * 
  * 
- * 備忘:
- * const acc_email = ... 要換成localStorage
  * 
  * * * * * * * * * * * */
 
@@ -22,8 +20,7 @@ const urlPostAsset = 'http://localhost:5000/asset/someday';
 const urlPostInventory = 'http://localhost:5000/transaction/inventory';
 const urlPostPlan = 'http://localhost:5000/plan/current';
 
-// 主表使用
-// 庫存現況
+// 庫存現況表設定
 const colInventory = [
    { id: 'sec_id', name: '代號', width: '10%' },
    { id: 'sec_name', name: '名稱', width: '20%' },
@@ -64,24 +61,27 @@ const colPlan = [
 function ManageDashboard(props) {
    const [dataCard, setDataCard] = useState([]);
    const [dataPlan, setDataPlan] = useState([]);
-   const [dataPie, setDataPie] = useState([]);
+   const [dataPosition, setDataPosition] = useState([]);
 
-   const data2 = {
-      labels: dataPie.map(v => v.sec_name),
+   const dataPie = {
+      labels: dataPosition.map(v => v.sec_name),
       datasets: [
          {
-            data: dataPie.map(v => v.sec_name),
-            backgroundColor: [
-               'rgba(255, 99, 132, 0.2)',
-               'rgba(255, 159, 64, 0.2)',
-               'rgba(255, 206, 86, 0.2)',
+            data: dataPosition.map((v,i) => v.marketValue),
+            backgroundColor: dataPosition.map((v,i)=>`hsl(${30+i*15}, 100%, ${55+i*11}%)`),
+            // [
+            //    'hsl(30, 100%, 55%)',
+            //    'hsl(45, 100%, 66%)',
+            //    'hsl(60, 100%, 77%)',
+            // ],
+            borderColor: 'hsl(15, 35%, 60%)',
+            borderWidth: 2,
+            /*
+                'hsl(30, 88%, 66%)',
+                'hsl(40, 88%, 71%)',
+                'hsl(50, 88%, 76%)',
             ],
-            borderColor: [
-               'rgba(255, 99, 132, 1)',
-               'rgba(255, 159, 64, 1)',
-               'rgba(255, 206, 86, 1)',
-            ],
-            borderWidth: 1,
+            */
          },
       ],
    };
@@ -117,12 +117,13 @@ function ManageDashboard(props) {
       });
       axios.post(urlPostInventory, dataToServer).then((res) => {
          if (beingMounted) {
-            let dataSorted = res.data;
-            console.log(res.data);
+            let dataSorted = res.data.map(v => v);
+            // console.log(res.data);
             dataSorted = dataSorted.sort(function (a, b) {
-               return a.marketValue > b.marketValue ? 1 : -1;
+               return a.marketValue < b.marketValue ? 1 : -1;
             });
-            setDataPie(res.data);
+            // console.log(dataSorted);
+            setDataPosition(dataSorted);
          }
       });
       axios.post(urlPostPlan, dataToServer).then((res) => {
@@ -162,7 +163,7 @@ function ManageDashboard(props) {
                   <Tab.Content>
                      <Tab.Pane eventKey="first">
                         <MyCurrentPosition className={{ table: 'table table-sm' }}
-                           data={dataPie} col={colInventory}
+                           data={dataPosition} col={colInventory}
                         ></MyCurrentPosition>
                      </Tab.Pane>
                      <Tab.Pane eventKey="second">
@@ -174,7 +175,7 @@ function ManageDashboard(props) {
 
             </Col>
             <Col lg={4}>
-               <MyChartPie ></MyChartPie>
+               <MyChartPie data={dataPie}></MyChartPie>
             </Col>
          </Row>
          <Row>

@@ -5,6 +5,9 @@
  * 4. 如有收到row=10, 則只呈現前10筆資料（db給日期降冪, 即是最新10筆）
  * 5. 如沒收到col用來對應鍵名及欄名, 將使用原資料鍵名為欄名
  * 
+ * 選色
+ * `hsl(40, 96%, ${-card.weight * 50 + 95}%)`
+ * 
  ********* */
 
 import { Grid } from 'gridjs-react';
@@ -62,7 +65,7 @@ export const MyCardDeck = (props) => {
     const renderCard = (card, index) => {
         return (
             <Card key={index} className="p-0 mt-0">
-                <Card.Header style={{ backgroundColor: `hsl(50, 88%, ${-card.weight * 40 + 95}%)` }} className="m-0"></Card.Header>
+                <Card.Header style={{ backgroundColor: `hsl(40, 96%, ${-card.weight * 50 + 95}%)` }} className="m-0"></Card.Header>
                 <Card.Body>
                     <Card.Title as='h6' className="">
                         {card.title}

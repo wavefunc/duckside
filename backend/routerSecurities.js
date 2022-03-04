@@ -63,6 +63,7 @@ router.post('/securities/stockDay', function (req, res) {
 router.post('/securities/marketInfo', function (req, res) {
     let Ymd = req.body.dateQuery.replace(/-/g, '');
     getTwse(Ymd).then((MI) => {
+        console.log(`市價抓取是否成功: ${MI.stat}`)
         res.send(MI);
     }).catch((e) => {
         // console.log(e);
