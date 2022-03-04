@@ -525,7 +525,7 @@ function GameDaily() {
 
    return (
       <Row>
-         <svg width="1020" height="500" viewBox="-33 0 1920 1080">
+         <svg width="1020" height="500" viewBox="-87 0 1920 1080">
             <defs>
                <filter id="Rectangle_102" x="40" y="46" width="519" height="162" filterUnits="userSpaceOnUse">
                   <feOffset dy="6" input="SourceAlpha" />
