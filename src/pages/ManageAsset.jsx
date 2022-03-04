@@ -32,6 +32,7 @@ const urlPostCreate = 'http://localhost:5000/asset/create';
 const urlPutUpdate = 'http://localhost:5000/asset/update';
 const urlDelete = 'http://localhost:5000/asset/delete';
 const urlPostInventory = 'http://localhost:5000/transaction/inventory';
+const urlPostMarketValue = 'http://localhost:5000/marketInfo/inventory';
 
 // 表單設定
 const initialValues = {
@@ -85,7 +86,7 @@ function ManageAsset(props) {
    const [refreshState, setRefresh] = useState(true);
 
    const [inputDate, setInputDate] = useState('');
-   const [secValue, setSecValue] = useState("");
+   const [secValue, setSecValue] = useState("(loading...)");
    const [editingValues, setEditingValues] = useState({});
 
    const [showDelete, setShowDelete] = useState(false);
@@ -150,11 +151,22 @@ function ManageAsset(props) {
       });
    }
 
-   useEffect(() => {
-      // 依日期抓取股價計算庫存市值
-      let rand = Math.floor(Math.random() * 1000) + 740000;
-      setSecValue(rand.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
-   }, [inputDate])
+   const getPopoverData = () => {
+      let dataToServer = {
+         dateQuery: inputDate,
+         acc_email: acc_email
+      };
+      console.log(dataToServer);
+      axios.post(urlPostMarketValue, dataToServer).then((res) => {
+         console.log(res.data);
+         setSecValue(res.data.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
+      });
+   };
+
+   // useEffect(() => {
+   //    let rand = Math.floor(Math.random() * 1000) + 740000;
+   //    setSecValue(rand.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
+   // }, [inputDate]);
 
    const popover = (
       <Popover id='secValuePopover'>
@@ -208,7 +220,8 @@ function ManageAsset(props) {
                            placement="right-end"
                            delay={{ show: 200, hide: 200 }}
                            overlay={popover}
-                           trigger={['hover', 'focus']}>
+                           trigger={['focus']}
+                           onEnter={getPopoverData}>
                            <MyInput
                               label="證券"
                               name="ast_securities" id="ast_securities"

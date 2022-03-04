@@ -20,7 +20,7 @@ getTwse(todayYmd).then((result) => {
 // 依 dateQuery 抓該天所有股票成交資料
 // 打包成物件 各類資料以陣列形式存放在屬性裡
 // *****************************************************
-router.post('/securities/marketInfo', function (req, res) {
+router.post('/marketInfo/twse', function (req, res) {
    let Ymd = req.body.dateQuery.replace(/-/g, '');
    console.log(Ymd);
    console.log(todayYmd);
@@ -67,7 +67,7 @@ router.post('/dashboard/inventory', async (req, res) => {
                v.marketPriceChangePct = pNetChange / (p - pNetChange);
                v.marketValue = p * v.total;
                return v;
-         });
+            });
             res.send(rowsWithMI);
          } else {
             console.log('到證交所抓市價資料');
@@ -87,6 +87,52 @@ router.post('/dashboard/inventory', async (req, res) => {
       }
    })
 });
+
+// ***************************************************************** 
+// 依 acc_email 跟 dateQuery 兩個變數
+// 查詢某用戶截至某天為止的庫存市值
+// ***************************************************************** 
+router.post('/marketInfo/inventory', async (req, res) => {
+   // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
+   var acc_id = await checkAccount(req.body.acc_email, res);
+
+   var strQuery = `
+      SELECT txn.sec_id, sec.sec_market, SUM(txn.txn_amount) total
+      FROM transaction txn 
+      INNER JOIN securities sec ON txn.sec_id = sec.sec_id
+      WHERE txn.acc_id = ? AND txn.txn_date <= ?
+      GROUP BY txn.sec_id HAVING total >0
+   `
+   query(strQuery, [acc_id, req.body.dateQuery], (err, rows) => {
+      if (err) {
+         res.send(err)
+      } else {
+         let Ymd = req.body.dateQuery.replace(/-/g, '');
+         if (Ymd === todayYmd) {
+            let marketValues = rows.map((v) => {
+               let marketPrice = todayMarketInfo.priceClose(v.sec_id);
+               let marketValue = marketPrice * v.total;
+               return marketValue;
+            });
+            let total = JSON.stringify(marketValues.reduce((a, b) => a + b));
+            res.send(total);
+         } else {
+            console.log('到證交所抓市價資料, 注意控制請求頻率');
+            getTwse(Ymd).then((MI) => {
+               console.log(MI.stat);
+               let marketValues = rows.map((v) => {
+                  let marketPrice = MI.priceClose(v.sec_id);
+                  let marketValue = marketPrice * v.total;
+                  return marketValue;
+               });
+               let total = JSON.stringify(marketValues.reduce((a, b) => a + b));
+               res.send(total);
+            });
+         }
+      }
+   })
+});
+
 
 // ***********************************************
 // 注意：本方法因為sql版本過舊無法使用row_number()，故使用替代方案

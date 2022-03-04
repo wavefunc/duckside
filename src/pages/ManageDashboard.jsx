@@ -69,19 +69,8 @@ function ManageDashboard(props) {
          {
             data: dataPosition.map((v,i) => v.marketValue),
             backgroundColor: dataPosition.map((v,i)=>`hsl(${30+i*15}, 100%, ${55+i*11}%)`),
-            // [
-            //    'hsl(30, 100%, 55%)',
-            //    'hsl(45, 100%, 66%)',
-            //    'hsl(60, 100%, 77%)',
-            // ],
             borderColor: 'hsl(15, 35%, 60%)',
             borderWidth: 2,
-            /*
-                'hsl(30, 88%, 66%)',
-                'hsl(40, 88%, 71%)',
-                'hsl(50, 88%, 76%)',
-            ],
-            */
          },
       ],
    };
