@@ -156,21 +156,6 @@ const options2 = {
 
 
 // 假資料: 圓餅圖
-const demo = {
-    labels: ['台積電', '元大台灣50', '富邦台50'],
-    datasets: [
-        {
-            data: [312500, 213000, 40925],
-            backgroundColor: [
-                'hsl(30, 88%, 66%)',
-                'hsl(40, 88%, 71%)',
-                'hsl(50, 88%, 76%)',
-            ],
-            borderColor: 'hsl(15, 35%, 60%)',
-            borderWidth: 2,
-        },
-    ],
-};
 
 export function MyChartLine({ data, x, y, yLabels, ...props }) {
     options.parsing = {
@@ -211,5 +196,25 @@ export function MyChartLine({ data, x, y, yLabels, ...props }) {
 }
 
 export function MyChartPie({ url, dataToServer, data, ...props }) {
-    return <Pie data={data ? data : demo} options={options2} {...props} />;
+    const demo = {
+        labels: ['台積電', '中鋼', '鴻海'],
+        datasets: [
+            {
+                data: [1190000, 768000, 105000],
+                backgroundColor: [
+                    'hsl(30, 88%, 66%)',
+                    'hsl(40, 88%, 71%)',
+                    'hsl(50, 88%, 76%)',
+                ],
+                borderColor: 'hsl(15, 35%, 60%)',
+                borderWidth: 2,
+            },
+        ],
+    };
+    try {
+        return <Pie data={data.labels.length ? data : demo} options={options2} {...props} />;
+    } catch {
+        console.log('發生未預期的錯誤, MyChartPie使用展示資料')
+        return <Pie data={demo} options={options2} {...props} />;
+    }
 }

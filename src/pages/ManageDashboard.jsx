@@ -98,46 +98,50 @@ function ManageDashboard(props) {
          acc_email: acc_email,
          dateQuery: dateQuery,
       }
-      axios.post(urlPostAsset, dataToServer).then((res) => {
-         if (beingMounted) {
-            let dataObj = res.data;
-            let myAstSum = res.data.ast_sum;
-            let myAstArr = [
-               { title: "總資產", value: dataObj.ast_sum },
-               { title: "現金", value: dataObj.ast_cash },
-               { title: "證券", value: dataObj.ast_securities },
-               { title: "資券", value: dataObj.ast_borrowing },
-               { title: "期權", value: dataObj.ast_option },
-               { title: "其他", value: dataObj.ast_others },
-               { title: "調整", value: dataObj.ast_adjust },
-            ];
-            let myAstCards = myAstArr.map((v) => (
-               {
-                  weight: v.value / myAstSum,
-                  ...v
-               }
-            ));
-            console.log(myAstCards);
-            setDataCard(myAstCards);
-         }
-      });
-      axios.post(urlPostInventory, dataToServer).then((res) => {
-         if (beingMounted) {
-            console.log(res.data);
-            let dataSorted = res.data.map(v => v);
-            dataSorted = dataSorted.sort(function (a, b) {
-               return a.marketValue < b.marketValue ? 1 : -1;
-            });
-            console.log(dataSorted);
-            setDataPosition(dataSorted);
-         }
-      });
-      axios.post(urlPostPlan, dataToServer).then((res) => {
-         if (beingMounted) {
-            console.log(res.data);
-            setDataPlan(res.data);
-         }
-      });
+      if (acc_email) {
+         axios.post(urlPostAsset, dataToServer).then((res) => {
+            if (beingMounted) {
+               let dataObj = res.data;
+               let myAstSum = res.data.ast_sum;
+               let myAstArr = [
+                  { title: "總資產", value: dataObj.ast_sum },
+                  { title: "現金", value: dataObj.ast_cash },
+                  { title: "證券", value: dataObj.ast_securities },
+                  { title: "資券", value: dataObj.ast_borrowing },
+                  { title: "期權", value: dataObj.ast_option },
+                  { title: "其他", value: dataObj.ast_others },
+                  { title: "調整", value: dataObj.ast_adjust },
+               ];
+               let myAstCards = myAstArr.map((v) => (
+                  {
+                     weight: v.value / myAstSum,
+                     ...v
+                  }
+               ));
+               console.log(myAstCards);
+               setDataCard(myAstCards);
+            }
+         });
+
+         axios.post(urlPostInventory, dataToServer).then((res) => {
+            if (beingMounted) {
+               console.log(res.data);
+               let dataSorted = res.data.map(v => v);
+               dataSorted = dataSorted.sort(function (a, b) {
+                  return a.marketValue < b.marketValue ? 1 : -1;
+               });
+               console.log(dataSorted);
+               setDataPosition(dataSorted);
+            }
+         });
+
+         axios.post(urlPostPlan, dataToServer).then((res) => {
+            if (beingMounted) {
+               console.log(res.data);
+               setDataPlan(res.data);
+            }
+         });
+      }
 
       return () => { beingMounted = false };
    }, []);

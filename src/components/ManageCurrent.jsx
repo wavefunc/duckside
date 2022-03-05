@@ -24,32 +24,56 @@ function MyCurrentPosition({ url, dataToServer, row, col = null, ...props }) {
 
         if (url) {
             axios.post(url, dataToServer).then((res) => {
-                console.log(`MyCurrentPosition useEffect: (axios post) data*${res.data.length}`);
                 if (beingMounted) {
                     setData(res.data);
                 }
             });
         } else {
-            console.log(`MyCurrentPosition useEffect: (use props.data) data*${props.data.length}`);
             setData(props.data);
         }
 
         return () => { beingMounted = false };
     }, [url, dataToServer, props.refreshState, props.data]);
-    return (
-        data && data.length ? (
-            <Grid
-                columns={col}
-                data={row ? data.slice(0, row) : data}
-                sort={true}
-                style={{
-                    table: { 'width': '100%', 'border-top': '1px solid #e2e2e2', 'marginTop': '5px' },
-                    th: { 'backgroundColor': '#e7ebee', 'fontWeight': 'bolder' },
-                    td: { 'font-size': '18px', 'text-align': 'left', 'padding-left': '10px', 'padding-right': '10px' }
-                }}
-                resizable={true}
-                className={props.className ? { ...props.className } : {}}
-            />) : (
+    try {
+        return (
+            data && data.length ? (
+                <Grid
+                    columns={col}
+                    data={row ? data.slice(0, row) : data}
+                    sort={true}
+                    style={{
+                        table: { 'width': '100%', 'border-top': '1px solid #e2e2e2', 'marginTop': '5px' },
+                        th: { 'backgroundColor': '#e7ebee', 'fontWeight': 'bolder' },
+                        td: { 'font-size': '18px', 'text-align': 'left', 'padding-left': '10px', 'padding-right': '10px' }
+                    }}
+                    resizable={true}
+                    className={props.className ? { ...props.className } : {}}
+                />) : (
+                <Grid
+                    columns={[
+                        { id: 'sec_id', name: '代號' },
+                        { id: 'sec_name', name: '名稱' },
+                        { id: 'total', name: '庫存數量' },
+                    ]}
+                    data={[
+                        { sec_id: '2002', sec_name: '中鋼', total: 20000, marketPrice: 38.4 },
+                        { sec_id: '2317', sec_name: '鴻海', total: 1000, marketPrice: 105 },
+                        { sec_id: '2330', sec_name: '台積電', total: 2000, marketPrice: 595 },
+                    ]}
+                    sort={true}
+                    style={{
+                        table: { 'width': '100%', 'border-top': '1px solid #e2e2e2', 'marginTop': '5px' },
+                        th: { 'backgroundColor': '#e7ebee', 'fontWeight': 'bolder' },
+                        td: { 'font-size': '18px', 'text-align': 'left', 'padding-left': '10px', 'padding-right': '10px' }
+                    }}
+                    resizable={true}
+                    className={{ table: 'table table-sm' }}
+                />
+            )
+        );
+    } catch {
+        console.log('發生未預期的錯誤, CardDeck使用展示資料');
+        return (
             <Grid
                 columns={[
                     { id: 'sec_id', name: '代號' },
@@ -71,7 +95,7 @@ function MyCurrentPosition({ url, dataToServer, row, col = null, ...props }) {
                 className={{ table: 'table table-sm' }}
             />
         )
-    );
+    }
 }
 
 export const MyCardDeck = (props) => {
@@ -84,7 +108,6 @@ export const MyCardDeck = (props) => {
         { title: '資券調整', value: 0, weight: -0.006 },
         { title: '其他調整', value: 195000, weight: -0.042 },
     ];
-
     const renderCard = (card, index) => {
         return (
             <Card key={index} className="p-0 mt-0">
@@ -103,9 +126,9 @@ export const MyCardDeck = (props) => {
         );
     };
     try {
-        return <CardDeck className="row">{props.data.map(renderCard)}</CardDeck>;
+        return <CardDeck className="row">{props.data && props.data.length ? props.data.map(renderCard) : data.map(renderCard)}</CardDeck>;
     } catch {
-        console.log('MyCardDeck cannot read props.data.map(...). It uses demo data instead.')
+        console.log('發生未預期的錯誤, CardDeck使用展示資料')
         return <CardDeck className="row">{data.map(renderCard)}</CardDeck>;
     }
 };
