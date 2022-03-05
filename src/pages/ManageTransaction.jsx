@@ -93,8 +93,9 @@ const colInventory = [
    { id: 'sec_name', name: '名稱' },
    {
       id: 'total', name: '庫存數量',
-      formatter: (cell) => h('b', { style: { 'float': 'right', 'margin-right':'5px' } }, cell.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","))
+      formatter: (cell) => h('b', { style: { 'float': 'right', 'margin-right': '5px' } }, cell.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","))
    },
+   { id: 'sec_market', name: '市場別', hidden: true },
 ];
 
 function ManageTransaction(props) {

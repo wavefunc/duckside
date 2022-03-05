@@ -92,8 +92,11 @@ const col = [
 const col2 = [
    { id: 'sec_id', name: '代號' },
    { id: 'sec_name', name: '名稱' },
-   { id: 'total', name: '庫存數量' },
-   { id: 'sec_market', name: '市場別', hidden:true },
+   {
+      id: 'total', name: '庫存數量',
+      formatter: (cell) => h('b', { style: { 'float': 'right', } }, cell.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","))
+   },
+   { id: 'sec_market', name: '市場別', hidden: true },
 ];
 
 function ManageAsset(props) {

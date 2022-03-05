@@ -19,8 +19,6 @@ function ManageRecent({ url, dataToServer, row, ...props }) {
     const [data, setData] = useState([]);
     const dataToServerRef = useRef(dataToServer);
     const [col, setCol] = useState([]);
-    console.log(`ManageRecent: data*${data.length}`);
-    console.log(data);
     useEffect(() => {
         let beingMounted = true;
         if (url) {
@@ -29,20 +27,15 @@ function ManageRecent({ url, dataToServer, row, ...props }) {
                 // 如有收到dataToServer(鍵值對), 以post方法請求, 否則預設以get方法請求
                 axios.post(url, dataToServer).then((res) => {
                     if (beingMounted) {
+                        console.log(`ManageRecent useEffect:  (axios post) data*${res.data.length}`);
                         setData(res.data);
-                        /*
-                        console.log((res.data).map((v) => (
-                            `(${v.acc_id}, ${v.sec_id}, ${v.txn_round}, ${v.txn_position}, ${v.txn_date}, ${v.txn_price}, ${v.txn_amount}, ${v.txn_note})`
-                            `(${v.acc_id}, ${v.sec_id}, ${v.plan_date}, ${v.plan_strategy}, ${v.plan_param1}, ${v.plan_param2}, ${v.plan_anchor}, ${v.plan_stoploss}, ${v.plan_target}, ${v.plan_note})`
-                            `(4, '${v.ast_date.slice(0,10)}', ${v.ast_securities}, ${v.ast_cash}, ${v.ast_borrowing}, ${v.ast_option}, ${v.ast_others}, ${v.ast_adjust},"")`
-                        )).join(','));
-                        */
                     }
                 })
             } else {
                 // 如沒收到dataToServer, 預設以get方法請求
                 axios(url).then((res) => {
                     if (beingMounted) {
+                        console.log(`ManageRecent useEffect:  (axios get) data*${res.data.length}`);
                         setData(res.data);
                     }
                 });
@@ -57,7 +50,7 @@ function ManageRecent({ url, dataToServer, row, ...props }) {
         if (props.edit || props.delete) {
             myCol.push({
                 id:'action',
-                name: h('b', { style: { 'float': 'left', } }, '參考'), width: '8%',
+                name: h('b', { style: { 'float': 'left', } }, '修改'), width: '8%',
                 formatter: (cell, row) => {
                     return [
                         props.edit ? _(<PencilSquare onClick={() => props.edit(row.cells)} cursor="pointer" className='mr-2' />, "i") : null,
