@@ -18,21 +18,22 @@ import axios from 'axios';
 
 function MyCurrentPosition({ url, dataToServer, row, col = null, ...props }) {
     const [data, setData] = useState([]);
-    console.log(`MyCurrentPosition: data*${data.length}`);
 
     useEffect(() => {
         let beingMounted = true;
 
         if (url) {
             axios.post(url, dataToServer).then((res) => {
+                console.log(`MyCurrentPosition useEffect: (axios post) data*${res.data.length}`);
                 if (beingMounted) {
                     setData(res.data);
-                    console.log(res.data);
                 }
             });
         } else {
+            console.log(`MyCurrentPosition useEffect: (use props.data) data*${props.data.length}`);
             setData(props.data);
         }
+
         return () => { beingMounted = false };
     }, [url, dataToServer, props.refreshState, props.data]);
     return (
@@ -44,23 +45,44 @@ function MyCurrentPosition({ url, dataToServer, row, col = null, ...props }) {
                 style={{
                     table: { 'width': '100%', 'border-top': '1px solid #e2e2e2', 'marginTop': '5px' },
                     th: { 'backgroundColor': '#e7ebee', 'fontWeight': 'bolder' },
-                    td: { 'font-size': '18px', 'text-align': 'left', 'padding-left': '10px','padding-right':'10px' }
+                    td: { 'font-size': '18px', 'text-align': 'left', 'padding-left': '10px', 'padding-right': '10px' }
                 }}
                 resizable={true}
                 className={props.className ? { ...props.className } : {}}
-            />) : null
+            />) : (
+            <Grid
+                columns={[
+                    { id: 'sec_id', name: '代號' },
+                    { id: 'sec_name', name: '名稱' },
+                    { id: 'total', name: '庫存數量' },
+                ]}
+                data={[
+                    { sec_id: '2002', sec_name: '中鋼', total: 20000, marketPrice: 38.4 },
+                    { sec_id: '2317', sec_name: '鴻海', total: 1000, marketPrice: 105 },
+                    { sec_id: '2330', sec_name: '台積電', total: 2000, marketPrice: 595 },
+                ]}
+                sort={true}
+                style={{
+                    table: { 'width': '100%', 'border-top': '1px solid #e2e2e2', 'marginTop': '5px' },
+                    th: { 'backgroundColor': '#e7ebee', 'fontWeight': 'bolder' },
+                    td: { 'font-size': '18px', 'text-align': 'left', 'padding-left': '10px', 'padding-right': '10px' }
+                }}
+                resizable={true}
+                className={{ table: 'table table-sm' }}
+            />
+        )
     );
 }
 
 export const MyCardDeck = (props) => {
-    const data = props.data || [
-        { title: '總資產', value: 1206000, weight: 1 },
-        { title: '現金', value: 453000, weight: 0.376 },
-        { title: '證券', value: 750000, weight: 0.622 },
-        { title: '期權', value: 50000, weight: 0.042 },
-        { title: '其他資產', value: 100000, weight: 0.008 },
-        { title: '資券調整', value: -7000, weight: -0.006 },
-        { title: '其他調整', value: 50000, weight: -0.042 },
+    const data = [
+        { title: '總資產', value: 6031814, weight: 1 },
+        { title: '現金', value: 3535914, weight: 0.376 },
+        { title: '證券', value: 2100900, weight: 0.622 },
+        { title: '期權', value: 0, weight: 0.042 },
+        { title: '其他資產', value: 200000, weight: 0.008 },
+        { title: '資券調整', value: 0, weight: -0.006 },
+        { title: '其他調整', value: 195000, weight: -0.042 },
     ];
 
     const renderCard = (card, index) => {
@@ -81,9 +103,10 @@ export const MyCardDeck = (props) => {
         );
     };
     try {
-        return <CardDeck className="row">{data && data.map(renderCard)}</CardDeck>;
+        return <CardDeck className="row">{props.data.map(renderCard)}</CardDeck>;
     } catch {
-        return "資料格式錯誤"
+        console.log('MyCardDeck cannot read props.data.map(...). It uses demo data instead.')
+        return <CardDeck className="row">{data.map(renderCard)}</CardDeck>;
     }
 };
 
