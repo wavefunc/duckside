@@ -147,8 +147,8 @@ function ManageTransaction(props) {
          target[elm.id] = elm.formatter && typeof elm.formatter(values[idx]) !== 'object' ? elm.formatter(values[idx]) : values[idx];
          return target;
       }, {});
-      dataToEdit['sec_str'] = `${dataToEdit.sec_id} 台積電`;
-      setDatalist([`${dataToEdit.sec_id} 台積電`]);
+      dataToEdit['sec_str'] = `${dataToEdit.sec_id} ${dataToEdit.sec_name}`;
+      setDatalist([`${dataToEdit.sec_id} ${dataToEdit.sec_name}`]);
       setEditingValues(dataToEdit);
       setShowEdit(true);
    }
