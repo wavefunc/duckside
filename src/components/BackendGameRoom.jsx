@@ -5,7 +5,8 @@ import Furniture from "./BackendFurniture";
 import Draggable from "react-draggable";
 import { Container } from 'react-bootstrap';
 
-
+// https://web.dev/resize-observer/
+// https://stackoverflow.com/questions/6492683/how-to-detect-divs-dimension-changed
 function GameRoom() {
    const [pos, setPos] = useState({ x: '100', y: '100' });
    const [container, setContainer] = useState({});
