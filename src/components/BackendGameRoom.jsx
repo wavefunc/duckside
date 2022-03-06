@@ -2,18 +2,15 @@ import "../css/GameRoomMain_style.css";
 import Axios from "axios";
 import React, { useState, useEffect } from 'react';
 import Furniture from "./BackendFurniture";
-import Draggable from "react-draggable";
+import Draggable, { DraggableCore } from "react-draggable";
 import { Container } from 'react-bootstrap';
 
-// https://web.dev/resize-observer/
-// https://stackoverflow.com/questions/6492683/how-to-detect-divs-dimension-changed
+
 function GameRoom() {
-   const [pos, setPos] = useState({ x: '100', y: '100' });
-   const [container, setContainer] = useState({});
+   const [pos, setPos] = useState({ x: 0.5, y: 0.5 }); // 設定元件在 Container 內相對比例的x|y位置
+   const [container, setContainer] = useState({}); // 用來讀取 Container tag 的 x, y, width, height
 
    const eventDrag = (e, data) => {
-      // console.log('Event: ', e.x);
-      // console.log('Data: ', data);
       setPos({ x: e.x, y: e.y });
    };
 
@@ -23,16 +20,25 @@ function GameRoom() {
       // console.log('y: ', container.y);
       // console.log('width: ', container.width);
       // console.log('height: ', container.height);
-   }
+   };
 
+   const getRelativePos = (posOrigin) => {
+      console.log(posOrigin.x);
+      // (posOrigin.x - container.x)* newcontainer.width / container.width
+   };
+
+   var temp = 300;
 
    useEffect(() => {
-      var ro = new ResizeObserver(entry => {
-         setContainer(entry);
+
+      // window size 改變時的 event
+      window.addEventListener('resize', () => {
+         setContainer(document.getElementById("container").getBoundingClientRect());
+         // setPos({x: , y:})
+         getRelativePos(pos);
       });
-      // .observe('container');
-      // ro.observe(document.getElementById("container").getBoundingClientRect());
-      console.log(container);
+
+
    }, []);
 
    return (
@@ -45,12 +51,19 @@ function GameRoom() {
       >
          <label>{JSON.stringify(container)}</label>
          <button onClick={getContainerPos}>checkPos</button>
-         <Draggable onDrag={eventDrag}>
+         <Draggable
+            onDrag={eventDrag}
+            // defaultPosition={{ x: (0.5 * container.width + container.x), y: (0.5 * container.height + container.y) }}
+            defaultPosition={{ x: container.width , y: 300 }}
+         // bounds='#container'
+         >
+
             <div style={{ width: "15vw", height: "15vw" }}>
                <Furniture />
             </div>
+
          </Draggable>
-      </Container>
+      </Container >
    );
 }
 
