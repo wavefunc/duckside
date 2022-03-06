@@ -1,22 +1,26 @@
-import "../css/GameRoomMain_style.css";
 import React, { useState, useEffect } from 'react';
-import { gsap } from 'gsap';
+import Axios from "axios";
+
 import Furniture from "./BackendFurniture";
 
-
 function GameRoom() {
+   const [furnList, setFurnList] = useState({});
 
    useEffect(() => {
-
-      // console.log(objPos);
-      gsap.to("#duck", { duration: 1, rotation: 360 });
+      Axios.post('http://localhost:5000/gsap/roomList', {
+         acc_email: localStorage.getItem("loginState")
+      }).then(result => {
+         setFurnList(result.data);
+      });
    }, []);
 
    return (
       <div id="container">
          <svg width="100%" viewBox="0 0 1920 1080" fill="none">
             <path id="Vector" d="M1920 0H0V1080H1920V0Z" fill="#F5F5CC" />
-            <Furniture />
+            <path id="horizon" d="M0 676H1920" stroke="#53480B" strokeWidth="6" />
+            <Furniture key='duck' furn_id='duck' />
+            <Furniture key={furnList[0] && furnList[0].furn_id} {...furnList[0]} />
          </svg>
       </div>
    );
