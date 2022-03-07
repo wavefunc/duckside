@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Axios from "axios";
 
-import Furniture from "./GsapFurniture";
-
 function GameRoom() {
    const [furnList, setFurnList] = useState([]);
 
@@ -27,14 +25,19 @@ function GameRoom() {
                </g>
             </svg>
          </div>
-         <ul>
-            <li>
-               <svg width="130" height="130" viewBox="0 0 130 130" >
-                  <g id="lightcCard" transform="translate(-629 -445)">
-                  </g>
-               </svg>
-            </li>
-         </ul>
+         <div id="cardBox">
+            <div id="littleCardBox" >
+               {
+                  furnList[0] && furnList.map(obj => {
+                     return (
+                        <li id="storageCard1" style={{ cursor: "pointer", display: "block" }}>
+                           <img src={`/assets/furniture/${obj.furn_id}.svg`} width='100px' height='100px' />
+                        </li>
+                     );
+                  })
+               }
+            </div>
+         </div>
       </div>
    );
 }
