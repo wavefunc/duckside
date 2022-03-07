@@ -2,9 +2,9 @@
 // ----- 後端測試專用語法 ----//
 
 var express = require('express');
-const { Rss } = require('react-bootstrap-icons');
 var router = express.Router();
 var { query } = require('./mysql.js');
+var { checkAccount } = require('./mysql');
 
 // 為此 acc_id 增加 會員_家具 的預設資料
 router.get('/account/defaultFurn/:acc_id', async (req, res) => {
@@ -37,5 +37,29 @@ router.get('/addpoint/:acc_id/:point', async (req, res) => {
    });
 });
 
+// ---------------------------------------------------------------- //
+
+// *****************************************************************
+// Backend專用 - 房間頁面 - 列出會員的家具及其屬性 (擺在房間: block, 不擺在房間: none)
+// 前端傳入 acc_email
+// *****************************************************************
+router.post('/gsap/roomList', async (req, res) => {
+   // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
+   var acc_id = await checkAccount(req.body.acc_email, res);
+
+   let strQuery = `
+      SELECT af.furn_id, furn.furn_name, 
+         IF(af.acc_furn_placed = 0 OR af.acc_furn_bought = 0, 
+            'none', 'block') display
+      FROM acc_furn af 
+      INNER JOIN furniture furn 
+      ON af.furn_id = furn.furn_id 
+      WHERE acc_id = ?
+   `;
+
+   query(strQuery, [acc_id], (err, rows) => {
+      res.send(err ? err : rows);
+   });
+});
 
 module.exports = router;
