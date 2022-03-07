@@ -23,12 +23,12 @@ let GameStoreFirstPage = (props) => {
         mirror:""
    });
 
-   let buying = (e) => {
-      Axios.put("http://localhost:5000/acc_furn/buying",{
+   let buying = async (e) => {
+      await Axios.put("http://localhost:5000/acc_furn/buying",{
          acc_email:localStorage.getItem("loginState"),
          furn_id: e.currentTarget.dataset.furnid
       })
-      console.log(e.currentTarget.dataset.furnid);
+      // console.log(e.currentTarget.dataset.furnid);
       // setupToDate(false);
       props.setUpToDate(true);
    }
@@ -40,6 +40,7 @@ let GameStoreFirstPage = (props) => {
       setfunitureBuy(result.data)
       // setupToDate(true);
       props.setUpToDate(false);
+
    })
    },[props.upToDate])
    
@@ -594,7 +595,7 @@ let GameStoreFirstPage = (props) => {
                   </g>
                </g>
                <text id="確定購買燈串_" dataname="確定購買燈串？" transform="translate(652 526)" fill="#520707" fontSize="100" fontFamily="'\.PingFangTC-Semibold', '\.PingFang TC'" fontWeight="600"><tspan x="0" y="0">確定購買燈串？</tspan></text>
-               <g id="是_按鈕" dataname="是 按鈕" transform="translate(-47)">
+               <g id="是_按鈕" dataname="是 按鈕" transform="translate(-47)" style={{cursor:"pointer"}}>
                   <rect id="Rectangle_106" dataname="Rectangle 106" width="325" height="142" rx="30" transform="translate(635 765)" fill="#3e88a8"/>
                   <text id="是" transform="translate(748 865)" fill="#fff" fontSize="100" fontFamily="'\.PingFangTC-Semibold', '\.PingFang TC'" fontWeight="600"><tspan x="0" y="0">是</tspan></text>
                </g>
