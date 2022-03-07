@@ -23,11 +23,6 @@
   padding-bottom:6px;
 }
 
-.buttbar{
-  margin-top: 10px;
-  margin-left: 55px;
-}
-
 .nextButton-plus{
   font-family: PingFangTC-Semibold, PingFang TC;
   background-color:#3E88A8 ;
@@ -39,34 +34,24 @@
 }
 
 .button-plus-icon{
-  font-size: 22px;
+  font-size: 18px;
   margin-bottom: 4px;
   margin-right: 4px;
 }
 
 .button-plus-text{
-  font-size: 20px;
+  font-size: 15px;
 }
 
-.header-Back-text{
-  font-size: 25px;
-  color: white;
-}
 
-.headerBack{
-  background-color:#AC4C4C ;
-  width: 150px;
-  height: 50px;
-  border-radius: 15px;
-  margin-left: 340px;
-  font-family: PingFangTC-Semibold, PingFang TC;
-}
+
+
 
 .header{
   padding: 15px;
   width: 890px;
   height: 500px;
-  margin-left:90px ;
+  margin-left: 90px ;
   background-color: #EDDBBE;
 }
 
@@ -76,11 +61,23 @@
   width: 250px;
   height: 50px;
   border-radius: 20px;
-  margin-top:10px;
   margin-left: 10px;
-  font-size:30px ;
   padding:0 10px ;
+  font-size:24px ;
   font-family: PingFangTC-Semibold, PingFang TC;
+}
+
+.headerBack{
+  background-color:#AC4C4C;
+  width: 150px;
+  height: 35px;
+  border-radius: 20px;
+  font-family: PingFangTC-Semibold, PingFang TC;
+}
+
+.header-Back-text{
+  font-size: 24px;
+  color: white;
 }
 
 .buyTitle{
@@ -111,7 +108,7 @@
 
 .testInput{
   width: 400px;
-  height: 250px;
+  height: 300px;
   background-color: white;
 }
 
@@ -202,7 +199,3 @@
   padding-left: 100px;
 }
 
-.haveMoney{
-  padding-left: 30px;
-  font-size: 20px;
-}

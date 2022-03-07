@@ -1,10 +1,9 @@
-// ----- 晴暄、鎧洋 ----- //
+// ----- 晴暄、鎧洋、人豪 ----- //
 
-import React, { useRef, useState } from 'react';
-import { Row, Modal, Col, Container } from 'react-bootstrap';
+import React, { useRef, useState, createRef, useEffect } from 'react';
+import { Row, Modal, Col, Container, InputGroup, Button, FormControl } from 'react-bootstrap';
 import "../css/GameDaily_style.css"
-import { PlusCircle, Search, DashCircle, Gift } from "react-bootstrap-icons"
-import { Chart } from 'react-chartjs-2';
+import { PlusCircle, DashCircle, Gift } from "react-bootstrap-icons"
 import { Link } from "react-router-dom"
 import Table from 'react-bootstrap/Table'
 import {
@@ -16,9 +15,11 @@ import {
    Tooltip,
    Legend,
 } from 'chart.js';
-import { propTypes } from 'react-bootstrap/esm/Image';
+import { MyCandleLookupWithRef } from '../components/MyLookupComponent.jsx'
+import axios from 'axios';
 
-
+const urlPostStockDay = 'http://localhost:5000/securities/stockDay';
+const urlPostMarketInfo = 'http://localhost:5000/marketInfo/stocks';
 
 ChartJS.register(
    CategoryScale,
@@ -31,331 +32,230 @@ ChartJS.register(
 
 
 function GameDailyRun(props) {
+   const [currentDate, setCurrentDate] = useState(props.startDate);   //下一關天數加一
+   const [endDate,] = useState(props.endDate);   //下一關天數加一
+   const [tradingDates, setTradingDates] = useState(props.startDate);
 
-   const [findDisplay, setFindDisplay] = useState(false); //查詢
-   const [giftDisplay, setGiftDisplay] = useState(false); //領取獎勵
-   const [modalDisplay, setModalDisplay] = useState(false); //下一關
-   const [chartData, setChartData] = useState([]);      //股數長條折線圖
+   const inputStock = createRef(); //證券代號input取數值
+   const inputAmount = useRef();  //證券數量input取數值
    const [stockList, setStockList] = useState([]);      //持有資產明細清單
-   const [currentDate, setCurrentData] = useState(2);   //下一關天數加一
-   const [haveMoney, setHaveMoney] = useState("100");   //現在持有總資產
-   const moneyYesterday = useRef("100");
-   const [getPercentage, setGetPercentage] = useState("");  //今日獲得趴數
-   const [getTotalPoint, setGetTotalPoint] = useState();    //領取總分數 => (總獲得趴數*20)
-   const [getTotalPercentage, setGetTotalPercentage] = useState(); //獲得總趴數 => (現在持有資產-初始資產100w)
 
-   const inputAmount = useRef();  //證券代號input取數值
-   const inputStockId = useRef(); //證券數量input取數值
+   const [modalSubtotal, setModalSubtotal] = useState(false); //下一關
+   const [asset, setAsset] = useState(10000000);   //現在持有總資產
+   const [assetLastChange, setAssetLastChange] = useState(0);
+   const [cash, setCash] = useState(10000000);   //現在持有現金
 
-   //抓取股市資料
-   let labels = ['2018/12/22', '2018/12/24', '2018/12/25', '2018/12/26', '2018/12/27', '2018/12/28', '2019/01/02'];
-   const getPrice = () => {
-      const fakedata = {
-         labels: ['2018/12/22', '2018/12/24', '2018/12/25', '2018/12/26', '2018/12/27', '2018/12/28', '2019/01/02'],
-         datasets: [
-            {
-               type: 'bar',
-               label: '買價',
-               data: labels.map(() => Math.floor((3 - Math.random()) * 100)),
-               backgroundColor: 'rgba(255, 30, 32)',
-            },
-            {
-               type: 'line',
-               label: '走勢',
-               data: labels.map(() => Math.floor((0.5 - Math.random()) * 300)),
-               backgroundColor: 'rgba(53, 30, 235)',
-            },
-            {
-               type: 'bar',
-               label: '賣價',
-               data: labels.map(() => Math.floor((2 - Math.random()) * 150)),
-               backgroundColor: 'rgb(53, 136, 20)',
-            }
-         ],
+   const [profit, setProfit] = useState();  // 總資產報酬
+   const [score, setScore] = useState(); //領取總分數 => (總獲得趴數*20)
+   const [pct, setPct] = useState(); // 獲得總趴數 => (現在持有資產-初始資產100w)
+   const [giftDisplay, setGiftDisplay] = useState(false); //領取獎勵
+
+   useEffect(() => {
+      let dataToServer = {
+         stockId: '2330',
+         period1: currentDate.replace(/-/g, ""),
+         period2: endDate.replace(/-/g, ""),
       };
-      setChartData(fakedata);
-      setFindDisplay(true);  //查詢跳窗modal
-      // axios.get().then((res) => {
-      // setFindDisplay(res.data);
+      axios.post(urlPostStockDay, dataToServer).then((res) => {
+         // console.log(res.data);
+         setTradingDates(res.data.dates)
+      })
+   }, [])
 
-      // });
+   const handleTrade = (sign = 1) => {     //點選做多按鈕事件 (如做空則帶入參數-1)
+      let inputStockId = (inputStock.current.value).split(' ')[0];   //抓取input輸入證券代號
+      let InputStockName = inputStock.current.value.split(' ')[1];   //抓取input輸入證券名稱
+      let amount = parseInt(inputAmount.current.value) * sign;  //抓取input輸入股票數量的值
+
+      let originalIdx = stockList.findIndex((obj) => (obj.sec_id === inputStockId)); // 尋找原本的stockList是否已有庫存
+      let newList = stockList.map((v) => v); // 複製原本的stockList
+      let dataToServer = {
+         stockId: inputStockId,
+         period1: currentDate.replace(/-/g, ""),
+      }
+
+      axios.post(urlPostStockDay, dataToServer).then((res) => {
+         let price = res.data.priceClose[0];
+         setCash((org) => (org - amount * price));
+         if (originalIdx === -1) {
+            newList.push({
+               sec_id: inputStockId,
+               sec_name: InputStockName,
+               total: amount,
+               marketValue: amount * price,
+            });
+            setStockList(newList);
+         } else {
+            newList[originalIdx].total += amount;        //判斷抓取證券代號是否重複 重複將數量相加
+            newList[originalIdx].marketValue += amount * price;
+            setStockList(newList);
+         }
+      })
    }
 
+   const nextLevels = () => {
+      let nextTradingDate = tradingDates[tradingDates.indexOf(currentDate) + 1];
+      let dataToServer = {
+         dateQuery: nextTradingDate,
+         stockList: stockList,
+      };
+      axios.post(urlPostMarketInfo, dataToServer).then((res) => {
+         let newStockList = res.data.map((v) => {
+            v.profitChange = v.total * v.marketPriceChange;
+            return v;
+         });
+         setStockList(newStockList);
 
-   // const searchStock = () =>{
-   //    do {
-   //       data + 1;
-   //    }
-   //    while([] === 0);
-   // }
+         let reduceObj = newStockList.reduce((a, b) => {
+            return { profitChange: a.profitChange + b.profitChange };
+         }, { profitChange: 0 });
 
-
-   const options = {
-      options: {
-         scales: {
-            x: {
-               type: 'timeseries',
-               display: 'auto',
-               ticks: {
-                  source: "labels",
-                  callback: (v, i, arr) => {
-                     if (i === 0) {
-                        return v;
-                     } else {
-                        let currentYmdArr = v.split('/');
-                        return `${currentYmdArr[1]}/${currentYmdArr[2]}`
-                        //     let currentDate = new Date(arr[i].value);
-                        //     let previousDate = new Date(arr[i-1].value);
-                        //     return currentDate.getFullYear() !== previousDate.getFullYear() ? v:
-                        //     Math.floor(currentDate.getDate()/10) !== Math.floor(previousDate.getDate()/10) ? `${currentYmdArr[1]}/${currentYmdArr[2]}`:"";
-                     }
-                  }
-               },
-               time: {
-                  unit: 'day',
-                  align: 'start',
-                  displayFormats: {
-                     day: "yyyy/M/d",
-                  }
-               }
-
-            },
-            y: {
-               title: {
-                  display: true,
-                  text: '元',
-               },
-               // stacked: true,
-               stack: 1,
-               stackWeight: 3,
-               position: 'right',
-               beginAtZero: false,
-               offset: true,
-            },
-            y2: {
-               title: {
-                  display: true,
-                  text: '張數',
-               },
-               stacked: true,
-               stack: 1,
-               stackWeight: 1,
-               position: 'right',
-               min: true,
-               ticks: {
-                  callback: val => Math.floor(val / 1000),
-               },
-            }
-         },
-         interaction: {
-            intersect: false,
-            mode: 'index',
-         },
-         plugins: {
-            legend: {
-               display: false
-            },
-            tooltip: {
-               callbacks: {
-                  title: (i) => {
-                     let tempIdx = i[0].label.lastIndexOf(',')
-                     return i[0].label.slice(0, tempIdx);
-                  },
-                  label: (i) => {
-                     return [i.dataset.label, i.raw];
-                  }
-               }
-            }
-         }
-      }
+         setAssetLastChange(reduceObj.profitChange);
+         setAsset((org) => (org + reduceObj.profitChange));     //點選下一關按鈕取得新的持有資產數值 顯示在目前持有資產
+      })
+      setCurrentDate(nextTradingDate);
+      setModalSubtotal(true);
    };
 
+   const handleSumUp = (asset) => {
+      let tempProfit = (asset - 10000000);
+      let tempPct = (asset - 10000000) / 10000000 *100;
 
+      setProfit(Math.round(tempProfit*10)/10);
+      setPct(Math.round(tempPct* 10) / 10);
 
-   const buyTwstock = () => {     //點選買進按鈕事件
-      // console.log(inputStockId.current.value);   確認有沒有抓到值
-      // console.log(inputAmount.current.value); 確認有沒有抓到值
-      let buyStockId = inputStockId.current.value;   //抓取input輸入證券代號的值
-      let buyAmount = parseInt(inputAmount.current.value);  //抓取input輸入股票數量的值
-      // let newListChecked = stockList.filter((v) => buyStockId === inputStockId.current.value)
-      let original = stockList.findIndex((obj) => (obj.inputStockId === buyStockId)); 
-      let newList = stockList.map((v) => v);
-
-      if (original === -1) {
-         newList.push({ inputStockId: buyStockId, inputAmount: buyAmount });
+      if (tempPct < 0.05) {
+         setScore(0);
       } else {
-         newList[original].inputAmount += buyAmount;        //判斷抓取證券代號是否重複 重複將數量相加
+         setScore(Math.round(tempPct * 20));
       }
-      setStockList(newList);
-   }
-
-   const sellTwstock = () => {
-      let buyStockId = inputStockId.current.value;
-      let buyAmount = - parseInt(inputAmount.current.value);
-
-      let original = stockList.findIndex((obj) => (obj.inputStockId === buyStockId));
-      let newList = stockList.map((v) => v);
-
-      if (original === -1) {
-         newList.push({ inputStockId: buyStockId, inputAmount: buyAmount });
-      } else {
-         newList[original].inputAmount += buyAmount;
-      }
-      setStockList(newList);  //設定新的stockList值 到<tr> <td>
-   }
-
-   const continueLevels = () => {  //點擊下一關裡面的繼續按鈕關閉modal
-      setModalDisplay(false);
-   }
-
-   let testValue = 100 - Math.floor((-Math.random()) * 100); //亂數假資料
-   const nextLevels = () => {
-      let newValue = testValue;
-      moneyYesterday.current = haveMoney;
-      let pct = (testValue / moneyYesterday.current - 1) * 100;
-      setCurrentData((currentDate) => currentDate + 1);  //點選下一關按鈕日期天數加一
-      setGetPercentage(Math.round(pct).toString());      //點選下一關按鈕獲得今日獲得趴數值
-      setHaveMoney(newValue);     //點選下一關按鈕取得新的持有資產數值 顯示在目前持有資產
-      setModalDisplay(true);      //關閉跳窗modal
-
-   }
-
-   const getTotalScore = () => {
-      setGetTotalPercentage((haveMoney - 100))   //取現在持有資產的值 減去 最初持有資產100W = 總獲得趴數
-      setGetTotalPoint((haveMoney - 100) * 20)   //總獲得趴數*20 換算= 獲得總積分
-      setGiftDisplay(true)   //關閉跳窗modal
+      setGiftDisplay(true)  
    }
 
    return (
-      <>
-         <div className="header">
-            <Container>
-               <Row>
-                  <Col>
-                                                      {/* 點選下一關按鈕日期天數加一 */}
-                     <span className="headerSide">{`2019/1/${currentDate}交易建立`}</span>  
-                  </Col>
-                  <Col>
-                                                         {/* 點選返回關卡回則關卡頁面 */}
-                     <button className="headerBack" onClick={props.handleBack}><span className="header-Back-text">返回關卡</span> </button>
-                  </Col>
-               </Row>
-            </Container>
-            <div>
-               <ul>
-                  <li className="testinputnew">
-                     <span className="buyTitle">證券代號 / 名稱 :
-                        <input type="text" className="testEnter" id="namBuy" ref={inputStockId} />
-
-                        <button className="button-plus" onClick={getPrice}>  
-                        {/* 點選查詢按鈕可以查詢股票走勢圖 */}
-
-                           <Search className="button-plus-icon" />
-                           <span className="button-plus-text">查詢</span>
-
-                        </button>
-                     </span>
-                  </li>
-                  <li className="testinputnew">
-                     <span className="buyTitle">買進股數 :
-                        <input type="text" className="testEnterOne" id="numBuy" ref={inputAmount} />
-                        <button className="button-plus" onClick={buyTwstock}>
+      <Container>
+         <div className="header clearfix">
+            <Row className="mt-2 clearfix">
+               <Col lg={4}>
+                  {/* 點選下一關按鈕日期天數加一 */}
+                  <span className="headerSide">{`${currentDate}交易建立`}</span>
+               </Col>
+               <Col lg={4}>
+               </Col>
+               <Col lg={4}>
+                  {/* 點選返回關卡回則關卡頁面 */}
+                  <button className="headerBack float-right mr-4"
+                     onClick={props.handleBack}>
+                     <span className="header-Back-text">返回</span>
+                  </button>
+               </Col>
+            </Row>
+            <Row className='ml-2 mt-4'>
+               <Col>
+                  <MyCandleLookupWithRef btnColor="info" ref={inputStock} className='mb-4'></MyCandleLookupWithRef>
+                  <InputGroup className='mb-2'>
+                     <FormControl
+                        placeholder="請輸入交易數量(股)"
+                        aria-label="請輸入交易數量(股)"
+                        aria-describedby="請輸入交易數量(股)"
+                        ref={inputAmount}
+                     />
+                     <InputGroup.Append>
+                        <Button onClick={() => handleTrade(1)} size='sm' variant='danger'>
                            {/* 點選買進按鈕抓取input輸入的值 顯示在目前持有資產明細中 增加買進數量和證券代號名稱 */}
                            <PlusCircle className="button-plus-icon" key="1" />
-                           <span className="button-plus-text">買進</span>
-                        </button>
-
-                        <button className="button-plus" onClick={sellTwstock}>
+                           <span className="button-plus-text">買多</span>
+                        </Button>
+                        <Button onClick={() => handleTrade(-1)} size='sm' variant='success'>
                            {/* 點選賣出按鈕抓取input輸入的值 顯示在目前持有資產明細中 減去賣出數量和顯示證券代號名稱 */}
                            <DashCircle className="button-plus-icon" key="2" />
-                           <span className="button-plus-text">賣出</span>
-                        </button>
-
-                        <span className="haveMoney">目前持有資產：{`${haveMoney}W`}</span> 
-                        {/* 抓取按下下一關獲得現擁有資產的值 顯示在持有資產上 */}
+                           <span className="button-plus-text">賣空</span>
+                        </Button>
+                     </InputGroup.Append>
+                     {/* 抓取按下下一關獲得現擁有資產的值 顯示在持有資產上 */}
+                  </InputGroup>
+                  <img src="/assets/images/duck.svg" className="duckPict mt-2" alt="duckPict" />
+               </Col>
+               <Col>
+                  <div style={{ overflowY: "scroll", overflowX: "hidden" }} className="testInput">
+                     <Table bordered striped >
+                        <thead >
+                           <tr>
+                              <td>股號名稱</td>
+                              <td>部位股數</td>
+                              <td>市值</td>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           {/* 渲染資料在tbody內 */}
+                           {stockList.map((v) => (
+                              <tr key={`tr${v.sec_id}`}>
+                                 <td>{`${v.sec_id} ${v.sec_name}`}</td>
+                                 <td>{v.total}</td>
+                                 <td>{v.marketValue}</td>
+                              </tr>
+                           ))}
+                        </tbody>
+                     </Table>
+                  </div>
+                  <div className="clearfix">
+                     <span className="asset mt-4 float-left" style={{ fontSize: '18px' }}>
+                        總資產{`${Math.round(asset / 1000) / 10}萬 (現金${Math.round(cash / 1000) / 10}萬)`}
                      </span>
-                  </li>
-               </ul>
+                     {currentDate === endDate ? (
+                        <button className="nextButton-plus float-right mt-4 mr-4" onClick={()=>handleSumUp(asset)}>
+                           {/* 點選領取獎勵按鈕 結算總獲得趴數及獲得積分  */}
+                           <span>結算</span>
+                           <Gift className="getButton-gift-icon" />
+                        </button>
+                     ) : (
+                        <button className="nextButton-plus float-right mt-4 mr-4" onClick={nextLevels}>
+                           {/* 點選下一關按鈕 發生結算當日趴數及總資產數值事件 */}
+                           <span >下一關</span>
+                        </button>
+                     )}
+                  </div>
 
-               <Container>
-                  <Row>
-                     <Col>
-                        <img src="/assets/images/duck.svg" className="duckPict" alt="duckPict" />
-                     </Col>
-                     <Col>
-                        <div style={{ overflowY: "scroll", overflowX: "hidden" }} className="testInput">
-                           <Table
-                              bordered
-                              striped
-                           >
-                              <thead >
-                                 <tr>
-                                    <td>證券代號/名稱</td>
-                                    <td>買進股數</td>
-                                 </tr>
-                              </thead>
-                              <tbody>
-                                 {stockList.map((v) => (<tr><td>{v.inputStockId}</td><td>{v.inputAmount}</td></tr>))}
-                                 {/* 渲染陣列進入<tr><td> 顯示在持有資產方格內 */}
-                                     
-                              </tbody>
-                           </Table>
-                        </div>
-                        <div className="buttbar">
-                           <button className="nextButton-plus" onClick={nextLevels}>
-                              {/* 點選下一關按鈕 發生結算當日趴數及總資產數值事件 */}
-                              <span >下一關</span>
-                           </button>
-
-                           <button className="getButton-plus" onClick={getTotalScore}>
-                              {/* 點選領取獎勵按鈕 結算總獲得趴數及獲得積分  */}
-                              <span >領取獎勵</span>
-                              <Gift className="getButton-gift-icon" />
-                           </button>
-                        </div>
-                     </Col>
-                  </Row>
-               </Container>
-
-               <span>
-
-               </span>
-            </div>
-
-
-
+               </Col>
+            </Row>
          </div>
 
          <Modal
-            centered
-            size="lg"
-            show={findDisplay} //顯示const findDisplay的值
-            onHide={() => setFindDisplay(false)}
-            aria-labelledby="example-modal-sizes-title-lg"
-         >
-            <Chart type='bar' options={options} data={chartData} key="3" />
-
-         </Modal>
-
-         <Modal
             size="md"
-            show={modalDisplay}
-            onHide={() => setModalDisplay(false)}
+            show={modalSubtotal}
+            onHide={() => setModalSubtotal(false)}
             aria-labelledby="example-modal-sizes-title-md"
             centered
             className="modalMove">
-
             <div className="jumpBody">
-               <div className="jumpNextTitle"><span className="jumpTotle">今日結算</span></div>
-               <div className="jumpNextGet">今日獲利％數：{`${getPercentage}%`}</div>  
+               <div style={{ overflowY: "scroll", overflowX: "hidden" }} className="testInput">
+                  <Table bordered striped >
+                     <thead >
+                        <tr>
+                           <td>股名</td>
+                           <td>部位</td>
+                           <td>市值</td>
+                           <td>變動</td>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        {/* 渲染資料在tbody內 */}
+                        {stockList.map((v) => (
+                           <tr key={`subtotal${v.sec_id}`}>
+                              <td>{`${v.sec_id} ${v.sec_name}`}</td>
+                              <td>{v.total}</td>
+                              <td>{v.marketValue}</td>
+                              <td>{v.profitChange}</td>
+                           </tr>
+                        ))}
+                     </tbody>
+                  </Table>
+               </div>
+               <div>今日結算</div>
+               <div>獲利：{`${assetLastChange} (${Math.round(assetLastChange / (asset - assetLastChange) * 1000) / 10}%)`}</div>
                {/* //點擊下一關按鈕獲取值 */}
-
-               <div className="jumpNextGet">目前持有資產：{`${haveMoney}W`} </div>
-               {/* //點擊下一關按鈕獲取值 */}
-
-               <button className="jumpClose" onClick={continueLevels}>繼續</button>
-                  {/* 點擊繼續按鈕關閉跳窗modal */}
-
+               <button className="jumpClose" onClick={() => setModalSubtotal(false)}>繼續</button>
+               {/* 點擊繼續按鈕關閉跳窗modal */}
             </div>
          </Modal>
 
@@ -368,19 +268,21 @@ function GameDailyRun(props) {
             className="modalMove"
          >
             <div className="jumpBody">
-               <div className="jumpTitle"><span className="jumpTotle"> 結算版</span></div>
-               <div className="jumpGet">總獲得％數：{`${getTotalPercentage}%`}</div>
+               <div className="jumpTitle"><span className="jumpTotle">投資成果</span></div>
+               <div className="jumpGet">原資產：1000萬</div>
+               <div className="jumpGet">{`總資產：${Math.round(asset / 1000) / 10}萬`}</div>
                {/* 點擊領取獎勵按鈕獲得運算後趴數的值 */}
-
-               <div className="jumpGet">總獲得積分：{`${getTotalPoint}`}</div>
+               <div className="jumpGet">
+                  資產獲利：{`${profit}元 (${pct}%)`}</div>
+               <div className="jumpGet">總得積分：{score}</div>
                {/* 點擊領取獎勵按鈕獲得運算後獲的趴數*20的值 */}
-
                <button className="jumpClose" onClick={() => { setGiftDisplay(false) }}><Link to="/game/daily">領取</Link></button>
                {/* 點選領去獎勵哪領取的值 關閉跳窗modal 並且關卡1結束獲得積分回到關卡選擇 */}
 
             </div>
          </Modal>
-      </>
+
+      </Container>
    );
 }
 

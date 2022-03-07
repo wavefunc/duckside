@@ -49,6 +49,7 @@ router.post('/securities/candlestick', function (req, res) {
 // 抓該股票在這期間的日成交資料, 整理成方便呈現在圖表的格式
 // *****************************************************
 router.post('/securities/stockDay', function (req, res) {
+    console.log(req.body.period2);
     getYahoo(req.body.stockId, req.body.period1, req.body.period2)
         .then((stockDay) => {
             res.send(stockDay);

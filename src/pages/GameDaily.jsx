@@ -1,12 +1,11 @@
-// ----- 晴暄、鎧洋 ----- //
+// ----- 晴暄、鎧洋、人豪 ----- //
+import React, { useState } from 'react';
 
-import { Axios } from 'axios';
-import React, { Component, useState } from 'react';
 import { Row, Modal } from 'react-bootstrap';
 import GameDailyRun from "../components/GameDailyRun.jsx";
 
 const stages = [
-   { number: '1', start: '2019-01-02', end: '2019-03-31', },
+   { number: '1', start: '2019-01-02', end: '2019-01-10', },
    { number: '2', start: '2019-07-01', end: '2019-12-31', },
    { number: '3', start: '2020-01-02', end: '2020-04-30', },
    { number: '4', start: '2021-01-02', end: '2021-06-30', },
@@ -19,7 +18,7 @@ const timeSpan = (dateStr1, dateStr2) => {
    let result = parseInt(Math.abs(date2 - date1) / 1000 / 60 / 60 / 24) // 把相差的毫秒數轉換為天數
    return result;
 };
-function StageModal(props) {
+function StageModal({handlegamestart , ...props}) {
    return (
       <Modal
          {...props}
@@ -57,7 +56,7 @@ function StageModal(props) {
                         </tspan>
                      </text>
 
-                     <a onClick={props.handleGameStart} >
+                     <a onClick={handlegamestart} >
                         <g id="進入關卡_按鈕" data-name="進入關卡 按鈕" transform="translate(-33 41)">
                            <rect id="Rectangle_106" data-name="Rectangle 106" width="463" height="142" rx="30"
                               transform="translate(583 765)" fill="#3e88a8" />
@@ -108,7 +107,7 @@ function GameDaily() {
    }
    if (gameRun) {
       return (
-         <GameDailyRun handleBack={handleBack}></GameDailyRun>
+         <GameDailyRun handleBack={handleBack} startDate={stage.start} endDate={stage.end}></GameDailyRun>
       )
    } else {
       return (
@@ -193,7 +192,7 @@ function GameDaily() {
                      </tspan></text>
                   </g>
                   {stages.map((stage, i) => (
-                     <a variant="primary" onClick={() => handleShowModal(i)}>
+                     <a key={`stage_a${i+1}`} variant="primary" onClick={() => handleShowModal(i)}>
                         <g id={`btnStage${stage.number}`}>
                            <g transform="matrix(1, 0, 0, 1, 0, 0)">
                               <rect id={`rect${stage.number}`} data-name={`rect${stage.number}`}
@@ -210,7 +209,7 @@ function GameDaily() {
                      show={modalShow}
                      onHide={() => setModalShow(false)}
                      stage={stage.number} start={stage.start} end={stage.end}
-                     handleGameStart={handleGameStart}
+                     handlegamestart={handleGameStart}
                   />
                </g>
             </svg>
