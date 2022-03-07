@@ -1,24 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { gsap, Draggable } from 'gsap/all';
+import Axios from 'axios';
 gsap.registerPlugin(Draggable);
 
 // 處理每個家俱的屬性
-function Furniture({ furn_id, furn_name, display }) {
+function Furniture({ furn_id, furn_name, display, x, y }) {
 
    useEffect(() => {
-      Draggable.create(`#${furn_id}`, {
-         bounds: document.getElementById('container'),
-         inertia: true,
-         onDragEnd: function () {
-            console.log(this.x);
-         }
-      });
-      var x = gsap.getProperty(`#${furn_id}`, 'x');
-      var y = gsap.getProperty(`#${furn_id}`, 'y');
-      // console.log('x: ', x, 'y: ', y);
-      // gsap.set('#basketball', { x: 300 });
+      if (furn_id != 'duck') {
+         Draggable.create(`#${furn_id}`, {
+            bounds: document.getElementById('container'),
+            inertia: true,
+            onDragEnd: function () {
+               Axios.put('http://localhost:5000/gsap/updatePos', {
+                  acc_email: localStorage.getItem("loginState"),
+                  furn_id: furn_id,
+                  x: this.x,
+                  y: this.y
+               });
+            }
+         });
+         gsap.set(`#${furn_id}`, { x: x, y: y });
+      }
+   }, []);
 
-   });
 
    return (
       <React.Fragment>

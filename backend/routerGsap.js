@@ -40,7 +40,7 @@ router.get('/addpoint/:acc_id/:point', async (req, res) => {
 // ---------------------------------------------------------------- //
 
 // *****************************************************************
-// Backend專用 - 房間頁面 - 列出會員的家具及其屬性 (擺在房間: block, 不擺在房間: none)
+// Gsap專用 - 房間頁面 - 列出會員的家具及其屬性 (擺在房間: block, 不擺在房間: none)
 // 前端傳入 acc_email
 // *****************************************************************
 router.post('/gsap/roomList', async (req, res) => {
@@ -49,8 +49,9 @@ router.post('/gsap/roomList', async (req, res) => {
 
    let strQuery = `
       SELECT af.furn_id, furn.furn_name, 
-         IF(af.acc_furn_placed = 0 OR af.acc_furn_bought = 0, 
-            'none', 'block') display
+             IF(af.acc_furn_placed = 0 OR af.acc_furn_bought = 0, 
+               'none', 'block') display, 
+             acc_furn_x x, acc_furn_y y
       FROM acc_furn af 
       INNER JOIN furniture furn 
       ON af.furn_id = furn.furn_id 
@@ -59,6 +60,22 @@ router.post('/gsap/roomList', async (req, res) => {
 
    query(strQuery, [acc_id], (err, rows) => {
       res.send(err ? err : rows);
+   });
+});
+
+// *****************************************************************
+// Gsap專用 - 家俱改變位置時，將 x, y 存入資料庫
+// *****************************************************************
+router.put('/gsap/updatePos', async (req, res) => {
+   // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
+   var acc_id = await checkAccount(req.body.acc_email, res);
+
+   let strQuery = `
+      UPDATE acc_furn SET acc_furn_x = ?, acc_furn_y = ? WHERE acc_id = ? AND furn_id = ?
+   `;
+
+   query(strQuery, [req.body.x, req.body.y, acc_id, req.body.furn_id], err => {
+      res.send(err ? err : 'Successfully updated');
    });
 });
 
