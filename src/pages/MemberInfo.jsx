@@ -116,6 +116,9 @@ let MemberInfo = () => {
       acc_email: memberInfo.email,
       acc_name: changeInfo.name,
     }).then(() => {
+      //localStorage
+      var local = window.localStorage;
+      local.setItem("memberName", changeInfo.name);
       window.location = "/member/info";
     });
   };
@@ -283,7 +286,7 @@ let MemberInfo = () => {
               />
               {/* <!-- Profile picture help block--> */}
               <div className="small font-italic text-muted mb-4">
-                JPG or PNG no larger than 5 MB
+                檔案最大可放置 16 MB
               </div>
               {/* <!-- Profile picture upload button--> */}
               <div className="d-flex flex-column">

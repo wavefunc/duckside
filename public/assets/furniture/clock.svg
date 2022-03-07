@@ -1,0 +1,7 @@
+<svg width="144" height="144" viewBox="0 0 144 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="clock">
+<path id="Ellipse 57" opacity="0.88" d="M72 144C111.765 144 144 111.765 144 72C144 32.2355 111.765 0 72 0C32.2355 0 0 32.2355 0 72C0 111.765 32.2355 144 72 144Z" fill="#939191"/>
+<path id="Line 30" d="M71.315 72.685L108.315 32.104" stroke="#FFCFA5" stroke-width="7" stroke-linecap="round"/>
+<path id="Line 31" d="M34.912 85.2171L71.316 72.6851" stroke="#FFCFA5" stroke-width="7" stroke-linecap="round"/>
+</g>
+</svg>
