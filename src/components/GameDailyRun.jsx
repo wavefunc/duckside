@@ -1,6 +1,6 @@
 // ----- 晴暄、鎧洋 ----- //
 
-import React, {useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Row, Modal, Col, Container } from 'react-bootstrap';
 import "../css/GameDaily_style.css"
 import { PlusCircle, Search, DashCircle, Gift } from "react-bootstrap-icons"
@@ -16,6 +16,7 @@ import {
    Tooltip,
    Legend,
 } from 'chart.js';
+import { propTypes } from 'react-bootstrap/esm/Image';
 
 
 
@@ -29,7 +30,7 @@ ChartJS.register(
 );
 
 
-function GameDailyRun() {
+function GameDailyRun(props) {
 
    const [findDisplay, setFindDisplay] = useState(false); //查詢
    const [giftDisplay, setGiftDisplay] = useState(false); //領取獎勵
@@ -45,7 +46,6 @@ function GameDailyRun() {
 
    const inputAmount = useRef();
    const inputStockId = useRef();
-
 
    //抓取股市資料
    let labels = ['2018/12/22', '2018/12/24', '2018/12/25', '2018/12/26', '2018/12/27', '2018/12/28', '2019/01/02'];
@@ -239,9 +239,7 @@ function GameDailyRun() {
                      <span className="headerSide">{`2019/1/${currentDate}交易建立`}</span>
                   </Col>
                   <Col>
-                     <Link to="/game/daily">
-                        <button className="headerBack" ><span className="header-Back-text">返回關卡</span> </button>
-                     </Link>
+                     <button className="headerBack" onClick={props.handleBack}><span className="header-Back-text">返回關卡</span> </button>
                   </Col>
                </Row>
             </Container>
@@ -263,11 +261,11 @@ function GameDailyRun() {
                      <span className="buyTitle">買進股數 :
                         <input type="text" className="testEnterOne" id="numBuy" ref={inputAmount} />
                         <button className="button-plus" onClick={buyTwstock}>
-                           <PlusCircle className="button-plus-icon" key="1"/>
+                           <PlusCircle className="button-plus-icon" key="1" />
                            <span className="button-plus-text">買進</span>
                         </button>
                         <button className="button-plus" onClick={sellTwstock}>
-                           <DashCircle className="button-plus-icon" key="2"/>
+                           <DashCircle className="button-plus-icon" key="2" />
                            <span className="button-plus-text">賣出</span>
                         </button>
 
@@ -279,7 +277,7 @@ function GameDailyRun() {
                <Container>
                   <Row>
                      <Col>
-                        <img src="/assets/images/duck.svg" className="duckPict" alt="duckPict"/>
+                        <img src="/assets/images/duck.svg" className="duckPict" alt="duckPict" />
                      </Col>
                      <Col>
                         <div style={{ overflowY: "scroll", overflowX: "hidden" }} className="testInput">
@@ -328,7 +326,7 @@ function GameDailyRun() {
             onHide={() => setFindDisplay(false)}
             aria-labelledby="example-modal-sizes-title-lg"
          >
-            <Chart type='bar' options={options} data={chartData} key="3"/>
+            <Chart type='bar' options={options} data={chartData} key="3" />
 
          </Modal>
 

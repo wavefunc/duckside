@@ -28,7 +28,7 @@ let GameRoomMain = (props) => {
             acc_email:localStorage.getItem("loginState"),
             furn_id: e.currentTarget.dataset.furnid
         })
-        // setupToDate(false)
+        // setupToDate(false)f
         props.setUpToDate(true);
 
     }
