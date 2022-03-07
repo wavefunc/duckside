@@ -22,7 +22,7 @@ var routers = [
     './routerTransaction',
     './routerGameRoom',
     './routerGameDaily',
-    './routerBackend',
+    './routerGsap',
     './routerMarketInfo'
 ]
 
