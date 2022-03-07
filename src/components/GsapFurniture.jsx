@@ -68,7 +68,7 @@ function renderSwitch(param) {
          );
       case 'bathTube':
          return (
-            <g id="bathTube">
+            <g id="bathTube" style={{zIndex: 10}}>
                <path id="Path 8" d="M29.859 584.392H659.246V729.72C659.246 742.9 643.497 757.104 617.076 765.168C617.076 765.168 485.969 800.325 349.707 800.325C213.445 800.325 72.029 765.168 72.029 765.168C50.148 758.457 33.274 738.552 33.274 725.368L29.859 584.392Z" fill="#B8DBDB" />
                <g id="Path 9">
                   <path id="Vector_6" d="M345.61 659.016C156.177 659.016 39.859 616.785 39.859 586.508C39.859 556.231 156.177 514 345.61 514C535.044 514 651.362 556.231 651.362 586.508C651.362 616.785 535.044 659.016 345.61 659.016Z" fill="#68709F" />
@@ -244,7 +244,7 @@ function renderSwitch(param) {
          );
       case 'protrait':
          return (
-            <g id="protrait">
+            <g id="protrait" style={{ zIndex: 0 }}>
                <path id="Path 24" d="M1383.54 312.771L1468.92 276.877" stroke="#EA9C42" strokeWidth="6" strokeLinecap="round" />
                <path id="Path 27" d="M1557.81 311.865L1468.87 277.054" stroke="#EA9C42" strokeWidth="6" strokeLinecap="round" />
                <g id="Path 26">
