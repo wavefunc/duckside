@@ -75,6 +75,12 @@ const colPlan = [
    { id: 'plan_note', name: '筆記', width: '15%' },
 ];
 
+const mainColor = [
+   'hsl(60, 95%, 60%)',
+   'hsl(180, 45%, 60%)',
+   'hsl(35, 100%, 50%)',
+]
+
 function ManageDashboard(props) {
    const [dataCard, setDataCard] = useState([]);
    const [dataPlan, setDataPlan] = useState([]);
@@ -85,8 +91,10 @@ function ManageDashboard(props) {
       datasets: [
          {
             data: dataPosition.map((v, i) => v.marketValue),
-            backgroundColor: dataPosition.map((v, i) => `hsl(${30 + i * 15}, 100%, ${55 + i * 11}%)`),
-            borderColor: 'hsl(15, 35%, 60%)',
+            backgroundColor: dataPosition.map((v, i) => (
+               i < 4 ? mainColor[i] : `hsl(50, 30%, ${72 + i * 12}%)`
+            )),
+            borderColor: 'hsl(195, 30%, 40%)',
             borderWidth: 2,
          },
       ],
