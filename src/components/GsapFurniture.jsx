@@ -1,24 +1,45 @@
+// ----- 冠樺----- //
+
 import React, { useEffect, useState } from 'react';
 import { gsap, Draggable } from 'gsap/all';
 import Axios from 'axios';
 gsap.registerPlugin(Draggable);
 
 // 處理每個家俱的屬性
-function Furniture({ furn_id, furn_name, display, x, y }) {
+function Furniture({
+   furn_id = 'duck',
+   roomInteriorFurnDis = 'none',
+   x = 0, y = 0,
+   updatePage = false,
+   setUpdatePage = f => f
+}) {
 
    useEffect(() => {
       if (furn_id != 'duck') {
          Draggable.create(`#${furn_id}`, {
             bounds: document.getElementById('container'),
             inertia: true,
+            onDragStart: function () {
+               gsap.set(`#dropArea`, { display: 'block' });
+            },
             onDragEnd: function () {
-               Axios.put('http://localhost:5000/gsap/updatePos', {
-                  acc_email: localStorage.getItem("loginState"),
-                  furn_id: furn_id,
-                  x: this.x,
-                  y: this.y
-               });
-            }
+               if (this.hitTest('#dropArea')) {
+                  Axios.put('http://localhost:5000/acc_furn/takeBack', {
+                     acc_email: localStorage.getItem("loginState"),
+                     furn_id: furn_id
+                  });
+                  setUpdatePage(!updatePage);
+               } else {
+                  Axios.put('http://localhost:5000/gsap/updatePos', {
+                     acc_email: localStorage.getItem("loginState"),
+                     furn_id: furn_id,
+                     x: this.x,
+                     y: this.y
+                  });
+               }
+               gsap.set(`#${furn_id}`, { x: this.x, y: this.y });
+               gsap.set(`#dropArea`, { display: 'none' });
+            },
          });
          gsap.set(`#${furn_id}`, { x: x, y: y });
       }
@@ -27,14 +48,14 @@ function Furniture({ furn_id, furn_name, display, x, y }) {
 
    return (
       <React.Fragment>
-         {renderSwitch(furn_id)}
+         {renderSwitch(furn_id, roomInteriorFurnDis)}
       </React.Fragment>
    );
 }
 
 // 回傳每個家俱的 SVG code
-function renderSwitch(param) {
-   switch (param) {
+function renderSwitch(furn_id, furnDisplay = 'none') {
+   switch (furn_id) {
       case 'duck':
          return (
             <g id="duck">
@@ -58,7 +79,7 @@ function renderSwitch(param) {
          );
       case 'basketball':
          return (
-            <g id="basketball">
+            <g id="basketball" style={{ display: furnDisplay }}>
                <path id="Ellipse 6" d="M83.787 981.996C118.741 981.996 147.077 953.66 147.077 918.706C147.077 883.752 118.741 855.416 83.787 855.416C48.8329 855.416 20.497 883.752 20.497 918.706C20.497 953.66 48.8329 981.996 83.787 981.996Z" fill="#EF8D37" />
                <path id="Line 25" d="M20.497 918.706H147.076" stroke="#707070" strokeWidth="7" />
                <path id="Path 6" d="M40.467 872.928C40.467 872.928 58.044 897.274 58.812 920.928C59.58 944.582 43.539 967.555 43.539 967.555" stroke="#707070" strokeWidth="7" />
@@ -68,7 +89,7 @@ function renderSwitch(param) {
          );
       case 'bathTube':
          return (
-            <g id="bathTube" style={{zIndex: 10}}>
+            <g id="bathTube" style={{ display: furnDisplay }}>
                <path id="Path 8" d="M29.859 584.392H659.246V729.72C659.246 742.9 643.497 757.104 617.076 765.168C617.076 765.168 485.969 800.325 349.707 800.325C213.445 800.325 72.029 765.168 72.029 765.168C50.148 758.457 33.274 738.552 33.274 725.368L29.859 584.392Z" fill="#B8DBDB" />
                <g id="Path 9">
                   <path id="Vector_6" d="M345.61 659.016C156.177 659.016 39.859 616.785 39.859 586.508C39.859 556.231 156.177 514 345.61 514C535.044 514 651.362 556.231 651.362 586.508C651.362 616.785 535.044 659.016 345.61 659.016Z" fill="#68709F" />
@@ -104,7 +125,7 @@ function renderSwitch(param) {
          );
       case 'cabinet':
          return (
-            <g id="cabinet">
+            <g id="cabinet" style={{ display: furnDisplay }}>
                <path id="Path 13" d="M1650.37 902.843C1642.95 902.843 1640.29 826.315 1640.29 826.315C1640.29 826.315 1642.21 823.779 1648.8 823.779C1655.38 823.779 1658.7 826.315 1658.7 826.315C1658.7 826.315 1657.8 902.843 1650.37 902.843Z" fill="#D6C298" />
                <path id="Path 15" d="M1855.55 902.843C1848.12 902.843 1845.47 826.315 1845.47 826.315C1845.47 826.315 1847.39 823.779 1853.98 823.779C1860.56 823.779 1863.88 826.315 1863.88 826.315C1863.88 826.315 1862.97 902.843 1855.55 902.843Z" fill="#D6C298" />
                <path id="Rectangle 50" d="M1887 619.339H1603.47C1597.95 619.339 1593.47 623.816 1593.47 629.339V831.093C1593.47 836.616 1597.95 841.093 1603.47 841.093H1887C1892.52 841.093 1897 836.616 1897 831.093V629.339C1897 623.816 1892.52 619.339 1887 619.339Z" fill="#D6C298" />
@@ -122,7 +143,7 @@ function renderSwitch(param) {
          )
       case 'clock':
          return (
-            <g id="clock">
+            <g id="clock" style={{ display: furnDisplay }}>
                <path id="Ellipse 57" opacity="0.88" d="M905 241C944.765 241 977 208.765 977 169C977 129.235 944.765 97 905 97C865.235 97 833 129.235 833 169C833 208.765 865.235 241 905 241Z" fill="#939191" />
                <path id="Line 30" d="M904.315 169.685L941.315 129.104" stroke="#FFCFA5" strokeWidth="7" strokeLinecap="round" />
                <path id="Line 31" d="M867.912 182.217L904.316 169.685" stroke="#FFCFA5" strokeWidth="7" strokeLinecap="round" />
@@ -130,7 +151,7 @@ function renderSwitch(param) {
          );
       case 'femaleDuck':
          return (
-            <g id="femaleDuck">
+            <g id="femaleDuck" style={{ display: furnDisplay }}>
                <g id="&#233;&#180;&#168;&#229;&#173;&#144;_2">
                   <path id="Line 17_3" d="M1185.73 892.348V920.561" stroke="#574809" strokeWidth="7" />
                   <path id="Line 21_3" d="M1264 892.348V920.561" stroke="#574809" strokeWidth="7" />
@@ -160,7 +181,7 @@ function renderSwitch(param) {
          );
       case 'glasses':
          return (
-            <g id="glasses">
+            <g id="glasses" style={{ display: furnDisplay }}>
                <g id="Ellipse 41">
                   <path id="Vector_19" d="M878.416 577.962C888.899 577.962 897.397 569.464 897.397 558.981C897.397 548.498 888.899 540 878.416 540C867.933 540 859.435 548.498 859.435 558.981C859.435 569.464 867.933 577.962 878.416 577.962Z" fill="#DBDBDB" />
                   <path id="Vector_20" d="M878.416 574.962C887.242 574.962 894.397 567.807 894.397 558.981C894.397 550.155 887.242 543 878.416 543C869.59 543 862.435 550.155 862.435 558.981C862.435 567.807 869.59 574.962 878.416 574.962Z" stroke="#707070" strokeWidth="6" />
@@ -174,7 +195,7 @@ function renderSwitch(param) {
          );
       case 'light':
          return (
-            <g id="light">
+            <g id="light" style={{ display: furnDisplay }}>
                <path id="Path 4" d="M631.722 256.318C631.722 256.318 738.754 392.249 892.16 397.685C1083.2 396.336 1221.22 254 1221.22 254" stroke="#707070" strokeWidth="4" />
                <path id="Line 16" d="M665.288 293.248V322.618" stroke="#707070" strokeWidth="4" />
                <path id="Rectangle 23" d="M671.732 312.525H659.37V331.068H671.732V312.525Z" fill="#363636" />
@@ -204,7 +225,7 @@ function renderSwitch(param) {
          );
       case 'mirror':
          return (
-            <g id="mirror">
+            <g id="mirror" style={{ display: furnDisplay }}>
                <g id="Group_5">
                   <g id="Group_6" filter="url(#filter4_d_9_260)">
                      <path id="Subtraction 8" d="M1687.76 351.276C1685.04 343.77 1683.82 335.801 1684.19 327.825C1684.55 319.85 1686.49 312.025 1689.89 304.8L1710.37 332.11L1701.68 287.957C1706.84 282.739 1712.9 278.503 1719.57 275.457L1733.5 321.387L1741.5 270.087C1742.58 270.028 1743.66 270 1744.74 270C1748.35 270 1751.95 270.319 1755.51 270.954L1763.37 321.384L1776.27 278.837C1779.96 281.092 1783.39 283.732 1786.52 286.712L1777.59 332.112L1798.99 303.574C1801.04 307.688 1802.62 312.023 1803.69 316.495C1806.43 328.034 1805.74 340.121 1801.72 351.276C1784.66 337.747 1764.96 330.6 1744.74 330.6C1724.52 330.6 1704.81 337.747 1687.76 351.276H1687.76Z" fill="#FFD230" />
@@ -244,7 +265,7 @@ function renderSwitch(param) {
          );
       case 'protrait':
          return (
-            <g id="protrait" style={{ zIndex: 0 }}>
+            <g id="protrait" style={{ display: furnDisplay }}>
                <path id="Path 24" d="M1383.54 312.771L1468.92 276.877" stroke="#EA9C42" strokeWidth="6" strokeLinecap="round" />
                <path id="Path 27" d="M1557.81 311.865L1468.87 277.054" stroke="#EA9C42" strokeWidth="6" strokeLinecap="round" />
                <g id="Path 26">
@@ -277,7 +298,7 @@ function renderSwitch(param) {
          );
       case 'TV':
          return (
-            <g id="TV">
+            <g id="TV" style={{ display: furnDisplay }}>
                <g id="Rectangle 43">
                   <path id="Vector_8" d="M564 202H128V428H564V202Z" fill="#464444" />
                   <path id="Vector_9" d="M563.5 202.5H128.5V427.5H563.5V202.5Z" stroke="#707070" />
@@ -296,7 +317,7 @@ function renderSwitch(param) {
          );
       case 'weight':
          return (
-            <g id="weight">
+            <g id="weight" style={{ display: furnDisplay }}>
                <g id="Group 28">
                   <g id="Group_13">
                      <path id="Rectangle 84" d="M501 862H324V890H501V862Z" fill="#AEAEAE" />

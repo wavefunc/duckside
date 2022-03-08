@@ -40,7 +40,7 @@ router.get('/addpoint/:acc_id/:point', async (req, res) => {
 // ---------------------------------------------------------------- //
 
 // *****************************************************************
-// Gsap專用 - 房間頁面 - 列出會員的家具及其屬性 (擺在房間: block, 不擺在房間: none)
+// Gsap專用 - 列出會員的家具及其屬性，依各頁面需求讓家具顯示 none OR block
 // 前端傳入 acc_email
 // *****************************************************************
 router.post('/gsap/roomList', async (req, res) => {
@@ -48,10 +48,13 @@ router.post('/gsap/roomList', async (req, res) => {
    var acc_id = await checkAccount(req.body.acc_email, res);
 
    let strQuery = `
-      SELECT af.furn_id, furn.furn_name, 
+      SELECT af.furn_id, furn.furn_name, furn.furn_price, 
+             acc_furn_x x, acc_furn_y y,
              IF(af.acc_furn_placed = 0 OR af.acc_furn_bought = 0, 
-               'none', 'block') display, 
-             acc_furn_x x, acc_furn_y y
+               'none', 'block') roomInteriorFurnDis, 
+             IF(af.acc_furn_bought = 1, 'none', 'block') storeFurnDis,
+             IF(af.acc_furn_placed = 1 OR af.acc_furn_bought = 0, 
+               'none', 'block') storageFurnDis
       FROM acc_furn af 
       INNER JOIN furniture furn 
       ON af.furn_id = furn.furn_id 

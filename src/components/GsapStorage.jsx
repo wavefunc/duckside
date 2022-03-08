@@ -1,20 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import Axios from "axios";
+// ----- 冠樺----- //
 
-function GameRoom() {
-   const [furnList, setFurnList] = useState([]);
+import React from 'react';
+import Axios from 'axios';
 
-   useEffect(() => {
-      Axios.post('http://localhost:5000/gsap/roomList', {
-         acc_email: localStorage.getItem("loginState")
-      }).then(result => {
-         setFurnList(result.data);
+function Storage(
+   {
+      furnList = [],
+      pageDisplay = {},
+      setPageDisplay = f => f,
+      updatePage = false,
+      setUpdatePage = f => f
+   }
+) {
+
+   const placeFurniture = async furnId => {
+      await Axios.put('http://localhost:5000/acc_furn/placing', {
+         acc_email: localStorage.getItem("loginState"),
+         furn_id: furnId
       });
-   }, []);
+      setUpdatePage(!updatePage);
+   };
 
    return (
-      <div id="gameStorage">
-         <div id="closeBtn" style={{ cursor: "pointer" }}>
+      <div id="gameStorage" style={{ display: pageDisplay.storage }}>
+         <div
+            id="closeBtn"
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+               let temp = { ...pageDisplay };
+               temp.storage = 'none';
+               setPageDisplay(temp)
+            }}
+         >
             <svg width="50" viewBox="0 0 146 146">
                <g transform="translate(-1742 -29)">
                   <g id="Ellipse_61" data-name="Ellipse 61" transform="translate(1742 29)" fill="#256170" stroke="#707070" strokeWidth="1">
@@ -30,7 +47,12 @@ function GameRoom() {
                {
                   furnList[0] && furnList.map(obj => {
                      return (
-                        <li id="storageCard1" style={{ cursor: "pointer", display: "block" }}>
+                        <li
+                           key={obj.furn_id}
+                           id="storageCard1"
+                           style={{ cursor: "pointer", display: obj.storageFurnDis }}
+                           onClick={() => { placeFurniture(obj.furn_id) }}
+                        >
                            <img src={`/assets/furniture/${obj.furn_id}.svg`} width='100px' height='100px' />
                         </li>
                      );
@@ -42,4 +64,4 @@ function GameRoom() {
    );
 }
 
-export default GameRoom;
+export default Storage;

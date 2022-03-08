@@ -1,7 +1,9 @@
+// ----- 冠樺----- //
+
 import React, { useState, useEffect } from 'react';
 import Axios from "axios";
 
-function GameRoom() {
+function StoreSecondPage({ pageDisplay = {}, setPageDisplay = f => f }) {
    const [furnList, setFurnList] = useState([]);
 
    useEffect(() => {
@@ -14,9 +16,9 @@ function GameRoom() {
 
    return (
       <div id="gameStorage">
-         <h2>I am store</h2>
+         <h2>I am StoreSecondPage</h2>
       </div>
    );
 }
 
-export default GameRoom;
+export default StoreSecondPage;
