@@ -14,7 +14,7 @@ import { Button, Modal, Form, InputGroup, FormControl } from 'react-bootstrap';
 import { Search, BarChartSteps, ZoomIn, ZoomOut, ChevronRight, ChevronLeft, ChevronDoubleRight, ChevronDoubleLeft } from 'react-bootstrap-icons';
 import dt from 'date-and-time';
 import { Bar } from 'react-chartjs-2';
-import { useEffect, useState, useRef, forwardRef } from 'react';
+import { useState, useRef, forwardRef } from 'react';
 import 'chartjs-adapter-date-fns';
 import axios from 'axios';
 
@@ -166,7 +166,7 @@ const getShadowColor = function (ayy) {
 export function MyCandleLookup(props) {
     const [datalist, setDatalist] = useState([]);
     const inputSecStr = useRef();
-    const [validated, setValidated] = useState(false);
+    const [validated, setValidated] = useState(true);
 
     const [dataCandle, setDataCandle] = useState(false);
     // const [minDateIdx, setMinDateIdx] = useState(0);
@@ -183,13 +183,19 @@ export function MyCandleLookup(props) {
             period2: dt.format(dateEnd, 'YYYYMMDD'),
         }
         axios.post(urlpostCandle, dataToServer).then((res) => {
-            setDataCandle(res.data);
-            let len = res.data.dates.length;
-            let newOptions = { ...options };
-            newOptions.scales.x.min = res.data.dates[len - 20];
-            newOptions.scales.x.max = res.data.dates[len - 1];
-            setOptions(newOptions);
-            setShowCandle(true);
+            if (typeof res.data.data === "string") {
+                console.log('查無此股');
+                setValidated(false);
+            } else {
+                setValidated(true);
+                setDataCandle(res.data);
+                let len = res.data.dates.length;
+                let newOptions = { ...options };
+                newOptions.scales.x.min = res.data.dates[len - 20];
+                newOptions.scales.x.max = res.data.dates[len - 1];
+                setOptions(newOptions);
+                setShowCandle(true);
+            }
         })
     };
     function dataRangeMove(d = 1) {
@@ -258,7 +264,7 @@ export function MyCandleLookup(props) {
     }
     return (
         <>
-            <Form inline noValidate validated={validated}>
+            <Form inline noValidate>
                 <Form.Label htmlFor="sec_str" srOnly>
                     K線速查
                 </Form.Label>
@@ -273,15 +279,18 @@ export function MyCandleLookup(props) {
                         placeholder='查詢技術線圖'
                         onChange={({ target }) => getDatalist(target.value, setDatalist)}
                         list='lookupCandle'
+                        isInvalid={!validated}
                     />
                     <InputGroup.Append>
                         <Button
                             size="sm" variant={props.btnColor}
-                            onClick={()=>lookupCandle(props.currentDate, props.rangeYear)}>
+                            onClick={() => lookupCandle(props.currentDate, props.rangeYear)}>
                             <Search />
                         </Button>
                     </InputGroup.Append>
-                    <FormControl.Feedback></FormControl.Feedback>
+                    <FormControl.Feedback type='invalid' tooltip>
+                        查無此股, 請選取完整代號及股名
+                    </FormControl.Feedback>
 
                     <datalist id='lookupCandle'>
                         {datalist.map((v, i) =>
@@ -361,10 +370,10 @@ export function MyCandleLookup(props) {
     )
 }
 
-export const MyCandleLookupWithRef = forwardRef((props,ref) => {
+export const MyCandleLookupWithRef = forwardRef((props, ref) => {
     const [datalist, setDatalist] = useState([]);
     const inputSecStr = ref;
-    const [validated, setValidated] = useState(false);
+    const [validated, setValidated] = useState(true);
 
     const [dataCandle, setDataCandle] = useState(false);
     // const [minDateIdx, setMinDateIdx] = useState(0);
@@ -381,13 +390,20 @@ export const MyCandleLookupWithRef = forwardRef((props,ref) => {
             period2: dt.format(dateEnd, 'YYYYMMDD'),
         }
         axios.post(urlpostCandle, dataToServer).then((res) => {
-            setDataCandle(res.data);
-            let len = res.data.dates.length;
-            let newOptions = { ...options };
-            newOptions.scales.x.min = res.data.dates[len - 20];
-            newOptions.scales.x.max = res.data.dates[len - 1];
-            setOptions(newOptions);
-            setShowCandle(true);
+
+            if (typeof res.data.data === "string") {
+                console.log('查無此股');
+                setValidated(false);
+            } else {
+                setValidated(true);
+                setDataCandle(res.data);
+                let len = res.data.dates.length;
+                let newOptions = { ...options };
+                newOptions.scales.x.min = res.data.dates[len - 20];
+                newOptions.scales.x.max = res.data.dates[len - 1];
+                setOptions(newOptions);
+                setShowCandle(true);
+            }
         })
     };
     function dataRangeMove(d = 1) {
@@ -456,7 +472,7 @@ export const MyCandleLookupWithRef = forwardRef((props,ref) => {
     }
     return (
         <>
-            <Form noValidate validated={validated} className={props.className}>
+            <Form noValidate className={props.className}>
                 <Form.Label htmlFor="sec_str" srOnly>
                     K線速查
                 </Form.Label>
@@ -467,19 +483,23 @@ export const MyCandleLookupWithRef = forwardRef((props,ref) => {
                         </InputGroup.Text>
                     </InputGroup.Prepend>
                     <FormControl
-                        id="sec_str" name="sec_str" ref={inputSecStr}
+                        id="sec_str" name="sec_str"
                         placeholder='查詢技術線圖'
+                        ref={inputSecStr}
                         onChange={({ target }) => getDatalist(target.value, setDatalist)}
                         list='lookupCandle'
+                        isInvalid={!validated}
                     />
                     <InputGroup.Append>
                         <Button
                             size="sm" variant={props.btnColor}
-                            onClick={()=>lookupCandle(props.currentDate, props.rangeYear)}>
+                            onClick={() => lookupCandle(props.currentDate, props.rangeYear)}>
                             <Search />
                         </Button>
                     </InputGroup.Append>
-                    <FormControl.Feedback></FormControl.Feedback>
+                    <FormControl.Feedback type='invalid'>
+                        查無此股, 請選取完整代號及股名
+                    </FormControl.Feedback>
 
                     <datalist id='lookupCandle'>
                         {datalist.map((v, i) =>
