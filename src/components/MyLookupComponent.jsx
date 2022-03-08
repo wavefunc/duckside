@@ -14,7 +14,7 @@ import { Button, Modal, Form, InputGroup, FormControl } from 'react-bootstrap';
 import { Search, BarChartSteps, ZoomIn, ZoomOut, ChevronRight, ChevronLeft, ChevronDoubleRight, ChevronDoubleLeft } from 'react-bootstrap-icons';
 import dt from 'date-and-time';
 import { Bar } from 'react-chartjs-2';
-import { useEffect, useState, useRef, forwardRef } from 'react';
+import { useState, useRef, forwardRef } from 'react';
 import 'chartjs-adapter-date-fns';
 import axios from 'axios';
 
@@ -109,12 +109,12 @@ const initialOptions = {
         }
     }
 };
-const body_red = 'rgba(255, 144, 144)';
-const body_green = 'rgba(144, 255, 144)';
+const body_red = 'rgba(255, 48, 48)';
+const body_green = 'rgba(48, 255, 48)';
 const body_gray = 'rgba(96, 96, 96)';
-const shadow_red = 'rgba(255, 196, 196)';
-const shadow_green = 'rgba(196, 255, 196)';
-const shadow_gray = 'rgba(144, 144, 144)';
+const shadow_red = 'rgba(255, 128, 128)';
+const shadow_green = 'rgba(128, 255, 128)';
+const shadow_gray = 'rgba(72, 72, 72)';
 
 const urlGetDatalist = 'http://localhost:5000/securities/datalist/';
 const urlpostCandle = 'http://localhost:5000/securities/candlestick';
@@ -166,7 +166,7 @@ const getShadowColor = function (ayy) {
 export function MyCandleLookup(props) {
     const [datalist, setDatalist] = useState([]);
     const inputSecStr = useRef();
-    const [validated, setValidated] = useState(false);
+    const [validated, setValidated] = useState(true);
 
     const [dataCandle, setDataCandle] = useState(false);
     // const [minDateIdx, setMinDateIdx] = useState(0);
@@ -183,24 +183,25 @@ export function MyCandleLookup(props) {
             period2: dt.format(dateEnd, 'YYYYMMDD'),
         }
         axios.post(urlpostCandle, dataToServer).then((res) => {
-            console.log(res.data);
-            setDataCandle(res.data);
-            let len = res.data.dates.length;
-            let newOptions = { ...options };
-            newOptions.scales.x.min = res.data.dates[len - 20];
-            newOptions.scales.x.max = res.data.dates[len - 1];
-            console.log(newOptions);
-            setOptions(newOptions);
-            setShowCandle(true);
+            if (typeof res.data.data === "string") {
+                console.log('查無此股');
+                setValidated(false);
+            } else {
+                setValidated(true);
+                setDataCandle(res.data);
+                let len = res.data.dates.length;
+                let newOptions = { ...options };
+                newOptions.scales.x.min = res.data.dates[len - 20];
+                newOptions.scales.x.max = res.data.dates[len - 1];
+                setOptions(newOptions);
+                setShowCandle(true);
+            }
         })
     };
     function dataRangeMove(d = 1) {
         let newOptions = { ...options };
         let minDateIdx = dataCandle.dates.indexOf(newOptions.scales.x.min);
         let maxDateIdx = dataCandle.dates.indexOf(newOptions.scales.x.max);
-
-        console.log(minDateIdx);
-        console.log(maxDateIdx);
 
         let i = 0;
         if (d > 0) {
@@ -209,14 +210,12 @@ export function MyCandleLookup(props) {
             };
             newOptions.scales.x.min = dataCandle.dates[minDateIdx + i];
             newOptions.scales.x.max = dataCandle.dates[maxDateIdx + i];
-            console.log(`${minDateIdx + i}-${maxDateIdx + i}`);
         } else {
             while (dataCandle.dates[minDateIdx - i - 1] && i < Math.abs(d)) {
                 i += 1;
             };
             newOptions.scales.x.min = dataCandle.dates[minDateIdx - i];
             newOptions.scales.x.max = dataCandle.dates[maxDateIdx - i];
-            console.log(`${minDateIdx - i}-${maxDateIdx - i}`);
         }
         setOptions(newOptions);
     }
@@ -224,7 +223,6 @@ export function MyCandleLookup(props) {
         let newOptions = { ...options };
         let minDateIdx = dataCandle.dates.indexOf(newOptions.scales.x.min);
         let maxDateIdx = dataCandle.dates.indexOf(newOptions.scales.x.max);
-        console.log(`${minDateIdx}-${maxDateIdx}`);
 
         for (let pedo = 0, i = 0; pedo < d; pedo++) {
             if (dataCandle.dates[maxDateIdx + 1] && i++ < d / 2) {
@@ -242,7 +240,6 @@ export function MyCandleLookup(props) {
         }
         newOptions.scales.x.min = dataCandle.dates[minDateIdx];
         newOptions.scales.x.max = dataCandle.dates[maxDateIdx];
-        console.log(`${minDateIdx}-${maxDateIdx}`);
         setOptions(newOptions);
     }
     function dataRangeZoomIn(d = 1) {
@@ -250,28 +247,24 @@ export function MyCandleLookup(props) {
 
         let minDateIdx = dataCandle.dates.indexOf(newOptions.scales.x.min);
         let maxDateIdx = dataCandle.dates.indexOf(newOptions.scales.x.max);
-        console.log(`${minDateIdx}-${maxDateIdx}`);
 
         for (let pedo = 0; pedo < d && maxDateIdx - minDateIdx >= 10; pedo++) {
             if (pedo % 2 === 0) {
                 maxDateIdx -= 1;
-                console.log('maxDateIdx-1');
                 continue;
             } else {
                 minDateIdx += 1;
-                console.log('minDateIdx+1');
                 continue;
             }
         }
 
         newOptions.scales.x.min = dataCandle.dates[minDateIdx];
         newOptions.scales.x.max = dataCandle.dates[maxDateIdx];
-        console.log(`${minDateIdx}-${maxDateIdx}`);
         setOptions(newOptions);
     }
     return (
         <>
-            <Form inline noValidate validated={validated}>
+            <Form inline noValidate>
                 <Form.Label htmlFor="sec_str" srOnly>
                     K線速查
                 </Form.Label>
@@ -286,15 +279,18 @@ export function MyCandleLookup(props) {
                         placeholder='查詢技術線圖'
                         onChange={({ target }) => getDatalist(target.value, setDatalist)}
                         list='lookupCandle'
+                        isInvalid={!validated}
                     />
                     <InputGroup.Append>
                         <Button
                             size="sm" variant={props.btnColor}
-                            onClick={()=>lookupCandle(props.currentDate, props.rangeYear)}>
+                            onClick={() => lookupCandle(props.currentDate, props.rangeYear)}>
                             <Search />
                         </Button>
                     </InputGroup.Append>
-                    <FormControl.Feedback></FormControl.Feedback>
+                    <FormControl.Feedback type='invalid' tooltip>
+                        查無此股, 請選取完整代號及股名
+                    </FormControl.Feedback>
 
                     <datalist id='lookupCandle'>
                         {datalist.map((v, i) =>
@@ -374,10 +370,10 @@ export function MyCandleLookup(props) {
     )
 }
 
-export const MyCandleLookupWithRef = forwardRef((props,ref) => {
+export const MyCandleLookupWithRef = forwardRef((props, ref) => {
     const [datalist, setDatalist] = useState([]);
     const inputSecStr = ref;
-    const [validated, setValidated] = useState(false);
+    const [validated, setValidated] = useState(true);
 
     const [dataCandle, setDataCandle] = useState(false);
     // const [minDateIdx, setMinDateIdx] = useState(0);
@@ -394,24 +390,26 @@ export const MyCandleLookupWithRef = forwardRef((props,ref) => {
             period2: dt.format(dateEnd, 'YYYYMMDD'),
         }
         axios.post(urlpostCandle, dataToServer).then((res) => {
-            console.log(res.data);
-            setDataCandle(res.data);
-            let len = res.data.dates.length;
-            let newOptions = { ...options };
-            newOptions.scales.x.min = res.data.dates[len - 20];
-            newOptions.scales.x.max = res.data.dates[len - 1];
-            console.log(newOptions);
-            setOptions(newOptions);
-            setShowCandle(true);
+
+            if (typeof res.data.data === "string") {
+                console.log('查無此股');
+                setValidated(false);
+            } else {
+                setValidated(true);
+                setDataCandle(res.data);
+                let len = res.data.dates.length;
+                let newOptions = { ...options };
+                newOptions.scales.x.min = res.data.dates[len - 20];
+                newOptions.scales.x.max = res.data.dates[len - 1];
+                setOptions(newOptions);
+                setShowCandle(true);
+            }
         })
     };
     function dataRangeMove(d = 1) {
         let newOptions = { ...options };
         let minDateIdx = dataCandle.dates.indexOf(newOptions.scales.x.min);
         let maxDateIdx = dataCandle.dates.indexOf(newOptions.scales.x.max);
-
-        console.log(minDateIdx);
-        console.log(maxDateIdx);
 
         let i = 0;
         if (d > 0) {
@@ -420,14 +418,12 @@ export const MyCandleLookupWithRef = forwardRef((props,ref) => {
             };
             newOptions.scales.x.min = dataCandle.dates[minDateIdx + i];
             newOptions.scales.x.max = dataCandle.dates[maxDateIdx + i];
-            console.log(`${minDateIdx + i}-${maxDateIdx + i}`);
         } else {
             while (dataCandle.dates[minDateIdx - i - 1] && i < Math.abs(d)) {
                 i += 1;
             };
             newOptions.scales.x.min = dataCandle.dates[minDateIdx - i];
             newOptions.scales.x.max = dataCandle.dates[maxDateIdx - i];
-            console.log(`${minDateIdx - i}-${maxDateIdx - i}`);
         }
         setOptions(newOptions);
     }
@@ -435,7 +431,6 @@ export const MyCandleLookupWithRef = forwardRef((props,ref) => {
         let newOptions = { ...options };
         let minDateIdx = dataCandle.dates.indexOf(newOptions.scales.x.min);
         let maxDateIdx = dataCandle.dates.indexOf(newOptions.scales.x.max);
-        console.log(`${minDateIdx}-${maxDateIdx}`);
 
         for (let pedo = 0, i = 0; pedo < d; pedo++) {
             if (dataCandle.dates[maxDateIdx + 1] && i++ < d / 2) {
@@ -453,7 +448,6 @@ export const MyCandleLookupWithRef = forwardRef((props,ref) => {
         }
         newOptions.scales.x.min = dataCandle.dates[minDateIdx];
         newOptions.scales.x.max = dataCandle.dates[maxDateIdx];
-        console.log(`${minDateIdx}-${maxDateIdx}`);
         setOptions(newOptions);
     }
     function dataRangeZoomIn(d = 1) {
@@ -461,28 +455,24 @@ export const MyCandleLookupWithRef = forwardRef((props,ref) => {
 
         let minDateIdx = dataCandle.dates.indexOf(newOptions.scales.x.min);
         let maxDateIdx = dataCandle.dates.indexOf(newOptions.scales.x.max);
-        console.log(`${minDateIdx}-${maxDateIdx}`);
 
         for (let pedo = 0; pedo < d && maxDateIdx - minDateIdx >= 10; pedo++) {
             if (pedo % 2 === 0) {
                 maxDateIdx -= 1;
-                console.log('maxDateIdx-1');
                 continue;
             } else {
                 minDateIdx += 1;
-                console.log('minDateIdx+1');
                 continue;
             }
         }
 
         newOptions.scales.x.min = dataCandle.dates[minDateIdx];
         newOptions.scales.x.max = dataCandle.dates[maxDateIdx];
-        console.log(`${minDateIdx}-${maxDateIdx}`);
         setOptions(newOptions);
     }
     return (
         <>
-            <Form noValidate validated={validated} className={props.className}>
+            <Form noValidate className={props.className}>
                 <Form.Label htmlFor="sec_str" srOnly>
                     K線速查
                 </Form.Label>
@@ -493,19 +483,23 @@ export const MyCandleLookupWithRef = forwardRef((props,ref) => {
                         </InputGroup.Text>
                     </InputGroup.Prepend>
                     <FormControl
-                        id="sec_str" name="sec_str" ref={inputSecStr}
+                        id="sec_str" name="sec_str"
                         placeholder='查詢技術線圖'
+                        ref={inputSecStr}
                         onChange={({ target }) => getDatalist(target.value, setDatalist)}
                         list='lookupCandle'
+                        isInvalid={!validated}
                     />
                     <InputGroup.Append>
                         <Button
                             size="sm" variant={props.btnColor}
-                            onClick={()=>lookupCandle(props.currentDate, props.rangeYear)}>
+                            onClick={() => lookupCandle(props.currentDate, props.rangeYear)}>
                             <Search />
                         </Button>
                     </InputGroup.Append>
-                    <FormControl.Feedback></FormControl.Feedback>
+                    <FormControl.Feedback type='invalid'>
+                        查無此股, 請選取完整代號及股名
+                    </FormControl.Feedback>
 
                     <datalist id='lookupCandle'>
                         {datalist.map((v, i) =>

@@ -7,7 +7,7 @@
  * 
  * * * * * * * * * * * */
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Container, Row, Col, Tab, Nav, Button, Popover, OverlayTrigger, Modal } from 'react-bootstrap';
 import { Formik, Form } from 'formik';
 import axios from 'axios';
