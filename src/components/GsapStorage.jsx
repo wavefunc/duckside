@@ -16,7 +16,7 @@ function Storage({
          acc_email: localStorage.getItem("loginState"),
          furn_id: furnId
       });
-      setUpdatePage(!updatePage);
+      setUpdatePage(updatePage => !updatePage);
    };
 
    return (
@@ -25,9 +25,10 @@ function Storage({
             id="closeBtn"
             style={{ cursor: "pointer" }}
             onClick={() => {
-               let temp = { ...pageDisplay };
-               temp.storage = 'none';
-               setPageDisplay(temp)
+               setPageDisplay(pageDisplay => (
+                  { ...pageDisplay, storage: 'none' }
+               ));
+
             }}
          >
             <svg width="50" viewBox="0 0 146 146">

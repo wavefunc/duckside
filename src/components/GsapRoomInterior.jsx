@@ -18,7 +18,7 @@ function GsapRoomInterior({
             key={obj && obj.furn_id}
             {...obj}
             updatePage={updatePage}
-            setUpdatePage={setUpdatePage}
+            setUpdatePage={e => setUpdatePage(e)}
          />
       )
    }
@@ -32,12 +32,15 @@ function GsapRoomInterior({
                   id="btnShop"
                   style={{ cursor: 'pointer' }}
                   onClick={() => {
-                     let temp = { ...pageDisplay };
-                     temp.roomInterior = 'none';
-                     temp.storage = 'none';
-                     temp.storeHeader = 'block';
-                     temp.storeFirstPage = 'block';
-                     setPageDisplay(temp);
+                     setPageDisplay(pageDisplay => (
+                        {
+                           ...pageDisplay,
+                           roomInterior: 'none',
+                           storage: 'none',
+                           storeHeader: 'block',
+                           storeFirstPage: 'block'
+                        }
+                     ));
                   }}
                >
                   <path d="M1862.5 28H1666.5C1647.45 28 1632 43.4462 1632 62.5C1632 81.5538 1647.45 97 1666.5 97H1862.5C1881.55 97 1897 81.5538 1897 62.5C1897 43.4462 1881.55 28 1862.5 28Z" fill="#50B6C2" />
@@ -48,9 +51,9 @@ function GsapRoomInterior({
                   id="btnStorage"
                   style={{ cursor: 'pointer' }}
                   onClick={() => {
-                     let temp = { ...pageDisplay };
-                     temp.storage = 'block';
-                     setPageDisplay(temp);
+                     setPageDisplay(pageDisplay => (
+                        { ...pageDisplay, storage: 'block' }
+                     ));
                   }}
                >
                   <path d="M1862.5 112H1666.5C1647.45 112 1632 127.446 1632 146.5C1632 165.554 1647.45 181 1666.5 181H1862.5C1881.55 181 1897 165.554 1897 146.5C1897 127.446 1881.55 112 1862.5 112Z" fill="#50B6C2" />

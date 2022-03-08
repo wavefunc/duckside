@@ -30,7 +30,7 @@ function Furniture({
       }
       gsap.set(`#${furn_id}`, { x: e.x, y: e.y });
       gsap.set(`#dropArea`, { display: 'none' });
-      setUpdatePage(!updatePage);
+      setUpdatePage(updatePage => !updatePage);
    };
 
    useEffect(() => {
