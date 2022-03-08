@@ -177,7 +177,7 @@ function GameDailyRun(props) {
                   <img src="/assets/images/duck.svg" className="duckPict mt-2" alt="duckPict" />
                </Col>
                <Col>
-                  <div style={{ overflowY: "scroll", overflowX: "hidden" }} className="testInput">
+                  <div style={{ overflowY: "scroll", overflowX: "hidden" }} className="testInputHave">
                      <Table bordered striped >
                         <thead >
                            <tr>
@@ -251,8 +251,8 @@ function GameDailyRun(props) {
                      </tbody>
                   </Table>
                </div>
-               <div>今日結算</div>
-               <div>獲利：{`${assetLastChange} (${Math.round(assetLastChange / (asset - assetLastChange) * 1000) / 10}%)`}</div>
+               <div className="nextTotal">今日結算</div>
+               <div className="nextTotal">獲利：{`${assetLastChange} (${Math.round(assetLastChange / (asset - assetLastChange) * 1000) / 10}%)`}</div>
                {/* //點擊下一關按鈕獲取值 */}
                <button className="jumpClose" onClick={() => setModalSubtotal(false)}>繼續</button>
                {/* 點擊繼續按鈕關閉跳窗modal */}
@@ -276,7 +276,7 @@ function GameDailyRun(props) {
                   資產獲利：{`${profit}元 (${pct}%)`}</div>
                <div className="jumpGet">總得積分：{score}</div>
                {/* 點擊領取獎勵按鈕獲得運算後獲的趴數*20的值 */}
-               <button className="jumpClose" onClick={() => { setGiftDisplay(false) }}><Link to="/game/daily">領取</Link></button>
+               <button className="jumpCloseGet" onClick={() => { setGiftDisplay(false) }}><Link to="/game/daily">領取</Link></button>
                {/* 點選領去獎勵哪領取的值 關閉跳窗modal 並且關卡1結束獲得積分回到關卡選擇 */}
 
             </div>

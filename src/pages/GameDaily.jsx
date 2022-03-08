@@ -196,10 +196,10 @@ function GameDaily() {
                         <g id={`btnStage${stage.number}`}>
                            <g transform="matrix(1, 0, 0, 1, 0, 0)">
                               <rect id={`rect${stage.number}`} data-name={`rect${stage.number}`}
-                                 width="300" height="300" rx="30" transform={`translate(${200 + i * 400} 275)`} fill="#fff" />
+                                 width="300" height="300" rx="30" transform={`translate(${200 + i * 400} 455)`} fill="#fff" />
                            </g>
                            <text id={`_${stage.number}`} data-name={`stage${stage.number}`}
-                              transform={`translate(${300 + i * 400} 500)`} fontSize="200" fontFamily="Helvetica-Bold, Helvetica" fontWeight="700"><tspan x="0" y="0">
+                              transform={`translate(${300 + i * 400} 680)`} fontSize="200" fontFamily="Helvetica-Bold, Helvetica" fontWeight="700"><tspan x="0" y="0">
                                  {stage.number}
                               </tspan></text>
                         </g>

@@ -107,9 +107,19 @@
 }
 
 .testInput{
+  width: 500px;
+  height: 300px;
+  background-color: white;
+  margin-top: 10px;
+  margin-left: 50px;
+  font-family: PingFangTC-Semibold, PingFang TC;
+}
+
+.testInputHave{
   width: 400px;
   height: 300px;
   background-color: white;
+  font-family: PingFangTC-Semibold, PingFang TC;
 }
 
 .haveUI{
@@ -145,10 +155,10 @@
 .jumpTitle{
   color: #E4E9EB;
   background-color:#3E88A8 ;
-  width: 120px;
+  width: 150px;
   height: 50px;
   border-radius: 10px;
-  margin-left: 240px;
+  margin-left: 227px;
   font-size:30px ;
   margin-top:10px;
   font-family: PingFangTC-Semibold, PingFang TC;
@@ -172,8 +182,8 @@
   font-family: PingFangTC-Semibold, PingFang TC;
   color: #520707;
   font-size: 30px;
-  padding-top: 70px;
-  padding-left: 190px;
+  padding-top: 30px;
+  padding-left: 180px;
 }
 
 .jumpScore{
@@ -189,7 +199,20 @@
   border-radius: 10px;
   margin-left: 260px;
   font-size:30px ;
-  margin-top: 52px;
+  margin-top: 30px;
+  font-family: PingFangTC-Semibold, PingFang TC;
+  position: center;
+}
+
+.jumpCloseGet{
+  color: #E4E9EB;
+  background-color: #50B6C2 ;
+  width: 80px;
+  height: 50px;
+  border-radius: 10px;
+  margin-left: 260px;
+  font-size:30px ;
+  margin-top: 55px;
   font-family: PingFangTC-Semibold, PingFang TC;
   position: center;
 }
@@ -199,3 +222,8 @@
   padding-left: 100px;
 }
 
+.nextTotal{
+  padding-left: 350px;
+  padding-top: 10px;
+  font-family: PingFangTC-Semibold, PingFang TC;
+}
