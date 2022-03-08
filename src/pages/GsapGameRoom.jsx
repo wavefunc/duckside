@@ -16,7 +16,8 @@ let GameRoom = () => {
       storeHeader: 'none',
       storeFirstPage: 'none',
       purchaseConfirm: 'none',
-      purchaseSuccess: 'none'
+      purchaseSuccess: 'none',
+      purchaseFail: 'none'
    });
    const [updatePage, setUpdatePage] = useState(false);
 

@@ -68,8 +68,7 @@ function updateFurnAndPoint(acc_id, furn_id, res) {
          res.send(
             err ?
                err :
-               `Successfully updated acc_furn on 
-                  acc_id = ${acc_id} and furn_id = ${furn_id}`
+               `Successfully updated`
          );
       }
    );
