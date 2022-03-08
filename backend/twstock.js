@@ -568,7 +568,7 @@ async function getYahoo(stockId, period1, period2) {
         console.log(stockDay.data === '404 Not Found: Timestamp data missing.');
     } while (stockDay.data === '404 Not Found: Timestamp data missing.');
 
-    // 偶爾遇到此錯誤將導致抓不到資料 404 Not Found: No data found, symbol may be delisted
+    // 偶爾遇到此錯誤導致抓不到資料, 尚不知原因為何: 404 Not Found: No data found, symbol may be delisted
 
     return stockDay;
 };

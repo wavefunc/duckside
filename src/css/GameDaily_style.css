@@ -23,11 +23,6 @@
   padding-bottom:6px;
 }
 
-.buttbar{
-  margin-top: 10px;
-  margin-left: 55px;
-}
-
 .nextButton-plus{
   font-family: PingFangTC-Semibold, PingFang TC;
   background-color:#3E88A8 ;
@@ -39,34 +34,24 @@
 }
 
 .button-plus-icon{
-  font-size: 22px;
+  font-size: 18px;
   margin-bottom: 4px;
   margin-right: 4px;
 }
 
 .button-plus-text{
-  font-size: 20px;
+  font-size: 15px;
 }
 
-.header-Back-text{
-  font-size: 25px;
-  color: white;
-}
 
-.headerBack{
-  background-color:#AC4C4C ;
-  width: 150px;
-  height: 50px;
-  border-radius: 15px;
-  margin-left: 340px;
-  font-family: PingFangTC-Semibold, PingFang TC;
-}
+
+
 
 .header{
   padding: 15px;
   width: 890px;
   height: 500px;
-  margin-left:90px ;
+  margin-left: 90px ;
   background-color: #EDDBBE;
 }
 
@@ -76,11 +61,23 @@
   width: 250px;
   height: 50px;
   border-radius: 20px;
-  margin-top:10px;
   margin-left: 10px;
-  font-size:30px ;
   padding:0 10px ;
+  font-size:24px ;
   font-family: PingFangTC-Semibold, PingFang TC;
+}
+
+.headerBack{
+  background-color:#AC4C4C;
+  width: 150px;
+  height: 35px;
+  border-radius: 20px;
+  font-family: PingFangTC-Semibold, PingFang TC;
+}
+
+.header-Back-text{
+  font-size: 24px;
+  color: white;
 }
 
 .buyTitle{
@@ -110,9 +107,19 @@
 }
 
 .testInput{
-  width: 400px;
-  height: 250px;
+  width: 500px;
+  height: 300px;
   background-color: white;
+  margin-top: 10px;
+  margin-left: 50px;
+  font-family: PingFangTC-Semibold, PingFang TC;
+}
+
+.testInputHave{
+  width: 400px;
+  height: 300px;
+  background-color: white;
+  font-family: PingFangTC-Semibold, PingFang TC;
 }
 
 .haveUI{
@@ -148,10 +155,10 @@
 .jumpTitle{
   color: #E4E9EB;
   background-color:#3E88A8 ;
-  width: 120px;
+  width: 150px;
   height: 50px;
   border-radius: 10px;
-  margin-left: 240px;
+  margin-left: 227px;
   font-size:30px ;
   margin-top:10px;
   font-family: PingFangTC-Semibold, PingFang TC;
@@ -175,8 +182,8 @@
   font-family: PingFangTC-Semibold, PingFang TC;
   color: #520707;
   font-size: 30px;
-  padding-top: 70px;
-  padding-left: 190px;
+  padding-top: 30px;
+  padding-left: 180px;
 }
 
 .jumpScore{
@@ -192,7 +199,20 @@
   border-radius: 10px;
   margin-left: 260px;
   font-size:30px ;
-  margin-top: 52px;
+  margin-top: 30px;
+  font-family: PingFangTC-Semibold, PingFang TC;
+  position: center;
+}
+
+.jumpCloseGet{
+  color: #E4E9EB;
+  background-color: #50B6C2 ;
+  width: 80px;
+  height: 50px;
+  border-radius: 10px;
+  margin-left: 260px;
+  font-size:30px ;
+  margin-top: 55px;
   font-family: PingFangTC-Semibold, PingFang TC;
   position: center;
 }
@@ -202,7 +222,8 @@
   padding-left: 100px;
 }
 
-.haveMoney{
-  padding-left: 30px;
-  font-size: 20px;
+.nextTotal{
+  padding-left: 350px;
+  padding-top: 10px;
+  font-family: PingFangTC-Semibold, PingFang TC;
 }

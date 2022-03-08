@@ -39,7 +39,7 @@ const colInventory = [
    },
    {
       id: 'marketPriceChangePct', name: h('b', { style: { 'float': 'right', 'font-size': '15px' } }, '漲跌幅'), width: '10%',
-      formatter: (cell, row) => h('span', { style: { 'float': 'right', 'color': cell > 0 ? 'red' : 'green' } }, Math.round(cell * 10000) / 100 + '%')
+      formatter: (cell, row) => h('span', { style: { 'float': 'right', 'color': cell > 0 ? 'red' : 'green' } }, cell + '%')
    },
    {
       id: 'marketValue', name: h('b', { style: { 'float': 'right', } }, '市值'), width: '15%',
@@ -167,7 +167,7 @@ function ManageDashboard(props) {
                         <Nav.Link eventKey="disabled" disabled bsPrefix='btn btn-basic ml-1'></Nav.Link>
                      </Nav.Item>
                      <Nav.Item className='pr-1'>
-                        <MyCandleLookup></MyCandleLookup>
+                        <MyCandleLookup btnColor="warning"></MyCandleLookup>
                      </Nav.Item>
                   </Nav>
                   <Tab.Content>
