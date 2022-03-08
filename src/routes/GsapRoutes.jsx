@@ -4,10 +4,10 @@
 import React from 'react';
 import { Route } from "react-router-dom";
 
-import GameRoom from '../components/GsapGameRoom';
+import GameRoom from '../pages/GsapGameRoom';
 
 export default (
    <React.Fragment>
-      <Route path='gsap/gameroom' element={<GameRoom />} />
+      <Route path='gsap/GameRoom' element={<GameRoom />} />
    </React.Fragment>
 )

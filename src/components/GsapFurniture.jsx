@@ -1,10 +1,12 @@
+// ----- 冠樺----- //
+
 import React, { useEffect, useState } from 'react';
 import { gsap, Draggable } from 'gsap/all';
 import Axios from 'axios';
 gsap.registerPlugin(Draggable);
 
 // 處理每個家俱的屬性
-function Furniture({ furn_id, furn_name, display, x, y }) {
+function Furniture({ furn_id, furn_name, roomInteriorFurnDis = 'none', x, y }) {
 
    useEffect(() => {
       if (furn_id != 'duck') {
@@ -22,6 +24,7 @@ function Furniture({ furn_id, furn_name, display, x, y }) {
          });
          gsap.set(`#${furn_id}`, { x: x, y: y });
       }
+      // console.log(roomInteriorFurnDis ||)
    }, []);
 
 
@@ -68,7 +71,7 @@ function renderSwitch(param) {
          );
       case 'bathTube':
          return (
-            <g id="bathTube" style={{zIndex: 10}}>
+            <g id="bathTube">
                <path id="Path 8" d="M29.859 584.392H659.246V729.72C659.246 742.9 643.497 757.104 617.076 765.168C617.076 765.168 485.969 800.325 349.707 800.325C213.445 800.325 72.029 765.168 72.029 765.168C50.148 758.457 33.274 738.552 33.274 725.368L29.859 584.392Z" fill="#B8DBDB" />
                <g id="Path 9">
                   <path id="Vector_6" d="M345.61 659.016C156.177 659.016 39.859 616.785 39.859 586.508C39.859 556.231 156.177 514 345.61 514C535.044 514 651.362 556.231 651.362 586.508C651.362 616.785 535.044 659.016 345.61 659.016Z" fill="#68709F" />
@@ -122,6 +125,7 @@ function renderSwitch(param) {
          )
       case 'clock':
          return (
+            // <g id="clock" style={{ display: roomInteriorFurnDis }}>
             <g id="clock">
                <path id="Ellipse 57" opacity="0.88" d="M905 241C944.765 241 977 208.765 977 169C977 129.235 944.765 97 905 97C865.235 97 833 129.235 833 169C833 208.765 865.235 241 905 241Z" fill="#939191" />
                <path id="Line 30" d="M904.315 169.685L941.315 129.104" stroke="#FFCFA5" strokeWidth="7" strokeLinecap="round" />
