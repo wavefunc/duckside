@@ -1,8 +1,25 @@
 // ----- 冠樺----- //
 
 import React from 'react';
+import Axios from 'axios';
 
-function Storage({ furnList = [], pageDisplay = {}, setPageDisplay = f => f }) {
+function Storage(
+   {
+      furnList = [],
+      pageDisplay = {},
+      setPageDisplay = f => f,
+      updatePage = false,
+      setUpdatePage = f => f
+   }
+) {
+
+   const placeFurniture = async furnId => {
+      await Axios.put('http://localhost:5000/acc_furn/placing', {
+         acc_email: localStorage.getItem("loginState"),
+         furn_id: furnId
+      });
+      setUpdatePage(!updatePage);
+   };
 
    return (
       <div id="gameStorage" style={{ display: pageDisplay.storage }}>
@@ -33,7 +50,9 @@ function Storage({ furnList = [], pageDisplay = {}, setPageDisplay = f => f }) {
                         <li
                            key={obj.furn_id}
                            id="storageCard1"
-                           style={{ cursor: "pointer", display: "block" }}>
+                           style={{ cursor: "pointer", display: obj.storageFurnDis }}
+                           onClick={() => { placeFurniture(obj.furn_id) }}
+                        >
                            <img src={`/assets/furniture/${obj.furn_id}.svg`} width='100px' height='100px' />
                         </li>
                      );

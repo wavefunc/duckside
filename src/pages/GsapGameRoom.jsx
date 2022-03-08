@@ -11,6 +11,7 @@ import Axios from "axios";
 
 let GameRoom = () => {
 
+   // 控制各頁面的 display，以及偵測頁面的更新
    const [pageDisplay, setPageDisplay] = useState({
       roomInterior: 'block',
       storage: 'none',
@@ -19,11 +20,17 @@ let GameRoom = () => {
       storeSecondPage: 'none',
    });
 
-   const displayHandler = {
+   const [updatePage, setUpdatePage] = useState(false);
+
+   const pageHandler = {
       pageDisplay: pageDisplay,
-      setPageDisplay: e => setPageDisplay(e)
+      setPageDisplay: e => setPageDisplay(e),
+      updatePage: updatePage,
+      setUpdatePage: e => setUpdatePage(e)
+
    };
 
+   // 列出傢俱的屬性
    const [furnList, setFurnList] = useState([]);
 
    useEffect(() => {
@@ -32,19 +39,18 @@ let GameRoom = () => {
       }).then(result => {
          setFurnList(result.data);
       });
-   }, []);
-
+   }, [updatePage]);
 
 
    return (
       <React.Fragment>
          <div>
-            <RoomInterior furnList={furnList} {...displayHandler} />
-            <Storage furnList={furnList} {...displayHandler} />
-            <StoreHeader {...displayHandler} />
+            <RoomInterior furnList={furnList} {...pageHandler} />
+            <Storage furnList={furnList} {...pageHandler} />
+            <StoreHeader {...pageHandler} />
 
-            <StoreFirstPage furnList={furnList} {...displayHandler} />
-            {/* <StoreSecondPage {...displayHandler} /> */}
+            <StoreFirstPage furnList={furnList} {...pageHandler} />
+            {/* <StoreSecondPage {...pageHandler} /> */}
          </div>
       </React.Fragment>
    );
