@@ -38,6 +38,7 @@ function GameDailyRun(props) {
 
    const inputStock = createRef(); //證券代號input取數值
    const inputAmount = useRef();  //證券數量input取數值
+   const [invalid, setInvalid] = useState(false);
    const [stockList, setStockList] = useState([]);      //持有資產明細清單
 
    const [modalSubtotal, setModalSubtotal] = useState(false); //下一關
@@ -45,10 +46,10 @@ function GameDailyRun(props) {
    const [assetLastChange, setAssetLastChange] = useState(0);
    const [cash, setCash] = useState(10000000);   //現在持有現金
 
+   const [modalReward, setModalReward] = useState(false); //領取獎勵
    const [profit, setProfit] = useState();  // 總資產報酬
    const [score, setScore] = useState(); //領取總分數 => (總獲得趴數*20)
    const [pct, setPct] = useState(); // 獲得總趴數 => (現在持有資產-初始資產100w)
-   const [giftDisplay, setGiftDisplay] = useState(false); //領取獎勵
 
    useEffect(() => {
       let dataToServer = {
@@ -67,30 +68,35 @@ function GameDailyRun(props) {
       let InputStockName = inputStock.current.value.split(' ')[1];   //抓取input輸入證券名稱
       let amount = parseInt(inputAmount.current.value) * sign;  //抓取input輸入股票數量的值
 
-      let originalIdx = stockList.findIndex((obj) => (obj.sec_id === inputStockId)); // 尋找原本的stockList是否已有庫存
-      let newList = stockList.map((v) => v); // 複製原本的stockList
-      let dataToServer = {
-         stockId: inputStockId,
-         period1: currentDate.replace(/-/g, ""),
-      }
+      if (inputStockId && InputStockName && amount) {
+         setInvalid(false);
 
-      axios.post(urlPostStockDay, dataToServer).then((res) => {
-         let price = res.data.priceClose[0];
-         setCash((org) => (org - amount * price));
-         if (originalIdx === -1) {
-            newList.push({
-               sec_id: inputStockId,
-               sec_name: InputStockName,
-               total: amount,
-               marketValue: amount * price,
-            });
-            setStockList(newList);
-         } else {
-            newList[originalIdx].total += amount;        //判斷抓取證券代號是否重複 重複將數量相加
-            newList[originalIdx].marketValue += amount * price;
-            setStockList(newList);
+         let originalIdx = stockList.findIndex((obj) => (obj.sec_id === inputStockId)); // 尋找原本的stockList是否已有庫存
+         let newList = stockList.map((v) => v); // 複製原本的stockList
+         let dataToServer = {
+            stockId: inputStockId,
+            period1: currentDate.replace(/-/g, ""),
          }
-      })
+         axios.post(urlPostStockDay, dataToServer).then((res) => {
+            let price = res.data.priceClose[0];
+            setCash((org) => (org - amount * price));
+            if (originalIdx === -1) {
+               newList.push({
+                  sec_id: inputStockId,
+                  sec_name: InputStockName,
+                  total: amount,
+                  marketValue: amount * price,
+               });
+               setStockList(newList);
+            } else {
+               newList[originalIdx].total += amount;        //判斷抓取證券代號是否重複 重複將數量相加
+               newList[originalIdx].marketValue += amount * price;
+               setStockList(newList);
+            }
+         })
+      } else {
+         setInvalid(true);
+      }
    }
 
    const nextLevels = () => {
@@ -119,17 +125,17 @@ function GameDailyRun(props) {
 
    const handleSumUp = (asset) => {
       let tempProfit = (asset - 10000000);
-      let tempPct = (asset - 10000000) / 10000000 *100;
+      let tempPct = (asset - 10000000) / 10000000 * 100;
 
-      setProfit(Math.round(tempProfit*10)/10);
-      setPct(Math.round(tempPct* 10) / 10);
+      setProfit(Math.round(tempProfit * 10) / 10);
+      setPct(Math.round(tempPct * 10) / 10);
 
       if (tempPct < 0.05) {
          setScore(0);
       } else {
          setScore(Math.round(tempPct * 20));
       }
-      setGiftDisplay(true)  
+      setModalReward(true)
    }
 
    return (
@@ -152,13 +158,19 @@ function GameDailyRun(props) {
             </Row>
             <Row className='ml-2 mt-4'>
                <Col>
-                  <MyCandleLookupWithRef btnColor="info" ref={inputStock} className='mb-4'></MyCandleLookupWithRef>
-                  <InputGroup className='mb-2'>
+                  <MyCandleLookupWithRef
+                     btnColor="info" className='mb-4'
+                     currentDate={currentDate} rangeYear={3}
+                     ref={inputStock} >
+                  </MyCandleLookupWithRef>
+                  <InputGroup className='mb-2' hasValidation>
                      <FormControl
                         placeholder="請輸入交易數量(股)"
                         aria-label="請輸入交易數量(股)"
                         aria-describedby="請輸入交易數量(股)"
                         ref={inputAmount}
+                        required
+                        isInvalid={invalid}
                      />
                      <InputGroup.Append>
                         <Button onClick={() => handleTrade(1)} size='sm' variant='danger'>
@@ -172,6 +184,10 @@ function GameDailyRun(props) {
                            <span className="button-plus-text">賣空</span>
                         </Button>
                      </InputGroup.Append>
+                     <FormControl.Feedback type="invalid">
+                        請選取完整代號 名稱 並輸入數量
+                     </FormControl.Feedback>
+
                      {/* 抓取按下下一關獲得現擁有資產的值 顯示在持有資產上 */}
                   </InputGroup>
                   <img src="/assets/images/duck.svg" className="duckPict mt-2" alt="duckPict" />
@@ -203,7 +219,7 @@ function GameDailyRun(props) {
                         總資產{`${Math.round(asset / 1000) / 10}萬 (現金${Math.round(cash / 1000) / 10}萬)`}
                      </span>
                      {currentDate === endDate ? (
-                        <button className="nextButton-plus float-right mt-4 mr-4" onClick={()=>handleSumUp(asset)}>
+                        <button className="nextButton-plus float-right mt-4 mr-4" onClick={() => handleSumUp(asset)}>
                            {/* 點選領取獎勵按鈕 結算總獲得趴數及獲得積分  */}
                            <span>結算</span>
                            <Gift className="getButton-gift-icon" />
@@ -261,8 +277,8 @@ function GameDailyRun(props) {
 
          <Modal
             size="md"
-            show={giftDisplay}
-            onHide={() => setGiftDisplay(false)}
+            show={modalReward}
+            onHide={() => setModalReward(false)}
             aria-labelledby="example-modal-sizes-title-md"
             centered
             className="modalMove"
@@ -276,7 +292,7 @@ function GameDailyRun(props) {
                   資產獲利：{`${profit}元 (${pct}%)`}</div>
                <div className="jumpGet">總得積分：{score}</div>
                {/* 點擊領取獎勵按鈕獲得運算後獲的趴數*20的值 */}
-               <button className="jumpCloseGet" onClick={() => { setGiftDisplay(false) }}><Link to="/game/daily">領取</Link></button>
+               <button className="jumpCloseGet" onClick={() => { setModalReward(false) }}><Link to="/game/daily">領取</Link></button>
                {/* 點選領去獎勵哪領取的值 關閉跳窗modal 並且關卡1結束獲得積分回到關卡選擇 */}
 
             </div>

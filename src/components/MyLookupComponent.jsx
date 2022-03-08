@@ -109,12 +109,12 @@ const initialOptions = {
         }
     }
 };
-const body_red = 'rgba(255, 144, 144)';
-const body_green = 'rgba(144, 255, 144)';
+const body_red = 'rgba(255, 48, 48)';
+const body_green = 'rgba(48, 255, 48)';
 const body_gray = 'rgba(96, 96, 96)';
-const shadow_red = 'rgba(255, 196, 196)';
-const shadow_green = 'rgba(196, 255, 196)';
-const shadow_gray = 'rgba(144, 144, 144)';
+const shadow_red = 'rgba(255, 128, 128)';
+const shadow_green = 'rgba(128, 255, 128)';
+const shadow_gray = 'rgba(72, 72, 72)';
 
 const urlGetDatalist = 'http://localhost:5000/securities/datalist/';
 const urlpostCandle = 'http://localhost:5000/securities/candlestick';
@@ -183,13 +183,11 @@ export function MyCandleLookup(props) {
             period2: dt.format(dateEnd, 'YYYYMMDD'),
         }
         axios.post(urlpostCandle, dataToServer).then((res) => {
-            console.log(res.data);
             setDataCandle(res.data);
             let len = res.data.dates.length;
             let newOptions = { ...options };
             newOptions.scales.x.min = res.data.dates[len - 20];
             newOptions.scales.x.max = res.data.dates[len - 1];
-            console.log(newOptions);
             setOptions(newOptions);
             setShowCandle(true);
         })
@@ -199,9 +197,6 @@ export function MyCandleLookup(props) {
         let minDateIdx = dataCandle.dates.indexOf(newOptions.scales.x.min);
         let maxDateIdx = dataCandle.dates.indexOf(newOptions.scales.x.max);
 
-        console.log(minDateIdx);
-        console.log(maxDateIdx);
-
         let i = 0;
         if (d > 0) {
             while (dataCandle.dates[maxDateIdx + i + 1] && i < Math.abs(d)) {
@@ -209,14 +204,12 @@ export function MyCandleLookup(props) {
             };
             newOptions.scales.x.min = dataCandle.dates[minDateIdx + i];
             newOptions.scales.x.max = dataCandle.dates[maxDateIdx + i];
-            console.log(`${minDateIdx + i}-${maxDateIdx + i}`);
         } else {
             while (dataCandle.dates[minDateIdx - i - 1] && i < Math.abs(d)) {
                 i += 1;
             };
             newOptions.scales.x.min = dataCandle.dates[minDateIdx - i];
             newOptions.scales.x.max = dataCandle.dates[maxDateIdx - i];
-            console.log(`${minDateIdx - i}-${maxDateIdx - i}`);
         }
         setOptions(newOptions);
     }
@@ -224,7 +217,6 @@ export function MyCandleLookup(props) {
         let newOptions = { ...options };
         let minDateIdx = dataCandle.dates.indexOf(newOptions.scales.x.min);
         let maxDateIdx = dataCandle.dates.indexOf(newOptions.scales.x.max);
-        console.log(`${minDateIdx}-${maxDateIdx}`);
 
         for (let pedo = 0, i = 0; pedo < d; pedo++) {
             if (dataCandle.dates[maxDateIdx + 1] && i++ < d / 2) {
@@ -242,7 +234,6 @@ export function MyCandleLookup(props) {
         }
         newOptions.scales.x.min = dataCandle.dates[minDateIdx];
         newOptions.scales.x.max = dataCandle.dates[maxDateIdx];
-        console.log(`${minDateIdx}-${maxDateIdx}`);
         setOptions(newOptions);
     }
     function dataRangeZoomIn(d = 1) {
@@ -250,23 +241,19 @@ export function MyCandleLookup(props) {
 
         let minDateIdx = dataCandle.dates.indexOf(newOptions.scales.x.min);
         let maxDateIdx = dataCandle.dates.indexOf(newOptions.scales.x.max);
-        console.log(`${minDateIdx}-${maxDateIdx}`);
 
         for (let pedo = 0; pedo < d && maxDateIdx - minDateIdx >= 10; pedo++) {
             if (pedo % 2 === 0) {
                 maxDateIdx -= 1;
-                console.log('maxDateIdx-1');
                 continue;
             } else {
                 minDateIdx += 1;
-                console.log('minDateIdx+1');
                 continue;
             }
         }
 
         newOptions.scales.x.min = dataCandle.dates[minDateIdx];
         newOptions.scales.x.max = dataCandle.dates[maxDateIdx];
-        console.log(`${minDateIdx}-${maxDateIdx}`);
         setOptions(newOptions);
     }
     return (
@@ -394,13 +381,11 @@ export const MyCandleLookupWithRef = forwardRef((props,ref) => {
             period2: dt.format(dateEnd, 'YYYYMMDD'),
         }
         axios.post(urlpostCandle, dataToServer).then((res) => {
-            console.log(res.data);
             setDataCandle(res.data);
             let len = res.data.dates.length;
             let newOptions = { ...options };
             newOptions.scales.x.min = res.data.dates[len - 20];
             newOptions.scales.x.max = res.data.dates[len - 1];
-            console.log(newOptions);
             setOptions(newOptions);
             setShowCandle(true);
         })
@@ -410,9 +395,6 @@ export const MyCandleLookupWithRef = forwardRef((props,ref) => {
         let minDateIdx = dataCandle.dates.indexOf(newOptions.scales.x.min);
         let maxDateIdx = dataCandle.dates.indexOf(newOptions.scales.x.max);
 
-        console.log(minDateIdx);
-        console.log(maxDateIdx);
-
         let i = 0;
         if (d > 0) {
             while (dataCandle.dates[maxDateIdx + i + 1] && i < Math.abs(d)) {
@@ -420,14 +402,12 @@ export const MyCandleLookupWithRef = forwardRef((props,ref) => {
             };
             newOptions.scales.x.min = dataCandle.dates[minDateIdx + i];
             newOptions.scales.x.max = dataCandle.dates[maxDateIdx + i];
-            console.log(`${minDateIdx + i}-${maxDateIdx + i}`);
         } else {
             while (dataCandle.dates[minDateIdx - i - 1] && i < Math.abs(d)) {
                 i += 1;
             };
             newOptions.scales.x.min = dataCandle.dates[minDateIdx - i];
             newOptions.scales.x.max = dataCandle.dates[maxDateIdx - i];
-            console.log(`${minDateIdx - i}-${maxDateIdx - i}`);
         }
         setOptions(newOptions);
     }
@@ -435,7 +415,6 @@ export const MyCandleLookupWithRef = forwardRef((props,ref) => {
         let newOptions = { ...options };
         let minDateIdx = dataCandle.dates.indexOf(newOptions.scales.x.min);
         let maxDateIdx = dataCandle.dates.indexOf(newOptions.scales.x.max);
-        console.log(`${minDateIdx}-${maxDateIdx}`);
 
         for (let pedo = 0, i = 0; pedo < d; pedo++) {
             if (dataCandle.dates[maxDateIdx + 1] && i++ < d / 2) {
@@ -453,7 +432,6 @@ export const MyCandleLookupWithRef = forwardRef((props,ref) => {
         }
         newOptions.scales.x.min = dataCandle.dates[minDateIdx];
         newOptions.scales.x.max = dataCandle.dates[maxDateIdx];
-        console.log(`${minDateIdx}-${maxDateIdx}`);
         setOptions(newOptions);
     }
     function dataRangeZoomIn(d = 1) {
@@ -461,23 +439,19 @@ export const MyCandleLookupWithRef = forwardRef((props,ref) => {
 
         let minDateIdx = dataCandle.dates.indexOf(newOptions.scales.x.min);
         let maxDateIdx = dataCandle.dates.indexOf(newOptions.scales.x.max);
-        console.log(`${minDateIdx}-${maxDateIdx}`);
 
         for (let pedo = 0; pedo < d && maxDateIdx - minDateIdx >= 10; pedo++) {
             if (pedo % 2 === 0) {
                 maxDateIdx -= 1;
-                console.log('maxDateIdx-1');
                 continue;
             } else {
                 minDateIdx += 1;
-                console.log('minDateIdx+1');
                 continue;
             }
         }
 
         newOptions.scales.x.min = dataCandle.dates[minDateIdx];
         newOptions.scales.x.max = dataCandle.dates[maxDateIdx];
-        console.log(`${minDateIdx}-${maxDateIdx}`);
         setOptions(newOptions);
     }
     return (
