@@ -1,8 +1,22 @@
 // ----- 冠樺----- //
 
 import React from 'react';
+import Axios from 'axios';
 
-function StoreFirstPage({ furnList = [], pageDisplay = {} }) {
+function StoreFirstPage({
+   furnList = [],
+   pageDisplay = {},
+   updatePage = false,
+   setUpdatePage = f => f
+}) {
+
+   const buyFurniture = async furnId => {
+      await Axios.put('http://localhost:5000/acc_furn/buying', {
+         acc_email: localStorage.getItem("loginState"),
+         furn_id: furnId
+      });
+      setUpdatePage(!updatePage);
+   };
 
    return (
       <div id="container" className="row" style={{ display: pageDisplay.storeFirstPage }}>
@@ -37,7 +51,12 @@ function StoreFirstPage({ furnList = [], pageDisplay = {} }) {
                               <div className='row'>
                                  <img src={`/assets/furniture/moneyIcon.svg`} width='30px' />
                                  &nbsp;{obj.furn_price}&nbsp;&nbsp;&nbsp;
-                                 <img src={`/assets/furniture/btnBuy.svg`} width='65px' />
+                                 <img
+                                    src={`/assets/furniture/btnBuy.svg`}
+                                    style={{ cursor: 'pointer', display: obj.storeFurnDis }}
+                                    onClick={() => { buyFurniture(obj.furn_id) }}
+                                    width='65px'
+                                 />
                               </div>
                            </li>
                         );

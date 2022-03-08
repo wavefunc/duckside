@@ -1,6 +1,6 @@
 // ----- 冠樺----- //
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { gsap, Draggable } from 'gsap/all';
 import Axios from 'axios';
 gsap.registerPlugin(Draggable);
@@ -14,6 +14,25 @@ function Furniture({
    setUpdatePage = f => f
 }) {
 
+   const onDragEndHandler = async e => {
+      if (e.hitTest('#dropArea')) {
+         await Axios.put('http://localhost:5000/acc_furn/takeBack', {
+            acc_email: localStorage.getItem("loginState"),
+            furn_id: furn_id
+         });
+      } else {
+         await Axios.put('http://localhost:5000/gsap/updatePos', {
+            acc_email: localStorage.getItem("loginState"),
+            furn_id: furn_id,
+            x: e.x,
+            y: e.y
+         });
+      }
+      gsap.set(`#${furn_id}`, { x: e.x, y: e.y });
+      gsap.set(`#dropArea`, { display: 'none' });
+      setUpdatePage(!updatePage);
+   };
+
    useEffect(() => {
       if (furn_id != 'duck') {
          Draggable.create(`#${furn_id}`, {
@@ -22,24 +41,7 @@ function Furniture({
             onDragStart: function () {
                gsap.set(`#dropArea`, { display: 'block' });
             },
-            onDragEnd: function () {
-               if (this.hitTest('#dropArea')) {
-                  Axios.put('http://localhost:5000/acc_furn/takeBack', {
-                     acc_email: localStorage.getItem("loginState"),
-                     furn_id: furn_id
-                  });
-                  setUpdatePage(!updatePage);
-               } else {
-                  Axios.put('http://localhost:5000/gsap/updatePos', {
-                     acc_email: localStorage.getItem("loginState"),
-                     furn_id: furn_id,
-                     x: this.x,
-                     y: this.y
-                  });
-               }
-               gsap.set(`#${furn_id}`, { x: this.x, y: this.y });
-               gsap.set(`#dropArea`, { display: 'none' });
-            },
+            onDragEnd: function () { onDragEndHandler(this) },
          });
          gsap.set(`#${furn_id}`, { x: x, y: y });
       }

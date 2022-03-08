@@ -1,9 +1,25 @@
 // ----- 冠樺----- //
 
-import React from 'react';
+import React, { useState } from 'react';
 import "../css/GameStoreHeader_style.css";
+import Axios from 'axios';
 
-function StoreHeader({ pageDisplay = {}, setPageDisplay = f => f }) {
+function StoreHeader({
+   pageDisplay = {},
+   setPageDisplay = f => f,
+   updatePage = false,
+   setUpdatePage = f => f
+}) {
+
+   const [total, setTotal] = useState(0);
+
+   useState(() => {
+      Axios.post('http://localhost:5000/point_record/total', {
+         acc_email: localStorage.getItem("loginState")
+      }).then(result => {
+         setTotal(result.data.total);
+      });
+   }, [updatePage]);
 
    return (
       <div id="container" className="row" style={{ display: pageDisplay.storeHeader }}>
@@ -22,9 +38,11 @@ function StoreHeader({ pageDisplay = {}, setPageDisplay = f => f }) {
                   <li id="centerSide"></li>
                   <li id="my_score" >
                      <svg width="174" height="44" viewBox="0 0 292 87">
-                        <g id="我的積分Btn" transform="translate(-1355 -97)">
+                        <g id="lblPoints" transform="translate(-1355 -97)">
                            <rect id="Rectangle_117" data-name="Rectangle 117" width="292" height="87" rx="20" transform="translate(1355 97)" fill="#fff" />
-                           <text id="_3000" data-name="3000" transform="translate(1493 163)" font-size="50" font-family="Helvetica-Bold, Helvetica" font-weight="700"><tspan x="0" y="0">3000</tspan></text>
+                           <text id="_3000" data-name="3000" transform="translate(1493 163)" font-size="50" font-family="Helvetica-Bold, Helvetica" font-weight="700">
+                              <tspan x="0" y="0">{total}</tspan>
+                           </text>
                            <path id="Icon_simple-cashapp" data-name="Icon simple-cashapp" d="M65.875,9.69a14.242,14.242,0,0,0-8.517-8.517C53.7,0,50.377,0,43.619,0H23.345c-6.7,0-10.081,0-13.683,1.117A14.242,14.242,0,0,0,1.145,9.662C0,13.292,0,16.643,0,23.345v20.3C0,50.377,0,53.7,1.117,57.33a14.242,14.242,0,0,0,8.517,8.517c3.63,1.145,6.981,1.145,13.683,1.145h20.33c6.73,0,10.081,0,13.683-1.117a14.242,14.242,0,0,0,8.545-8.545c1.145-3.63,1.145-6.981,1.145-13.683V23.4c0-6.73,0-10.081-1.145-13.711ZM48.646,22.619l-2.6,2.6a1.4,1.4,0,0,1-1.871.028,13.963,13.963,0,0,0-8.992-3.3c-2.709,0-5.417.894-5.417,3.379,0,2.513,2.9,3.351,6.255,4.608,5.864,1.955,10.723,4.412,10.723,10.165,0,6.255-4.859,10.556-12.79,11.03l-.726,3.351a1.368,1.368,0,0,1-1.34,1.089h-5l-.251-.028A1.4,1.4,0,0,1,25.579,53.9l.782-3.546a18.263,18.263,0,0,1-8.042-4.384v-.028a1.34,1.34,0,0,1,0-1.9l2.793-2.709a1.368,1.368,0,0,1,1.871,0,13.5,13.5,0,0,0,9.467,3.686c3.63,0,6.06-1.536,6.06-3.965s-2.457-3.072-7.093-4.8C26.5,34.488,21.837,32,21.837,26.194c0-6.758,5.613-10.053,12.259-10.36l.7-3.435a1.34,1.34,0,0,1,1.34-1.061h4.971l.279.028a1.337,1.337,0,0,1,1.033,1.592l-.754,3.826a20.958,20.958,0,0,1,6.925,3.882l.056.056a1.331,1.331,0,0,1,0,1.9Z" transform="translate(1379.98 107.008)" fill="#ffd230" />
                         </g>
                      </svg>

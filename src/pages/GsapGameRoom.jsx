@@ -13,11 +13,10 @@ let GameRoom = () => {
 
    // 控制各頁面的 display，以及偵測頁面的更新
    const [pageDisplay, setPageDisplay] = useState({
-      roomInterior: 'block',
+      roomInterior: 'none',
       storage: 'none',
-      storeHeader: 'none',
-      storeFirstPage: 'none',
-      storeSecondPage: 'none',
+      storeHeader: 'block',
+      storeFirstPage: 'block'
    });
 
    const [updatePage, setUpdatePage] = useState(false);
@@ -36,9 +35,7 @@ let GameRoom = () => {
    useEffect(() => {
       Axios.post('http://localhost:5000/gsap/roomList', {
          acc_email: localStorage.getItem("loginState")
-      }).then(result => {
-         setFurnList(result.data);
-      });
+      }).then(result => setFurnList(result.data));
    }, [updatePage]);
 
 

@@ -3,15 +3,13 @@
 import React from 'react';
 import Axios from 'axios';
 
-function Storage(
-   {
-      furnList = [],
-      pageDisplay = {},
-      setPageDisplay = f => f,
-      updatePage = false,
-      setUpdatePage = f => f
-   }
-) {
+function Storage({
+   furnList = [],
+   pageDisplay = {},
+   setPageDisplay = f => f,
+   updatePage = false,
+   setUpdatePage = f => f
+}) {
 
    const placeFurniture = async furnId => {
       await Axios.put('http://localhost:5000/acc_furn/placing', {
