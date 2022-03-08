@@ -47,7 +47,6 @@ function Furniture({
       }
    }, []);
 
-
    return (
       <React.Fragment>
          {renderSwitch(furn_id, roomInteriorFurnDis)}

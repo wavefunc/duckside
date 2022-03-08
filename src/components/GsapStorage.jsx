@@ -28,7 +28,6 @@ function Storage({
                setPageDisplay(pageDisplay => (
                   { ...pageDisplay, storage: 'none' }
                ));
-
             }}
          >
             <svg width="50" viewBox="0 0 146 146">

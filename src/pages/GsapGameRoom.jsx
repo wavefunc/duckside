@@ -1,14 +1,11 @@
 // ----- 冠樺----- //
 
-import React, { useState, createContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import Axios from "axios";
 import RoomInterior from "../components/GsapRoomInterior";
 import Storage from "../components/GsapStorage";
 import StoreHeader from "../components/GsapStoreHeader";
 import StoreFirstPage from "../components/GsapStoreFirstPage"
-
-import Axios from "axios";
-
-export const TotalPointsContext = createContext();
 
 let GameRoom = () => {
 
@@ -21,8 +18,7 @@ let GameRoom = () => {
       purchaseConfirm: 'none',
       purchaseSuccess: 'none'
    });
-
-   const [updatePage, setUpdatePage] = useState(0);
+   const [updatePage, setUpdatePage] = useState(false);
 
    const pageHandler = {
       pageDisplay: pageDisplay,
@@ -31,27 +27,36 @@ let GameRoom = () => {
       setUpdatePage: e => setUpdatePage(e)
    };
 
+   // 控制總積分的顯示
+   const [totalPoints, setTotalPoints] = useState();
+   const resetTotalPoints = () => {
+      Axios.post('http://localhost:5000/point_record/total', {
+         acc_email: localStorage.getItem("loginState")
+      }).then(result => {
+         setTotalPoints(result.data.total);
+      });
+   };
+
    // 列出傢俱的屬性
    const [furnList, setFurnList] = useState([]);
-
    useEffect(() => {
       Axios.post('http://localhost:5000/gsap/roomList', {
          acc_email: localStorage.getItem("loginState")
       }).then(result => setFurnList(result.data));
+      resetTotalPoints();
    }, [updatePage]);
-
-   // 用來修改、偵測總積分
-   const [totalPoints, setTotalpoints] = useState(0);
 
    return (
       <React.Fragment>
          <div>
             <RoomInterior furnList={furnList} {...pageHandler} />
             <Storage furnList={furnList} {...pageHandler} />
-            <TotalPointsContext.Provider value="500">
-               <StoreHeader {...pageHandler} />
-               <StoreFirstPage furnList={furnList} {...pageHandler} />
-            </TotalPointsContext.Provider>
+            <StoreHeader totalPoints={totalPoints} {...pageHandler} />
+            <StoreFirstPage
+               furnList={furnList}
+               resetTotalPoints={resetTotalPoints}
+               {...pageHandler}
+            />
          </div>
       </React.Fragment>
    );

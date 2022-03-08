@@ -8,7 +8,8 @@ function StoreFirstPage({
    pageDisplay = {},
    setPageDisplay = f => f,
    updatePage = false,
-   setUpdatePage = f => f
+   setUpdatePage = f => f,
+   resetTotalPoints = f => f
 }) {
    // 用來在函式間傳遞的 furn 變數
    const [furnFuncPass, setFurnFuncPass] = useState({ name: '', id: '' });
@@ -19,8 +20,8 @@ function StoreFirstPage({
          furn_id: furnId
       });
       setUpdatePage(updatePage => !updatePage);
+      resetTotalPoints();
    };
-
 
    const outputFurniture = () => {
       return (
