@@ -41,6 +41,7 @@
 
 .button-plus-text{
   font-size: 15px;
+  font-family: PingFangTC-Semibold, PingFang TC;
 }
 
 
@@ -212,7 +213,7 @@
   border-radius: 10px;
   margin-left: 260px;
   font-size:30px ;
-  margin-top: 55px;
+  margin-top: 65px;
   font-family: PingFangTC-Semibold, PingFang TC;
   position: center;
 }
