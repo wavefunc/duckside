@@ -4,7 +4,6 @@ import React, { useRef, useState, createRef, useEffect } from 'react';
 import { Row, Modal, Col, Container, InputGroup, Button, FormControl } from 'react-bootstrap';
 import "../css/GameDaily_style.css"
 import { PlusCircle, DashCircle, Gift } from "react-bootstrap-icons"
-import { Link } from "react-router-dom"
 import Table from 'react-bootstrap/Table'
 import {
    Chart as ChartJS,
@@ -17,7 +16,6 @@ import {
 } from 'chart.js';
 import { MyCandleLookupWithRef } from '../components/MyLookupComponent.jsx'
 import axios from 'axios';
-import { padding } from '@mui/system';
 
 const urlPostStockDay = 'http://localhost:5000/securities/stockDay';
 const urlPostMarketInfo = 'http://localhost:5000/marketInfo/stocks';
@@ -293,7 +291,7 @@ function GameDailyRun(props) {
                   資產獲利：{`${profit}元 (${pct}%)`}</div>
                <div className="jumpGet">總得積分：{score}</div>
                {/* 點擊領取獎勵按鈕獲得運算後獲的趴數*20的值 */}
-               <button className="jumpCloseGet" onClick={() => { setGiftDisplay(false) }}><a href="http://localhost:3000/game/daily">領取</a></button>
+               <button className="jumpCloseGet" onClick={() => { setModalReward(false) }}><a href="http://localhost:3000/game/daily">領取</a></button>
                {/* 點選領去獎勵哪領取的值 關閉跳窗modal 並且關卡1結束獲得積分回到關卡選擇 */}
 
             </div>
