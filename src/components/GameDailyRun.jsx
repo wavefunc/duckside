@@ -17,6 +17,7 @@ import {
 } from 'chart.js';
 import { MyCandleLookupWithRef } from '../components/MyLookupComponent.jsx'
 import axios from 'axios';
+import { padding } from '@mui/system';
 
 const urlPostStockDay = 'http://localhost:5000/securities/stockDay';
 const urlPostMarketInfo = 'http://localhost:5000/marketInfo/stocks';
@@ -215,7 +216,7 @@ function GameDailyRun(props) {
                      </Table>
                   </div>
                   <div className="clearfix">
-                     <span className="asset mt-4 float-left" style={{ fontSize: '18px' }}>
+                     <span className="asset mt-4 float-left" style={{ fontSize: '18px' ,paddingTop:'12px',fontFamily: 'PingFangTC-Semibold, PingFang TC'}}>
                         總資產{`${Math.round(asset / 1000) / 10}萬 (現金${Math.round(cash / 1000) / 10}萬)`}
                      </span>
                      {currentDate === endDate ? (
@@ -292,7 +293,7 @@ function GameDailyRun(props) {
                   資產獲利：{`${profit}元 (${pct}%)`}</div>
                <div className="jumpGet">總得積分：{score}</div>
                {/* 點擊領取獎勵按鈕獲得運算後獲的趴數*20的值 */}
-               <button className="jumpCloseGet" onClick={() => { setModalReward(false) }}><Link to="/game/daily">領取</Link></button>
+               <button className="jumpCloseGet" onClick={() => { setGiftDisplay(false) }}><a href="http://localhost:3000/game/daily">領取</a></button>
                {/* 點選領去獎勵哪領取的值 關閉跳窗modal 並且關卡1結束獲得積分回到關卡選擇 */}
 
             </div>
