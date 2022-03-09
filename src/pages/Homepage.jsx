@@ -4,48 +4,53 @@ import React, { useEffect } from 'react';
 import HomePageWord from '../components/HomepageWord';
 import { gsap } from 'gsap/all';
 
-
 function Homepage() {
    const idFadeOut = ['#homepageBasketball', '#homepagePortrait', '#homepageBathTub',
       '#homepageCabinet', '#homepageLight', '#homepageTV', '#homepageMirror',
-      '#homepageFemaleDuck', '#homepageWeight', '#homepageClock'];
+      '#homepageFemaleDuck', '#homepageDuck', '#homepageWeight', '#homepageClock'];
 
    useEffect(() => {
+      // 讓其他傢俱淡入
       var tl = gsap.timeline({ repeat: 0 });
       idFadeOut.forEach(val => gsap.from(val, { duration: 2, opacity: 0 }));
 
+      // 小鴨由小變大、淡出、慢慢降落的動畫
       var tlDuck = gsap.timeline();
-      // tlDuck.from('#homepageDuck', { duration: 2, opacity: 0 }, 0); // 小鴨淡入
-      // tlDuck.from('#homepageDuck', { duration: 2, scale: 0.5, transformOrigin: 'center' }, 0); // 小鴨逐漸變大
-      tlDuck.set('#homepageWingLeft', { duration: 2, rotate: 0, x: 1000, y: 530, rotate: 100, transformOrigin: 'center' }, 0); // 左翅舉高
-      tlDuck.set('#homepageWingRight', { duration: 2, rotate: 70, transformOrigin: 'right top' }, 0); // 右翅舉高
-      tlDuck.set('#homepageWingRight', { duration: 2, rotate: 0, transformOrigin: 'right top' }, 2); // 右翅回復原來位置
-      // tlDuck.from('#homepageDuck', { duration: 2, y: -250, ease: "slow(0.7, 0.7, false)" }, 2); // 小鴨降落
-      // tlDuck.fromTo('#homepageGlasses', { duration: 2, opacity: 0 }, { opacity: 1 }); // 眼鏡淡入
+      tlDuck
+         .from('#homepageDuck', { duration: 2, scale: 0.5, transformOrigin: 'center' }, 0) // 小鴨逐漸變大
+         .set('#homepageWingLeft', { duration: 2, rotate: 110, x: 850, y: 490, transformOrigin: 'right bottom' }, 0) // 左翅舉高
+         .set('#homepageWingRight', { duration: 2, rotate: 70, transformOrigin: 'right top' }, 0) // 右翅舉高
+         .from('#homepageDuck', { duration: 2, y: -250, ease: "slow(0.7, 0.7, false)" }, 2) // 小鴨降落
+         .fromTo('#homepageGlasses', { duration: 2, opacity: 0 }, { opacity: 1 }); // 眼鏡淡入
 
-      var tlWing = gsap.timeline({ repeat: 100 });
-      // tlWing.set('#homepageWingLeft', { duration: 2, rotate: -30, transformOrigin: 'right top' }, 2); // 左翅揮動
-      // tlWing.fromTo('#homepageWingRight', { duration: 1, rotate: 0, transformOrigin: 'right top', ease: 'bounce' }, { rotate: 60 }, 2); // 右翅揮動
-      tlWing.fromTo('#homepageWingRight', { duration: 0.3, rotate: 0, transformOrigin: 'right top', ease: 'bounce' }, { rotate: 60 }, 2); // 右翅揮動
+      // 左翅右翅邊降落邊揮動
+      setTimeout(() => {
+         var tlWingLeft = gsap.timeline({ repeat: 30 });
+         tlWingLeft.fromTo('#homepageWingLeft', {
+            duration: 1, rotate: 100,
+            x: 850, y: 490,
+            transformOrigin: 'right bottom',
+            ease: 'bounce'
+         }, { rotate: 160 }) // 左翅揮動
+            .timeScale(8)
 
+         var tlWingRight = gsap.timeline({ repeat: 30 });
+         tlWingRight.fromTo('#homepageWingRight', {
+            duration: 1, rotate: 0,
+            transformOrigin: 'right top',
+            ease: 'bounce'
+         }, { rotate: 60 }) // 右翅揮動
+            .timeScale(8)
+            .set('#homepageWingRight', { rotate: 30 })
+      }, 1700);
 
-
-
-
-      // tlDuck.fromTo('#homepageWingLeft', { duration: 2, rotate: -30, transformOrigin: 'right top' }, { rotate: 30 }, 2); // 左翅揮動
-
-
+      // 籃球從空中掉落彈跳
       gsap.from('#homepageBasketball', { duration: 2, y: -500, ease: 'bounce' });
 
-      tl.from('#divDialogWelcome', { duration: 1, opacity: 0, delay: 2 });
-      tl.set('#txtDialogWelcome', { className: 'typing' });
-
-
-
-
+      // 歡迎回來對話框，在整體動畫淡出後，跟著淡出
+      tl.from('#divDialogWelcome', { duration: 1, opacity: 0, delay: 2 })
+         .set('#txtDialogWelcome', { className: 'typing' });
    });
-
-
 
    return (
       <div>
@@ -203,13 +208,6 @@ function Homepage() {
                <g id="我的房間_1" data-name="我的房間 – 1" clipPath="url(#clip-我的房間_1)">
                   <rect width="1920" height="1080" fill="#f5f5cc" />
                   <line id="homepageHorizon" x2="1920" transform="translate(0 676)" fill="none" stroke="#53480b" strokeWidth="6" />
-                  <g id="homepageBasketball" transform="translate(-148.503 118.416)">
-                     <circle id="Ellipse_6" data-name="Ellipse 6" cx="63.29" cy="63.29" r="63.29" transform="translate(169 737)" fill="#ef8d37" />
-                     <line id="Line_25" data-name="Line 25" x2="126.579" transform="translate(169 800.29)" fill="none" stroke="#707070" strokeWidth="7" />
-                     <path id="Path_6" data-name="Path 6" d="M0,0S17.577,24.346,18.345,48,3.072,94.627,3.072,94.627" transform="translate(188.97 754.512)" fill="none" stroke="#707070" strokeWidth="7" />
-                     <path id="Path_7" data-name="Path 7" d="M18.371,0S.795,24.346.027,48,15.3,94.627,15.3,94.627" transform="translate(257.175 754.512)" fill="none" stroke="#707070" strokeWidth="7" opacity="0.8" />
-                     <line id="Line_26" data-name="Line 26" y2="126.579" transform="translate(232.597 737.307)" fill="none" stroke="#707070" strokeWidth="7" />
-                  </g>
                   <g id="homepagePortrait" transform="translate(1112.415 210.318)">
                      <path id="Path_24" data-name="Path 24" d="M4.383,33.784,89.763-2.11" transform="translate(266.745 68.669)" fill="none" stroke="#ea9c42" strokeLinecap="round" strokeWidth="6" />
                      <path id="Path_27" data-name="Path 27" d="M88.935,34.811,0,0" transform="translate(356.456 66.736)" fill="none" stroke="#ea9c42" strokeLinecap="round" strokeWidth="6" />
@@ -272,6 +270,13 @@ function Homepage() {
                      <circle id="Ellipse_30" data-name="Ellipse 30" cx="16.396" cy="16.396" r="16.396" transform="translate(1700.123 592.814)" fill="#fff" />
                      <circle id="Ellipse_20" data-name="Ellipse 20" cx="16.396" cy="16.396" r="16.396" transform="translate(1318.259 589.641)" fill="#fff" />
                      <circle id="Ellipse_32" data-name="Ellipse 32" cx="16.925" cy="16.925" r="16.925" transform="translate(1718.105 589.641)" fill="#bba3c4" />
+                  </g>
+                  <g id="homepageBasketball" transform="translate(-148.503 118.416)">
+                     <circle id="Ellipse_6" data-name="Ellipse 6" cx="63.29" cy="63.29" r="63.29" transform="translate(169 737)" fill="#ef8d37" />
+                     <line id="Line_25" data-name="Line 25" x2="126.579" transform="translate(169 800.29)" fill="none" stroke="#707070" strokeWidth="7" />
+                     <path id="Path_6" data-name="Path 6" d="M0,0S17.577,24.346,18.345,48,3.072,94.627,3.072,94.627" transform="translate(188.97 754.512)" fill="none" stroke="#707070" strokeWidth="7" />
+                     <path id="Path_7" data-name="Path 7" d="M18.371,0S.795,24.346.027,48,15.3,94.627,15.3,94.627" transform="translate(257.175 754.512)" fill="none" stroke="#707070" strokeWidth="7" opacity="0.8" />
+                     <line id="Line_26" data-name="Line 26" y2="126.579" transform="translate(232.597 737.307)" fill="none" stroke="#707070" strokeWidth="7" />
                   </g>
                   <g id="homepageCabinet" transform="translate(1175.474 417.957)">
                      <path id="Path_13" data-name="Path 13" d="M8.323,0c7.427,0,10.083,76.528,10.083,76.528S16.484,79.064,9.9,79.064,0,76.528,0,76.528.9,0,8.323,0Z" transform="translate(483.222 484.886) rotate(180)" fill="#d6c298" />
@@ -369,6 +374,12 @@ function Homepage() {
                         <path id="Path_738-2" data-name="Path 738" d="M28.59,0s-12.1,10.211-18.551,34.886S0,96.954,0,96.954" transform="matrix(-0.97, -0.26, 0.26, -0.97, 1696.7, 465.93)" fill="#fff" opacity="0.25" />
                      </g>
                   </g>
+                  <g id="homepageClock" transform="translate(1493 -3374.358)">
+                     <circle id="Ellipse_57" data-name="Ellipse 57" cx="72" cy="72" r="72" transform="translate(-660 3471.358)" fill="#939191" opacity="0.88" />
+                     <line id="Line_30" data-name="Line 30" y1="40.581" x2="37" transform="translate(-588.685 3503.462)" fill="none" stroke="#ffcfa5" strokeLinecap="round" strokeWidth="7" />
+                     <line id="Line_31" data-name="Line 31" y1="12.532" x2="36.404" transform="translate(-625.088 3544.043)" fill="none" stroke="#ffcfa5" strokeLinecap="round" strokeWidth="7" />
+                  </g>
+
                   <g id="homepageDuck" data-name="鴨子" transform="translate(7.36 47.98)">
                      <line id="Line_17-2" data-name="Line 17" y2="31" transform="translate(860.5 832.5)" fill="none" stroke="#574809" strokeWidth="10" />
                      <line id="Line_21-2" data-name="Line 21" y2="31" transform="translate(946.5 832.5)" fill="none" stroke="#574809" strokeWidth="10" />
@@ -488,11 +499,6 @@ function Homepage() {
                      <rect id="Rectangle_96" data-name="Rectangle 96" width="4" height="26" rx="2" transform="translate(-1614 3749.241)" fill="#8d8d8d" />
                      <rect id="Rectangle_97" data-name="Rectangle 97" width="5" height="27" rx="2.5" transform="translate(-1588 3757.241)" fill="#8d8d8d" />
                      <rect id="Rectangle_98" data-name="Rectangle 98" width="4" height="9" rx="2" transform="translate(-1614 3780.241)" fill="#8d8d8d" />
-                  </g>
-                  <g id="homepageClock" transform="translate(1493 -3374.358)">
-                     <circle id="Ellipse_57" data-name="Ellipse 57" cx="72" cy="72" r="72" transform="translate(-660 3471.358)" fill="#939191" opacity="0.88" />
-                     <line id="Line_30" data-name="Line 30" y1="40.581" x2="37" transform="translate(-588.685 3503.462)" fill="none" stroke="#ffcfa5" strokeLinecap="round" strokeWidth="7" />
-                     <line id="Line_31" data-name="Line 31" y1="12.532" x2="36.404" transform="translate(-625.088 3544.043)" fill="none" stroke="#ffcfa5" strokeLinecap="round" strokeWidth="7" />
                   </g>
                </g>
             </svg>
