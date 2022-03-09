@@ -144,7 +144,8 @@ router.post('/asset/daterange', async (req, res) => {
    }
 
    var strQuery = `
-   SELECT * 
+   SELECT * ,
+   (ast_securities + ast_cash + ast_borrowing + ast_option + ast_others + ast_adjust) ast_sum
    FROM asset ast 
    WHERE acc_id = ? ${strDateQuery1} ${strDateQuery2} 
    ORDER BY ast_date
