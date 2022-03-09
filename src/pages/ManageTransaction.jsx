@@ -12,7 +12,7 @@ import { h } from "gridjs";
 import axios from 'axios';
 import dt from 'date-and-time';
 
-import { MyInput, MySelect, MyOkToast } from '../components/MyFormComponent';
+import { MyInput, MySelect, MyOkToastSlideUp } from '../components/MyFormComponent';
 import MyCurrentPosition from '../components/ManageCurrent.jsx';
 import ManageRecent from '../components/ManageRecent.jsx';
 import Breadcrumb from '../components/Breadcrumb'
@@ -503,7 +503,7 @@ function ManageTransaction(props) {
                      <Nav.Item>
                         <Nav.Link eventKey="disabled" disabled bsPrefix='btn btn-basic ml-1'>按住shift點選欄位可多重排序</Nav.Link>
                      </Nav.Item>
-                     <MyOkToast show={showToast} closeToast={() => { setShowToast(false) }} />
+                     <MyOkToastSlideUp show={showToast} className="mr-3" width="300px" closeToast={() => { setShowToast(false) }} />
                   </Nav>
                   <Tab.Content>
                      <Tab.Pane eventKey="first">

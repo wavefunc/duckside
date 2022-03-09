@@ -14,7 +14,7 @@ import axios from 'axios';
 import dt from 'date-and-time';
 import { h } from "gridjs";
 
-import { MyFormikObserver, MyInput, MyOkToast } from '../components/MyFormComponent';
+import { MyFormikObserver, MyInput, MyOkToastSlideUp } from '../components/MyFormComponent';
 import MyCurrentPosition from '../components/ManageCurrent.jsx';
 import ManageRecent from '../components/ManageRecent.jsx';
 import Breadcrumb from '../components/Breadcrumb';
@@ -496,7 +496,7 @@ function ManageAsset(props) {
                      <Nav.Item>
                         <Nav.Link eventKey="second" bsPrefix='btn btn-light ml-1'>顯示更多</Nav.Link>
                      </Nav.Item>
-                     <MyOkToast show={showToast} closeToast={() => { setShowToast(false) }} />
+                     <MyOkToastSlideUp show={showToast} className="mr-3" width="300px" closeToast={() => { setShowToast(false) }} />
                   </Nav>
                   <Tab.Content>
                      <Tab.Pane eventKey="first">

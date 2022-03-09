@@ -9,6 +9,7 @@ import { Form, InputGroup, Toast } from 'react-bootstrap';
 import { CheckSquare } from 'react-bootstrap-icons';
 import dt from "date-and-time";
 import React, { useEffect, useRef } from 'react';
+import Transition from 'react-transition-group/Transition'
 
 // Formik
 export const MyInput = ({ label, list, getList, setList, helptext, ...props }) => {
@@ -111,7 +112,6 @@ export const MyFormikObserver = (props) => {
     return null
 }
 
-
 // Toast
 export const MyOkToast = (props) => {
     return (
@@ -144,6 +144,58 @@ export const MyOkToast = (props) => {
                 </Toast.Header>
             </Toast>
         </div>
+    )
+}
+
+const duration = 500;
+const defaultStyleSlideUp = {
+    position: "absolute",
+    top: '50px',
+    right: '0',
+    zIndex: '0',
+};
+const transitionStylesSlideUp = {
+    entered: {
+        transform: 'translateY(-55px)',
+        transition: `transform ${duration}ms ease-in-out`,
+    },
+    exiting: {
+        transform: 'translateY(55px)',
+        transition: `transform ${duration}ms ease-in-out`
+    },
+    exited: {
+        top: '50px',
+    }
+};
+
+export const MyOkToastSlideUp = ({ show, ...props }) => {
+    return (
+        <Transition in={show} timeout={duration} unmountOnExit >
+            {(state) => (
+                <div className={props.className}
+                    style={{
+                        width: props.width,
+                        ...defaultStyleSlideUp,
+                        ...transitionStylesSlideUp[state]
+                    }}
+                >
+                    <Toast
+                        onClose={props.closeToast} autohide={true} delay={5000}
+                        className="bg-success"
+                    >
+                        <Toast.Body style={{fontSize:"18px", padding:'8px'}}>
+                            <strong className='mr-2'>
+                                <CheckSquare className='mr-2 mb-1' />
+                                修改成功!
+                            </strong>
+                            <small>
+                                {dt.format(new Date(), "M/D HH:mm")}
+                            </small>
+                        </Toast.Body>
+                    </Toast>
+                </div>
+            )}
+        </Transition>
     )
 }
 
