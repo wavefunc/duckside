@@ -3,19 +3,20 @@
 import React from 'react';
 import Furniture from '../components/GsapFurniture';
 import HomePageWord from '../components/HomepageWord';
+import { homepageFurniture } from '../components/GsapFurniture';
 
 function Homepage() {
    // 列出傢俱的屬性
-   const furnList = [];
+   // const furnList = [];
 
-   const outputFurniture = () => {
-      return furnList[0] && furnList.map(obj =>
-         <Furniture
-            key={obj && obj.furn_id}
-            {...obj}
-         />
-      )
-   }
+   // const outputFurniture = () => {
+   //    return furnList[0] && furnList.map(obj =>
+   //       <Furniture
+   //          key={obj && obj.furn_id}
+   //          {...obj}
+   //       />
+   //    )
+   // }
 
    return (
       // <div id="homepageContainer">
@@ -39,7 +40,11 @@ function Homepage() {
       //       </defs>
       //    </svg>
       // </div>
-      <h1>首頁維修中</h1>
+      <div>
+         <homepageFurniture />
+         <h1>Homepage Text</h1>
+
+      </div>
    );
 }
 

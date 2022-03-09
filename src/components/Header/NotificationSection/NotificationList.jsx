@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 
 // assets
-import User1 from './duck_right.png';
+import User1 from './duck-favicon.jpg';
 
 // styles
 const ListItemWrapper = styled('div')(() => ({
