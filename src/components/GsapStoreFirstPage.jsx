@@ -45,8 +45,8 @@ function StoreFirstPage({
                      width: '220px',
                      height: '220px',
                   }}>
-                  <div className='row'>
-                     <div>
+                  <div className='row pl-2 pt-2'>
+                     <div style={{fontFamily:"Helvetica" , color:"#520707", fontSize:"40"}}>
                         {obj.furn_name}
                      </div>
                   </div>
@@ -57,12 +57,12 @@ function StoreFirstPage({
                         height='85px'
                      />
                   </div>
-                  <div className='row'>
+                  <div className='row pl-3 pt-1' style={{fontFamily:"Helvetica" , color:"#520707", fontSize:"40" ,fontWeight:"bold"}}>
                      <img src={`/assets/furniture/moneyIcon.svg`} width='30px' />
-                     &nbsp;{obj.furn_price}&nbsp;&nbsp;&nbsp;
+                     &nbsp;{obj.furn_price}
                      <img
                         src={`/assets/furniture/btnBuy.svg`}
-                        style={{ cursor: 'pointer', display: obj.storeFurnDis }}
+                        style={{ cursor: 'pointer', display: obj.storeFurnDis, marginLeft:"10%" }}
                         onClick={() => {
                            setPageDisplay(pageDisplay => (
                               { ...pageDisplay, purchaseConfirm: 'block' }

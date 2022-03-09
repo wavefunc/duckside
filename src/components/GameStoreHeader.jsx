@@ -5,12 +5,6 @@ import "../css/GameStoreHeader_style.css";
 import Axios from "axios";;
 
 let GameStoreHeader = (props) =>{
-   // let my_score = () => {
-   //    Axios.put("http://localhost:5000/acc_furn/buying"),{
-   //       acc_email:localStorage.getItem("loginState"),
-   //       furn_id: funiture
-   //    }
-   // }
 
 
    return (
