@@ -25,7 +25,7 @@ let MemberLogin = (props) => {
     storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
     messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
     appId: process.env.REACT_APP_APP_ID,
-    measurementId: process.env.REACT_APP_MEASUREMENT_ID
+    measurementId: process.env.REACT_APP_MEASUREMENT_ID,
   };
 
   // Initialize Firebase
@@ -46,6 +46,9 @@ let MemberLogin = (props) => {
   //LoginSuccessState
   let [outsec, setOutsec] = useState(2);
   let [showsuccess, setShowsuccess] = useState("none");
+  // LoginButtonShow&css
+  let [loginButShow, setloginButShow] = useState("block");
+  let [loginButHeight, setloginButHeight] = useState("580px");
 
   //********************
   // function
@@ -78,6 +81,9 @@ let MemberLogin = (props) => {
         setEmailfalse("contents");
       } else {
         //成功登入
+        //登入按鈕消失
+        setloginButShow("none");
+        setloginButHeight("380px");
         setShowsuccess("contents");
         //localStorage
         if (window.localStorage) {
@@ -100,6 +106,9 @@ let MemberLogin = (props) => {
             //clear all data
             //reload
             window.location.reload();
+            //登入按鈕出現
+            setloginButShow("block");
+            setloginButHeight("580px");
           }
         }, 1000);
       }
@@ -197,7 +206,11 @@ let MemberLogin = (props) => {
     >
       <Modal id="example-modal-sizes-title-lg"></Modal>
       <div id="formContainer_body">
-        <div id="formContainer" className="dwo">
+        <div
+          id="formContainer"
+          className="dwo"
+          style={{ height: loginButHeight }}
+        >
           <div className="formLeft">
             <img src="/assets/images/member_photo.png" alt="頭像" />
           </div>
@@ -247,43 +260,50 @@ let MemberLogin = (props) => {
                     登入成功!!! {outsec + 1}秒後跳轉...
                   </span>
                 </div>
-                <button type="button" onClick={memberButClick}>
+                <button
+                  type="button"
+                  onClick={memberButClick}
+                  style={{ display: loginButShow }}
+                >
                   登 入
                 </button>
               </section>
-              <footer>
-                <button
-                  type="button"
-                  className="forgotBtn"
-                  onClick={props.showForgetToggle}
-                >
-                  忘記密碼?
-                </button>
-                <button
-                  type="button"
-                  className="registerBtn"
-                  onClick={props.showtoggle}
-                >
-                  註冊?
-                </button>
-                <button
-                  type="button"
-                  className="registerBtn"
-                  onClick={() => {
-                    window.location = "/";
-                  }}
-                >
-                  返回
-                </button>
-              </footer>
-              <hr />
-              <div className="d-flex flex-column mt-2 mb-3">
-                <div className="fb btn" onClick={fbButClick}>
-                  <i className="fa fa-facebook fa-fw"></i> Login with Facebook
-                </div>
+              <div style={{ display: loginButShow }}>
+                <footer>
+                  <button
+                    type="button"
+                    className="forgotBtn"
+                    onClick={props.showForgetToggle}
+                  >
+                    忘記密碼?
+                  </button>
+                  <button
+                    type="button"
+                    className="registerBtn"
+                    onClick={props.showtoggle}
+                  >
+                    註冊?
+                  </button>
+                  <button
+                    type="button"
+                    className="registerBtn"
+                    onClick={() => {
+                      window.location = "/";
+                    }}
+                  >
+                    返回
+                  </button>
+                </footer>
+                <hr />
+                <div className="d-flex flex-column mt-2 mb-3">
+                  <div className="fb btn" onClick={fbButClick}>
+                    <i className="fa fa-facebook fa-fw"></i> 使用 Facebook
+                    帳號登入
+                  </div>
 
-                <div className="google btn mt-2" onClick={googoleButClick}>
-                  <i className="fa fa-google fa-fw"></i> Login with Google
+                  <div className="google btn mt-2" onClick={googoleButClick}>
+                    <i className="fa fa-google fa-fw"></i> 使用 Google 帳號登入
+                  </div>
                 </div>
               </div>
             </form>

@@ -2,11 +2,11 @@
 
 import React, { Component } from 'react';
 import "../css/GameStoreHeader_style.css";
+import Axios from "axios";;
 
 let GameStoreHeader = (props) =>{
-   function test(){
-      console.log("test is working")
-   };
+
+
    return (
       <div id="container" className="row">
          <div className="col-lg-12">

@@ -54,6 +54,24 @@ function Furniture({
    );
 }
 
+// 回傳首頁的家俱
+export const HomepageFurniture = () => {
+   const furnList = ['duck', 'basketball', 'bathTube', 'cabinet', 'clock',
+      'femaleDuck', 'glasses', 'light', 'mirror', 'protrait', 'TV', 'weight'];
+
+   const outputFurniture = () => {
+      return furnList[0] && furnList.map(val =>
+         renderSwitch(val, 'block')
+      )
+   };
+
+   return (
+      <React.Fragment>
+         {outputFurniture()}
+      </React.Fragment>
+   );
+}
+
 // 回傳每個家俱的 SVG code
 function renderSwitch(furn_id, furnDisplay = 'none') {
    switch (furn_id) {

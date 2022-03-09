@@ -10,6 +10,7 @@ let GameStoreFirstPage = (props) => {
    const [modalShow, setModalShow] = useState("none");
    const [comfirmInfo, setcomfirmInfo] = useState("none");
    const [funiture, setfuniture] = useState("");
+   const [furName, setfurName] = useState("")
    const [funitureBuy, setfunitureBuy] = useState({
          light:"",
         basketball:"",
@@ -23,14 +24,12 @@ let GameStoreFirstPage = (props) => {
         weight:"",
         mirror:""
    });
-   const [furName, setfurName] = useState("")
+   
 
 
    let buying = (e) => {
-      // setupToDate(false);
       props.setUpToDate(true);
       setfuniture(e.currentTarget.dataset.furnid);
-      // console.log(funiture)
 
       if(modalShow=="none"){
          setModalShow("block")
@@ -64,16 +63,6 @@ let GameStoreFirstPage = (props) => {
 
    })
    },[props.upToDate])
-   
-
-   // function showModal(){
-   //     if(modalShow=="none"){
-   //         setModalShow("block")
-   //     }else{
-   //         setModalShow("none")
-   //     }
-
-   // }
 
    
    

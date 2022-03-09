@@ -338,21 +338,23 @@ let MemberInfo = () => {
                     <label className="small mb-1" htmlFor="inputUsername">
                       請輸入新暱稱
                     </label>
-                    <input
-                      className="form-control"
-                      id="inputFirstName"
-                      type="text"
-                      placeholder="想要的新暱稱"
-                      onChange={nameInpChange}
-                    />
+                    <div className="d-flex">
+                      <input
+                        className="form-control"
+                        id="inputFirstName"
+                        type="text"
+                        placeholder="想要的新暱稱"
+                        onChange={nameInpChange}
+                      />
+                      <button
+                        className="btn btn-warning w-50 ml-4"
+                        type="button"
+                        onClick={nameButClick}
+                      >
+                        更改
+                      </button>
+                    </div>
                   </div>
-                  <button
-                    className="btn btn-warning mb-3 ml-3 mt-4"
-                    type="button"
-                    onClick={nameButClick}
-                  >
-                    更改暱稱
-                  </button>
                 </div>
               </form>
             </div>
@@ -411,8 +413,9 @@ let MemberInfo = () => {
                   className="btn btn-warning mt-2"
                   type="button"
                   onClick={passwordButClick}
+                  style={{width:"20%"}}
                 >
-                  更改密碼
+                  更改
                 </button>
               </form>
             </div>
@@ -454,18 +457,19 @@ let MemberInfo = () => {
                     value={forgetInfo.againpassword}
                   />
                 </div>
+                
                 <span
                   className={forgetNoticeState.color}
                   style={{ display: forgetNoticeState.show }}
                 >
                   {forgetNoticeState.text}
                 </span>
-                <button
-                  className="btn btn-warning mt-2"
+                 <button
+                  className="btn btn-warning mt-2 w-40"
                   type="button"
-                  onClick={forgetButClick}
+                  onClick={passwordButClick}
                 >
-                  更改密碼
+                  更改
                 </button>
               </form>
             </div>

@@ -1,7 +1,9 @@
-// ----- 冠樺----- //
+// ----- 晴暄 ----- //
 
 import React from 'react';
 import Axios from 'axios';
+import { FileX } from 'react-bootstrap-icons';
+import { width } from 'dom-helpers';
 
 function Storage({
    furnList = [],
@@ -20,7 +22,8 @@ function Storage({
    };
 
    return (
-      <div id="gameStorage" style={{ display: pageDisplay.storage }}>
+      <div style={{backgroundColor:"#F5F5CC"}}>
+      <div id="gameStorage" style={{ display: pageDisplay.storage}}>
          <div
             id="closeBtn"
             style={{ cursor: "pointer" }}
@@ -40,24 +43,29 @@ function Storage({
                </g>
             </svg>
          </div>
-         <div id="cardBox">
-            <div id="littleCardBox" >
+         <div id="cardBox" style={{transform:"translateY(-8%)",marginLeft: "2%"}}>
+            <div id="littleCardBox">
                {
                   furnList[0] && furnList.map(obj => {
                      return (
                         <li
                            key={obj.furn_id}
                            id="storageCard1"
-                           style={{ cursor: "pointer", display: obj.storageFurnDis }}
+                           style={{ cursor: "pointer", 
+                           display: obj.storageFurnDis,
+                           }}
                            onClick={() => { placeFurniture(obj.furn_id) }}
                         >
+                           <div style={{display:"flex", justifyContent:"center", alignItems:"center" ,width:"100%", height:"100%"}}>
                            <img src={`/assets/furniture/${obj.furn_id}.svg`} width='100px' height='100px' />
+                           </div>
                         </li>
                      );
                   })
                }
             </div>
          </div>
+      </div>
       </div>
    );
 }
