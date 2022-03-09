@@ -6,20 +6,20 @@ import { gsap } from 'gsap/all';
 
 
 function Homepage() {
+   const idFadeOut = ['#homepageBasketball', '#homepagePortrait', '#homepageBathTub',
+      '#homepageCabinet', '#homepageLight', '#homepageTV', '#homepageMirror', '#homepageDuck',
+      '#homepageGlasses', '#homepageFemaleDuck', '#homepageWeight', '#homepageClock'];
+
    useEffect(() => {
-      gsap.from("#homepageBasketball", { duration: 1, opacity: 0 });
-      gsap.from("#homepagePortrait", { duration: 1, opacity: 0 });
-      gsap.from("#homepageBathTub", { duration: 1, opacity: 0 });
-      gsap.from("#homepageCabinet", { duration: 1, opacity: 0 });
-      gsap.from("#homepageLight", { duration: 1, opacity: 0 });
-      gsap.from("#homepageTV", { duration: 1, opacity: 0 });
-      gsap.from("#homepageMirror", { duration: 1, opacity: 0 });
-      gsap.from("#homepageDuck", { duration: 1, opacity: 0 });
-      gsap.from("#homepageGlasses", { duration: 1, opacity: 0 });
-      gsap.from("#homepageFemaleDuck", { duration: 1, opacity: 0 });
-      gsap.from("#homepageWeight", { duration: 1, opacity: 0 });
-      gsap.from("#homepageClock", { duration: 1, opacity: 0 });
+      var tl = gsap.timeline({ repeat: 0 });
+      idFadeOut.forEach(val => gsap.from(val, { duration: 2, opacity: 0 }));
+
+      gsap.from('#homepageDuck', { duration: 2, y: -500, rotation: 720, transformOrigin: 'center' });
+
+      tl.from('#divDialogWelcome', { duration: 1, opacity: 0, delay: 2 });
+      tl.set('#txtDialogWelcome', { className: 'typing' });
    });
+
 
 
    return (
@@ -197,7 +197,7 @@ function Homepage() {
                         <path d="M 1 0.9999847412109375 L 1 168.2173156738281 L 157.6412506103516 168.2173156738281 L 157.6412506103516 0.9999847412109375 L 1 0.9999847412109375 M 0 -1.52587890625e-05 L 158.6412506103516 -1.52587890625e-05 L 158.6412506103516 169.2173156738281 L 0 169.2173156738281 L 0 -1.52587890625e-05 Z" stroke="none" fill="#707070" />
                      </g>
                      <ellipse id="Ellipse_39" data-name="Ellipse 39" cx="6" cy="7" rx="6" ry="7" transform="translate(351 59.681)" fill="#400202" />
-                     <g id="homepageDuck" transform="translate(280.097 123.122)">
+                     <g transform="translate(280.097 123.122)">
                         <line id="Line_17" data-name="Line 17" y2="9.956" transform="translate(66.319 131.194)" fill="none" stroke="#574809" strokeWidth="4" />
                         <line id="Line_21" data-name="Line 21" y2="9.956" transform="translate(93.939 131.194)" fill="none" stroke="#574809" strokeWidth="4" />
                         <line id="Line_18" data-name="Line 18" x1="6.102" y2="4.817" transform="translate(59.575 140.508)" fill="none" stroke="#574809" strokeWidth="4" />

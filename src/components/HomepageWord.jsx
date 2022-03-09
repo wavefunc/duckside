@@ -9,8 +9,8 @@ function HomepageWord() {
 
     return (
         <>
-        <div className='dialog-bottom'>
-            <h1 className='typing'>歡迎回來, {loginState}!!</h1>
+        <div id="divDialogWelcome" className='dialog-bottom'>
+            <h1 id="txtDialogWelcome" className='typing'>歡迎回來, {loginState}!!</h1>
         </div>
         </>
 
