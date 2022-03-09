@@ -21,7 +21,7 @@ function App() {
                <Route index element={<Homepage />} />
                {ManageRoutes}
                {MemberRoutes}
-               {GameRoutes}
+               {/* {GameRoutes} */}
                {AboutRoutes}
                {GsapRoutes}
                <Route path='tools/chartpie' element={<ToolsChartpie />} />
