@@ -55,7 +55,7 @@ function Furniture({
 }
 
 // 回傳首頁的家俱
-export const homepageFurniture = () => {
+export const HomepageFurniture = () => {
    const furnList = ['duck', 'basketball', 'bathTube', 'cabinet', 'clock',
       'femaleDuck', 'glasses', 'light', 'mirror', 'protrait', 'TV', 'weight'];
 
@@ -67,8 +67,7 @@ export const homepageFurniture = () => {
 
    return (
       <React.Fragment>
-         {/* {outputFurniture()} */}
-         <h1>testwork</h1>
+         {outputFurniture()}
       </React.Fragment>
    );
 }

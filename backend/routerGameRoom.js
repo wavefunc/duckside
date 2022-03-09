@@ -35,7 +35,7 @@ router.put('/acc_furn/buying', async (req, res) => {
       SELECT 
          IF(
             (SELECT SUM(pt_scoring) total FROM point_record WHERE acc_id = ?)
-            > (SELECT furn_price FROM furniture WHERE furn_id = ?),
+            >= (SELECT furn_price FROM furniture WHERE furn_id = ?),
             true, false
          ) isEnough
    `;
