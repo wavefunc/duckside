@@ -41,6 +41,10 @@ let MemberRegister = (props) => {
     passwordcheckIcon: "none", //initial
     registerfalse: "none", //contents
   });
+
+  // RegisterButtonShow
+  let [registerButShow, setRegisterButShow] = useState("block");
+
   //登入成功state
   let [outsec, setOutsec] = useState(2);
   let [showsuccess, setShowsuccess] = useState("none");
@@ -188,6 +192,8 @@ let MemberRegister = (props) => {
             registerfalse: "none",
           });
           setShowsuccess("contents");
+          //註冊按鈕消失
+          setRegisterButShow("none");
           //3秒後跳轉
           let settime = setInterval(() => {
             if (outsec > 0) {
@@ -226,7 +232,9 @@ let MemberRegister = (props) => {
               setShowsuccess("none");
               //clear all data
               //reload
-            window.location.reload();
+              window.location.reload();
+              //註冊按鈕出現
+              setRegisterButShow("none");
             }
           }, 1000);
           //localStorage
@@ -234,7 +242,6 @@ let MemberRegister = (props) => {
             var local = window.localStorage;
             local.setItem("loginState", memberInfo.email);
             local.setItem("memberName", memberInfo.name);
-            
           }
         } else {
           // console.log("註冊失敗!");
@@ -385,7 +392,11 @@ let MemberRegister = (props) => {
                     註冊成功!!! {outsec + 1}秒後跳轉...
                   </span>
                 </div>
-                <button type="button" onClick={memberRegisterHandler}>
+                <button
+                  type="button"
+                  onClick={memberRegisterHandler}
+                  style={{ display: registerButShow }}
+                >
                   註 册
                 </button>
               </section>
@@ -394,6 +405,7 @@ let MemberRegister = (props) => {
                   type="button"
                   className="registerBtn"
                   onClick={props.showtoggle}
+                  style={{ display: registerButShow }}
                 >
                   返回
                 </button>
