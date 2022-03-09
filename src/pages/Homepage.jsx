@@ -1,4 +1,4 @@
-// ----- 冠樺 ----- //
+// ----- 冠樺、沛珊 ----- //
 
 import React, { useEffect } from 'react';
 import HomePageWord from '../components/HomepageWord';

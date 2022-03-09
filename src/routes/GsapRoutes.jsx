@@ -1,5 +1,4 @@
 // ----- 冠樺 ----- //
-// ----- 測試用 ----- //
 
 import React from 'react';
 import { Route } from "react-router-dom";
