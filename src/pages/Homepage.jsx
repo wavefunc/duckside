@@ -7,17 +7,42 @@ import { gsap } from 'gsap/all';
 
 function Homepage() {
    const idFadeOut = ['#homepageBasketball', '#homepagePortrait', '#homepageBathTub',
-      '#homepageCabinet', '#homepageLight', '#homepageTV', '#homepageMirror', '#homepageDuck',
-      '#homepageGlasses', '#homepageFemaleDuck', '#homepageWeight', '#homepageClock'];
+      '#homepageCabinet', '#homepageLight', '#homepageTV', '#homepageMirror',
+      '#homepageFemaleDuck', '#homepageWeight', '#homepageClock'];
 
    useEffect(() => {
       var tl = gsap.timeline({ repeat: 0 });
       idFadeOut.forEach(val => gsap.from(val, { duration: 2, opacity: 0 }));
 
-      gsap.from('#homepageDuck', { duration: 2, y: -500, rotation: 720, transformOrigin: 'center' });
+      var tlDuck = gsap.timeline();
+      // tlDuck.from('#homepageDuck', { duration: 2, opacity: 0 }, 0); // 小鴨淡入
+      // tlDuck.from('#homepageDuck', { duration: 2, scale: 0.5, transformOrigin: 'center' }, 0); // 小鴨逐漸變大
+      tlDuck.set('#homepageWingLeft', { duration: 2, rotate: 0, x: 1000, y: 530, rotate: 100, transformOrigin: 'center' }, 0); // 左翅舉高
+      tlDuck.set('#homepageWingRight', { duration: 2, rotate: 70, transformOrigin: 'right top' }, 0); // 右翅舉高
+      tlDuck.set('#homepageWingRight', { duration: 2, rotate: 0, transformOrigin: 'right top' }, 2); // 右翅回復原來位置
+      // tlDuck.from('#homepageDuck', { duration: 2, y: -250, ease: "slow(0.7, 0.7, false)" }, 2); // 小鴨降落
+      // tlDuck.fromTo('#homepageGlasses', { duration: 2, opacity: 0 }, { opacity: 1 }); // 眼鏡淡入
+
+      var tlWing = gsap.timeline({ repeat: 100 });
+      // tlWing.set('#homepageWingLeft', { duration: 2, rotate: -30, transformOrigin: 'right top' }, 2); // 左翅揮動
+      // tlWing.fromTo('#homepageWingRight', { duration: 1, rotate: 0, transformOrigin: 'right top', ease: 'bounce' }, { rotate: 60 }, 2); // 右翅揮動
+      tlWing.fromTo('#homepageWingRight', { duration: 0.3, rotate: 0, transformOrigin: 'right top', ease: 'bounce' }, { rotate: 60 }, 2); // 右翅揮動
+
+
+
+
+
+      // tlDuck.fromTo('#homepageWingLeft', { duration: 2, rotate: -30, transformOrigin: 'right top' }, { rotate: 30 }, 2); // 左翅揮動
+
+
+      gsap.from('#homepageBasketball', { duration: 2, y: -500, ease: 'bounce' });
 
       tl.from('#divDialogWelcome', { duration: 1, opacity: 0, delay: 2 });
       tl.set('#txtDialogWelcome', { className: 'typing' });
+
+
+
+
    });
 
 
@@ -358,8 +383,8 @@ function Homepage() {
                      <path id="Polygon_1-2" data-name="Polygon 1" d="M48,0,96,44H0Z" transform="translate(852 512)" fill="#f70" />
                      <ellipse id="Ellipse_4-2" data-name="Ellipse 4" cx="14" cy="14.5" rx="14" ry="14.5" transform="translate(817 505)" />
                      <ellipse id="Ellipse_5-2" data-name="Ellipse 5" cx="14" cy="14.5" rx="14" ry="14.5" transform="translate(960 505)" />
-                     <path id="Path_10-2" data-name="Path 10" d="M108.133-6.73S129,28.878,129,64.5A64.5,64.5,0,0,1,64.5,129c-35.622,0-66.147-25.193-66.147-25.193S36.632,67.92,52.757,51.8,108.133-6.73,108.133-6.73Z" transform="matrix(0.961, 0.276, -0.276, 0.961, 691.142, 604.682)" fill="#574809" />
-                     <path id="Path_11-2" data-name="Path 11" d="M109.78,135.73s20.867-35.607,20.867-71.23A64.5,64.5,0,0,0,66.147,0C30.525,0,0,25.193,0,25.193S38.279,61.08,54.4,77.2,109.78,135.73,109.78,135.73Z" transform="translate(1140.499 728.23) rotate(164)" fill="#574804" />
+                     <path id="homepageWingRight" data-name="Path 10" d="M108.133-6.73S129,28.878,129,64.5A64.5,64.5,0,0,1,64.5,129c-35.622,0-66.147-25.193-66.147-25.193S36.632,67.92,52.757,51.8,108.133-6.73,108.133-6.73Z" transform="matrix(0.961, 0.276, -0.276, 0.961, 691.142, 604.682)" fill="#574809" />
+                     <path id="homepageWingLeft" data-name="Path 11" d="M109.78,135.73s20.867-35.607,20.867-71.23A64.5,64.5,0,0,0,66.147,0C30.525,0,0,25.193,0,25.193S38.279,61.08,54.4,77.2,109.78,135.73,109.78,135.73Z" transform="translate(1140.499 728.23)" fill="#574804" />
                      <path id="Polygon_11" data-name="Polygon 11" d="M48,0,96,44H0Z" transform="translate(852 512)" fill="#f70" />
                   </g>
                   <g id="homepageGlasses" transform="translate(19 178.78)">
