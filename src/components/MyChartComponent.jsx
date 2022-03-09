@@ -36,6 +36,13 @@ ChartJS.register(
     Filler
 );
 
+// 網站識別色
+const mainColor = [
+    'hsl(60, 95%, 60%)',
+    'hsl(180, 45%, 60%)',
+    'hsl(35, 100%, 50%)',
+];
+
 // 折線圖基本設定 (資產變動圖使用)
 const options = {
     maintainAspectRatio: false,
@@ -161,14 +168,14 @@ export function MyChartLine({ data, x, y, yLabels, ...props }) {
     options.parsing = {
         xAxisKey: x,
     };
-
-    const labels = data ? data.map((v) => v[x]) : undefined;
+    console.log(data);
+    const labels = data && data.length > 0 ? data.map((v) => v[x]) : undefined;
     const datasets = typeof y === "string" ? [
         {
             label: yLabels,
             data: data,
-            borderColor: `hsl(50, 88%, 55%)`,
-            backgroundColor: `hsl(50, 88%, 88%)`,
+            borderColor: 'hsl(35, 100%, 50%)',
+            backgroundColor: 'hsl(60, 95%, 60%)',
             fill: true,
             parsing: {
                 yAxisKey: y,
@@ -178,8 +185,11 @@ export function MyChartLine({ data, x, y, yLabels, ...props }) {
         return ({
             label: yLabels[i],
             data: data,
-            borderColor: `hsl(30, 55%, 50%)`,
-            backgroundColor: `hsl(${40 + i * 5}, 95%, ${50 + i * 8}%)`,
+            backgroundColor: (i < 3 ?
+                mainColor[i] : `hsl(50, 20%, ${55 + (i - 3) * 15}%)`
+            ),
+            borderColor: 'hsl(195, 30%, 40%)',
+            borderWidth: 2,
             fill: true,
             parsing: {
                 yAxisKey: v,

@@ -4,9 +4,11 @@
  * 3.圖表選項改以下拉式tab選單呈現
  * const acc_email = ... 要換成localStorage
  * 
+ * 待辦:
+ * 1. 之後可以改成先抓資產明細回來，就不用每次查詢就發一次axios
  * * * * * * * * * * * */
 
-import React, {useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { Search } from 'react-bootstrap-icons';
 
@@ -19,7 +21,7 @@ import { MyChartLine } from '../components/MyChartComponent.jsx';
 import Breadcrumb from '../components/Breadcrumb';
 
 const acc_email = localStorage.getItem('loginState');
-const urlPostRecent = 'http://localhost:5000/asset/recent';
+const urlPostRecent = 'http://localhost:5000/asset/daterange';
 
 const nowTime = new Date();
 // const urlPostChartData = '';
@@ -56,9 +58,10 @@ function ManageCheck(props) {
       dataToServer.acc_email = acc_email;
       console.log(`ManageCheck useEffect post ${JSON.stringify(dataToServer)}`);
       axios.post(urlPostRecent, dataToServer).then((res) => {
-         console.log(res.data);
          setChartData(res.data);
          setOption(options[chartType]);
+         console.log(res.data);
+         console.log(options[chartType]);
       });
    }, [])
    const handleSubmit = (values, actions) => {
@@ -78,7 +81,7 @@ function ManageCheck(props) {
             <Breadcrumb />
          </Row>
          <Row>
-            <Col lg={8}>
+            <Col lg={12}>
                <Formik
                   initialValues={initialValues}
                   validate={
@@ -117,7 +120,9 @@ function ManageCheck(props) {
                         <Search className="mb-1 mr-1" />
                         <span>查詢</span>
                      </Button>
-                     <span className='text-muted font-weight-light ml-4' style={{fontSize:'15px'}}>*點選標籤顯示或隱藏資料</span>
+                     <span className='text-muted font-weight-light ml-4' style={{ fontSize: '15px' }}>
+                        *點選標籤顯示或隱藏資料
+                     </span>
                   </Form>
                </Formik>
             </Col>

@@ -30,13 +30,13 @@ const urlPostMarketValue = 'http://localhost:5000/marketInfo/inventory';
 // 表單設定
 const initialValues = {
    ast_date: dt.format(new Date(), 'YYYY-MM-DD'),
-   ast_cash: 3535914,
+   ast_cash: 1283500,
    ast_securities: "",
-   ast_option: 0,
+   ast_option: 600000,
    ast_others: 200000,
    ast_borrowing: 0,
    ast_adjust: 195000,
-   ast_note: "老師說的",
+   ast_note: "",
 };
 
 const validate = (values) => {

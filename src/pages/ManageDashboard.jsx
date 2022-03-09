@@ -79,7 +79,7 @@ const mainColor = [
    'hsl(60, 95%, 60%)',
    'hsl(180, 45%, 60%)',
    'hsl(35, 100%, 50%)',
-]
+];
 
 function ManageDashboard(props) {
    const [dataCard, setDataCard] = useState([]);
@@ -92,7 +92,7 @@ function ManageDashboard(props) {
          {
             data: dataPosition.map((v, i) => v.marketValue),
             backgroundColor: dataPosition.map((v, i) => (
-               i < 4 ? mainColor[i] : `hsl(50, 30%, ${72 + i * 12}%)`
+               i < 3 ? mainColor[i] : `hsl(50, 20%, ${55 + (i-3) * 15}%)`
             )),
             borderColor: 'hsl(195, 30%, 40%)',
             borderWidth: 2,

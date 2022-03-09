@@ -122,4 +122,41 @@ router.post('/asset/someday', async (req, res) => {
 });
 
 
+// *****************************************************************
+// 依 acc_email, dateQuery1, dateQuery2，查詢某會員某日期區間的資產明細
+// 若 dateQuery1 無回傳值，則 send 該日期 dateQuery2 之前的所有紀錄；若 dateQuery2 無回傳值則反之
+// 若 dateQuery1, dateQuery2 皆無回傳值，則 send 所有紀錄
+// *****************************************************************
+router.post('/asset/daterange', async (req, res) => {
+   var acc_id = await checkAccount(req.body.acc_email, res);
+
+   var paramsQuery = [acc_id];
+   var strDateQuery1 = '';
+   var strDateQuery2 = '';
+
+   if (req.body.dateQuery1) {
+      strDateQuery1 = ` AND ? <= ast_date `;
+      paramsQuery.push(req.body.dateQuery1);
+   }
+   if (req.body.dateQuery2) {
+      strDateQuery2 = ` AND ast_date <= ? `;
+      paramsQuery.push(req.body.dateQuery2);
+   }
+
+   var strQuery = `
+   SELECT * 
+   FROM asset ast 
+   WHERE acc_id = ? ${strDateQuery1} ${strDateQuery2} 
+   ORDER BY ast_date
+`;
+
+   query(strQuery, paramsQuery, (err, rows) => {
+      err ? res.send(err) : res.send(rows);
+   });
+});
+
+
+
+
+
 module.exports = router;
