@@ -84,12 +84,12 @@ function GameDailyRun(props) {
                   sec_id: inputStockId,
                   sec_name: InputStockName,
                   total: amount,
-                  marketValue: amount * price,
+                  marketValue: parseInt(amount * price),
                });
                setStockList(newList);
             } else {
                newList[originalIdx].total += amount;        //判斷抓取證券代號是否重複 重複將數量相加
-               newList[originalIdx].marketValue += amount * price;
+               newList[originalIdx].marketValue += parseInt(amount * price);
                setStockList(newList);
             }
          })
