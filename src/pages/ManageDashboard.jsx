@@ -94,8 +94,8 @@ function ManageDashboard(props) {
             backgroundColor: dataPosition.map((v, i) => (
                i < 3 ? mainColor[i] : `hsl(50, 20%, ${55 + (i-3) * 15}%)`
             )),
-            borderColor: 'hsl(195, 30%, 40%)',
-            borderWidth: 2,
+            borderColor: '#707070',
+            borderWidth: 1.5,
          },
       ],
    };
