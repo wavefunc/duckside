@@ -25,22 +25,22 @@ function Homepage() {
 
       // 左翅右翅邊降落邊揮動
       setTimeout(() => {
-         var tlWingLeft = gsap.timeline({ repeat: 30 });
+         var tlWingLeft = gsap.timeline({ repeat: 18 });
          tlWingLeft.fromTo('#homepageWingLeft', {
             duration: 1, rotate: 100,
             x: 850, y: 490,
             transformOrigin: 'right bottom',
             ease: 'bounce'
          }, { rotate: 160 }) // 左翅揮動
-            .timeScale(8)
+            .timeScale(5)
 
-         var tlWingRight = gsap.timeline({ repeat: 30 });
+         var tlWingRight = gsap.timeline({ repeat: 18 });
          tlWingRight.fromTo('#homepageWingRight', {
             duration: 1, rotate: 0,
             transformOrigin: 'right top',
             ease: 'bounce'
          }, { rotate: 60 }) // 右翅揮動
-            .timeScale(8)
+            .timeScale(5)
             .set('#homepageWingRight', { rotate: 30 })
       }, 1700);
 
