@@ -180,6 +180,9 @@ function ManageAsset(props) {
          setSecValue(res.data.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
       });
    };
+   const resetPopoverData = () => {
+      setSecValue("(loading...)");
+   }
 
    const popover = (
       <Popover id='secValuePopover'>
@@ -230,11 +233,13 @@ function ManageAsset(props) {
                            inline="true"
                         />
                         <OverlayTrigger
+                           overlay={popover}
                            placement="right-end"
                            delay={{ show: 200, hide: 200 }}
-                           overlay={popover}
                            trigger={['focus']}
-                           onEnter={getPopoverData}>
+                           onEnter={getPopoverData}
+                           onExit={resetPopoverData}
+                        >
                            <MyInput
                               label="證券"
                               name="ast_securities" id="ast_securities"
