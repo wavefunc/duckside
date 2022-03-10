@@ -84,12 +84,12 @@ function GameDailyRun(props) {
                   sec_id: inputStockId,
                   sec_name: InputStockName,
                   total: amount,
-                  marketValue: parseInt(amount * price),
+                  marketValue: amount * price,
                });
                setStockList(newList);
             } else {
                newList[originalIdx].total += amount;        //判斷抓取證券代號是否重複 重複將數量相加
-               newList[originalIdx].marketValue += parseInt(amount * price);
+               newList[originalIdx].marketValue += amount * price;
                setStockList(newList);
             }
          })
@@ -207,7 +207,7 @@ function GameDailyRun(props) {
                               <tr key={`tr${v.sec_id}`}>
                                  <td>{`${v.sec_id} ${v.sec_name}`}</td>
                                  <td>{v.total}</td>
-                                 <td>{v.marketValue}</td>
+                                 <td>{parseInt(v.marketValue)}</td>
                               </tr>
                            ))}
                         </tbody>
@@ -259,7 +259,7 @@ function GameDailyRun(props) {
                            <tr key={`subtotal${v.sec_id}`}>
                               <td>{`${v.sec_id} ${v.sec_name}`}</td>
                               <td>{v.total}</td>
-                              <td>{v.marketValue}</td>
+                              <td>{parseInt(v.marketValue)}</td>
                               <td>{v.profitChange}</td>
                            </tr>
                         ))}
