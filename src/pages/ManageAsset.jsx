@@ -283,7 +283,7 @@ function ManageAsset(props) {
                         />
                         <br />
                         <Row>
-                           <Col lg={8}>
+                           <Col lg={7}>
                               <MyInput
                                  label="摘要"
                                  id="ast_note"
