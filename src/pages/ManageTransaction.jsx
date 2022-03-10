@@ -280,7 +280,7 @@ function ManageTransaction(props) {
                               type="text"
                            />
                         </Col>
-                        <Col lg={1} className="d-inline-flex flex-column-reverse input-group p-2">
+                        <Col lg={1} className="d-inline-flex flex-column-reverse text-nowrap  input-group p-2">
                            <Button type="submit" variant="warning" size="sm">送出</Button>
                         </Col>
                      </Row>
