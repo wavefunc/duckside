@@ -1,6 +1,6 @@
 // ----- 晴暄、鎧洋、人豪 ----- //
 import React, { useState } from 'react';
-
+import "../css/GameDailySelect_style.css"
 import { Row, Modal } from 'react-bootstrap';
 import GameDailyRun from "../components/GameDailyRun.jsx";
 
@@ -112,7 +112,8 @@ function GameDaily() {
    } else {
       return (
          <Row>
-            <svg width="1020" height="500" viewBox="-87 0 1920 1080">
+            <div className="selectLevel">
+            <svg width="1020" height="500" viewBox="0 0 1920 1080">
                <defs>
                   <filter id="Rectangle_102" x="40" y="46" width="519" height="162" filterUnits="userSpaceOnUse">
                      <feOffset dy="6" input="SourceAlpha" />
@@ -213,6 +214,7 @@ function GameDaily() {
                   />
                </g>
             </svg>
+            </div>
          </Row >
       );
    }
