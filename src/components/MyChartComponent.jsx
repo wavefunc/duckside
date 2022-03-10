@@ -36,12 +36,12 @@ ChartJS.register(
     Filler
 );
 
-// 網站識別色
+// 圖表色塊主色
 const mainColor = [
-    'hsl(60, 95%, 60%)',
-    'hsl(180, 45%, 60%)',
-    'hsl(35, 100%, 50%)',
-];
+    'rgb(250, 198, 43, 1)',
+    'rgb(28, 169, 202, 0.9)',
+    'rgb(203, 58, 144, 0.9)',
+ ];
 
 // 折線圖基本設定 (資產變動圖使用)
 const options = {
@@ -186,10 +186,10 @@ export function MyChartLine({ data, x, y, yLabels, ...props }) {
             label: yLabels[i],
             data: data,
             backgroundColor: (i < 3 ?
-                mainColor[i] : `hsl(50, 20%, ${55 + (i - 3) * 15}%)`
+                mainColor[i] : `rgb(112,112,112,${0.75 - 0.25 * (i-3)})`
             ),
-            borderColor: 'hsl(195, 30%, 40%)',
-            borderWidth: 2,
+            borderColor: 'rgb(112,112,112,1)',
+            borderWidth: 1.5,
             fill: true,
             parsing: {
                 yAxisKey: v,

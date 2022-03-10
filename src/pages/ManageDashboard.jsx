@@ -76,9 +76,9 @@ const colPlan = [
 ];
 
 const mainColor = [
-   'rgb(250, 198, 43, 1)',
-   'rgb(28, 169, 202, 1)',
-   'rgb(203, 58, 144, 1)',
+   'rgb(250, 198, 43, 0.9)',
+   'rgb(28, 169, 202, 0.9)',
+   'rgb(203, 58, 144, 0.8)',
 ];
 
 function ManageDashboard(props) {
@@ -92,9 +92,9 @@ function ManageDashboard(props) {
          {
             data: dataPosition.map((v, i) => v.marketValue),
             backgroundColor: dataPosition.map((v, i) => (
-               i < 3 ? mainColor[i] : `hsl(50, 20%, ${55 + (i-3) * 15}%)`
+               i < 3 ? mainColor[i] : `rgb(112,112,112,${0.75 - 0.25 * (i-3)})`
             )),
-            borderColor: '#707070',
+            borderColor: 'rgb(112,112,112,1)',
             borderWidth: 1.5,
          },
       ],
