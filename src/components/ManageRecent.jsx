@@ -79,7 +79,7 @@ function ManageRecent({ url, dataToServer, row, ...props }) {
             /> : (
                 <Grid
                     columns={[{ "id": "plan_id", "name": "asd_id", "hidden": true, "sort": { "enabled": true }, "resizable": true }, { "id": "plan_date", "name": "日期", "width": "102px", "sort": { "enabled": true }, "resizable": true }, { "id": "sec_id", "name": "代號", "width": "122px", "sort": { "enabled": true }, "resizable": true }, { "id": "sec_name", "name": "名稱", "width": "153px", "sort": { "enabled": true }, "resizable": true }, { "id": "plan_strategy", "name": "類型", "hidden": true, "sort": { "enabled": true }, "resizable": true }, { "id": "plan_param1", "name": "參數", "hidden": true, "sort": { "enabled": true }, "resizable": true }, { "id": "plan_param2", "name": "參數", "hidden": true, "sort": { "enabled": true }, "resizable": true }, { "id": "plan_anchor", "name": "參考", "width": "122px", "sort": { "enabled": true }, "resizable": true }, { "id": "plan_stoploss", "name": "停損", "width": "122px", "sort": { "enabled": true }, "resizable": true }, { "id": "plan_target", "name": "目標", "width": "122px", "sort": { "enabled": true }, "resizable": true }, { "id": "marketPrice", "name": "現價", "width": "122px", "sort": { "enabled": true }, "resizable": true }, { "id": "plan_note", "name": "筆記", "width": "153px", "sort": { "enabled": true }, "resizable": true }]}
-                    data={[{ "plan_id": 84, "plan_date": "4/3", "sec_id": "2412", "plan_anchor": 120, "plan_stoploss": 100, "plan_target": 150, "plan_note": "", "acc_id": 4, "rank": 4, "sec_name": "中華電", "sec_market": "上市", "marketPrice": 123 }]}
+                    data={[]}
                     search={false}
                     sort={true}
                     pagination={false}

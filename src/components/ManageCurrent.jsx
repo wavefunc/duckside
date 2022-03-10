@@ -56,11 +56,7 @@ function MyCurrentPosition({ url, dataToServer, row, col = null, ...props }) {
                         { id: 'sec_name', name: '名稱' },
                         { id: 'total', name: '庫存數量' },
                     ]}
-                    data={[
-                        { sec_id: '2002', sec_name: '中鋼', total: 20000, marketPrice: 38.4 },
-                        { sec_id: '2317', sec_name: '鴻海', total: 1000, marketPrice: 105 },
-                        { sec_id: '2330', sec_name: '台積電', total: 2000, marketPrice: 595 },
-                    ]}
+                    data={[]}
                     sort={true}
                     style={{
                         table: { 'width': '100%', 'border-top': '1px solid #e2e2e2', 'marginTop': '5px' },
@@ -81,11 +77,7 @@ function MyCurrentPosition({ url, dataToServer, row, col = null, ...props }) {
                     { id: 'sec_name', name: '名稱' },
                     { id: 'total', name: '庫存數量' },
                 ]}
-                data={[
-                    { sec_id: '2002', sec_name: '中鋼', total: 20000, marketPrice: 38.4 },
-                    { sec_id: '2317', sec_name: '鴻海', total: 1000, marketPrice: 105 },
-                    { sec_id: '2330', sec_name: '台積電', total: 2000, marketPrice: 595 },
-                ]}
+                data={[]}
                 sort={true}
                 style={{
                     table: { 'width': '100%', 'border-top': '1px solid #e2e2e2', 'marginTop': '5px' },
