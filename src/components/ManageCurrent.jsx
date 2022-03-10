@@ -42,7 +42,8 @@ function MyCurrentPosition({ url, dataToServer, row, col = null, ...props }) {
                     data={row ? data.slice(0, row) : data}
                     sort={true}
                     style={{
-                        table: { 'width': '100%', 'border-top': '1px solid #e2e2e2', 'marginTop': '5px' },
+                        container: { 'marginTop': '5px' },
+                        table: { 'width': '100%', 'border-top': '1px solid #e2e2e2', },
                         th: { 'backgroundColor': '#e7ebee', 'fontWeight': 'bolder' },
                         td: { 'font-size': '18px', 'text-align': 'left', 'padding-left': '10px', 'padding-right': '10px' }
                     }}
