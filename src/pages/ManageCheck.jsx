@@ -100,12 +100,12 @@ function ManageCheck(props) {
                >
                   <Form>
                      <MyInput
-                        label="日期"
+                        label="起日"
                         name="dateQuery1" id="dateQuery1"
                         type="date" inline="true"
                      />
                      <MyInput
-                        label="日期"
+                        label="迄日"
                         name="dateQuery2" id="dateQuery2"
                         type="date" inline="true"
                      />
