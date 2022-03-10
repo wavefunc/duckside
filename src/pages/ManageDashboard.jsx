@@ -76,9 +76,9 @@ const colPlan = [
 ];
 
 const mainColor = [
-   'hsl(60, 95%, 60%)',
-   'hsl(180, 45%, 60%)',
-   'hsl(35, 100%, 50%)',
+   'rgb(250, 198, 43, 1)',
+   'rgb(28, 169, 202, 1)',
+   'rgb(203, 58, 144, 1)',
 ];
 
 function ManageDashboard(props) {
