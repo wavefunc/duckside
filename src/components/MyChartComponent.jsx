@@ -156,7 +156,7 @@ const optionsPie = {
             display: false,
         },
         tooltip: {
-            position:'average',
+            position: 'average',
             callbacks: {
                 label: (context) => {
                     let total = context.chart._metasets[context.datasetIndex].total;
@@ -210,7 +210,7 @@ export function MyChartLine({ data, x, y, yLabels, ...props }) {
             label: yLabels[i],
             data: data,
             backgroundColor: (i < 3 ?
-                mainColor[i] : `rgb(112,112,112,${0.6 - 0.2 * (i - 3)})`
+                mainColor[i] : `rgb(${180 + (i - 3) *20 }, ${180 + (i - 3) *20 } , ${180 + (i - 3) *20 })`
             ),
             borderColor: 'rgb(144,144,144)',
             borderWidth: 1.5,
@@ -236,9 +236,9 @@ export function MyChartPie({ url, dataToServer, labels, data, ...props }) {
             {
                 data: data,
                 backgroundColor: data.map((v, i) => (
-                    i < 3 ? mainColor[i] : `rgb(112,112,112,${0.60 - 0.2 * (i - 3)})`
+                    i < 3 ? mainColor[i] : `rgb(${180 + (i - 3) *20 }, ${180 + (i - 3) *20 } , ${180 + (i - 3) *20 })`
                 )),
-                borderColor: 'rgb(112,112,112,1)',
+                borderColor: 'rgb(144,144,144)',
                 borderWidth: 0.5,
                 // 投影時需上邊界, 網站可以不用
                 hoverOffset: 20,
