@@ -31,13 +31,13 @@ ChartJS.register(
 // 圖表色塊主色
 const mainColor = [
     // 網站識別色
-    'rgb(255, 159, 64)',
-    'rgb(75, 192, 192)',
-    'rgb(255, 205, 86)',
+    // 'rgb(255, 159, 64)',
+    // 'rgb(75, 192, 192)',
+    // 'rgb(255, 205, 86)',
     // 上方為投影用, 下方為網站使用 
-    // 'rgba(255, 159, 64, 0.6)',
-    // 'rgba(75, 192, 192, 0.6)',
-    // 'rgba(255, 205, 86, 0.6)',
+    'rgba(255, 159, 64, 0.6)',
+    'rgba(75, 192, 192, 0.6)',
+    'rgba(255, 205, 86, 0.6)',
 
     // 下方是比較大膽的配色
     // 'rgb(250, 198, 43, 1)',
@@ -203,11 +203,11 @@ export function MyChartLine({ data, x, y, yLabels, ...props }) {
             parsing: {
                 yAxisKey: y,
             },
-            borderColor: 'hsl(35, 100%, 50%)',
-            backgroundColor: 'hsl(60, 88%, 66%)',
-            // 上方為投影用配色, 下方為網站配色
             // borderColor: 'hsl(35, 100%, 50%)',
-            // backgroundColor: 'hsl(50, 85%, 88%)',
+            // backgroundColor: 'hsl(60, 88%, 66%)',
+            // 上方為投影用配色, 下方為網站配色
+            borderColor: 'hsl(35, 100%, 50%)',
+            backgroundColor: 'hsl(50, 85%, 88%)',
         },
     ] : y.map((v, i) => {
         return ({
@@ -243,7 +243,7 @@ export function MyChartPie({ url, dataToServer, labels, data, ...props }) {
                     i < 3 ? mainColor[i] : `rgb(112,112,112,${0.60 - 0.2 * (i - 3)})`
                 )),
                 borderColor: 'rgb(112,112,112,1)',
-                borderWidth: 2,
+                borderWidth: 0.5,
                 // 投影時需上邊界, 網站可以不用
                 hoverOffset: 20,
                 offset: 0,
