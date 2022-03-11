@@ -34,10 +34,10 @@ const mainColor = [
     // 'rgb(255, 159, 64)',
     // 'rgb(75, 192, 192)',
     // 'rgb(255, 205, 86)',
-    // 上方為投影用, 下方為網站使用 
-    'rgba(255, 159, 64, 0.6)',
-    'rgba(75, 192, 192, 0.6)',
-    'rgba(255, 205, 86, 0.6)',
+    // 上方為投影用, 下方為網站使用 +35 +70
+    'rgba(255, 225, 175)',
+    'rgba(175, 225, 225)',
+    'rgba(255, 240, 155)',
 
     // 下方是比較大膽的配色
     // 'rgb(250, 198, 43, 1)',
@@ -178,11 +178,7 @@ const demoPie = {
     datasets: [
         {
             data: [1190000, 768000, 105000],
-            backgroundColor: [
-                'hsl(30, 88%, 66%)',
-                'hsl(40, 88%, 71%)',
-                'hsl(50, 88%, 76%)',
-            ],
+            backgroundColor: mainColor,
             borderColor: 'hsl(15, 35%, 60%)',
             borderWidth: 2,
         },
@@ -216,7 +212,7 @@ export function MyChartLine({ data, x, y, yLabels, ...props }) {
             backgroundColor: (i < 3 ?
                 mainColor[i] : `rgb(112,112,112,${0.6 - 0.2 * (i - 3)})`
             ),
-            borderColor: 'rgb(112,112,112,1)',
+            borderColor: 'rgb(144,144,144)',
             borderWidth: 1.5,
             fill: 'stack',
             parsing: {

@@ -112,7 +112,7 @@ export const MyCardDeck = (props) => {
                     // 上方為投影用配色, 下方為網站配色 
                     style={{
                         backgroundColor: card.weight > 0.045 ?
-                            `hsl(45, 60%, ${- card.weight * 20 + 80}%)` : `hsl(47, 61%, 95%)`
+                            `hsl(45, 60%, ${- card.weight * 20 + 88}%)` : `hsl(47, 61%, 95%)`
                     }}
                 />
                 <Card.Body>
