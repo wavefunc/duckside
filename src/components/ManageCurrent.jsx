@@ -104,7 +104,17 @@ export const MyCardDeck = (props) => {
     const renderCard = (card, index) => {
         return (
             <Card key={index} className="p-0 mt-0">
-                <Card.Header style={{ backgroundColor: `hsl(35, 88%, ${-card.weight * 75 + 95}%)` }} className="m-0"></Card.Header>
+                <Card.Header
+                    className="m-0"
+                    style = {{ backgroundColor: card.weight > 0.045 ? 
+                        `hsl(35, 60%, ${-card.weight * 60 + 95}%)` : `hsl(35, 61%, 95%)`
+                    }}
+                    // 上方為投影用配色, 下方為網站配色 
+                    // style={{
+                    //     backgroundColor: card.weight > 0.045 ?
+                    //         `hsl(45, 60%, ${- card.weight * 20 + 80}%)` : `hsl(47, 61%, 95%)`
+                    // }}
+                />
                 <Card.Body>
                     <Card.Title as='h6' className="">
                         {card.title}

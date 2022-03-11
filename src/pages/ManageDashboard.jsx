@@ -35,11 +35,11 @@ const colInventory = [
    },
    {
       id: 'marketPriceChange', name: h('b', { style: { 'float': 'right', 'font-size': '15px' } }, '漲跌'), width: '10%',
-      formatter: (cell) => h('span', { style: { 'float': 'right', 'color': cell > 0 ? 'red' : 'green' } }, cell)
+      formatter: (cell) => h('span', { style: { 'float': 'right', 'color': cell > 0 ? 'rgb(255,96,96)' : 'rgb(108,196,108)' } }, cell)
    },
    {
       id: 'marketPriceChangePct', name: h('b', { style: { 'float': 'right', 'font-size': '15px' } }, '漲跌幅'), width: '10%',
-      formatter: (cell, row) => h('span', { style: { 'float': 'right', 'color': cell > 0 ? 'red' : 'green' } }, cell + '%')
+      formatter: (cell, row) => h('span', { style: { 'float': 'right', 'color': cell > 0 ? 'rgb(255,96,96)' : 'rgb(108,196,108)' } }, cell + '%')
    },
    {
       id: 'marketValue', name: h('b', { style: { 'float': 'right', } }, '市值'), width: '15%',
@@ -75,30 +75,10 @@ const colPlan = [
    { id: 'plan_note', name: '筆記', width: '15%' },
 ];
 
-const mainColor = [
-   'rgb(250, 198, 43, 0.9)',
-   'rgb(28, 169, 202, 0.9)',
-   'rgb(203, 58, 144, 0.8)',
-];
-
 function ManageDashboard(props) {
    const [dataCard, setDataCard] = useState([]);
    const [dataPlan, setDataPlan] = useState([]);
    const [dataPosition, setDataPosition] = useState([]);
-
-   const dataPie = {
-      labels: dataPosition.map(v => v.sec_name),
-      datasets: [
-         {
-            data: dataPosition.map((v, i) => v.marketValue),
-            backgroundColor: dataPosition.map((v, i) => (
-               i < 3 ? mainColor[i] : `rgb(112,112,112,${0.75 - 0.25 * (i-3)})`
-            )),
-            borderColor: 'rgb(112,112,112,1)',
-            borderWidth: 1.5,
-         },
-      ],
-   };
 
    useEffect(() => {
       let beingMounted = true;
@@ -190,16 +170,14 @@ function ManageDashboard(props) {
                      </Tab.Pane>
                   </Tab.Content>
                </Tab.Container>
-
             </Col>
             <Col lg={4}>
-               <MyChartPie data={dataPie}></MyChartPie>
+               <MyChartPie
+                  labels={dataPosition && dataPosition.map(v => v.sec_name)}
+                  data={dataPosition && dataPosition.map((v, i) => v.marketValue)}
+               />
             </Col>
          </Row>
-         <Row>
-
-         </Row>
-
       </Container >
    );
 }

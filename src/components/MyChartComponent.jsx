@@ -1,11 +1,3 @@
-/*
-選色參考
-`hsl(40, 96%, ${-card.weight * 50 + 95}%)`
-`borderColor: `hsl(30, 55%, 50%)`,
-`backgroundColor: `hsl(${40 + i * 5}, 95%, ${50 + i * 8}%)`,
-
-*/
-
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -38,10 +30,21 @@ ChartJS.register(
 
 // 圖表色塊主色
 const mainColor = [
-    'rgb(250, 198, 43, 1)',
-    'rgb(28, 169, 202, 0.9)',
-    'rgb(203, 58, 144, 0.9)',
- ];
+    // 網站識別色
+    'rgb(255, 159, 64)',
+    'rgb(75, 192, 192)',
+    'rgb(255, 205, 86)',
+    // 上方為投影用, 下方為網站使用 
+    // 'rgba(255, 159, 64, 0.6)',
+    // 'rgba(75, 192, 192, 0.6)',
+    // 'rgba(255, 205, 86, 0.6)',
+
+    // 下方是比較大膽的配色
+    // 'rgb(250, 198, 43, 1)',
+    // 'rgb(28, 169, 202, 0.9)',
+    // 'rgb(203, 58, 144, 0.9)',
+];
+
 
 // 折線圖基本設定 (資產變動圖使用)
 const options = {
@@ -124,15 +127,20 @@ const options = {
     }
 };
 // 圓餅圖基本設定
-const options2 = {
+const optionsPie = {
     // maintainAspectRatio: false,
     responsive: true,
     layout: {
-        padding: 12
+        padding: {
+            top: 0,
+            right: 12,
+            left: 12,
+            bottom: 12,
+        }
     },
     interaction: {
         intersect: false,
-        mode: 'index',
+        mode: 'point',
     },
     plugins: {
         legend: {
@@ -147,22 +155,39 @@ const options2 = {
         title: {
             display: false,
         },
-        // tooltip: {
-        //     callbacks: {
-        //         title: (i) => {
-        //             let tempIdx = i[0].label.lastIndexOf(',')
-        //             return i[0].label.slice(0, tempIdx);
-        //         },
-        //         label: (i) => {
-        //             return [i.dataset.label, i.raw];
-        //         }
-        // }
-        // }
+        tooltip: {
+            position:'average',
+            callbacks: {
+                label: (context) => {
+                    let total = context.chart._metasets[context.datasetIndex].total;
+                    let i = context.dataIndex;
+                    let currentValue = context.dataset.data[i];
+                    let percentage = parseFloat((currentValue / total * 100).toFixed(1));
+                    return context.label + ' ' + percentage + '%';
+                },
+            },
+            caretSize: 8,
+            bodyFont: { size: 20 },
+        }
     }
 };
 
-
-// 假資料: 圓餅圖
+// 圓餅圖展示資料
+const demoPie = {
+    labels: ['台積電', '中鋼', '鴻海'],
+    datasets: [
+        {
+            data: [1190000, 768000, 105000],
+            backgroundColor: [
+                'hsl(30, 88%, 66%)',
+                'hsl(40, 88%, 71%)',
+                'hsl(50, 88%, 76%)',
+            ],
+            borderColor: 'hsl(15, 35%, 60%)',
+            borderWidth: 2,
+        },
+    ],
+};
 
 export function MyChartLine({ data, x, y, yLabels, ...props }) {
     options.parsing = {
@@ -174,23 +199,26 @@ export function MyChartLine({ data, x, y, yLabels, ...props }) {
         {
             label: yLabels,
             data: data,
-            borderColor: 'hsl(35, 100%, 50%)',
-            backgroundColor: 'hsl(60, 95%, 60%)',
             fill: true,
             parsing: {
                 yAxisKey: y,
-            }
+            },
+            borderColor: 'hsl(35, 100%, 50%)',
+            backgroundColor: 'hsl(60, 88%, 66%)',
+            // 上方為投影用配色, 下方為網站配色
+            // borderColor: 'hsl(35, 100%, 50%)',
+            // backgroundColor: 'hsl(50, 85%, 88%)',
         },
     ] : y.map((v, i) => {
         return ({
             label: yLabels[i],
             data: data,
             backgroundColor: (i < 3 ?
-                mainColor[i] : `rgb(112,112,112,${0.75 - 0.25 * (i-3)})`
+                mainColor[i] : `rgb(112,112,112,${0.6 - 0.2 * (i - 3)})`
             ),
             borderColor: 'rgb(112,112,112,1)',
             borderWidth: 1.5,
-            fill: true,
+            fill: 'stack',
             parsing: {
                 yAxisKey: v,
             }
@@ -205,26 +233,27 @@ export function MyChartLine({ data, x, y, yLabels, ...props }) {
     );
 }
 
-export function MyChartPie({ url, dataToServer, data, ...props }) {
-    const demo = {
-        labels: ['台積電', '中鋼', '鴻海'],
+export function MyChartPie({ url, dataToServer, labels, data, ...props }) {
+    const dataPie = {
+        labels: labels,
         datasets: [
             {
-                data: [1190000, 768000, 105000],
-                backgroundColor: [
-                    'hsl(30, 88%, 66%)',
-                    'hsl(40, 88%, 71%)',
-                    'hsl(50, 88%, 76%)',
-                ],
-                borderColor: 'hsl(15, 35%, 60%)',
+                data: data,
+                backgroundColor: data.map((v, i) => (
+                    i < 3 ? mainColor[i] : `rgb(112,112,112,${0.60 - 0.2 * (i - 3)})`
+                )),
+                borderColor: 'rgb(112,112,112,1)',
                 borderWidth: 2,
+                // 投影時需上邊界, 網站可以不用
+                hoverOffset: 20,
+                offset: 0,
             },
         ],
     };
     try {
-        return <Pie data={data.labels.length ? data : demo} options={options2} {...props} />;
+        return <Pie data={data ? dataPie : demoPie} options={optionsPie} {...props} />;
     } catch {
         console.log('發生未預期的錯誤, MyChartPie使用展示資料')
-        return <Pie data={demo} options={options2} {...props} />;
+        return <Pie data={demoPie} options={optionsPie} {...props} />;
     }
 }
