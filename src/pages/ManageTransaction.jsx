@@ -119,7 +119,7 @@ function ManageTransaction(props) {
       sec_str: yup.string('必須為字串').required("代號及名稱不可空白").test(
          'isListed',
          '查無此股, 請從選項填入',
-         (value, testContext) => datalist.indexOf(value) > 0,
+         (value, testContext) => datalist.indexOf(value) > -1,
       ),
       txn_price: yup.number("價格須為數值").required("價格不可空白"),
       txn_amount: yup.number("數量須為數值").required("數量不可空白").integer("數量必須為整數"),
