@@ -8,6 +8,7 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Tab, Nav, Button, Modal } from 'react-bootstrap';
 import { Formik, Form } from 'formik';
+import * as yup from 'yup';
 import { h } from "gridjs";
 import axios from 'axios';
 import dt from 'date-and-time';
@@ -113,22 +114,16 @@ function ManageTransaction(props) {
       setRefresh((refreshState) => (!refreshState));
    }
 
-   const validate = (values) => {
-      const errors = {};
-      if (!values.sec_str) {
-         errors.sec_str = "代號及名稱不可空白";
-      }
-      if (datalist.indexOf(values.sec_str) < 0) {
-         errors.sec_str = "查無此股, 請從選項填入";
-      }
-      if (!values.txn_price) {
-         errors.txn_price = "價格不可空白";
-      }
-      if (!values.txn_amount) {
-         errors.txn_amount = "數量不可空白";
-      }
-      return errors;
-   };
+   const txnSchema = yup.object().shape({
+      txn_date: yup.date('日期格式為yyyy-mm-dd').required("日期不可空白"),
+      sec_str: yup.string('必須為字串').required("代號及名稱不可空白").test(
+         'isListed',
+         '查無此股, 請從選項填入',
+         (value, testContext) => datalist.indexOf(value) > 0,
+      ),
+      txn_price: yup.number("價格須為數值").required("價格不可空白"),
+      txn_amount: yup.number("數量須為數值").required("數量不可空白").integer("數量必須為整數"),
+   })
 
    const handleSubmit = (values, actions) => {
       let dataToServer = {
@@ -212,7 +207,7 @@ function ManageTransaction(props) {
             <Col lg={8}>
                <Formik
                   initialValues={initialValues}
-                  validate={validate}
+                  validationSchema={txnSchema}
                   onSubmit={handleSubmit}
                >
                   <Form>
@@ -293,7 +288,7 @@ function ManageTransaction(props) {
                   <Modal.Body>
                      <Formik
                         initialValues={editingValues}
-                        validate={validate}
+                        validationSchema={txnSchema}
                         onSubmit={handleEdit}
                      >
                         <Form>

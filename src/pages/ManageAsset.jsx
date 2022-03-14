@@ -10,6 +10,7 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Tab, Nav, Button, Popover, OverlayTrigger, Modal } from 'react-bootstrap';
 import { Formik, Form } from 'formik';
+import * as yup from 'yup';
 import axios from 'axios';
 import dt from 'date-and-time';
 import { h } from "gridjs";
@@ -39,16 +40,10 @@ const initialValues = {
    ast_note: "",
 };
 
-const validate = (values) => {
-   const errors = {};
-   if (values.ast_cash < 0) {
-      errors.ast_cash = "負現金請填寫於其他或調整項";
-   }
-   if (!values.ast_date) {
-      errors.ast_date = "需填寫日期";
-   }
-   return errors;
-}
+const astSchema = yup.object().shape({
+   ast_date: yup.date('日期格式為yyyy-mm-dd').required("日期不可空白"),
+   ast_cash: yup.number("現金須為數值").required("現金不可空白").positive('負資產請填寫於其他或調整項'),
+})
 
 // 主表欄位
 const col = [
@@ -202,7 +197,7 @@ function ManageAsset(props) {
             <Col lg={8}>
                <Formik
                   initialValues={initialValues}
-                  validate={validate}
+                  validationSchema={astSchema}
                   onSubmit={(values, actions) => {
                      let dataToServer = {
                         acc_email: acc_email,
@@ -305,7 +300,7 @@ function ManageAsset(props) {
                   <Modal.Body>
                      <Formik
                         initialValues={editingValues}
-                        validate={validate}
+                        validationSchema={astSchema}
                         onSubmit={handleEdit}
                      >
                         {(props) => (

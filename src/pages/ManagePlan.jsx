@@ -6,6 +6,7 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Tab, Nav, Button, Modal, Card } from 'react-bootstrap';
 import { Formik, Form } from 'formik';
+import * as yup from 'yup';
 import axios from 'axios';
 import dt from 'date-and-time';
 import { h } from "gridjs";
@@ -100,19 +101,14 @@ function Manageplan(props) {
       setRefresh(!refreshState);
    };
 
-   const validate = (values) => {
-      const errors = {};
-      if (values.plan_date < 0) {
-         errors.plan_date = "日期不可空白";
-      }
-      if (!values.sec_str) {
-         errors.sec_str = "代號及名稱不可空白";
-      }
-      if (datalist.indexOf(values.sec_str) < 0) {
-         errors.sec_str = "查無此股, 請從選項填入";
-      }
-      return errors;
-   };
+   const planSchema = yup.object().shape({
+      plan_date: yup.date('日期格式為yyyy-mm-dd').required("日期不可空白"),
+      sec_str: yup.string('必須為字串').required("代號及名稱不可空白").test(
+         'isListed',
+         '查無此股, 請從選項填入',
+         (value, testContext) => datalist.indexOf(value) > 0,
+      ),
+   });
 
    const handleSubmit = (values, actions) => {
       let dataToServer = {
@@ -235,7 +231,7 @@ function Manageplan(props) {
             <Col lg={8}>
                <Formik
                   initialValues={initialValues}
-                  validate={validate}
+                  validationSchema={planSchema}
                   onSubmit={handleSubmit}
                >
                   {(props) => (
@@ -331,7 +327,7 @@ function Manageplan(props) {
                   <Modal.Body>
                      <Formik
                         initialValues={editingValues}
-                        validate={validate}
+                        validationSchema={planSchema}
                         onSubmit={handleEdit}
                      >
                         {(props) => (
