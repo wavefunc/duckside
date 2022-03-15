@@ -199,13 +199,13 @@ function ManageTransaction(props) {
    }
 
    return (
-      <Container fluid className="pt-0">
+      <Container fluid className="pt-3">
          <Row>
             <Breadcrumb />
          </Row>
-         <Row className='pr-2'>
+         <Row className='pr-2 pb-4'>
             <Col lg={8}>
-               <Tab.Container>
+               <Tab.Container id="tabsForm" defaultActiveKey="single" mountOnEnter={true}>
                   <Nav variant="pills">
                      <Nav.Item>
                         <Nav.Link eventKey="single" bsPrefix='btn btn-light ml-1'>
@@ -218,29 +218,27 @@ function ManageTransaction(props) {
                         </Nav.Link>
                      </Nav.Item>
                   </Nav>
-                  <Tab.Content className='pt-3'>
+                  <Tab.Content className='pt-2'>
                      <Tab.Pane eventKey="single">
                         <Formik
                            initialValues={initialValues}
                            validationSchema={txnSchema}
                            onSubmit={handleSubmit}
                         >
-                           <Form>
+                           <Form className='form-inline'>
                               <MyInput
                                  label="日期"
                                  name="txn_date"
                                  id="txn_date"
                                  type="date"
                                  inline="true"
-                                 size="sm"
                               />
-
                               <MyInput
-                                 label="自訂編號"
+                                 label="編號"
                                  name="txn_round"
                                  id="txn_round"
                                  type="number"
-                                 placeholder="編號以分批追蹤"
+                                 placeholder="方便分批追蹤"
                                  inline="true"
                               />
                               <MySelect
@@ -249,11 +247,10 @@ function ManageTransaction(props) {
                                  id="txn_position"
                                  type="text"
                                  inline="true"
-                                 size="sm">
+                              >
                                  {['建倉', '加碼', '減碼', '停利', '停損']}
                               </MySelect>
-
-                              <br />
+                              <div style={{ width: '100%' }}></div>
                               <MyInput
                                  label="股票代號及名稱"
                                  name="sec_str" id="sec_str"
@@ -281,19 +278,22 @@ function ManageTransaction(props) {
                                  placeholder="負數為賣出或放空"
                                  inline="true"
                               />
-                              <Row>
-                                 <Col lg={8}>
-                                    <MyInput
-                                       label="摘要"
-                                       id="txn_note"
-                                       name="txn_note"
-                                       type="text"
-                                    />
-                                 </Col>
-                                 <Col lg={1} className="d-inline-flex flex-column-reverse text-nowrap  input-group p-2">
-                                    <Button type="submit" variant="warning" size="sm">送出</Button>
-                                 </Col>
-                              </Row>
+                              <div style={{ width: '100%' }}></div>
+                              <MyInput
+                                 label="摘要"
+                                 id="txn_note"
+                                 name="txn_note"
+                                 type="text"
+                                 inline
+                                 flex='2'
+                              />
+                              <MyInput
+                                 type="button"
+                                 value="送出"
+                                 className="btn btn-warning"
+                                 size="sm"
+                                 flex='1'
+                              />
                            </Form>
                         </Formik>
                      </Tab.Pane>
@@ -305,13 +305,13 @@ function ManageTransaction(props) {
                         >
                            <Form>
                               <div className='form-group'>
-                                    <MyInput
-                                       name="inputFile"
-                                       id="inputFile"
-                                       type="file"
-                                       size="sm"
-                                    />
-                                    <Button type="submit" variant="warning" size="sm">送出</Button>
+                                 <MyInput
+                                    name="inputFile"
+                                    id="inputFile"
+                                    type="file"
+                                    size="sm"
+                                 />
+                                 <Button type="submit" variant="warning" size="sm">送出</Button>
                               </div>
                            </Form>
                         </Formik>
@@ -521,10 +521,9 @@ function ManageTransaction(props) {
                ></MyCurrentPosition>
             </Col>
          </Row>
-         <br />
          <Row>
             <Col lg={12}>
-               <Tab.Container id="left-tabs-example" defaultActiveKey="first" mountOnEnter={true}>
+               <Tab.Container id="tabsGrid" defaultActiveKey="first" mountOnEnter={true}>
                   <Nav variant="pills">
                      <Nav.Item>
                         <Nav.Link eventKey="first" bsPrefix='btn btn-light ml-1'>最近十筆</Nav.Link>

@@ -12,7 +12,7 @@ import React, { useEffect, useRef } from 'react';
 import Transition from 'react-transition-group/Transition'
 
 // Formik
-export const MyInput = ({ label, list, getList, setList, helptext, ...props }) => {
+export const MyInput = ({ label, list, getList, setList, helptext, flex, ...props }) => {
     const [field, meta] = useField(props);
     let didChanged = useRef(false);
     useEffect(() => {
@@ -28,43 +28,64 @@ export const MyInput = ({ label, list, getList, setList, helptext, ...props }) =
         didChanged.current = true;
     }, [field.value]);
     return (
-        <Form.Group className={props.inline ? "d-inline-block ml-1 mr-2" : "ml-1 mb-2"}>
-            {label ? (
-                <Form.Label htmlFor={props.id || props.name}>{label}</Form.Label>
-            ) : null}
-            <InputGroup hasValidation className="d-flex flex-column">
-                <Form.Control
-                    {...field} {...props}
-                    list={`list${props.id}`}
-                    aria-describedby={`prep${props.id} apnd${props.id} helptext${props.id}`}
-                    isInvalid={meta.touched && meta.error}
-                />
-                {props.prepend ? (
-                    <InputGroup.Prepend>
-                        <InputGroup.Text id={`prep${props.id}`}>{props.prepend}</InputGroup.Text>
-                    </InputGroup.Prepend>
-                ) : null}
-                {props.append ? (
-                    <InputGroup.Append>
-                        <InputGroup.Text id={`apnd${props.id}`}>{props.append}</InputGroup.Text>
-                    </InputGroup.Append>
-                ) : null}
-                {meta.touched && meta.error ? (
-                    <Form.Control.Feedback type="invalid">
-                        {meta.error}
-                    </Form.Control.Feedback>) : null}
-                {helptext ? <Form.Text id={`helptext${props.id}`} muted>
-                    {helptext}
-                </Form.Text> : null}
-            </InputGroup>
-            {list ? (
-                <datalist id={`list${props.id}`}>
-                    {list.map((v, i) =>
-                        <option key={i} value={v} />
-                    )}
-                </datalist>) : null}
-        </Form.Group>
-    );
+        <div className="d-inline-block ml-2 mr-2 mb-2" style={{flex:flex}}>
+            {props.type === 'button' ? (
+                <>
+                    <Form.Label style={{ width: '100%' }} >&nbsp;</Form.Label>
+                    <button className={props.className}>
+                        {props.value}
+                    </button>
+                </>
+            ) : (
+                <>
+                    {
+                        label ? (
+                            <Form.Label
+                                className="justify-content-start"
+                                htmlFor={props.id || props.name}
+                            >
+                                {label}
+                            </Form.Label>
+                        ) : null
+                    }
+                    {/* <InputGroup hasValidation className="d-flex flex-column"> */}
+                    <InputGroup hasValidation>
+                        <Form.Control
+                            {...field} {...props}
+                            list={`list${props.id}`}
+                            aria-describedby={`prep${props.id} apnd${props.id} helptext${props.id}`}
+                            isInvalid={meta.touched && meta.error}
+                        />
+                        {props.prepend ? (
+                            <InputGroup.Prepend>
+                                <InputGroup.Text id={`prep${props.id}`}>{props.prepend}</InputGroup.Text>
+                            </InputGroup.Prepend>
+                        ) : null}
+                        {props.append ? (
+                            <InputGroup.Append>
+                                <InputGroup.Text id={`apnd${props.id}`}>{props.append}</InputGroup.Text>
+                            </InputGroup.Append>
+                        ) : null}
+                        {meta.touched && meta.error ? (
+                            <Form.Control.Feedback type="invalid" tooltip={true}>
+                                {meta.error}
+                            </Form.Control.Feedback>) : null}
+                        {helptext ? <Form.Text id={`helptext${props.id}`} muted>
+                            {helptext}
+                        </Form.Text> : null}
+                    </InputGroup>
+                    {
+                        list ? (
+                            <datalist id={`list${props.id}`}>
+                                {list.map((v, i) =>
+                                    <option key={i} value={v} />
+                                )}
+                            </datalist>) : null
+                    }
+                </>
+            )}
+        </div>
+    )
 };
 export const MySelect = ({ children, label, ...props }) => {
     const [field, meta] = useField(props);
@@ -183,7 +204,7 @@ export const MyOkToastSlideUp = ({ show, ...props }) => {
                         onClose={props.closeToast} autohide={true} delay={5000}
                         className="bg-success"
                     >
-                        <Toast.Body style={{fontSize:"18px", padding:'8px'}}>
+                        <Toast.Body style={{ fontSize: "18px", padding: '8px' }}>
                             <strong className='mr-2'>
                                 <CheckSquare className='mr-2 mb-1' />
                                 修改成功!
