@@ -199,88 +199,125 @@ function ManageTransaction(props) {
    }
 
    return (
-      <Container fluid className="pt-3">
+      <Container fluid className="pt-0">
          <Row>
             <Breadcrumb />
          </Row>
          <Row className='pr-2'>
             <Col lg={8}>
-               <Formik
-                  initialValues={initialValues}
-                  validationSchema={txnSchema}
-                  onSubmit={handleSubmit}
-               >
-                  <Form>
-                     <MyInput
-                        label="日期"
-                        name="txn_date"
-                        id="txn_date"
-                        type="date"
-                        inline="true"
-                        size="sm"
-                     />
+               <Tab.Container>
+                  <Nav variant="pills">
+                     <Nav.Item>
+                        <Nav.Link eventKey="single" bsPrefix='btn btn-light ml-1'>
+                           記錄單筆
+                        </Nav.Link>
+                     </Nav.Item>
+                     <Nav.Item>
+                        <Nav.Link eventKey="file" bsPrefix='btn btn-light ml-1'>
+                           上傳excel
+                        </Nav.Link>
+                     </Nav.Item>
+                  </Nav>
+                  <Tab.Content className='pt-3'>
+                     <Tab.Pane eventKey="single">
+                        <Formik
+                           initialValues={initialValues}
+                           validationSchema={txnSchema}
+                           onSubmit={handleSubmit}
+                        >
+                           <Form>
+                              <MyInput
+                                 label="日期"
+                                 name="txn_date"
+                                 id="txn_date"
+                                 type="date"
+                                 inline="true"
+                                 size="sm"
+                              />
 
-                     <MyInput
-                        label="自訂編號"
-                        name="txn_round"
-                        id="txn_round"
-                        type="number"
-                        placeholder="編號以分批追蹤"
-                        inline="true"
-                     />
-                     <MySelect
-                        label="類型"
-                        name="txn_position"
-                        id="txn_position"
-                        type="text"
-                        inline="true"
-                        size="sm">
-                        {['建倉', '加碼', '減碼', '停利', '停損']}
-                     </MySelect>
+                              <MyInput
+                                 label="自訂編號"
+                                 name="txn_round"
+                                 id="txn_round"
+                                 type="number"
+                                 placeholder="編號以分批追蹤"
+                                 inline="true"
+                              />
+                              <MySelect
+                                 label="類型"
+                                 name="txn_position"
+                                 id="txn_position"
+                                 type="text"
+                                 inline="true"
+                                 size="sm">
+                                 {['建倉', '加碼', '減碼', '停利', '停損']}
+                              </MySelect>
 
-                     <br />
-                     <MyInput
-                        label="股票代號及名稱"
-                        name="sec_str" id="sec_str"
-                        type="text"
-                        placeholder=""
-                        inline="true"
-                        list={datalist}
-                        setList={setDatalist}
-                        getList={getDatalist}
-                     />
-                     <MyInput
-                        label="均價"
-                        name="txn_price"
-                        id="txn_price"
-                        type="number"
-                        placeholder="單位: 新台幣"
-                        inline="true"
-                     />
-                     <MyInput
-                        label="數量"
-                        name="txn_amount"
-                        id="txn_amount"
-                        type="number"
-                        step="1000"
-                        placeholder="負數為賣出或放空"
-                        inline="true"
-                     />
-                     <Row>
-                        <Col lg={8}>
-                           <MyInput
-                              label="摘要"
-                              id="txn_note"
-                              name="txn_note"
-                              type="text"
-                           />
-                        </Col>
-                        <Col lg={1} className="d-inline-flex flex-column-reverse text-nowrap  input-group p-2">
-                           <Button type="submit" variant="warning" size="sm">送出</Button>
-                        </Col>
-                     </Row>
-                  </Form>
-               </Formik>
+                              <br />
+                              <MyInput
+                                 label="股票代號及名稱"
+                                 name="sec_str" id="sec_str"
+                                 type="text"
+                                 placeholder=""
+                                 inline="true"
+                                 list={datalist}
+                                 setList={setDatalist}
+                                 getList={getDatalist}
+                              />
+                              <MyInput
+                                 label="均價"
+                                 name="txn_price"
+                                 id="txn_price"
+                                 type="number"
+                                 placeholder="單位: 新台幣"
+                                 inline="true"
+                              />
+                              <MyInput
+                                 label="數量"
+                                 name="txn_amount"
+                                 id="txn_amount"
+                                 type="number"
+                                 step="1000"
+                                 placeholder="負數為賣出或放空"
+                                 inline="true"
+                              />
+                              <Row>
+                                 <Col lg={8}>
+                                    <MyInput
+                                       label="摘要"
+                                       id="txn_note"
+                                       name="txn_note"
+                                       type="text"
+                                    />
+                                 </Col>
+                                 <Col lg={1} className="d-inline-flex flex-column-reverse text-nowrap  input-group p-2">
+                                    <Button type="submit" variant="warning" size="sm">送出</Button>
+                                 </Col>
+                              </Row>
+                           </Form>
+                        </Formik>
+                     </Tab.Pane>
+                     <Tab.Pane eventKey="file">
+                        <Formik
+                           initialValues={initialValues}
+                           validationSchema={txnSchema}
+                           onSubmit={handleSubmit}
+                        >
+                           <Form>
+                              <div className='form-group'>
+                                    <MyInput
+                                       name="inputFile"
+                                       id="inputFile"
+                                       type="file"
+                                       size="sm"
+                                    />
+                                    <Button type="submit" variant="warning" size="sm">送出</Button>
+                              </div>
+                           </Form>
+                        </Formik>
+                     </Tab.Pane>
+                  </Tab.Content>
+               </Tab.Container>
                <Modal show={showEdit} onHide={handleCloseEdit} centered={true} size='lg'>
                   <Modal.Header closeButton>
                      <Modal.Title>編輯</Modal.Title>
