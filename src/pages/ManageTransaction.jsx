@@ -231,7 +231,6 @@ function ManageTransaction(props) {
                                  name="txn_date"
                                  id="txn_date"
                                  type="date"
-                                 inline="true"
                               />
                               <MyInput
                                  label="編號"
@@ -239,14 +238,12 @@ function ManageTransaction(props) {
                                  id="txn_round"
                                  type="number"
                                  placeholder="方便分批追蹤"
-                                 inline="true"
                               />
                               <MySelect
                                  label="類型"
                                  name="txn_position"
                                  id="txn_position"
                                  type="text"
-                                 inline="true"
                               >
                                  {['建倉', '加碼', '減碼', '停利', '停損']}
                               </MySelect>
@@ -256,7 +253,6 @@ function ManageTransaction(props) {
                                  name="sec_str" id="sec_str"
                                  type="text"
                                  placeholder=""
-                                 inline="true"
                                  list={datalist}
                                  setList={setDatalist}
                                  getList={getDatalist}
@@ -267,7 +263,6 @@ function ManageTransaction(props) {
                                  id="txn_price"
                                  type="number"
                                  placeholder="單位: 新台幣"
-                                 inline="true"
                               />
                               <MyInput
                                  label="數量"
@@ -276,7 +271,6 @@ function ManageTransaction(props) {
                                  type="number"
                                  step="1000"
                                  placeholder="負數為賣出或放空"
-                                 inline="true"
                               />
                               <div style={{ width: '100%' }}></div>
                               <MyInput
@@ -284,14 +278,12 @@ function ManageTransaction(props) {
                                  id="txn_note"
                                  name="txn_note"
                                  type="text"
-                                 inline
                                  flex='2'
                               />
                               <MyInput
                                  type="button"
                                  value="送出"
                                  className="btn btn-warning"
-                                 size="sm"
                                  flex='1'
                               />
                            </Form>
