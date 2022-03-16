@@ -8,14 +8,14 @@
  * * * * * * * * * * * */
 
 import React, { useState } from 'react';
-import { Container, Row, Col, Tab, Nav, Button, Popover, OverlayTrigger, Modal } from 'react-bootstrap';
+import { Container, Row, Col, Tab, Nav, Popover, OverlayTrigger, Modal } from 'react-bootstrap';
 import { Formik, Form } from 'formik';
 import * as yup from 'yup';
 import axios from 'axios';
 import dt from 'date-and-time';
 import { h } from "gridjs";
 
-import { MyFormikObserver, MyInput, MyOkToastSlideUp } from '../components/MyFormComponent';
+import { MyButton, MyFormikObserver, MyInput, MyOkToastSlideUp } from '../components/MyFormComponent';
 import MyCurrentPosition from '../components/ManageCurrent.jsx';
 import ManageRecent from '../components/ManageRecent.jsx';
 import Breadcrumb from '../components/Breadcrumb';
@@ -41,8 +41,8 @@ const initialValues = {
 };
 
 const astSchema = yup.object().shape({
-   ast_date: yup.date('日期格式為yyyy-mm-dd').required("日期不可空白"),
-   ast_cash: yup.number("現金須為數值").required("現金不可空白").positive('負資產請填寫於其他或調整項'),
+   ast_date: yup.date().typeError('日期格式為yyyy-mm-dd').required("日期不可空白"),
+   ast_cash: yup.number().typeError("現金須為正整數").required("現金不可空白").positive('現金須為正整數'),
 })
 
 // 主表欄位
@@ -102,22 +102,39 @@ function ManageAsset(props) {
    const [secValue, setSecValue] = useState("(loading...)");
    const [editingValues, setEditingValues] = useState({});
 
-   const [showDelete, setShowDelete] = useState(false);
    const [showEdit, setShowEdit] = useState(false);
+   const [showDelete, setShowDelete] = useState(false);
    const [showToast, setShowToast] = useState(false);
 
    const refresh = () => {
       setRefresh((refreshState) => (!refreshState));
    };
-
-   const handleShowEdit = (cells) => {
-      console.log('handleShowEdit');
+   const handleSubmit = (values, actions) => {
+      let dataToServer = {
+         acc_email: acc_email,
+         ...values
+      };
+      console.log(`dataToServer: ${JSON.stringify(dataToServer)}`);
+      axios.post(urlPostCreate, dataToServer).then((res) => {
+         actions.resetForm();
+         actions.setSubmitting(false);
+         console.log(res.data);
+         refresh();
+      });
+   };
+   const handleUpload = () => {
+      console.log('upload');
+   };
+   const setEditModal = (cells) => {
       let values = cells.map((v) => v.data);
-      let dataToEdit = col.reduce((target, elm, idx) => {
+      let dataToDelete = col.reduce((target, elm, idx) => {
          target[elm.id] = elm.formatter && typeof elm.formatter(values[idx]) !== 'object' ? elm.formatter(values[idx]) : values[idx];
          return target;
       }, {});
-      setEditingValues(dataToEdit);
+      setEditingValues(dataToDelete);
+   };
+   const handleShowEdit = (cells) => {
+      setEditModal(cells);
       setShowEdit(true);
    }
    const handleCloseEdit = () => {
@@ -139,12 +156,7 @@ function ManageAsset(props) {
       });
    }
    const handleShowDelete = (cells) => {
-      let values = cells.map((v) => v.data);
-      let dataToDelete = col.reduce((target, elm, idx) => {
-         target[elm.id] = elm.formatter && typeof elm.formatter(values[idx]) !== 'object' ? elm.formatter(values[idx]) : values[idx];
-         return target;
-      }, {});
-      setEditingValues(dataToDelete);
+      setEditModal(cells);
       setShowDelete(true);
    }
    const handleCloseDelete = () => {
@@ -178,7 +190,6 @@ function ManageAsset(props) {
    const resetPopoverData = () => {
       setSecValue("(loading...)");
    }
-
    const popover = (
       <Popover id='secValuePopover'>
          <Popover.Title as="h3">{`${inputDate}`}</Popover.Title>
@@ -193,107 +204,115 @@ function ManageAsset(props) {
          <Row>
             <Breadcrumb />
          </Row>
-         <Row className='pr-2'>
+         <Row className='pr-2 pb-4'>
             <Col lg={8}>
-               <Formik
-                  initialValues={initialValues}
-                  validationSchema={astSchema}
-                  onSubmit={(values, actions) => {
-                     let dataToServer = {
-                        acc_email: acc_email,
-                        ...values
-                     };
-                     console.log(`dataToServer: ${JSON.stringify(dataToServer)}`);
-                     axios.post(urlPostCreate, dataToServer).then((res) => {
-                        actions.resetForm();
-                        actions.setSubmitting(false);
-                        console.log(res.data);
-                        refresh();
-                     });
-                  }}
-               >
-                  {(props) => (
-                     <Form>
-                        <MyInput
-                           label="日期"
-                           name="ast_date" id="ast_date"
-                           type="date"
-                           inline="true" size="sm"
-                        />
-                        <MyInput
-                           label="現金"
-                           name="ast_cash" id="ast_cash"
-                           type="number" step="10000"
-                           placeholder="包含未入帳交割款"
-                           inline="true"
-                        />
-                        <OverlayTrigger
-                           overlay={popover}
-                           placement="right-end"
-                           delay={{ show: 200, hide: 200 }}
-                           trigger={['focus']}
-                           onEnter={getPopoverData}
-                           onExit={resetPopoverData}
+               <Tab.Container id="tabsForm" defaultActiveKey="single" mountOnEnter={true}>
+                  <Nav variant="pills">
+                     <Nav.Item>
+                        <Nav.Link eventKey="single" bsPrefix='btn btn-light ml-1'>
+                           記錄單筆
+                        </Nav.Link>
+                     </Nav.Item>
+                     <Nav.Item>
+                        <Nav.Link eventKey="file" bsPrefix='btn btn-light ml-1'>
+                           上傳excel
+                        </Nav.Link>
+                     </Nav.Item>
+                  </Nav>
+                  <Tab.Content className='pt-2'>
+                     <Tab.Pane eventKey="single">
+                        <Formik
+                           initialValues={initialValues}
+                           validationSchema={astSchema}
+                           onSubmit={handleSubmit}
                         >
-                           <MyInput
-                              label="證券"
-                              name="ast_securities" id="ast_securities"
-                              type="number" step="10000"
-                              placeholder="當時的庫存市值"
-                              inline="true"
-                           />
-                        </OverlayTrigger>
-                        <MyFormikObserver
-                           value={props.values.ast_date}
-                           onChange={setInputDate}>
-                        </MyFormikObserver>
-                        <br />
-                        <MyInput
-                           label="期權"
-                           name="ast_option" id="ast_option"
-                           type="number" step="10000"
-                           placeholder="如: 帳戶權益數"
-                           inline="true"
-                        />
-                        <MyInput
-                           label="其他資產"
-                           name="ast_others" id="ast_others"
-                           type="number" step="10000"
-                           placeholder="如: 外幣基金債券"
-                           inline="true"
-                        />
-                        <MyInput
-                           label="資券調整"
-                           name="ast_borrowing" id="ast_borrowing"
-                           type="number" step="10000"
-                           placeholder="如: 券賣時的市值 融資保證金 "
-                           inline="true"
-                        />
-                        <MyInput
-                           label="其他調整"
-                           name="ast_adjust" id="ast_adjust"
-                           type="number" step="10000"
-                           placeholder=""
-                           inline="true"
-                        />
-                        <br />
-                        <Row>
-                           <Col lg={7}>
-                              <MyInput
-                                 label="摘要"
-                                 id="ast_note"
-                                 name="ast_note"
-                                 type="text"
-                              />
-                           </Col>
-                           <Col lg={1} className="d-inline-flex flex-column-reverse text-nowrap input-group pl-2 pb-2">
-                              <Button type="submit" variant="warning" size="sm">送出</Button>
-                           </Col>
-                        </Row>
-                     </Form>
-                  )}
-               </Formik>
-               <Modal show={showEdit} onHide={handleCloseEdit} centered={true} size='lg'>
+                           {(props) => (
+                              <Form className='form-inline'>
+                                 <MyInput
+                                    label="日期"
+                                    name="ast_date"
+                                    type="date"
+                                    flex='1 1 auto'
+                                 />
+                                 <MyInput
+                                    label="現金"
+                                    name="ast_cash"
+                                    type="number"
+                                    placeholder="包含未入帳交割款"
+                                    flex='1 1 auto'
+                                 />
+                                 <OverlayTrigger
+                                    overlay={popover}
+                                    placement="right-end"
+                                    delay={{ show: 200, hide: 200 }}
+                                    trigger={['focus']}
+                                    onEnter={getPopoverData}
+                                    onExit={resetPopoverData}
+                                 >
+                                    <MyInput
+                                       label="證券"
+                                       name="ast_securities"
+                                       type="number"
+                                       placeholder="當時的庫存市值"
+                                       flex='1 1 auto'
+                                    />
+                                 </OverlayTrigger>
+                                 <MyFormikObserver
+                                    value={props.values.ast_date}
+                                    onChange={setInputDate}>
+                                 </MyFormikObserver>
+                                 <div style={{ width: '100%' }}></div>
+                                 <MyInput
+                                    label="期權"
+                                    name="ast_option"
+                                    type="number" step="10000"
+                                    placeholder="如: 帳戶權益數"
+                                    flex='1 1 auto'
+                                 />
+                                 <MyInput
+                                    label="其他資產"
+                                    name="ast_others"
+                                    type="number" step="10000"
+                                    placeholder="如: 外幣基金債券"
+                                    flex='1 1 auto'
+                                 />
+                                 <MyInput
+                                    label="資券調整"
+                                    name="ast_borrowing"
+                                    type="number" step="10000"
+                                    placeholder="如: 券賣時的市值 融資保證金"
+                                    flex='1 1 auto'
+                                 />
+                                 <MyInput
+                                    label="其他調整"
+                                    name="ast_adjust"
+                                    type="number" step="10000"
+                                    placeholder=""
+                                    flex='1 1 auto'
+                                 />
+                                 <div style={{ width: '100%' }}></div>
+                                 <MyInput
+                                    label="摘要"
+                                    name="ast_note"
+                                    type="text"
+                                    flex='2 1 auto'
+                                    maxWidth='515px'
+                                 />
+                                 <MyButton
+                                    type="submit"
+                                    className="btn btn-warning"
+                                    value="送出"
+                                    flex='1 2 auto'
+                                 />
+                              </Form>
+                           )}
+                        </Formik>
+                     </Tab.Pane>
+                     <Tab.Pane eventKey="file">
+                     </Tab.Pane>
+                  </Tab.Content>
+               </Tab.Container>
+               <Modal show={showEdit} onHide={handleCloseEdit} backdrop='static'>
                   <Modal.Header closeButton>
                      <Modal.Title>編輯</Modal.Title>
                   </Modal.Header>
@@ -303,85 +322,84 @@ function ManageAsset(props) {
                         validationSchema={astSchema}
                         onSubmit={handleEdit}
                      >
-                        {(props) => (
-                           <Form>
-                              <MyInput
-                                 label="日期"
-                                 name="ast_date" id="ast_date"
-                                 type="date"
-                                 inline="true" size="sm"
-                              />
-                              <MyInput
-                                 label="現金"
-                                 name="ast_cash" id="ast_cash"
-                                 type="number" step="10000"
-                                 inline="true"
-                              />
-                              <MyInput
-                                 label="證券"
-                                 name="ast_securities" id="ast_securities"
-                                 type="number" step="10000"
-                                 inline="true"
-                              />
-                              <MyInput
-                                 name="ast_id"
-                                 id="ast_id"
-                                 type="number"
-                                 inline="true"
-                                 className="d-none"
-                              />
-                              <br />
-                              <MyInput
-                                 label="期權"
-                                 name="ast_option" id="ast_option"
-                                 type="number" step="10000"
-                                 inline="true"
-                              />
-                              <MyInput
-                                 label="其他資產"
-                                 name="ast_others" id="ast_others"
-                                 type="number" step="10000"
-                                 inline="true"
-                              />
-                              <MyInput
-                                 label="資券調整"
-                                 name="ast_borrowing" id="ast_borrowing"
-                                 type="number" step="10000"
-                                 inline="true"
-                              />
-                              <MyInput
-                                 label="其他調整"
-                                 name="ast_adjust" id="ast_adjust"
-                                 type="number" step="10000"
-                                 inline="true"
-                              />
-                              <br />
-                              <Row>
-                                 <Col lg={8}>
-                                    <MyInput
-                                       label="摘要"
-                                       id="ast_note"
-                                       name="ast_note"
-                                       type="text"
-                                    />
-                                 </Col>
-                                 <Col lg={1} className="d-inline-flex flex-column-reverse input-group p-2">
-                                    <Button type="submit" variant="warning" size="sm">送出</Button>
-                                 </Col>
-                                 <Col lg={1} className="d-inline-flex flex-column-reverse input-group p-2">
-                                    <Button variant="outline-secondary" onClick={handleCloseEdit} size="sm">
-                                       取消
-                                    </Button>
-                                 </Col>
-                              </Row>
-                           </Form>
-                        )}
+                        <Form className='form-inline'>
+                           <MyInput
+                              label="日期"
+                              name="ast_date"
+                              type="date"
+                              flex='1 1 auto'
+                           />
+                           <div style={{ width: '100%' }}></div>
+                           <MyInput
+                              label="現金"
+                              name="ast_cash"
+                              type="number"
+                              placeholder="包含未入帳交割款"
+                              flex='1 1 auto'
+                           />
+                           <MyInput
+                              label="證券"
+                              name="ast_securities"
+                              type="number"
+                              placeholder="當時的庫存市值"
+                              flex='1 1 auto'
+                           />
+                           <div style={{ width: '100%' }}></div>
+                           <MyInput
+                              label="期權"
+                              name="ast_option"
+                              type="number" step="10000"
+                              placeholder="如: 帳戶權益數"
+                              flex='1 1 auto'
+                           />
+                           <MyInput
+                              label="其他資產"
+                              name="ast_others"
+                              type="number" step="10000"
+                              placeholder="如: 外幣基金債券"
+                              flex='1 1 auto'
+                           />
+                           <MyInput
+                              label="資券調整"
+                              name="ast_borrowing"
+                              type="number" step="10000"
+                              placeholder="如: 券賣時的市值 融資保證金"
+                              flex='1 1 auto'
+                           />
+                           <MyInput
+                              label="其他調整"
+                              name="ast_adjust"
+                              type="number" step="10000"
+                              placeholder=""
+                              flex='1 1 auto'
+                           />
+                           <div style={{ width: '100%' }}></div>
+                           <MyInput
+                              label="摘要"
+                              name="ast_note"
+                              type="text"
+                              flex='2 1 auto'
+                              maxWidth='515px'
+                           />
+                           <MyButton
+                              type="submit"
+                              className="btn btn-warning"
+                              value="送出"
+                           />
+                           <MyButton
+                              type="button"
+                              className="btn btn-outline-secondary"
+                              value="取消"
+                              flex='1 2 auto'
+                              onClick={handleCloseEdit}
+                           />
+                        </Form>
                      </Formik>
                   </Modal.Body>
                   <Modal.Footer>
                   </Modal.Footer>
                </Modal>
-               <Modal show={showDelete} onHide={handleCloseDelete} centered={true} size='lg'>
+               <Modal show={showDelete} onHide={handleCloseDelete} backdrop='static'>
                   <Modal.Header closeButton>
                      <Modal.Title>刪除</Modal.Title>
                   </Modal.Header>
@@ -390,89 +408,78 @@ function ManageAsset(props) {
                         initialValues={editingValues}
                         onSubmit={handleDelete}
                      >
-                        {(props) => (
-                           <Form>
-                              <MyInput
-                                 label="日期"
-                                 name="ast_date" id="ast_date"
-                                 type="date"
-                                 inline="true" size="sm"
-                                 readOnly
-                              />
-                              <MyInput
-                                 label="現金"
-                                 name="ast_cash" id="ast_cash"
-                                 type="number" step="10000"
-                                 inline="true"
-                                 readOnly
-                              />
-                              <MyInput
-                                 label="證券"
-                                 name="ast_securities" id="ast_securities"
-                                 type="number" step="10000"
-                                 inline="true"
-                                 readOnly
-                              />
-                              <MyInput
-                                 name="ast_id"
-                                 id="ast_id"
-                                 type="number"
-                                 inline="true"
-                                 className="d-none"
-                                 readOnly
-                              />
-                              <br />
-                              <MyInput
-                                 label="期權"
-                                 name="ast_option" id="ast_option"
-                                 type="number" step="10000"
-                                 inline="true"
-                                 readOnly
-                              />
-                              <MyInput
-                                 label="其他資產"
-                                 name="ast_others" id="ast_others"
-                                 type="number" step="10000"
-                                 inline="true"
-                                 readOnly
-                              />
-                              <MyInput
-                                 label="資券調整"
-                                 name="ast_borrowing" id="ast_borrowing"
-                                 type="number" step="10000"
-                                 inline="true"
-                                 readOnly
-                              />
-                              <MyInput
-                                 label="其他調整"
-                                 name="ast_adjust" id="ast_adjust"
-                                 type="number" step="10000"
-                                 inline="true"
-                                 readOnly
-                              />
-                              <br />
-                              <Row>
-                                 <Col lg={8}>
-                                    <MyInput
-                                       label="摘要"
-                                       id="ast_note"
-                                       name="ast_note"
-                                       type="text"
-                                       readOnly
-                                    />
-                                 </Col>
-                                 <Col lg={1} className="d-inline-flex flex-column-reverse input-group p-2">
-                                    <Button type="submit" variant="warning" size="sm">確認</Button>
-                                 </Col>
-                                 <Col lg={1} className="d-inline-flex flex-column-reverse input-group p-2">
-                                    <Button variant="outline-secondary" onClick={handleCloseDelete} size="sm">
-                                       取消
-                                    </Button>
-                                 </Col>
-                              </Row>
-                           </Form>
-                        )}
-
+                        <Form className='form-inline'>
+                           <MyInput readOnly
+                              label="日期"
+                              name="ast_date"
+                              type="date"
+                              flex='1 1 auto'
+                           />
+                           <div style={{ width: '100%' }}></div>
+                           <MyInput readOnly
+                              label="現金"
+                              name="ast_cash"
+                              type="number"
+                              placeholder="包含未入帳交割款"
+                              flex='1 1 auto'
+                           />
+                           <MyInput readOnly
+                              label="證券"
+                              name="ast_securities"
+                              type="number"
+                              placeholder="當時的庫存市值"
+                              flex='1 1 auto'
+                           />
+                           <div style={{ width: '100%' }}></div>
+                           <MyInput readOnly
+                              label="期權"
+                              name="ast_option"
+                              type="number" step="10000"
+                              placeholder="如: 帳戶權益數"
+                              flex='1 1 auto'
+                           />
+                           <MyInput readOnly
+                              label="其他資產"
+                              name="ast_others"
+                              type="number" step="10000"
+                              placeholder="如: 外幣基金債券"
+                              flex='1 1 auto'
+                           />
+                           <MyInput readOnly
+                              label="資券調整"
+                              name="ast_borrowing"
+                              type="number" step="10000"
+                              placeholder="如: 券賣時的市值 融資保證金"
+                              flex='1 1 auto'
+                           />
+                           <MyInput readOnly
+                              label="其他調整"
+                              name="ast_adjust"
+                              type="number" step="10000"
+                              placeholder=""
+                              flex='1 1 auto'
+                           />
+                           <div style={{ width: '100%' }}></div>
+                           <MyInput readOnly
+                              label="摘要"
+                              name="ast_note"
+                              type="text"
+                              flex='2 1 auto'
+                              maxWidth='515px'
+                           />
+                           <MyButton
+                              type="submit"
+                              className="btn btn-danger"
+                              value="確認"
+                           />
+                           <MyButton
+                              type="button"
+                              className="btn btn-outline-secondary"
+                              value="取消"
+                              flex='1 2 auto'
+                              onClick={handleCloseDelete}
+                           />
+                        </Form>
                      </Formik>
                   </Modal.Body>
                   <Modal.Footer>

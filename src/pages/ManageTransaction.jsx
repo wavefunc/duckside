@@ -5,14 +5,14 @@
  * * * * * * * * * * * */
 
 import React, { useState } from 'react';
-import { Container, Row, Col, Tab, Nav, Button, Modal } from 'react-bootstrap';
+import { Container, Row, Col, Tab, Nav, Modal } from 'react-bootstrap';
 import { Formik, Form } from 'formik';
 import * as yup from 'yup';
 import { h } from "gridjs";
 import axios from 'axios';
 import dt from 'date-and-time';
 
-import { MyInput, MySelect, MyOkToastSlideUp } from '../components/MyFormComponent';
+import { MyButton, MyInput, MyOkToastSlideUp } from '../components/MyFormComponent';
 import MyCurrentPosition from '../components/ManageCurrent.jsx';
 import ManageRecent from '../components/ManageRecent.jsx';
 import Breadcrumb from '../components/Breadcrumb'
@@ -30,7 +30,7 @@ const initialValues = {
    txn_date: dt.format(new Date(), 'YYYY-MM-DD'),
    sec_str: "",
    txn_round: "",
-   txn_position: "",
+   txn_position: "建倉",
    txn_price: "",
    txn_amount: "",
    txn_note: "",
@@ -121,7 +121,10 @@ function ManageTransaction(props) {
       txn_price: yup.number().typeError("價格須為正數").required("價格不可空白").positive('價格須為正數'),
       txn_amount: yup.number().typeError("數量須為整數").required("數量不可空白").integer('數量須為整數'),
    });
+
+
    const handleSubmit = (values, actions) => {
+      console.log('handleSubmit');
       let dataToServer = {
          sec_id: values.sec_str.split(" ")[0],
          acc_email: acc_email,
@@ -135,7 +138,9 @@ function ManageTransaction(props) {
          refresh();
       });
    };
-
+   const handleUpload = () => {
+      console.log('upload');
+   }
    const setEditModal = (cells) => {
       let values = cells.map((v) => v.data);
       let dataToEdit = col.reduce((target, elm, idx) => {
@@ -221,68 +226,63 @@ function ManageTransaction(props) {
                               <MyInput
                                  label="日期"
                                  name="txn_date"
-                                 id="txn_date"
                                  type="date"
-                                 flex='2 1'
+                                 flex='3 2 auto'
                               />
                               <MyInput
                                  label="編號"
                                  name="txn_round"
-                                 id="txn_round"
+                                 type="text"
                                  placeholder="方便分批追蹤"
-                                 flex='1 2'
+                                 flex='2 3 auto'
                               />
                               <MyInput
                                  label="類型"
                                  name="txn_position"
-                                 id="txn_position"
                                  type="text"
-                                 flex='1 2'
+                                 flex='2 3 auto'
                               >
                                  {['建倉', '加碼', '減碼', '停利', '停損']}
                               </MyInput>
                               <div style={{ width: '100%' }}></div>
                               <MyInput
                                  label="股號及名稱"
-                                 name="sec_str" id="sec_str"
+                                 name="sec_str"
                                  type="text"
                                  placeholder=""
                                  list={datalist}
                                  setList={setDatalist}
                                  getList={getDatalist}
-                                 flex='2 1'
+                                 flex='3 2 auto'
                               />
                               <MyInput
                                  label="均價"
                                  name="txn_price"
-                                 id="txn_price"
                                  type="number"
                                  placeholder="單位: 新台幣"
-                                 flex='1 2'
+                                 flex='2 3 auto'
                               />
                               <MyInput
                                  label="數量"
                                  name="txn_amount"
-                                 id="txn_amount"
                                  type="number"
                                  step="1000"
                                  placeholder="負數為賣出或放空"
-                                 flex='1 2'
+                                 flex='2 3 auto'
                               />
                               <div style={{ width: '100%' }}></div>
                               <MyInput
                                  label="摘要"
-                                 id="txn_note"
                                  name="txn_note"
                                  type="text"
-                                 flex='2'
+                                 flex='2 1 auto'
+                                 maxWidth='515px'
                               />
-                              <MyInput
-                                 type="button"
-                                 name="btnSubmit"
-                                 value="送出"
+                              <MyButton
+                                 type="submit"
                                  className="btn btn-warning"
-                                 flex='1'
+                                 value="送出"
+                                 flex='1 2 auto'
                               />
                            </Form>
                         </Formik>
@@ -290,25 +290,28 @@ function ManageTransaction(props) {
                      <Tab.Pane eventKey="file">
                         <Formik
                            initialValues={initialValues}
-                           validationSchema={txnSchema}
                            onSubmit={handleSubmit}
                         >
                            <Form>
                               <div className='form-group'>
                                  <MyInput
                                     name="inputFile"
-                                    id="inputFile"
                                     type="file"
                                     size="sm"
                                  />
-                                 <Button type="submit" variant="warning" size="sm">送出</Button>
+                                 <MyButton
+                                    type="submit"
+                                    className="btn btn-warning"
+                                    value="送出"
+                                    flex='1 2 auto'
+                                 />
                               </div>
                            </Form>
                         </Formik>
                      </Tab.Pane>
                   </Tab.Content>
                </Tab.Container>
-               <Modal show={showEdit} onHide={handleCloseEdit} centered={true} backdrop='static'>
+               <Modal show={showEdit} onHide={handleCloseEdit} backdrop='static'>
                   <Modal.Header closeButton>
                      <Modal.Title>編輯</Modal.Title>
                   </Modal.Header>
@@ -322,21 +325,20 @@ function ManageTransaction(props) {
                            <MyInput
                               label="日期"
                               name="txn_date"
-                              id="txn_date"
                               type="date"
-                              flex='2 0 80%'
+                              flex='1 1 auto'
                            />
+                           <div style={{ width: '100%' }}></div>
                            <MyInput
                               label="編號"
+                              type="text"
                               name="txn_round"
-                              id="txn_round"
                               placeholder="方便分批追蹤"
                               flex='1 1 40%'
                            />
                            <MyInput
                               label="類型"
                               name="txn_position"
-                              id="txn_position"
                               type="text"
                               flex='1 1 40%'
                            >
@@ -345,18 +347,18 @@ function ManageTransaction(props) {
                            <div style={{ width: '100%' }}></div>
                            <MyInput
                               label="股號及名稱"
-                              name="sec_str" id="sec_str"
+                              name="sec_str"
                               type="text"
                               placeholder=""
                               list={datalist}
                               setList={setDatalist}
                               getList={getDatalist}
-                              flex='2 0 80%'
+                              flex='1 1 auto'
                            />
+                           <div style={{ width: '100%' }}></div>
                            <MyInput
                               label="均價"
                               name="txn_price"
-                              id="txn_price"
                               type="number"
                               placeholder="單位: 新台幣"
                               flex='1 1 40%'
@@ -364,7 +366,6 @@ function ManageTransaction(props) {
                            <MyInput
                               label="數量"
                               name="txn_amount"
-                              id="txn_amount"
                               type="number"
                               step="1000"
                               placeholder="負數為賣出或放空"
@@ -373,24 +374,21 @@ function ManageTransaction(props) {
                            <div style={{ width: '100%' }}></div>
                            <MyInput
                               label="摘要"
-                              id="txn_note"
                               name="txn_note"
                               type="text"
-                              flex='2'
+                              flex='2 1 auto'
+                              maxWidth='515px'
                            />
-                           <MyInput
-                              type="button"
-                              buttonType="submit"
-                              name="btnSubmitEdit"
-                              value="送出"
+                           <MyButton
+                              type="submit"
                               className="btn btn-warning"
+                              value="送出"
                            />
-                           <MyInput
+                           <MyButton
                               type="button"
-                              buttonType="button"
-                              name="btnCancelEdit"
-                              value="取消"
                               className="btn btn-outline-secondary"
+                              value="取消"
+                              flex='0 1 auto'
                               onClick={handleCloseEdit}
                            />
                         </Form>
@@ -399,7 +397,7 @@ function ManageTransaction(props) {
                   <Modal.Footer>
                   </Modal.Footer>
                </Modal>
-               <Modal show={showDelete} onHide={handleCloseDelete} centered={true}>
+               <Modal show={showDelete} onHide={handleCloseDelete} backdrop='static'>
                   <Modal.Header closeButton>
                      <Modal.Title>刪除</Modal.Title>
                   </Modal.Header>
@@ -412,21 +410,18 @@ function ManageTransaction(props) {
                            <MyInput readOnly
                               label="日期"
                               name="txn_date"
-                              id="txn_date"
                               type="date"
-                              flex='2 0 80%'
+                              flex='1 1 auto'
                            />
                            <MyInput readOnly
                               label="編號"
                               name="txn_round"
-                              id="txn_round"
                               placeholder="方便分批追蹤"
                               flex='1 1 40%'
                            />
                            <MyInput readOnly
                               label="類型"
                               name="txn_position"
-                              id="txn_position"
                               type="text"
                               flex='1 1 40%'
                            >
@@ -435,18 +430,17 @@ function ManageTransaction(props) {
                            <div style={{ width: '100%' }}></div>
                            <MyInput readOnly
                               label="股號及名稱"
-                              name="sec_str" id="sec_str"
+                              name="sec_str"
                               type="text"
                               placeholder=""
                               list={datalist}
                               setList={setDatalist}
                               getList={getDatalist}
-                              flex='2 0 80%'
+                              flex='1 1 auto'
                            />
                            <MyInput readOnly
                               label="均價"
                               name="txn_price"
-                              id="txn_price"
                               type="number"
                               placeholder="單位: 新台幣"
                               flex='1 1 40%'
@@ -454,7 +448,6 @@ function ManageTransaction(props) {
                            <MyInput readOnly
                               label="數量"
                               name="txn_amount"
-                              id="txn_amount"
                               type="number"
                               step="1000"
                               placeholder="負數為賣出或放空"
@@ -463,24 +456,21 @@ function ManageTransaction(props) {
                            <div style={{ width: '100%' }}></div>
                            <MyInput readOnly
                               label="摘要"
-                              id="txn_note"
                               name="txn_note"
                               type="text"
-                              flex='2'
+                              flex='2 1 auto'
+                              maxWidth='515px'
                            />
-                           <MyInput
-                              type="button"
-                              buttonType="submit"
-                              name="btnSubmitDelete"
-                              value="確認"
+                           <MyButton
+                              type="submit"
                               className="btn btn-danger"
+                              value="確認"
                            />
-                           <MyInput
+                           <MyButton
                               type="button"
-                              buttonType="button"
-                              name="btnCancelDelete"
-                              value="取消"
                               className="btn btn-outline-secondary"
+                              value="取消"
+                              flex='0 1 auto'
                               onClick={handleCloseDelete}
                            />
                         </Form>

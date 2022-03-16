@@ -12,7 +12,7 @@ import React, { useEffect, useRef } from 'react';
 import Transition from 'react-transition-group/Transition'
 
 // Formik
-export const MyInput = ({ children, label, list, getList, setList, helptext, flex, ...props }) => {
+export const MyInput = ({ children, label, list, getList, setList, helptext, flex, maxWidth, ...props }) => {
     const [field, meta] = useField(props);
     let didChanged = useRef(false);
     useEffect(() => {
@@ -27,95 +27,109 @@ export const MyInput = ({ children, label, list, getList, setList, helptext, fle
         }
         didChanged.current = true;
     }, [field.value]);
-    return (
-        <div className="d-inline-block ml-2 mr-2 mb-2" style={{ flex: flex }}>
-            {props.type === 'button'? (
-                <>
-                    <Form.Label style={{ width: '100%' }} >&nbsp;</Form.Label>
-                    <button type={props.buttonType} className={props.className} onClick={props.onClick}>
-                        {props.value}
-                    </button>
-                </>
-            ) : (
-                <>
-                    {label ? (
-                        <Form.Label
-                            className="justify-content-start text-nowrap"
-                            htmlFor={props.id || props.name}
-                        >
-                            {label}
-                        </Form.Label>
-                    ) : null}
-                    <InputGroup hasValidation>
-                        <Form.Control
-                            as={children ? 'select' : 'input'}
-                            {...field} {...props}
-                            list={list ? `list${props.id}` : ''}
-                            aria-describedby={`prep${props.id} apnd${props.id} helptext${props.id}`}
-                            isInvalid={meta.touched && meta.error}
-                        >
-                            {children ? typeof children[0] === 'string' ?
-                                children.map((v, i) => <option key={i} value={v}>{v}</option>) :
-                                children.map((v) => <option key={v.key} value={v.value}>{v.value}</option>) : null
-                            }
-                        </Form.Control>
-                        {props.prepend ? (
-                            <InputGroup.Prepend>
-                                <InputGroup.Text id={`prep${props.id}`}>{props.prepend}</InputGroup.Text>
-                            </InputGroup.Prepend>
-                        ) : null}
-                        {props.append ? (
-                            <InputGroup.Append>
-                                <InputGroup.Text id={`apnd${props.id}`}>{props.append}</InputGroup.Text>
-                            </InputGroup.Append>
-                        ) : null}
-                        {meta.touched && meta.error ? (
-                            <Form.Control.Feedback type="invalid" tooltip={true}>
-                                {meta.error}
-                            </Form.Control.Feedback>) : null}
-                        {helptext ? <Form.Text id={`helptext${props.id}`} muted>
-                            {helptext}
-                        </Form.Text> : null}
-                    </InputGroup>
-                    {
-                        list ? (
-                            <datalist id={`list${props.id}`}>
-                                {list.map((v, i) =>
-                                    <option key={i} value={v} />
-                                )}
-                            </datalist>) : null
-                    }
-                </>
-            )}
+    return props.type === 'button' ? (
+        <div className="d-inline-block ml-2 mr-2 mb-2"
+            style={{ flex: flex, maxWidth: '300px' }}
+        >
+            &nbsp;
+            <div>
+                <button type={props.buttonType} className={props.className} onClick={props.onClick}>
+                    {props.value}
+                </button>
+            </div>
         </div>
+    ) : (
+        <>
+            <Form.Label
+                className="text-nowrap d-inline-block ml-2 mr-2 mb-2"
+                style={{ flex: flex, maxWidth: maxWidth || '250px' }}
+            >
+                {label}
+                <InputGroup hasValidation>
+                    <Form.Control
+                        as={children ? 'select' : 'input'}
+                        {...field} {...props}
+                        list={list ? `list${props.id}` : ''}
+                        aria-describedby={`prep${props.id} apnd${props.id} helptext${props.id}`}
+                        isInvalid={meta.touched && meta.error}
+                    >
+                        {children ? typeof children[0] === 'string' ?
+                            children.map((v, i) => <option key={i} value={v}>{v}</option>) :
+                            children.map((v) => <option key={v.key} value={v.value}>{v.value}</option>) : null
+                        }
+                    </Form.Control>
+                    {props.prepend ? (
+                        <InputGroup.Prepend>
+                            <InputGroup.Text id={`prep${props.id}`}>{props.prepend}</InputGroup.Text>
+                        </InputGroup.Prepend>
+                    ) : null}
+                    {props.append ? (
+                        <InputGroup.Append>
+                            <InputGroup.Text id={`apnd${props.id}`}>{props.append}</InputGroup.Text>
+                        </InputGroup.Append>
+                    ) : null}
+                    {meta.touched && meta.error ? (
+                        <Form.Control.Feedback type="invalid" tooltip={true}>
+                            {meta.error}
+                        </Form.Control.Feedback>) : null}
+                    {helptext ? <Form.Text id={`helptext${props.id}`} muted>
+                        {helptext}
+                    </Form.Text> : null}
+                </InputGroup>
+            </Form.Label>
+            {
+                list ? (
+                    <datalist id={`list${props.id}`}>
+                        {list.map((v, i) =>
+                            <option key={i} value={v} />
+                        )}
+                    </datalist>) : null
+            }
+        </>
     )
 };
+export const MyButton = ({type, className, onClick, flex, ...props}) => {
+    return (
+        <div className="d-inline-block ml-2 mr-2 mb-2"
+            style={{ flex: flex, maxWidth: '250px'}}
+            {...props}
+        >
+            &nbsp;
+            <div>
+                <button type={type} className={className} onClick={onClick}>
+                    {props.value}
+                </button>
+            </div>
+        </div>
+    )
+}
 export const MySelect = ({ children, label, ...props }) => {
     const [field, meta] = useField(props);
     return (
         <Form.Group className={props.inline ? "d-inline-block ml-1 mr-2" : "ml-1 mb-2"}>
-            <Form.Label>{label}</Form.Label>
-            <InputGroup>
-                {props.prepend ? (
-                    <InputGroup.Prepend>
-                        <InputGroup.Text id={`prependId${props.id}`}>{props.prepend}</InputGroup.Text>
-                    </InputGroup.Prepend>
-                ) : null}
-                <Form.Control
-                    as='select'
-                    {...field} {...props}
-                    aria-describedby={`prependId${props.id}`}
-                    isInvalid={meta.touched && meta.error}
-                >
-                    {typeof children[0] === 'string' ?
-                        children.map((v, i) => <option key={i} value={v}>{v}</option>) :
-                        children.map((v) => <option key={v.key} value={v.value}>{v.value}</option>)
-                    }
-                </Form.Control>
-                <Form.Control.Feedback type="invalid">
-                    {meta.error}
-                </Form.Control.Feedback>
-            </InputGroup>
+            <Form.Label>{label}
+                <InputGroup>
+                    {props.prepend ? (
+                        <InputGroup.Prepend>
+                            <InputGroup.Text id={`prependId${props.id}`}>{props.prepend}</InputGroup.Text>
+                        </InputGroup.Prepend>
+                    ) : null}
+                    <Form.Control
+                        as='select'
+                        {...field} {...props}
+                        aria-describedby={`prependId${props.id}`}
+                        isInvalid={meta.touched && meta.error}
+                    >
+                        {typeof children[0] === 'string' ?
+                            children.map((v, i) => <option key={i} value={v}>{v}</option>) :
+                            children.map((v) => <option key={v.key} value={v.value}>{v.value}</option>)
+                        }
+                    </Form.Control>
+                    <Form.Control.Feedback type="invalid">
+                        {meta.error}
+                    </Form.Control.Feedback>
+                </InputGroup>
+            </Form.Label>
         </Form.Group>
     );
 };
