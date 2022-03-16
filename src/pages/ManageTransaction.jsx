@@ -326,20 +326,22 @@ function ManageTransaction(props) {
                               name="txn_date"
                               type="date"
                               flex='1 1 auto'
+                              maxWidth='40%'
                            />
-                           <div style={{ width: '100%' }}></div>
                            <MyInput
                               label="編號"
                               type="text"
                               name="txn_round"
                               placeholder="方便分批追蹤"
-                              flex='1 1 40%'
+                              flex='1 1 auto'
+                              maxWidth='24%'
                            />
                            <MyInput
                               label="類型"
                               name="txn_position"
                               type="text"
-                              flex='1 1 40%'
+                              flex='1 1 auto'
+                              maxWidth='24%'
                            >
                               {['建倉', '加碼', '減碼', '停利', '停損']}
                            </MyInput>
@@ -348,19 +350,19 @@ function ManageTransaction(props) {
                               label="股號及名稱"
                               name="sec_str"
                               type="text"
-                              placeholder=""
                               list={datalist}
                               setList={setDatalist}
                               getList={getDatalist}
                               flex='1 1 auto'
+                              maxWidth='40%'
                            />
-                           <div style={{ width: '100%' }}></div>
                            <MyInput
                               label="均價"
                               name="txn_price"
                               type="number"
                               placeholder="單位: 新台幣"
-                              flex='1 1 40%'
+                              flex='1 1 auto'
+                              maxWidth='24%'
                            />
                            <MyInput
                               label="數量"
@@ -368,7 +370,8 @@ function ManageTransaction(props) {
                               type="number"
                               step="1000"
                               placeholder="負數為賣出或放空"
-                              flex='1 1 40%'
+                              flex='1 1 auto'
+                              maxWidth='24%'
                            />
                            <div style={{ width: '100%' }}></div>
                            <MyInput
@@ -411,18 +414,21 @@ function ManageTransaction(props) {
                               name="txn_date"
                               type="date"
                               flex='1 1 auto'
+                              maxWidth='40%'
                            />
                            <MyInput readOnly
                               label="編號"
                               name="txn_round"
                               placeholder="方便分批追蹤"
-                              flex='1 1 40%'
+                              flex='1 1 auto'
+                              maxWidth='24%'
                            />
                            <MyInput readOnly
                               label="類型"
                               name="txn_position"
                               type="text"
-                              flex='1 1 40%'
+                              flex='1 1 auto'
+                              maxWidth='24%'
                            >
                               {['建倉', '加碼', '減碼', '停利', '停損']}
                            </MyInput>
@@ -436,13 +442,15 @@ function ManageTransaction(props) {
                               setList={setDatalist}
                               getList={getDatalist}
                               flex='1 1 auto'
+                              maxWidth='40%'
                            />
                            <MyInput readOnly
                               label="均價"
                               name="txn_price"
                               type="number"
                               placeholder="單位: 新台幣"
-                              flex='1 1 40%'
+                              flex='1 1 auto'
+                              maxWidth='24%'
                            />
                            <MyInput readOnly
                               label="數量"
@@ -450,7 +458,8 @@ function ManageTransaction(props) {
                               type="number"
                               step="1000"
                               placeholder="負數為賣出或放空"
-                              flex='1 1 40%'
+                              flex='1 1 auto'
+                              maxWidth='24%'
                            />
                            <div style={{ width: '100%' }}></div>
                            <MyInput readOnly
