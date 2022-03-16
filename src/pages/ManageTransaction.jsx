@@ -114,7 +114,7 @@ function ManageTransaction(props) {
    const txnSchema = yup.object().shape({
       txn_date: yup.date().typeError('日期格式為yyyy-mm-dd').required("日期不可空白"),
       txn_round: yup.number().typeError('編號須為正整數').integer('編號須為正整數').positive('編號須為正整數'),
-      sec_str: yup.string().typeError('必須為字串').required("代號及名稱不可空白").test(
+      sec_str: yup.string().typeError('查無此股, 請從選項填入').required("代號及名稱不可空白").test(
          'isListed', '查無此股, 請從選項填入',
          (value) => datalist.indexOf(value) > -1,
       ),
@@ -249,7 +249,6 @@ function ManageTransaction(props) {
                                  label="股號及名稱"
                                  name="sec_str"
                                  type="text"
-                                 placeholder=""
                                  list={datalist}
                                  setList={setDatalist}
                                  getList={getDatalist}
