@@ -257,14 +257,14 @@ let MemberRegister = (props) => {
 
   return (
     <Modal
-      size="lg"
+      size="md"
       show={props.show}
       keyboard={false}
       // animation={true}
       aria-labelledby="example-modal-sizes-title-lg"
     >
       <Modal id="example-modal-sizes-title-lg"></Modal>
-      <div id="formContainer_body">
+      {/* <div id="formContainer_body"> */}
         {/* 加toggle變長(註冊功能)，改高度用此選擇器 */}
         <div id="formContainer" className="dwo toggle">
           <div className="formLeft">
@@ -413,7 +413,7 @@ let MemberRegister = (props) => {
             </form>
           </div>
         </div>
-      </div>
+      {/* </div> */}
     </Modal>
   );
 };

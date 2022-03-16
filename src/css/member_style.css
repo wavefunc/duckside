@@ -23,7 +23,6 @@
 
 #formContainer.forget {
   height: 400px;
-  transform: translate(24%, 80%);
 }
 
 #formContainer.toggle {
@@ -457,11 +456,7 @@ legend {
 
 
 @media only screen and (max-width: 1200px) {
-  #formContainer{
-    display: flex;
-    flex-direction: column;
-    height: 660px!important;
-  }
+
   .formLeft {
     padding: 10px 35px;
   }

@@ -56,13 +56,13 @@ let MemberLogin = (props) => {
 
   return (
     <Modal
-      size="sm"
+      size="md"
       show={props.show}
       animation={true}
       aria-labelledby="example-modal-sizes-title-lg"
     >
       <Modal id="example-modal-sizes-title-lg"></Modal>
-      <div id="formContainer_body">
+      {/* <div id="formContainer_body"> */}
         <div id="formContainer" className="dwo forget">
           <div className="formLeft">
             <img src="/assets/images/member_photo.png" alt="頭相" />
@@ -109,7 +109,7 @@ let MemberLogin = (props) => {
             </form>
           </div>
         </div>
-      </div>
+      {/* </div> */}
     </Modal>
   );
 };
