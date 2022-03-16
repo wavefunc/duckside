@@ -199,13 +199,13 @@ let MemberLogin = (props) => {
 
   return (
     <Modal
-      size="sm"
+      size="md"
       show={props.show}
       animation={true}
       aria-labelledby="example-modal-sizes-title-lg"
     >
       <Modal id="example-modal-sizes-title-lg"></Modal>
-      <div id="formContainer_body">
+      {/* <div id="formContainer_body"> */}
         <div
           id="formContainer"
           className="dwo"
@@ -309,7 +309,7 @@ let MemberLogin = (props) => {
             </form>
           </div>
         </div>
-      </div>
+      {/* </div> */}
     </Modal>
   );
 };
