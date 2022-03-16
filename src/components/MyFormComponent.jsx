@@ -12,7 +12,7 @@ import React, { useEffect, useRef } from 'react';
 import Transition from 'react-transition-group/Transition'
 
 // Formik
-export const MyInput = ({ children, label, list, getList, setList, helptext, flex, maxWidth, ...props }) => {
+export const MyInput = ({ children, label, list, getList, setList, helptext, flex, maxWidth, hidden, ...props }) => {
     const [field, meta] = useField(props);
     let didChanged = useRef(false);
     useEffect(() => {
@@ -27,18 +27,8 @@ export const MyInput = ({ children, label, list, getList, setList, helptext, fle
         }
         didChanged.current = true;
     }, [field.value]);
-    return props.type === 'button' ? (
-        <div className="d-inline-block ml-2 mr-2 mb-2"
-            style={{ flex: flex, maxWidth: '300px' }}
-        >
-            &nbsp;
-            <div>
-                <button type={props.buttonType} className={props.className} onClick={props.onClick}>
-                    {props.value}
-                </button>
-            </div>
-        </div>
-    ) : (
+    console.log(hidden);
+    return hidden ? null : (
         <>
             <Form.Label
                 className="text-nowrap d-inline-block ml-2 mr-2 mb-2"

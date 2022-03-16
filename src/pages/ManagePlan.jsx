@@ -11,7 +11,7 @@ import axios from 'axios';
 import dt from 'date-and-time';
 import { h } from "gridjs";
 
-import { MyFormikObserver, MyInput, MySelect, MyOkToastSlideUp } from '../components/MyFormComponent';
+import { MyFormikObserver, MyInput, MySelect, MyOkToastSlideUp, MyButton } from '../components/MyFormComponent';
 import ManageRecent from '../components/ManageRecent.jsx';
 import myPlanHelper from '../components/MyPlanHelper.jsx';
 import Breadcrumb from '../components/Breadcrumb'
@@ -79,9 +79,8 @@ const col = [
    { id: 'plan_note', name: '筆記', width: '15%', },
 ];
 
-
 // 副表設定
-
+// 無副表
 
 function Manageplan(props) {
    console.log('--Manageplan--');
@@ -102,12 +101,15 @@ function Manageplan(props) {
    };
 
    const planSchema = yup.object().shape({
-      plan_date: yup.date('日期格式為yyyy-mm-dd').required("日期不可空白"),
-      sec_str: yup.string('必須為字串').required("代號及名稱不可空白").test(
+      plan_date: yup.date().typeError('日期格式為yyyy-mm-dd').required("日期不可空白"),
+      sec_str: yup.string().typeError('查無此股, 請從選項填入').required("代號及名稱不可空白").test(
          'isListed',
          '查無此股, 請從選項填入',
          (value, testContext) => datalist.indexOf(value) > -1,
       ),
+      plan_anchor: yup.number().typeError("價格須為正數").required("價格不可空白").positive('價格須為正數'),
+      plan_stoploss: yup.number().typeError("價格須為正數").required("價格不可空白").positive('價格須為正數'),
+      plan_target: yup.number().typeError("價格須為正數").required("價格不可空白").positive('價格須為正數'),
    });
 
    const handleSubmit = (values, actions) => {
@@ -137,8 +139,7 @@ function Manageplan(props) {
          console.log(res.data);
       });
    };
-
-   const handleShowEdit = (cells) => {
+   const setEditModal = (cells) => {
       let values = cells.map((v) => v.data);
       let dataToEdit = col.reduce((target, elm, idx) => {
          // console.log(elm.formatter && typeof elm.formatter(values[idx]) !== 'object' ? elm.formatter(values[idx]) : values[idx]);
@@ -148,11 +149,14 @@ function Manageplan(props) {
       dataToEdit['sec_str'] = `${dataToEdit.sec_id} ${dataToEdit.sec_name}`;
       setDatalist([dataToEdit['sec_str']]);
       setEditingValues(dataToEdit);
+   }
+   const handleShowEdit = (cells) => {
+      setEditModal(cells);
       setShowEdit(true);
    }
    const handleCloseEdit = () => {
-      setShowEdit(false);
       setEditingValues();
+      setShowEdit(false);
    }
    const handleEdit = (values, actions) => {
       console.log(values.sec_str.split(" ")[0]);
@@ -184,19 +188,12 @@ function Manageplan(props) {
       });
    }
    const handleShowDelete = (cells) => {
-      let values = cells.map((v) => v.data);
-      let dataToDelete = col.reduce((target, elm, idx) => {
-         target[elm.id] = elm.formatter && typeof elm.formatter(values[idx]) !== 'object' ? elm.formatter(values[idx]) : values[idx];
-         return target;
-      }, {});
-      dataToDelete['sec_str'] = `${dataToDelete.sec_id} ${dataToDelete.sec_name}`;
-      setDatalist([dataToDelete['sec_str']]);
-      setEditingValues(dataToDelete);
+      setEditModal(cells);
       setShowDelete(true);
    }
    const handleCloseDelete = () => {
-      setShowDelete(false);
       setEditingValues();
+      setShowDelete(false);
    }
    const handleDelete = (values, actions) => {
       let dataToServer = {
@@ -227,100 +224,116 @@ function Manageplan(props) {
          <Row>
             <Breadcrumb />
          </Row>
-         <Row className='pr-2'>
+         <Row className='pr-2 pb-4'>
             <Col lg={8}>
-               <Formik
-                  initialValues={initialValues}
-                  validationSchema={planSchema}
-                  onSubmit={handleSubmit}
-               >
-                  {(props) => (
-                     <Form>
-                        <MyInput
-                           label="日期"
-                           name="plan_date" id="plan_date"
-                           type="date"
-                           inline="true" size="sm"
-                        />
-                        <MyInput
-                           label="股票代號及名稱"
-                           name="sec_str" id="sec_str"
-                           type="text"
-                           placeholder=""
-                           inline="true"
-                           list={datalist}
-                           setList={setDatalist}
-                           getList={getDatalist}
-                        />
-                        <MySelect
-                           label="類型"
-                           name="plan_strategy" id="plan_strategy"
-                           type="text"
-                           inline="true"
-                           size="sm"
+               <Tab.Container id="tabsForm" defaultActiveKey="single" mountOnEnter={true}>
+                  <Nav variant="pills">
+                     <Nav.Item>
+                        <Nav.Link eventKey="single" bsPrefix='btn btn-light ml-1'>
+                           記錄單筆
+                        </Nav.Link>
+                     </Nav.Item>
+                     <Nav.Item>
+                        <Nav.Link eventKey="file" bsPrefix='btn btn-light ml-1'>
+                           上傳excel
+                        </Nav.Link>
+                     </Nav.Item>
+                  </Nav>
+                  <Tab.Content className='pt-2'>
+                     <Tab.Pane eventKey="single">
+                        <Formik
+                           initialValues={initialValues}
+                           validationSchema={planSchema}
+                           onSubmit={handleSubmit}
                         >
-                           {myPlanHelper.list}
-                        </MySelect>
-                        <MyInput
-                           label={strategy && strategy.param < 1 ? null : "參數1"}
-                           name="plan_param1" id="plan_param1"
-                           type="number" step="1"
-                           placeholder=""
-                           inline="true"
-                           className={strategy && strategy.param < 1 ? "d-none" : null}
-                        />
-                        <MyInput
-                           label={strategy && strategy.param < 2 ? null : "參數2"}
-                           name="plan_param2" id="plan_param2"
-                           type="number" step="1"
-                           placeholder=""
-                           inline="true"
-                           className={strategy && strategy.param < 2 ? "d-none" : null}
-                        />
-                        <br />
-                        <MyInput
-                           label="參考價"
-                           name="plan_anchor" id="plan_anchor"
-                           type="number" step="1"
-                           placeholder="心目中合理的進場價"
-                           inline="true"
-                        />
-                        <MyInput
-                           label="停損價"
-                           name="plan_stoploss" id="plan_stoploss"
-                           type="number" step="1"
-                           placeholder=""
-                           inline="true"
-                        />
-                        <MyInput
-                           label="目標價"
-                           name="plan_target" id="plan_target"
-                           type="number" step="1"
-                           placeholder=""
-                           inline="true"
-                        />
-                        <br />
-                        <Row>
-                           <Col lg={8}>
-                              <MyInput
-                                 label="筆記"
-                                 id="plan_note"
-                                 name="plan_note"
-                                 type="text"
-                              />
-                           </Col>
-                           <Col lg={1} className="d-inline-flex flex-column-reverse text-nowrap  input-group p-2">
-                              <Button type="submit" variant="warning" size="sm">送出</Button>
-                           </Col>
-                        </Row>
-                        <MyFormikObserver
-                           value={props.values}
-                           onChange={setInputValues}>
-                        </MyFormikObserver>
-                     </Form>
-                  )}
-               </Formik>
-               <Modal show={showEdit} onHide={handleCloseEdit} centered={true} size='lg'>
+                           {(props) => (
+                              <Form className='form-inline'>
+                                 <MyInput
+                                    label="日期"
+                                    name="plan_date"
+                                    type="date"
+                                    flex='1 1 auto'
+                                 />
+                                 <MyInput
+                                    label="股票代號及名稱"
+                                    name="sec_str"
+                                    type="text"
+                                    list={datalist}
+                                    setList={setDatalist}
+                                    getList={getDatalist}
+                                    flex='1 1 auto'
+                                 />
+                                 <MyInput
+                                    label="類型"
+                                    name="plan_strategy"
+                                    type="text"
+                                    flex='1 1 auto'
+                                 >
+                                    {myPlanHelper.list}
+                                 </MyInput>
+                                 <MyInput
+                                    label="參數1"
+                                    name="plan_param1"
+                                    type="number"
+                                    hidden={strategy && strategy.param < 1}
+                                    flex='1 1 auto'
+                                 />
+                                 <div style={{ width: '100%' }}></div>
+                                 <MyInput
+                                    label="參數2"
+                                    name="plan_param2"
+                                    type="number"
+                                    hidden={strategy && strategy.param < 2}
+                                    flex='1 1 auto'
+                                 />
+                                 <MyInput
+                                    label="參考價"
+                                    name="plan_anchor"
+                                    type="number"
+                                    placeholder="心目中合理的進場價"
+                                    flex='1 1 auto'
+                                 />
+                                 <MyInput
+                                    label="停損價"
+                                    name="plan_stoploss"
+                                    type="number"
+                                    placeholder=""
+                                    flex='1 1 auto'
+                                 />
+                                 <MyInput
+                                    label="目標價"
+                                    name="plan_target"
+                                    type="number"
+                                    placeholder=""
+                                    flex='1 1 auto'
+                                 />
+                                 <div style={{ width: '100%' }}></div>
+                                 <MyInput
+                                    label="筆記"
+                                    name="plan_note"
+                                    type="text"
+                                    maxWidth="515px"
+                                    flex='2 1 auto'
+                                 />
+                                 <MyButton
+                                    type="submit"
+                                    value="送出"
+                                    className="btn btn-warning"
+                                    flex='1 2 auto'
+                                 />
+                                 <MyFormikObserver
+                                    value={props.values}
+                                    onChange={setInputValues}>
+                                 </MyFormikObserver>
+                              </Form>
+                           )}
+                        </Formik>
+                     </Tab.Pane>
+                     <Tab.Pane eventKey="file">
+                     </Tab.Pane>
+                  </Tab.Content>
+               </Tab.Container>
+               <Modal show={showEdit} onHide={handleCloseEdit} backdrop='static'>
                   <Modal.Header closeButton>
                      <Modal.Title>編輯</Modal.Title>
                   </Modal.Header>
@@ -331,89 +344,91 @@ function Manageplan(props) {
                         onSubmit={handleEdit}
                      >
                         {(props) => (
-                           <Form>
+                           <Form className='form-inline'>
                               <MyInput
                                  label="日期"
-                                 name="plan_date" id="plan_date"
+                                 name="plan_date"
                                  type="date"
-                                 inline="true" size="sm"
+                                 flex='1 1 auto'
+                                 maxWidth='43.5%'
                               />
                               <MyInput
                                  label="股票代號及名稱"
-                                 name="sec_str" id="sec_str"
+                                 name="sec_str"
                                  type="text"
-                                 placeholder=""
-                                 inline="true"
                                  list={datalist}
                                  setList={setDatalist}
                                  getList={getDatalist}
+                                 flex='1 1 auto'
+                                 maxWidth='43.5%'
                               />
-                              <MySelect
+                              <MyInput
                                  label="類型"
-                                 name="plan_strategy" id="plan_strategy"
+                                 name="plan_strategy"
                                  type="text"
-                                 inline="true"
-                                 size="sm"
+                                 flex='1 1 auto'
+                                 maxWidth='28%'
                               >
                                  {myPlanHelper.list}
-                              </MySelect>
+                              </MyInput>
                               <MyInput
-                                 label={editingValues && myPlanHelper.findIndex(editingValues.plan_strategy).param < 1 ? null : "參數1"}
-                                 name="plan_param1" id="plan_param1"
-                                 type="number" step="1"
-                                 placeholder=""
-                                 inline="true"
-                                 className={editingValues && myPlanHelper.findIndex(editingValues.plan_strategy).param < 1 ? "d-none" : null}
+                                 label="參數1"
+                                 name="plan_param1"
+                                 type="number"
+                                 hidden={editingValues && myPlanHelper.findIndex(editingValues.plan_strategy).param < 1}
+                                 flex='1 1 auto'
+                                 maxWidth='28%'
                               />
                               <MyInput
-                                 label={editingValues && myPlanHelper.findIndex(editingValues.plan_strategy).param < 2 ? null : "參數2"}
-                                 name="plan_param2" id="plan_param2"
-                                 type="number" step="1"
-                                 placeholder=""
-                                 inline="true"
-                                 className={editingValues && myPlanHelper.findIndex(editingValues.plan_strategy).param < 2 ? "d-none" : null}
+                                 label="參數2"
+                                 name="plan_param2"
+                                 type="number"
+                                 hidden={editingValues && myPlanHelper.findIndex(editingValues.plan_strategy).param < 2}
+                                 flex='1 1 auto'
+                                 maxWidth='28%'
                               />
-                              <br />
+                              <div style={{ width: '100%' }}></div>
                               <MyInput
                                  label="參考價"
-                                 name="plan_anchor" id="plan_anchor"
-                                 type="number" step="1"
-                                 placeholder="心目中合理的進場價"
-                                 inline="true"
+                                 name="plan_anchor"
+                                 type="number"
+                                 flex='1 1 auto'
+                                 maxWidth='28%'
                               />
                               <MyInput
                                  label="停損價"
-                                 name="plan_stoploss" id="plan_stoploss"
-                                 type="number" step="1"
-                                 placeholder=""
-                                 inline="true"
+                                 name="plan_stoploss"
+                                 type="number"
+                                 flex='1 1 auto'
+                                 maxWidth='28%'
                               />
                               <MyInput
                                  label="目標價"
-                                 name="plan_target" id="plan_target"
-                                 type="number" step="1"
-                                 placeholder=""
-                                 inline="true"
+                                 name="plan_target"
+                                 type="number"
+                                 flex='1 1 auto'
+                                 maxWidth='28%'
                               />
-                              <br />
-                              <Row>
-                                 <Col lg={8}>
-                                    <MyInput
-                                       label="筆記"
-                                       id="plan_note"
-                                       name="plan_note"
-                                       type="text"
-                                    />
-                                 </Col>
-                                 <Col lg={1} className="d-inline-flex flex-column-reverse input-group p-2">
-                                    <Button type="submit" variant="warning" size="sm">送出</Button>
-                                 </Col>
-                                 <Col lg={1} className="d-inline-flex flex-column-reverse input-group p-2">
-                                    <Button variant="outline-secondary" onClick={handleCloseEdit} size="sm">
-                                       取消
-                                    </Button>
-                                 </Col>
-                              </Row>
+                              <div style={{ width: '100%' }}></div>
+                              <MyInput
+                                 label="筆記"
+                                 name="plan_note"
+                                 type="text"
+                                 maxWidth="100%"
+                                 flex='2 1 auto'
+                              />
+                              <MyButton
+                                 type="submit"
+                                 value="送出"
+                                 className="btn btn-warning"
+                              />
+                              <MyButton
+                                 type="button"
+                                 value="取消"
+                                 className="btn btn-outline-secondary"
+                                 onClick={handleCloseEdit}
+                                 flex='1 2 auto'
+                              />
                               <MyFormikObserver
                                  value={props.values}
                                  onChange={setEditingValues}>
@@ -425,7 +440,7 @@ function Manageplan(props) {
                   <Modal.Footer>
                   </Modal.Footer>
                </Modal>
-               <Modal show={showDelete} onHide={handleCloseDelete} centered={true} size='lg'>
+               <Modal show={showDelete} onHide={handleCloseDelete} backdrop='static'>
                   <Modal.Header closeButton>
                      <Modal.Title>刪除</Modal.Title>
                   </Modal.Header>
@@ -434,99 +449,92 @@ function Manageplan(props) {
                         initialValues={editingValues}
                         onSubmit={handleDelete}
                      >
-                        <Form>
-                           <MyInput
-                              label="日期"
-                              name="plan_date" id="plan_date"
-                              type="date"
-                              inline="true" size="sm"
-                              readOnly
-                           />
-                           <MyInput
-                              label="股票代號及名稱"
-                              name="sec_str" id="sec_str"
-                              type="text"
-                              placeholder=""
-                              inline="true"
-                              list={datalist}
-                              setList={setDatalist}
-                              getList={getDatalist}
-                              readOnly
-                           />
-                           <MySelect
-                              label="類型"
-                              name="plan_strategy" id="plan_strategy"
-                              type="text"
-                              inline="true"
-                              size="sm"
-                              readOnly
-                           >
-                              {myPlanHelper.list}
-                           </MySelect>
-                           <MyInput
-                              label={editingValues && editingValues.plan_param1 ? "參數1" : null}
-                              name="plan_param1" id="plan_param1"
-                              type="number" step="1"
-                              placeholder=""
-                              inline="true"
-                              className={editingValues && editingValues.plan_param1 ? null : "d-none"}
-                              readOnly
-                           />
-                           <MyInput
-                              label={editingValues && editingValues.plan_param1 ? "參數1" : null}
-                              name="plan_param2" id="plan_param2"
-                              type="number" step="1"
-                              placeholder=""
-                              inline="true"
-                              className={editingValues && editingValues.plan_param1 ? null : "d-none"}
-                              readOnly
-                           />
-                           <br />
-                           <MyInput
-                              label="參考價"
-                              name="plan_anchor" id="plan_anchor"
-                              type="number" step="1"
-                              placeholder="心目中合理的進場價"
-                              inline="true"
-                              readOnly
-                           />
-                           <MyInput
-                              label="停損價"
-                              name="plan_stoploss" id="plan_stoploss"
-                              type="number" step="1"
-                              placeholder=""
-                              inline="true"
-                              readOnly
-                           />
-                           <MyInput
-                              label="目標價"
-                              name="plan_target" id="plan_target"
-                              type="number" step="1"
-                              placeholder=""
-                              inline="true"
-                              readOnly
-                           />
-                           <br />
-                           <Row>
-                              <Col lg={8}>
-                                 <MyInput
-                                    label="筆記"
-                                    id="plan_note"
-                                    name="plan_note"
-                                    type="text"
-                                    readOnly
-                                 />
-                              </Col>
-                              <Col lg={1} className="d-inline-flex flex-column-reverse input-group p-2">
-                                 <Button type="submit" variant="warning" size="sm">確認</Button>
-                              </Col>
-                              <Col lg={1} className="d-inline-flex flex-column-reverse input-group p-2">
-                                 <Button variant="outline-secondary" onClick={handleCloseDelete} size="sm">
-                                    取消
-                                 </Button>
-                              </Col>
-                           </Row>
-                        </Form>
+                           <Form className='form-inline'>
+                              <MyInput readOnly
+                                 label="日期"
+                                 name="plan_date"
+                                 type="date"
+                                 flex='1 1 auto'
+                                 maxWidth='43.5%'
+                              />
+                              <MyInput readOnly
+                                 label="股票代號及名稱"
+                                 name="sec_str"
+                                 type="text"
+                                 list={datalist}
+                                 setList={setDatalist}
+                                 getList={getDatalist}
+                                 flex='1 1 auto'
+                                 maxWidth='43.5%'
+                              />
+                              <MyInput readOnly
+                                 label="類型"
+                                 name="plan_strategy"
+                                 type="text"
+                                 flex='1 1 auto'
+                                 maxWidth='28%'
+                              >
+                                 {myPlanHelper.list}
+                              </MyInput>
+                              <MyInput readOnly
+                                 label="參數1"
+                                 name="plan_param1"
+                                 type="number"
+                                 hidden={editingValues && myPlanHelper.findIndex(editingValues.plan_strategy).param < 1}
+                                 flex='1 1 auto'
+                                 maxWidth='28%'
+                              />
+                              <MyInput readOnly
+                                 label="參數2"
+                                 name="plan_param2"
+                                 type="number"
+                                 hidden={editingValues && myPlanHelper.findIndex(editingValues.plan_strategy).param < 2}
+                                 flex='1 1 auto'
+                                 maxWidth='28%'
+                              />
+                              <div style={{ width: '100%' }}></div>
+                              <MyInput readOnly
+                                 label="參考價"
+                                 name="plan_anchor"
+                                 type="number"
+                                 flex='1 1 auto'
+                                 maxWidth='28%'
+                              />
+                              <MyInput readOnly
+                                 label="停損價"
+                                 name="plan_stoploss"
+                                 type="number"
+                                 flex='1 1 auto'
+                                 maxWidth='28%'
+                              />
+                              <MyInput readOnly
+                                 label="目標價"
+                                 name="plan_target"
+                                 type="number"
+                                 flex='1 1 auto'
+                                 maxWidth='28%'
+                              />
+                              <div style={{ width: '100%' }}></div>
+                              <MyInput readOnly
+                                 label="筆記"
+                                 name="plan_note"
+                                 type="text"
+                                 maxWidth="100%"
+                                 flex='2 1 auto'
+                              />
+                              <MyButton
+                                 type="submit"
+                                 value="送出"
+                                 className="btn btn-danger"
+                              />
+                              <MyButton
+                                 type="button"
+                                 value="取消"
+                                 className="btn btn-outline-secondary"
+                                 onClick={handleCloseDelete}
+                                 flex='1 2 auto'
+                              />
+                           </Form>
                      </Formik>
                   </Modal.Body>
                   <Modal.Footer>
