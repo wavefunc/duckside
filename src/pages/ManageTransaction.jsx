@@ -1,7 +1,6 @@
 /* * * * * 人豪 * * * * * 
  * 備忘:
  * const acc_email = ... 要換成localStorage
- * dataToEdit['sec_str']=`${dataToEdit.sec_id} 台積電`; 改寫成活的
  * 要寫個總計欄位
  * * * * * * * * * * * */
 
@@ -30,13 +29,12 @@ const urlGetDatalist = 'http://localhost:5000/securities/datalist/';
 const initialValues = {
    txn_date: dt.format(new Date(), 'YYYY-MM-DD'),
    sec_str: "",
-   txn_round: 1,
-   txn_position: "建倉",
-   txn_price: 630,
-   txn_amount: 1000,
-   txn_note: "朋友說的",
+   txn_round: "",
+   txn_position: "",
+   txn_price: "",
+   txn_amount: "",
+   txn_note: "",
 };
-
 
 const resetInputs = (prevValues) => {
    let newValues = { ...prevValues };
@@ -90,10 +88,10 @@ const col = [
 
 // 副表設定
 const colInventory = [
-   { id: 'sec_id', name: '代號' },
-   { id: 'sec_name', name: '名稱' },
+   { id: 'sec_id', name: '代號', width: '25%' },
+   { id: 'sec_name', name: '名稱', width: '25%' },
    {
-      id: 'total', name: '庫存數量',
+      id: 'total', name: '庫存數量', width: '40%',
       formatter: (cell) => h('b', { style: { 'float': 'right', 'margin-right': '5px' } }, cell.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","))
    },
    { id: 'sec_market', name: '市場別', hidden: true },
@@ -103,8 +101,8 @@ function ManageTransaction(props) {
    console.log('--ManageTransaction--');
    const [refreshState, setRefresh] = useState(true);
 
-   const [editingValues, setEditingValues] = useState({});
    const [datalist, setDatalist] = useState([]);
+   const [editingValues, setEditingValues] = useState({});
 
    const [showEdit, setShowEdit] = useState(false);
    const [showDelete, setShowDelete] = useState(false);
@@ -113,18 +111,16 @@ function ManageTransaction(props) {
    const refresh = () => {
       setRefresh((refreshState) => (!refreshState));
    }
-
    const txnSchema = yup.object().shape({
-      txn_date: yup.date('日期格式為yyyy-mm-dd').required("日期不可空白"),
-      sec_str: yup.string('必須為字串').required("代號及名稱不可空白").test(
-         'isListed',
-         '查無此股, 請從選項填入',
-         (value, testContext) => datalist.indexOf(value) > -1,
+      txn_date: yup.date().typeError('日期格式為yyyy-mm-dd').required("日期不可空白"),
+      txn_round: yup.number().typeError('編號須為正整數').integer('編號須為正整數').positive('編號須為正整數'),
+      sec_str: yup.string().typeError('必須為字串').required("代號及名稱不可空白").test(
+         'isListed', '查無此股, 請從選項填入',
+         (value) => datalist.indexOf(value) > -1,
       ),
-      txn_price: yup.number("價格須為數值").required("價格不可空白"),
-      txn_amount: yup.number("數量須為數值").required("數量不可空白").integer("數量必須為整數"),
-   })
-
+      txn_price: yup.number().typeError("價格須為正數").required("價格不可空白").positive('價格須為正數'),
+      txn_amount: yup.number().typeError("數量須為整數").required("數量不可空白").integer('數量須為整數'),
+   });
    const handleSubmit = (values, actions) => {
       let dataToServer = {
          sec_id: values.sec_str.split(" ")[0],
@@ -140,7 +136,7 @@ function ManageTransaction(props) {
       });
    };
 
-   const handleShowEdit = (cells) => {
+   const setEditModal = (cells) => {
       let values = cells.map((v) => v.data);
       let dataToEdit = col.reduce((target, elm, idx) => {
          target[elm.id] = elm.formatter && typeof elm.formatter(values[idx]) !== 'object' ? elm.formatter(values[idx]) : values[idx];
@@ -149,6 +145,9 @@ function ManageTransaction(props) {
       dataToEdit['sec_str'] = `${dataToEdit.sec_id} ${dataToEdit.sec_name}`;
       setDatalist([`${dataToEdit.sec_id} ${dataToEdit.sec_name}`]);
       setEditingValues(dataToEdit);
+   }
+   const handleShowEdit = (cells) => {
+      setEditModal(cells);
       setShowEdit(true);
    }
    const handleCloseEdit = () => {
@@ -171,14 +170,7 @@ function ManageTransaction(props) {
       });
    }
    const handleShowDelete = (cells) => {
-      let values = cells.map((v) => v.data);
-      let dataToDelete = col.reduce((target, elm, idx) => {
-         target[elm.id] = elm.formatter && typeof elm.formatter(values[idx]) !== 'object' ? elm.formatter(values[idx]) : values[idx];
-         return target;
-      }, {});
-      dataToDelete['sec_str'] = `${dataToDelete.sec_id} 台積電`;
-      setDatalist([`${dataToDelete.sec_id} 台積電`]);
-      setEditingValues(dataToDelete);
+      setEditModal(cells);
       setShowDelete(true);
    }
    const handleCloseDelete = () => {
@@ -231,31 +223,34 @@ function ManageTransaction(props) {
                                  name="txn_date"
                                  id="txn_date"
                                  type="date"
+                                 flex='2 1'
                               />
                               <MyInput
                                  label="編號"
                                  name="txn_round"
                                  id="txn_round"
-                                 type="number"
                                  placeholder="方便分批追蹤"
+                                 flex='1 2'
                               />
-                              <MySelect
+                              <MyInput
                                  label="類型"
                                  name="txn_position"
                                  id="txn_position"
                                  type="text"
+                                 flex='1 2'
                               >
                                  {['建倉', '加碼', '減碼', '停利', '停損']}
-                              </MySelect>
+                              </MyInput>
                               <div style={{ width: '100%' }}></div>
                               <MyInput
-                                 label="股票代號及名稱"
+                                 label="股號及名稱"
                                  name="sec_str" id="sec_str"
                                  type="text"
                                  placeholder=""
                                  list={datalist}
                                  setList={setDatalist}
                                  getList={getDatalist}
+                                 flex='2 1'
                               />
                               <MyInput
                                  label="均價"
@@ -263,6 +258,7 @@ function ManageTransaction(props) {
                                  id="txn_price"
                                  type="number"
                                  placeholder="單位: 新台幣"
+                                 flex='1 2'
                               />
                               <MyInput
                                  label="數量"
@@ -271,6 +267,7 @@ function ManageTransaction(props) {
                                  type="number"
                                  step="1000"
                                  placeholder="負數為賣出或放空"
+                                 flex='1 2'
                               />
                               <div style={{ width: '100%' }}></div>
                               <MyInput
@@ -282,6 +279,7 @@ function ManageTransaction(props) {
                               />
                               <MyInput
                                  type="button"
+                                 name="btnSubmit"
                                  value="送出"
                                  className="btn btn-warning"
                                  flex='1'
@@ -310,7 +308,7 @@ function ManageTransaction(props) {
                      </Tab.Pane>
                   </Tab.Content>
                </Tab.Container>
-               <Modal show={showEdit} onHide={handleCloseEdit} centered={true} size='lg'>
+               <Modal show={showEdit} onHide={handleCloseEdit} centered={true} backdrop='static'>
                   <Modal.Header closeButton>
                      <Modal.Title>編輯</Modal.Title>
                   </Modal.Header>
@@ -320,47 +318,40 @@ function ManageTransaction(props) {
                         validationSchema={txnSchema}
                         onSubmit={handleEdit}
                      >
-                        <Form>
+                        <Form className='form-inline'>
                            <MyInput
                               label="日期"
                               name="txn_date"
                               id="txn_date"
                               type="date"
-                              inline="true"
-                              size="sm"
+                              flex='2 0 80%'
                            />
                            <MyInput
                               label="編號"
                               name="txn_round"
                               id="txn_round"
-                              type="number"
-                              inline="true"
+                              placeholder="方便分批追蹤"
+                              flex='1 1 40%'
                            />
-                           <MySelect
+                           <MyInput
                               label="類型"
                               name="txn_position"
                               id="txn_position"
                               type="text"
-                              inline="true"
-                              size="sm">
+                              flex='1 1 40%'
+                           >
                               {['建倉', '加碼', '減碼', '停利', '停損']}
-                           </MySelect>
+                           </MyInput>
+                           <div style={{ width: '100%' }}></div>
                            <MyInput
-                              name="txn_id"
-                              id="txn_id"
-                              type="number"
-                              inline="true"
-                              className="d-none"
-                           />
-                           <br />
-                           <MyInput
-                              label="股票代號及名稱"
+                              label="股號及名稱"
                               name="sec_str" id="sec_str"
                               type="text"
                               placeholder=""
-                              inline="true"
                               list={datalist}
+                              setList={setDatalist}
                               getList={getDatalist}
+                              flex='2 0 80%'
                            />
                            <MyInput
                               label="均價"
@@ -368,7 +359,7 @@ function ManageTransaction(props) {
                               id="txn_price"
                               type="number"
                               placeholder="單位: 新台幣"
-                              inline="true"
+                              flex='1 1 40%'
                            />
                            <MyInput
                               label="數量"
@@ -377,33 +368,38 @@ function ManageTransaction(props) {
                               type="number"
                               step="1000"
                               placeholder="負數為賣出或放空"
-                              inline="true"
+                              flex='1 1 40%'
                            />
-                           <Row>
-                              <Col lg={8}>
-                                 <MyInput
-                                    label="摘要"
-                                    id="txn_note"
-                                    name="txn_note"
-                                    type="text"
-                                 />
-                              </Col>
-                              <Col lg={1} className="d-inline-flex flex-column-reverse input-group p-2">
-                                 <Button type="submit" variant="warning" size="sm">送出</Button>
-                              </Col>
-                              <Col lg={1} className="d-inline-flex flex-column-reverse input-group p-2">
-                                 <Button variant="outline-secondary" onClick={handleCloseEdit} size="sm">
-                                    取消
-                                 </Button>
-                              </Col>
-                           </Row>
+                           <div style={{ width: '100%' }}></div>
+                           <MyInput
+                              label="摘要"
+                              id="txn_note"
+                              name="txn_note"
+                              type="text"
+                              flex='2'
+                           />
+                           <MyInput
+                              type="button"
+                              buttonType="submit"
+                              name="btnSubmitEdit"
+                              value="送出"
+                              className="btn btn-warning"
+                           />
+                           <MyInput
+                              type="button"
+                              buttonType="button"
+                              name="btnCancelEdit"
+                              value="取消"
+                              className="btn btn-outline-secondary"
+                              onClick={handleCloseEdit}
+                           />
                         </Form>
                      </Formik>
                   </Modal.Body>
                   <Modal.Footer>
                   </Modal.Footer>
                </Modal>
-               <Modal show={showDelete} onHide={handleCloseDelete} centered={true} size='lg'>
+               <Modal show={showDelete} onHide={handleCloseDelete} centered={true}>
                   <Modal.Header closeButton>
                      <Modal.Title>刪除</Modal.Title>
                   </Modal.Header>
@@ -412,93 +408,81 @@ function ManageTransaction(props) {
                         initialValues={editingValues}
                         onSubmit={handleDelete}
                      >
-                        <Form>
-                           <MyInput
+                        <Form className='form-inline'>
+                           <MyInput readOnly
                               label="日期"
                               name="txn_date"
                               id="txn_date"
                               type="date"
-                              inline="true"
-                              size="sm"
-                              readOnly
+                              flex='2 0 80%'
                            />
-                           <MyInput
-                              name="txn_id"
-                              id="txn_id"
-                              type="number"
-                              inline="true"
-                              className="d-none"
-                              readOnly
-                           />
-                           <MyInput
+                           <MyInput readOnly
                               label="編號"
                               name="txn_round"
                               id="txn_round"
-                              type="number"
-                              inline="true"
-                              readOnly
+                              placeholder="方便分批追蹤"
+                              flex='1 1 40%'
                            />
-                           <MySelect
+                           <MyInput readOnly
                               label="類型"
                               name="txn_position"
                               id="txn_position"
                               type="text"
-                              inline="true"
-                              size="sm"
-                              readOnly>
-                              {[
-                                 '建倉', '加碼', '減碼', '停利', '停損'
-                              ]}
-                           </MySelect>
-                           <br />
-                           <MyInput
-                              label="股票代號及名稱"
+                              flex='1 1 40%'
+                           >
+                              {['建倉', '加碼', '減碼', '停利', '停損']}
+                           </MyInput>
+                           <div style={{ width: '100%' }}></div>
+                           <MyInput readOnly
+                              label="股號及名稱"
                               name="sec_str" id="sec_str"
                               type="text"
                               placeholder=""
-                              inline="true"
                               list={datalist}
+                              setList={setDatalist}
                               getList={getDatalist}
-                              readOnly
+                              flex='2 0 80%'
                            />
-                           <MyInput
+                           <MyInput readOnly
                               label="均價"
                               name="txn_price"
                               id="txn_price"
                               type="number"
                               placeholder="單位: 新台幣"
-                              inline="true"
-                              readOnly
+                              flex='1 1 40%'
                            />
-                           <MyInput
+                           <MyInput readOnly
                               label="數量"
                               name="txn_amount"
                               id="txn_amount"
                               type="number"
                               step="1000"
                               placeholder="負數為賣出或放空"
-                              inline="true"
-                              readOnly
+                              flex='1 1 40%'
                            />
-                           <Row>
-                              <Col lg={8}>
-                                 <MyInput
-                                    label="摘要"
-                                    id="txn_note"
-                                    name="txn_note"
-                                    type="text"
-                                    readOnly
-                                 />
-                              </Col>
-                              <Col lg={1} className="d-inline-flex flex-column-reverse input-group p-2">
-                                 <Button type="submit" variant="warning" size="sm">確認</Button>
-                              </Col>
-                              <Col lg={1} className="d-inline-flex flex-column-reverse input-group p-2">
-                                 <Button variant="outline-secondary" onClick={handleCloseDelete} size="sm">
-                                    取消
-                                 </Button>
-                              </Col>
-                           </Row>
+                           <div style={{ width: '100%' }}></div>
+                           <MyInput readOnly
+                              label="摘要"
+                              id="txn_note"
+                              name="txn_note"
+                              type="text"
+                              flex='2'
+                           />
+                           <MyInput
+                              type="button"
+                              buttonType="submit"
+                              name="btnSubmitDelete"
+                              value="確認"
+                              className="btn btn-danger"
+                           />
+                           <MyInput
+                              type="button"
+                              buttonType="button"
+                              name="btnCancelDelete"
+                              value="取消"
+                              className="btn btn-outline-secondary"
+                              onClick={handleCloseDelete}
+                           />
                         </Form>
                      </Formik>
                   </Modal.Body>
