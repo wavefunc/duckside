@@ -280,7 +280,7 @@
   margin: 9.75rem auto;
 }
 .modal.show .modal-dialog{
-  margin-top: 15%;
+  margin-top: 10%;
 }
 .modal{
   z-index: 9999!important;
