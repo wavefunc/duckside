@@ -336,6 +336,7 @@ function ManageAsset(props) {
                               type="number"
                               placeholder="包含未入帳交割款"
                               flex='1 1 auto'
+                              maxWidth='28%'
                            />
                            <MyInput
                               label="證券"
@@ -343,21 +344,24 @@ function ManageAsset(props) {
                               type="number"
                               placeholder="當時的庫存市值"
                               flex='1 1 auto'
+                              maxWidth='28%'
                            />
-                           <div style={{ width: '100%' }}></div>
                            <MyInput
                               label="期權"
                               name="ast_option"
                               type="number" step="10000"
                               placeholder="如: 帳戶權益數"
                               flex='1 1 auto'
+                              maxWidth='28%'
                            />
+                           <div style={{ width: '100%' }}></div>
                            <MyInput
                               label="其他資產"
                               name="ast_others"
                               type="number" step="10000"
                               placeholder="如: 外幣基金債券"
                               flex='1 1 auto'
+                              maxWidth='28%'
                            />
                            <MyInput
                               label="資券調整"
@@ -365,6 +369,7 @@ function ManageAsset(props) {
                               type="number" step="10000"
                               placeholder="如: 券賣時的市值 融資保證金"
                               flex='1 1 auto'
+                              maxWidth='28%'
                            />
                            <MyInput
                               label="其他調整"
@@ -372,6 +377,7 @@ function ManageAsset(props) {
                               type="number" step="10000"
                               placeholder=""
                               flex='1 1 auto'
+                              maxWidth='28%'
                            />
                            <div style={{ width: '100%' }}></div>
                            <MyInput
@@ -422,6 +428,7 @@ function ManageAsset(props) {
                               type="number"
                               placeholder="包含未入帳交割款"
                               flex='1 1 auto'
+                              maxWidth='28%'
                            />
                            <MyInput readOnly
                               label="證券"
@@ -429,21 +436,24 @@ function ManageAsset(props) {
                               type="number"
                               placeholder="當時的庫存市值"
                               flex='1 1 auto'
+                              maxWidth='28%'
                            />
-                           <div style={{ width: '100%' }}></div>
                            <MyInput readOnly
                               label="期權"
                               name="ast_option"
                               type="number" step="10000"
                               placeholder="如: 帳戶權益數"
                               flex='1 1 auto'
+                              maxWidth='28%'
                            />
+                           <div style={{ width: '100%' }}></div>
                            <MyInput readOnly
                               label="其他資產"
                               name="ast_others"
                               type="number" step="10000"
                               placeholder="如: 外幣基金債券"
                               flex='1 1 auto'
+                              maxWidth='28%'
                            />
                            <MyInput readOnly
                               label="資券調整"
@@ -451,6 +461,7 @@ function ManageAsset(props) {
                               type="number" step="10000"
                               placeholder="如: 券賣時的市值 融資保證金"
                               flex='1 1 auto'
+                              maxWidth='28%'
                            />
                            <MyInput readOnly
                               label="其他調整"
@@ -458,6 +469,7 @@ function ManageAsset(props) {
                               type="number" step="10000"
                               placeholder=""
                               flex='1 1 auto'
+                              maxWidth='28%'
                            />
                            <div style={{ width: '100%' }}></div>
                            <MyInput readOnly
