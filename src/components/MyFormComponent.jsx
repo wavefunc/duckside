@@ -12,7 +12,7 @@ import React, { useEffect, useRef } from 'react';
 import Transition from 'react-transition-group/Transition'
 
 // Formik
-export const MyInput = ({ label, list, getList, setList, helptext, flex, ...props }) => {
+export const MyInput = ({ children, label, list, getList, setList, helptext, flex, ...props }) => {
     const [field, meta] = useField(props);
     let didChanged = useRef(false);
     useEffect(() => {
@@ -28,34 +28,37 @@ export const MyInput = ({ label, list, getList, setList, helptext, flex, ...prop
         didChanged.current = true;
     }, [field.value]);
     return (
-        <div className="d-inline-block ml-2 mr-2 mb-2" style={{flex:flex}}>
-            {props.type === 'button' ? (
+        <div className="d-inline-block ml-2 mr-2 mb-2" style={{ flex: flex }}>
+            {props.type === 'button'? (
                 <>
                     <Form.Label style={{ width: '100%' }} >&nbsp;</Form.Label>
-                    <button className={props.className}>
+                    <button type={props.buttonType} className={props.className} onClick={props.onClick}>
                         {props.value}
                     </button>
                 </>
             ) : (
                 <>
-                    {
-                        label ? (
-                            <Form.Label
-                                className="justify-content-start"
-                                htmlFor={props.id || props.name}
-                            >
-                                {label}
-                            </Form.Label>
-                        ) : null
-                    }
-                    {/* <InputGroup hasValidation className="d-flex flex-column"> */}
+                    {label ? (
+                        <Form.Label
+                            className="justify-content-start text-nowrap"
+                            htmlFor={props.id || props.name}
+                        >
+                            {label}
+                        </Form.Label>
+                    ) : null}
                     <InputGroup hasValidation>
                         <Form.Control
+                            as={children ? 'select' : 'input'}
                             {...field} {...props}
-                            list={`list${props.id}`}
+                            list={list ? `list${props.id}` : ''}
                             aria-describedby={`prep${props.id} apnd${props.id} helptext${props.id}`}
                             isInvalid={meta.touched && meta.error}
-                        />
+                        >
+                            {children ? typeof children[0] === 'string' ?
+                                children.map((v, i) => <option key={i} value={v}>{v}</option>) :
+                                children.map((v) => <option key={v.key} value={v.value}>{v.value}</option>) : null
+                            }
+                        </Form.Control>
                         {props.prepend ? (
                             <InputGroup.Prepend>
                                 <InputGroup.Text id={`prep${props.id}`}>{props.prepend}</InputGroup.Text>
@@ -90,13 +93,6 @@ export const MyInput = ({ label, list, getList, setList, helptext, flex, ...prop
 export const MySelect = ({ children, label, ...props }) => {
     const [field, meta] = useField(props);
     return (
-        // <div>
-        //     <label htmlFor={props.id || props.name}>{label}</label>
-        //     <select {...field} {...props} className="custom-select" />
-        //     {meta.touched && meta.error ? (
-        //         <div className="error">{meta.error}</div>
-        //     ) : null}
-        // </div>
         <Form.Group className={props.inline ? "d-inline-block ml-1 mr-2" : "ml-1 mb-2"}>
             <Form.Label>{label}</Form.Label>
             <InputGroup>
