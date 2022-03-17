@@ -11,7 +11,7 @@ import React, { useEffect, useRef } from 'react';
 import Transition from 'react-transition-group/Transition'
 
 // Formik
-export const MyInput = ({ children, label, list, getList, setList, helptext, flex, maxWidth, hidden, ...props }) => {
+export const MyInput = ({ label, flex, maxWidth, hidden, helptext, children, list, getList, setList, ...props }) => {
     const [field, meta] = useField(props);
     let didChanged = useRef(false);
     useEffect(() => {
@@ -76,13 +76,13 @@ export const MyInput = ({ children, label, list, getList, setList, helptext, fle
         </>
     )
 };
-export const MyButton = ({ label, type, className, onClick, flex, maxWidth, ...props }) => {
+export const MyButton = ({ label, flex, maxWidth, type, className, onClick, ...props }) => {
     return (
         <div className="d-inline-block ml-2 mr-2 mb-2"
             style={{ flex: flex, maxWidth: maxWidth || '250px' }}
             {...props}
         >
-            {label === undefined ? <>&nbsp;</>:label}
+            {label === undefined ? <>&nbsp;</> : label}
             <div>
                 <button type={type} className={className} onClick={onClick}>
                     {props.value}
@@ -91,18 +91,34 @@ export const MyButton = ({ label, type, className, onClick, flex, maxWidth, ...p
         </div>
     )
 }
-export const MyUpload = ({ label, helptext, flex, maxWidth, hidden, placeholder, ...props }) => {
+export const MyUpload = ({ label, flex, maxWidth, hidden, helptext, placeholder, setFieldValue, setPreview, ...props }) => {
     const [field, meta] = useField(props);
+    let didChanged = useRef(false);
+    useEffect(() => {
+        console.log('MyUpload useEffect (field.value changed)');
+        // 透過Formik的field來監控本input值的變動,
+        // 在選取檔案改變時, 觸發父元件傳入的函式(例如設定預覽內容)
+        if (setPreview && didChanged.current) {
+            console.log('setPreview');
+            console.log(field.value);
+            // setPreview(field.value);
+            return
+        }
+        didChanged.current = true;
+    }, [field.value]);
+
     return hidden ? null : (
         <div className="d-inline-block ml-2 mr-2 mb-2"
             style={{ flex: flex, maxWidth: maxWidth }}
-            {...props}
         >
             {placeholder && label}
-            <Form.File id="formcheck-api-custom" custom
+            <Form.File custom
                 bsCustomPrefix='custom-file'
             >
-                <Form.File.Input />
+                <Form.File.Input
+                    {...field}
+                    onChange={(e) => {console.log(e.target.files[0])}}
+                />
                 <Form.File.Label
                     data-browse="選擇檔案"
                     bsCustomPrefix="custom-file-label col-form-label-sm d-inline-block mt-1"

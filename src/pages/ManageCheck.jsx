@@ -16,7 +16,7 @@ import { Formik, Form } from 'formik';
 import axios from 'axios';
 import dt from 'date-and-time';
 
-import { MyInput, MySelect } from '../components/MyFormComponent';
+import { MyInput } from '../components/MyFormComponent';
 import { MyChartLine } from '../components/MyChartComponent.jsx';
 import Breadcrumb from '../components/Breadcrumb';
 

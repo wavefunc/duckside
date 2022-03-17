@@ -103,6 +103,7 @@ function ManageTransaction(props) {
 
    const [datalist, setDatalist] = useState([]);
    const [editingValues, setEditingValues] = useState({});
+   const [uploadPreview, setUploadPreview] = useState("");
 
    const [showEdit, setShowEdit] = useState(false);
    const [showDelete, setShowDelete] = useState(false);
@@ -138,9 +139,24 @@ function ManageTransaction(props) {
          refresh();
       });
    };
+   const handleInputFileChange = () => {
+
+      setUploadPreview("test")
+   }
    const handleUpload = () => {
       console.log('upload');
    }
+   const handleFileChange = (setFieldValue) => {
+      return (e) => {
+         const uploadInputFile = e.target.value;
+         setFieldValue('uploadInputFile', uploadInputFile);
+
+         // 將檔案處理成可供預覽的字串或表格
+         const preview = JSON.stringify(uploadInputFile);
+         // 然後呈現在textarea中
+         setFieldValue('uploadPreview', preview)
+      };
+   };
    const setEditModal = (cells) => {
       let values = cells.map((v) => v.data);
       let dataToEdit = col.reduce((target, elm, idx) => {
@@ -290,30 +306,36 @@ function ManageTransaction(props) {
                         <Formik
                            onSubmit={handleUpload}
                         >
-                           <Form className='form-inline align-items-start'>
-                              <MyUpload
-                                 label=""
-                                 placeholder="接受格式 .xls .xlsx .csv"
-                                 name="uploadInputFile"
-                                 flex='1 1 auto'
-                                 maxWidth="515px"
-                              />
-                              <div style={{ width: '100%' }}></div>
-                              <MyInput
-                                 name="uploadPreview"
-                                 type="text"
-                                 as="textarea"
-                                 maxWidth='515px'
-                                 flex='1 1 auto'
-                              />
-                              <MyButton
-                                 label=""
-                                 type="submit"
-                                 className="btn btn-warning"
-                                 value="送出"
-                                 flex='0 1 auto'
-                              />
-                           </Form>
+                           {({ setFieldValue }) => (
+                              <Form className='form-inline align-items-start'>
+                                 <MyUpload
+                                    label="接受格式 .xls .xlsx .csv"
+                                    name="uploadInputFile"
+                                    id="uploadInputFile"
+                                    type="file"
+                                    flex='1 1 auto'
+                                    maxWidth="515px"
+                                    setPreview={handleInputFileChange}
+                                    setFieldValue={setFieldValue}
+                                 />
+                                 <div style={{ width: '100%' }}></div>
+                                 <MyInput
+                                    name="uploadPreview"
+                                    type="text"
+                                    as="textarea"
+                                    maxWidth='515px'
+                                    flex='1 1 auto'
+                                 />
+                                 <MyButton
+                                    label=""
+                                    type="submit"
+                                    className="btn btn-warning"
+                                    value="送出"
+                                    flex='0 1 auto'
+                                 />
+                              </Form>
+                           )
+                           }
                         </Formik>
                      </Tab.Pane>
                   </Tab.Content>
