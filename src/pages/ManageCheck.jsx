@@ -109,13 +109,13 @@ function ManageCheck(props) {
                         name="dateQuery2" id="dateQuery2"
                         type="date" inline="true"
                      />
-                     <MySelect
+                     <MyInput
                         label="圖表"
                         name="chartType" id="chartType"
                         type="text" inline="true"
                      >
                         {Object.keys(options)}
-                     </MySelect>
+                     </MyInput>
                      <Button type="submit" variant="warning" className="mb-1">
                         <Search className="mb-1 mr-1" />
                         <span>查詢</span>

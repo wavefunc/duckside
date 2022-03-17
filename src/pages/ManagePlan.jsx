@@ -480,7 +480,7 @@ function Manageplan(props) {
                                  label="參數1"
                                  name="plan_param1"
                                  type="number"
-                                 hidden={editingValues && myPlanHelper.findIndex(editingValues.plan_strategy).param < 1}
+                                 hidden={editingValues && !editingValues.plan_param1}
                                  flex='1 1 auto'
                                  maxWidth='28%'
                               />
@@ -488,7 +488,7 @@ function Manageplan(props) {
                                  label="參數2"
                                  name="plan_param2"
                                  type="number"
-                                 hidden={editingValues && myPlanHelper.findIndex(editingValues.plan_strategy).param < 2}
+                                 hidden={editingValues && !editingValues.plan_param2}
                                  flex='1 1 auto'
                                  maxWidth='28%'
                               />

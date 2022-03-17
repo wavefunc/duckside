@@ -202,8 +202,9 @@ export function MyChartLine({ data, x, y, yLabels, ...props }) {
             // borderColor: 'hsl(35, 100%, 50%)',
             // backgroundColor: 'hsl(60, 88%, 66%)',
             // 上方為投影用配色, 下方為網站配色
-            borderColor: 'hsl(35, 100%, 50%)',
-            backgroundColor: 'hsl(50, 85%, 88%)',
+            borderColor: 'rgb(144,144,144)',
+            borderWidth: 1.5,
+            backgroundColor: mainColor[2],
         },
     ] : y.map((v, i) => {
         return ({

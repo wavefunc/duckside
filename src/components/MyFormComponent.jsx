@@ -1,7 +1,6 @@
 /********
  * 注意: formik相關元件需用<Formik>包起來
  * 
- * 
 *********/
 
 import { useField } from 'formik';
@@ -93,36 +92,36 @@ export const MyButton = ({type, className, onClick, flex, ...props}) => {
         </div>
     )
 }
-export const MySelect = ({ children, label, ...props }) => {
-    const [field, meta] = useField(props);
-    return (
-        <Form.Group className={props.inline ? "d-inline-block ml-1 mr-2" : "ml-1 mb-2"}>
-            <Form.Label>{label}
-                <InputGroup>
-                    {props.prepend ? (
-                        <InputGroup.Prepend>
-                            <InputGroup.Text id={`prependId${props.id}`}>{props.prepend}</InputGroup.Text>
-                        </InputGroup.Prepend>
-                    ) : null}
-                    <Form.Control
-                        as='select'
-                        {...field} {...props}
-                        aria-describedby={`prependId${props.id}`}
-                        isInvalid={meta.touched && meta.error}
-                    >
-                        {typeof children[0] === 'string' ?
-                            children.map((v, i) => <option key={i} value={v}>{v}</option>) :
-                            children.map((v) => <option key={v.key} value={v.value}>{v.value}</option>)
-                        }
-                    </Form.Control>
-                    <Form.Control.Feedback type="invalid">
-                        {meta.error}
-                    </Form.Control.Feedback>
-                </InputGroup>
-            </Form.Label>
-        </Form.Group>
-    );
-};
+// export const MySelect = ({ children, label, ...props }) => {
+//     const [field, meta] = useField(props);
+//     return (
+//         <Form.Group className={props.inline ? "d-inline-block ml-1 mr-2" : "ml-1 mb-2"}>
+//             <Form.Label>{label}
+//                 <InputGroup>
+//                     {props.prepend ? (
+//                         <InputGroup.Prepend>
+//                             <InputGroup.Text id={`prependId${props.id}`}>{props.prepend}</InputGroup.Text>
+//                         </InputGroup.Prepend>
+//                     ) : null}
+//                     <Form.Control
+//                         as='select'
+//                         {...field} {...props}
+//                         aria-describedby={`prependId${props.id}`}
+//                         isInvalid={meta.touched && meta.error}
+//                     >
+//                         {typeof children[0] === 'string' ?
+//                             children.map((v, i) => <option key={i} value={v}>{v}</option>) :
+//                             children.map((v) => <option key={v.key} value={v.value}>{v.value}</option>)
+//                         }
+//                     </Form.Control>
+//                     <Form.Control.Feedback type="invalid">
+//                         {meta.error}
+//                     </Form.Control.Feedback>
+//                 </InputGroup>
+//             </Form.Label>
+//         </Form.Group>
+//     );
+// };
 export const MyFormikObserver = (props) => {
     // <Formik>(props)=>{  <Form> 使用於此處  </Form> }<Formik>
     // 將想要監控的值傳入MyFormikObserver的value屬性
