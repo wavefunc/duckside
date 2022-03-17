@@ -26,7 +26,6 @@ export const MyInput = ({ children, label, list, getList, setList, helptext, fle
         }
         didChanged.current = true;
     }, [field.value]);
-    console.log(hidden);
     return hidden ? null : (
         <>
             <Form.Label
@@ -38,8 +37,8 @@ export const MyInput = ({ children, label, list, getList, setList, helptext, fle
                     <Form.Control
                         as={children ? 'select' : 'input'}
                         {...field} {...props}
-                        list={list ? `list${props.id}` : ''}
-                        aria-describedby={`prep${props.id} apnd${props.id} helptext${props.id}`}
+                        list={list ? `list${props.id || props.name}` : undefined}
+                        aria-describedby={`prep${props.id || props.name} apnd${props.id || props.name} helptext${props.id || props.name}`}
                         isInvalid={meta.touched && meta.error}
                     >
                         {children ? typeof children[0] === 'string' ?
@@ -49,26 +48,26 @@ export const MyInput = ({ children, label, list, getList, setList, helptext, fle
                     </Form.Control>
                     {props.prepend ? (
                         <InputGroup.Prepend>
-                            <InputGroup.Text id={`prep${props.id}`}>{props.prepend}</InputGroup.Text>
+                            <InputGroup.Text id={`prep${props.id || props.name}`}>{props.prepend}</InputGroup.Text>
                         </InputGroup.Prepend>
                     ) : null}
                     {props.append ? (
                         <InputGroup.Append>
-                            <InputGroup.Text id={`apnd${props.id}`}>{props.append}</InputGroup.Text>
+                            <InputGroup.Text id={`apnd${props.id || props.name}`}>{props.append}</InputGroup.Text>
                         </InputGroup.Append>
                     ) : null}
                     {meta.touched && meta.error ? (
                         <Form.Control.Feedback type="invalid" tooltip={true}>
                             {meta.error}
                         </Form.Control.Feedback>) : null}
-                    {helptext ? <Form.Text id={`helptext${props.id}`} muted>
+                    {helptext ? <Form.Text id={`helptext${props.id || props.name}`} muted>
                         {helptext}
                     </Form.Text> : null}
                 </InputGroup>
             </Form.Label>
             {
                 list ? (
-                    <datalist id={`list${props.id}`}>
+                    <datalist id={`list${props.id || props.name}`}>
                         {list.map((v, i) =>
                             <option key={i} value={v} />
                         )}
@@ -77,13 +76,13 @@ export const MyInput = ({ children, label, list, getList, setList, helptext, fle
         </>
     )
 };
-export const MyButton = ({type, className, onClick, flex, ...props}) => {
+export const MyButton = ({ label, type, className, onClick, flex, maxWidth, ...props }) => {
     return (
         <div className="d-inline-block ml-2 mr-2 mb-2"
-            style={{ flex: flex, maxWidth: '250px'}}
+            style={{ flex: flex, maxWidth: maxWidth || '250px' }}
             {...props}
         >
-            &nbsp;
+            {label === undefined ? <>&nbsp;</>:label}
             <div>
                 <button type={type} className={className} onClick={onClick}>
                     {props.value}
@@ -92,36 +91,35 @@ export const MyButton = ({type, className, onClick, flex, ...props}) => {
         </div>
     )
 }
-// export const MySelect = ({ children, label, ...props }) => {
-//     const [field, meta] = useField(props);
-//     return (
-//         <Form.Group className={props.inline ? "d-inline-block ml-1 mr-2" : "ml-1 mb-2"}>
-//             <Form.Label>{label}
-//                 <InputGroup>
-//                     {props.prepend ? (
-//                         <InputGroup.Prepend>
-//                             <InputGroup.Text id={`prependId${props.id}`}>{props.prepend}</InputGroup.Text>
-//                         </InputGroup.Prepend>
-//                     ) : null}
-//                     <Form.Control
-//                         as='select'
-//                         {...field} {...props}
-//                         aria-describedby={`prependId${props.id}`}
-//                         isInvalid={meta.touched && meta.error}
-//                     >
-//                         {typeof children[0] === 'string' ?
-//                             children.map((v, i) => <option key={i} value={v}>{v}</option>) :
-//                             children.map((v) => <option key={v.key} value={v.value}>{v.value}</option>)
-//                         }
-//                     </Form.Control>
-//                     <Form.Control.Feedback type="invalid">
-//                         {meta.error}
-//                     </Form.Control.Feedback>
-//                 </InputGroup>
-//             </Form.Label>
-//         </Form.Group>
-//     );
-// };
+export const MyUpload = ({ label, helptext, flex, maxWidth, hidden, placeholder, ...props }) => {
+    const [field, meta] = useField(props);
+    return hidden ? null : (
+        <div className="d-inline-block ml-2 mr-2 mb-2"
+            style={{ flex: flex, maxWidth: maxWidth }}
+            {...props}
+        >
+            {placeholder && label}
+            <Form.File id="formcheck-api-custom" custom
+                bsCustomPrefix='custom-file'
+            >
+                <Form.File.Input />
+                <Form.File.Label
+                    data-browse="選擇檔案"
+                    bsCustomPrefix="custom-file-label col-form-label-sm d-inline-block mt-1"
+                >
+                    {placeholder || label}
+                </Form.File.Label>
+                {meta.touched && meta.error ? (
+                    <Form.Control.Feedback type="invalid" tooltip={true}>
+                        {meta.error}
+                    </Form.Control.Feedback>) : null}
+                {helptext ? <Form.Text id={`helptext${props.id}`} muted>
+                    {helptext}
+                </Form.Text> : null}
+            </Form.File>
+        </div>
+    )
+};
 export const MyFormikObserver = (props) => {
     // <Formik>(props)=>{  <Form> 使用於此處  </Form> }<Formik>
     // 將想要監控的值傳入MyFormikObserver的value屬性
@@ -131,6 +129,7 @@ export const MyFormikObserver = (props) => {
     }, [Object.values(props.value).join(', ')]);
     return null
 }
+
 
 // Toast
 export const MyOkToast = (props) => {

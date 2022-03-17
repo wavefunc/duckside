@@ -12,7 +12,7 @@ import { h } from "gridjs";
 import axios from 'axios';
 import dt from 'date-and-time';
 
-import { MyButton, MyInput, MyOkToastSlideUp } from '../components/MyFormComponent';
+import { MyButton, MyInput, MyUpload, MyOkToastSlideUp } from '../components/MyFormComponent';
 import MyCurrentPosition from '../components/ManageCurrent.jsx';
 import ManageRecent from '../components/ManageRecent.jsx';
 import Breadcrumb from '../components/Breadcrumb'
@@ -211,7 +211,7 @@ function ManageTransaction(props) {
                      </Nav.Item>
                      <Nav.Item>
                         <Nav.Link eventKey="file" bsPrefix='btn btn-light ml-1'>
-                           上傳excel
+                           上傳檔案
                         </Nav.Link>
                      </Nav.Item>
                   </Nav>
@@ -239,7 +239,7 @@ function ManageTransaction(props) {
                               <MyInput
                                  label="類型"
                                  name="txn_position"
-                                 type="text"
+                                 type="select"
                                  flex='2 3 auto'
                               >
                                  {['建倉', '加碼', '減碼', '停利', '停損']}
@@ -288,23 +288,31 @@ function ManageTransaction(props) {
                      </Tab.Pane>
                      <Tab.Pane eventKey="file">
                         <Formik
-                           initialValues={initialValues}
-                           onSubmit={handleSubmit}
+                           onSubmit={handleUpload}
                         >
-                           <Form>
-                              <div className='form-group'>
-                                 <MyInput
-                                    name="inputFile"
-                                    type="file"
-                                    size="sm"
-                                 />
-                                 <MyButton
-                                    type="submit"
-                                    className="btn btn-warning"
-                                    value="送出"
-                                    flex='1 2 auto'
-                                 />
-                              </div>
+                           <Form className='form-inline align-items-start'>
+                              <MyUpload
+                                 label=""
+                                 placeholder="接受格式 .xls .xlsx .csv"
+                                 name="uploadInputFile"
+                                 flex='1 1 auto'
+                                 maxWidth="515px"
+                              />
+                              <div style={{ width: '100%' }}></div>
+                              <MyInput
+                                 name="uploadPreview"
+                                 type="text"
+                                 as="textarea"
+                                 maxWidth='515px'
+                                 flex='1 1 auto'
+                              />
+                              <MyButton
+                                 label=""
+                                 type="submit"
+                                 className="btn btn-warning"
+                                 value="送出"
+                                 flex='0 1 auto'
+                              />
                            </Form>
                         </Formik>
                      </Tab.Pane>
@@ -339,7 +347,7 @@ function ManageTransaction(props) {
                            <MyInput
                               label="類型"
                               name="txn_position"
-                              type="text"
+                              type="select"
                               flex='1 1 auto'
                               maxWidth='24%'
                            >
@@ -426,7 +434,7 @@ function ManageTransaction(props) {
                            <MyInput readOnly
                               label="類型"
                               name="txn_position"
-                              type="text"
+                              type="select"
                               flex='1 1 auto'
                               maxWidth='24%'
                            >
