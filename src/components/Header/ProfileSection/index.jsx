@@ -109,7 +109,7 @@ const ProfileSection = () => {
             }
         })
         //抓取大頭照Axios
-        Axios.post("http://localhost:5000/account/list", {
+        Axios.post(process.env.REACT_APP_BACKEND_URL + "account/list", {
             acc_email: localStorage.getItem("loginState"),
         }).then((result) => {
             setMemberPhoto(result.data.acc_avatar)

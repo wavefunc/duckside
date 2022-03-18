@@ -68,7 +68,7 @@ let MemberLogin = (props) => {
 
   //登入button
   let memberButClick = async () => {
-    await Axios.post("http://localhost:5000/account/login", {
+    await Axios.post(process.env.REACT_APP_BACKEND_URL + "account/login", {
       acc_email: memberInfo.email,
       acc_password: memberInfo.password,
     }).then((result) => {
@@ -131,7 +131,7 @@ let MemberLogin = (props) => {
         const user = result.user;
         // ...
         //註冊
-        Axios.post("http://localhost:5000/account/create", {
+        Axios.post(process.env.REACT_APP_BACKEND_URL + "account/create", {
           acc_email: user.uid,
           acc_password: "",
           acc_name: user.displayName,
@@ -206,109 +206,109 @@ let MemberLogin = (props) => {
     >
       <Modal id="example-modal-sizes-title-lg"></Modal>
       {/* <div id="formContainer_body"> */}
-        <div
-          id="formContainer"
-          className="dwo"
-          style={{ height: loginButHeight }}
-        >
-          <div className="formLeft">
-            <img src="/assets/images/member_photo.png" alt="頭像" />
-          </div>
-          <div className="formRight">
-            {/* <!-- Login form --> */}
-            <form id="login">
-              <header>
-                <h1>歡迎回來</h1>
-                <p>請先登入</p>
-              </header>
-              <section>
-                <label>
-                  <p>信箱</p>
-                  <input
-                    type="text"
-                    placeholder=" "
-                    onChange={emailInpChange}
-                    onClick={noticeClearInpClick}
-                  />
-                  <div className="border"></div>
-                </label>
-                <label>
-                  <p>密碼</p>
-                  <input
-                    type="password"
-                    placeholder=" "
-                    onChange={passwordInpChange}
-                    onClick={noticeClearInpClick}
-                  />
-                  <div className="border"></div>
-                </label>
+      <div
+        id="formContainer"
+        className="dwo"
+        style={{ height: loginButHeight }}
+      >
+        <div className="formLeft">
+          <img src="/assets/images/member_photo.png" alt="頭像" />
+        </div>
+        <div className="formRight">
+          {/* <!-- Login form --> */}
+          <form id="login">
+            <header>
+              <h1>歡迎回來</h1>
+              <p>請先登入</p>
+            </header>
+            <section>
+              <label>
+                <p>信箱</p>
+                <input
+                  type="text"
+                  placeholder=" "
+                  onChange={emailInpChange}
+                  onClick={noticeClearInpClick}
+                />
+                <div className="border"></div>
+              </label>
+              <label>
+                <p>密碼</p>
+                <input
+                  type="password"
+                  placeholder=" "
+                  onChange={passwordInpChange}
+                  onClick={noticeClearInpClick}
+                />
+                <div className="border"></div>
+              </label>
 
-                <div className="d-flex justify-content-center">
-                  <span
-                    className="text-danger"
-                    style={{ display: passwordfalse }}
-                  >
-                    密碼錯誤，登入失敗...
-                  </span>
-                  <span className="text-danger" style={{ display: emailfalse }}>
-                    查無此帳號，登入失敗...
-                  </span>
-                  <span
-                    className="text-success"
-                    style={{ display: showsuccess }}
-                  >
-                    登入成功!!! {outsec + 1}秒後跳轉...
-                  </span>
-                </div>
+              <div className="d-flex justify-content-center">
+                <span
+                  className="text-danger"
+                  style={{ display: passwordfalse }}
+                >
+                  密碼錯誤，登入失敗...
+                </span>
+                <span className="text-danger" style={{ display: emailfalse }}>
+                  查無此帳號，登入失敗...
+                </span>
+                <span
+                  className="text-success"
+                  style={{ display: showsuccess }}
+                >
+                  登入成功!!! {outsec + 1}秒後跳轉...
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={memberButClick}
+                style={{ display: loginButShow }}
+              >
+                登 入
+              </button>
+            </section>
+            <div style={{ display: loginButShow }}>
+              <footer>
                 <button
                   type="button"
-                  onClick={memberButClick}
-                  style={{ display: loginButShow }}
+                  className="forgotBtn"
+                  onClick={props.showForgetToggle}
                 >
-                  登 入
+                  忘記密碼?
                 </button>
-              </section>
-              <div style={{ display: loginButShow }}>
-                <footer>
-                  <button
-                    type="button"
-                    className="forgotBtn"
-                    onClick={props.showForgetToggle}
-                  >
-                    忘記密碼?
-                  </button>
-                  <button
-                    type="button"
-                    className="registerBtn"
-                    onClick={props.showtoggle}
-                  >
-                    註冊?
-                  </button>
-                  <button
-                    type="button"
-                    className="registerBtn"
-                    onClick={() => {
-                      window.location = "/";
-                    }}
-                  >
-                    返回
-                  </button>
-                </footer>
-                <hr />
-                <div className="d-flex flex-column mt-2 mb-3">
-                  <div className="fb btn" onClick={fbButClick}>
-                    <i className="fa fa-facebook fa-fw"></i> 使用 Facebook
-                    帳號登入
-                  </div>
+                <button
+                  type="button"
+                  className="registerBtn"
+                  onClick={props.showtoggle}
+                >
+                  註冊?
+                </button>
+                <button
+                  type="button"
+                  className="registerBtn"
+                  onClick={() => {
+                    window.location = "/";
+                  }}
+                >
+                  返回
+                </button>
+              </footer>
+              <hr />
+              <div className="d-flex flex-column mt-2 mb-3">
+                <div className="fb btn" onClick={fbButClick}>
+                  <i className="fa fa-facebook fa-fw"></i> 使用 Facebook
+                  帳號登入
+                </div>
 
-                  <div className="google btn mt-2" onClick={googoleButClick}>
-                    <i className="fa fa-google fa-fw"></i> 使用 Google 帳號登入
-                  </div>
+                <div className="google btn mt-2" onClick={googoleButClick}>
+                  <i className="fa fa-google fa-fw"></i> 使用 Google 帳號登入
                 </div>
               </div>
-            </form>
-          </div>
+            </div>
+          </form>
         </div>
+      </div>
       {/* </div> */}
     </Modal>
   );

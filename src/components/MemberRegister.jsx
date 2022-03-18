@@ -78,7 +78,7 @@ let MemberRegister = (props) => {
   let checkMailBlur = async () => {
     if (memberInfo.email) {
       await Axios.get(
-        "http://localhost:5000/account/check/" + memberInfo.email
+        process.env.REACT_APP_BACKEND_URL + "account/check/" + memberInfo.email
       ).then((result) => {
         if (result.data === true) {
           setMemberState({ ...memberState, email: false });
@@ -179,7 +179,7 @@ let MemberRegister = (props) => {
 
   let memberRegisterHandler = async (e) => {
     if (memberState.name && memberState.email && memberState.password) {
-      await Axios.post("http://localhost:5000/account/create", {
+      await Axios.post(process.env.REACT_APP_BACKEND_URL + "account/create", {
         acc_email: memberInfo.email,
         acc_password: memberInfo.password,
         acc_name: memberInfo.name,

@@ -42,7 +42,7 @@ let GameStoreSecondPage = (props) =>{
 
    let comfirmBuying = () =>{
       console.log(funiture)
-      Axios.put("http://localhost:5000/acc_furn/buying",{
+      Axios.put(process.env.REACT_APP_BACKEND_URL + "acc_furn/buying",{
          acc_email:localStorage.getItem("loginState"),
          furn_id: funiture
       }).then(() => {
@@ -53,7 +53,7 @@ let GameStoreSecondPage = (props) =>{
    }
 
    useEffect(() => {
-      Axios.post("http://localhost:5000/acc_furn/storeList",{
+      Axios.post(process.env.REACT_APP_BACKEND_URL + "acc_furn/storeList",{
       acc_email:localStorage.getItem("loginState"),
    }).then( (result) => {
       setfunitureBuy(result.data)

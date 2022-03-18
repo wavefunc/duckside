@@ -11,7 +11,7 @@ let MemberInfo = () => {
   useEffect(
     () => {
       let getMemberInfo = async () => {
-        await Axios.post("http://localhost:5000/account/list", {
+        await Axios.post(process.env.REACT_APP_BACKEND_URL + "account/list", {
           acc_email: localStorage.getItem("loginState"),
         }).then((result) => {
           setMemberInfo({
@@ -112,7 +112,7 @@ let MemberInfo = () => {
   };
   //送出button
   let nameButClick = async () => {
-    await Axios.put("http://localhost:5000/account/updatename", {
+    await Axios.put(process.env.REACT_APP_BACKEND_URL + "account/updatename", {
       acc_email: memberInfo.email,
       acc_name: changeInfo.name,
     }).then(() => {
@@ -123,7 +123,7 @@ let MemberInfo = () => {
     });
   };
   let passwordButClick = async () => {
-    await Axios.post("http://localhost:5000/account/login", {
+    await Axios.post(process.env.REACT_APP_BACKEND_URL + "account/login", {
       acc_email: memberInfo.email,
       acc_password: changeInfo.password,
     }).then((result) => {
@@ -159,7 +159,7 @@ let MemberInfo = () => {
             color: "text-danger",
           });
         } else {
-          Axios.put("http://localhost:5000/account/updatepassword", {
+          Axios.put(process.env.REACT_APP_BACKEND_URL + "account/updatepassword", {
             acc_email: memberInfo.email,
             acc_password: changeInfo.newpassword,
           }).then((result) => {});
@@ -185,7 +185,7 @@ let MemberInfo = () => {
     const formData = new FormData();
     formData.append("image", changeInfo.photo);
     formData.append("acc_email", memberInfo.email);
-    Axios.put("http://localhost:5000/account/updateavatar", formData).then(
+    Axios.put(process.env.REACT_APP_BACKEND_URL + "account/updateavatar", formData).then(
       () => {
         window.location = "/member/info";
       }
@@ -229,7 +229,7 @@ let MemberInfo = () => {
     } else {
       if (forgetInfo.password === forgetInfo.againpassword) {
         //成功發送密碼
-        await Axios.post("http://localhost:5000/account/whoResetPass", {
+        await Axios.post(process.env.REACT_APP_BACKEND_URL + "account/whoResetPass", {
           acc_token: token.params,
         }).then((result) => {
           console.log(result.data);
@@ -243,7 +243,7 @@ let MemberInfo = () => {
           } else {
             console.log("123");
             setForgetInfo({ ...forgetInfo, email: result.data });
-            Axios.put("http://localhost:5000/account/updatepassword", {
+            Axios.put(process.env.REACT_APP_BACKEND_URL + "account/updatepassword", {
               acc_email: forgetInfo.email,
               acc_password: forgetInfo.password,
             }).then(() => {

@@ -31,7 +31,7 @@ let MemberLogin = (props) => {
 
   //登入button
   let memberButClick = async () => {
-    await Axios.post("http://localhost:5000/account/emailValidation", {
+    await Axios.post(process.env.REACT_APP_BACKEND_URL + "account/emailValidation", {
       acc_email: memberInfo.email,
     }).then((result) => {
       if (result.data === "No such account") {
