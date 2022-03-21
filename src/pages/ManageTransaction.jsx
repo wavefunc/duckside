@@ -12,7 +12,7 @@ import { h } from "gridjs";
 import axios from 'axios';
 import dt from 'date-and-time';
 
-import { MyButton, MyInput, MyUpload, MyOkToastSlideUp } from '../components/MyFormComponent';
+import { MyButton, MyInput, MyUpload, MyOkToastSlideUp, MyFilePreview } from '../components/MyFormComponent';
 import MyCurrentPosition from '../components/ManageCurrent.jsx';
 import ManageRecent from '../components/ManageRecent.jsx';
 import Breadcrumb from '../components/Breadcrumb'
@@ -304,27 +304,28 @@ function ManageTransaction(props) {
                      </Tab.Pane>
                      <Tab.Pane eventKey="file">
                         <Formik
+                           initialValues={{ uploadfile: null, uploadPreview: "" }}
                            onSubmit={handleUpload}
                         >
-                           {({ setFieldValue }) => (
+                           {({ setFieldValue, values }) => (
                               <Form className='form-inline align-items-start'>
                                  <MyUpload
                                     label="接受格式 .xls .xlsx .csv"
-                                    name="uploadInputFile"
-                                    id="uploadInputFile"
+                                    name="uploadFile"
+                                    id="uploadFile"
                                     type="file"
                                     flex='1 1 auto'
                                     maxWidth="515px"
-                                    setPreview={handleInputFileChange}
                                     setFieldValue={setFieldValue}
+                                    fileType="xlsx"
                                  />
                                  <div style={{ width: '100%' }}></div>
-                                 <MyInput
-                                    name="uploadPreview"
-                                    type="text"
-                                    as="textarea"
-                                    maxWidth='515px'
+                                 <MyFilePreview
                                     flex='1 1 auto'
+                                    maxWidth="515px"
+                                    minHeight="100px"
+                                    maxHeight="600px"
+                                    file={values.uploadFile}
                                  />
                                  <MyButton
                                     label=""

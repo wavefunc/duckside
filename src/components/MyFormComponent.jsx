@@ -7,7 +7,7 @@ import { useField } from 'formik';
 import { Form, InputGroup, Toast } from 'react-bootstrap';
 import { CheckSquare } from 'react-bootstrap-icons';
 import dt from "date-and-time";
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Transition from 'react-transition-group/Transition'
 
 // Formik
@@ -15,7 +15,7 @@ export const MyInput = ({ label, flex, maxWidth, hidden, helptext, children, lis
     const [field, meta] = useField(props);
     let didChanged = useRef(false);
     useEffect(() => {
-        // 透過Formik的field來監控本input值的變動,
+        // 透過Formik的field監控本input值的變動,
         // input如具有初始值, 有datalist, 且有驗證一定要從axios來的datalist中選取
         // 在剛重置表單的情況下, 有初始值, 但沒有datalist, 導致不修改input內容觸發請求將無法通過驗證
         if (list && didChanged.current) {
@@ -91,19 +91,22 @@ export const MyButton = ({ label, flex, maxWidth, type, className, onClick, ...p
         </div>
     )
 }
-export const MyUpload = ({ label, flex, maxWidth, hidden, helptext, placeholder, setFieldValue, setPreview, ...props }) => {
+export const MyUpload = ({ label, flex, maxWidth, hidden, helptext, placeholder, setFieldValue, preview, fileType, mutiple, ...props }) => {
     const [field, meta] = useField(props);
+    const handleFileChange = (e) => {
+        if (mutiple) {
+            // 保留給未來多檔上傳功能使用
+        } else {
+            setFieldValue(field.name, e.target.files[0]);
+            console.log(e.target.files[0]);
+        }
+    }
     let didChanged = useRef(false);
     useEffect(() => {
         console.log('MyUpload useEffect (field.value changed)');
-        // 透過Formik的field來監控本input值的變動,
-        // 在選取檔案改變時, 觸發父元件傳入的函式(例如設定預覽內容)
-        if (setPreview && didChanged.current) {
-            console.log('setPreview');
-            console.log(field.value);
-            // setPreview(field.value);
-            return
-        }
+
+        // 如input值改變時有一些其他的動作要執行, 也可以放這邊
+
         didChanged.current = true;
     }, [field.value]);
 
@@ -116,8 +119,8 @@ export const MyUpload = ({ label, flex, maxWidth, hidden, helptext, placeholder,
                 bsCustomPrefix='custom-file'
             >
                 <Form.File.Input
-                    {...field}
-                    onChange={(e) => {console.log(e.target.files[0])}}
+                    name={props.name}
+                    onChange={handleFileChange}
                 />
                 <Form.File.Label
                     data-browse="選擇檔案"
@@ -136,13 +139,14 @@ export const MyUpload = ({ label, flex, maxWidth, hidden, helptext, placeholder,
         </div>
     )
 };
-export const MyFormikObserver = (props) => {
-    // <Formik>(props)=>{  <Form> 使用於此處  </Form> }<Formik>
-    // 將想要監控的值傳入MyFormikObserver的value屬性
-    // 將最上層元件想在該輸入值變動時做的函式傳入onchange
+export const MyFormikObserver = ({ onChange, value }) => {
+    // 此元件用來監控Formik表單的輸入值, 在其值有變動時執行自訂的函式(以新輸入值作為參數)
+    // MyFormikObserver的value屬性: 利用父元件的 Formik.values (物件) 傳入想要監控的值
+    // MyFormikObserver的onChange屬性: 從根父元件傳入想要在該值改變時執行的函式
+    // ex. <Formik>(props)=>{  <Form> <MyFormikObserver value={props.values} onChange={...}/> </Form> }<Formik>
     useEffect(() => {
-        props.onChange(props.value);
-    }, [Object.values(props.value).join(', ')]);
+        onChange(value);
+    }, [Object.values(value).join(', ')]);
     return null
 }
 
@@ -235,155 +239,73 @@ export const MyOkToastSlideUp = ({ show, ...props }) => {
 }
 
 // 純元件
-export const MySelectPlain = ({ children, label, ...props }) => {
-    if (label) {
+export const MyFilePreview = ({ file, flex, maxWidth, minHeight, maxHeight }) => {
+    const [loading, setLoading] = useState(false);
+    const [preview, setPreview] = useState(undefined);
+
+    useEffect(() => {
+        if (!file) { return; }
+        setLoading(true);
+
+        let reader = new FileReader();
+        reader.onloadend = () => {
+            setLoading(false);
+            setPreview(reader.result)
+        };
+        reader.readAsDataURL(file);
+
+    }, [file]);
+
+    if (file) {
         return (
-            <Form.Group className={props.inline ? "d-inline-block ml-1 mr-2" : "ml-1 mb-2"}>
-                <Form.Label>{label}</Form.Label>
-                <InputGroup>
-                    {props.prepend ? (
-                        <InputGroup.Prepend>
-                            <InputGroup.Text id={`prependId${props.id}`}>{props.prepend}</InputGroup.Text>
-                        </InputGroup.Prepend>
-                    ) : null}
-                    <Form.Control
-                        as='select'
-                        {...props}
-                        aria-describedby={`prependId${props.id}`}
-                    >
-                        {typeof children[0] === 'string' ?
-                            children.map((v, i) => <option key={i} value={v}>{v}</option>) :
-                            children.map((v) => <option key={v.key} value={v.value}>{v.value}</option>)
-                        }
-                    </Form.Control>
-                </InputGroup>
-            </Form.Group>
+            <div className="d-inline-flex rounded-sm ml-2 mr-2 mb-2 p-2"
+                style={{ flex: flex, maxWidth: maxWidth, border: '1px solid #CED4DA', minHeight: minHeight, maxHeight: maxHeight }}>
+                {loading && (<p className="small ml-1">讀取中...</p>)}
+                {!loading && file.type.search('image')>-1 && (
+                    <img src={preview}
+                        alt={file.name}
+                        className="img-thumbnail mt-2"
+                        height={200}
+                        width={200} />
+                )}
+                {!loading && (file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || file.type === "application/vnd.ms-excel") && (
+                    <table style={{
+                        borderCollapse: 'collapse',
+                        border:'1px solid #CED4DA',
+                        fontSize:'15px'
+                    }}>
+                        <thead >
+                            <tr>
+                                <th>日期</th>
+                                <th>編號</th>
+                                <th>類型</th>
+                                <th>股票</th>
+                                <th>均價</th>
+                                <th>數量</th>
+                                <th>摘要</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                )}
+            </div>
         );
     } else {
         return (
-            <InputGroup>
-                {props.prepend ? (
-                    <InputGroup.Prepend>
-                        <InputGroup.Text id={`prependId${props.id}`}>{props.prepend}</InputGroup.Text>
-                    </InputGroup.Prepend>
-                ) : null}
-                <Form.Control
-                    as='select' {...props}
-                    aria-describedby={`prependId${props.id}`}
-                >
-                    {typeof children[0] === 'string' ?
-                        children.map((v, i) => <option key={i} value={v}>{v}</option>) :
-                        children.map((v) => <option key={v.key} value={v.value}>{v.value}</option>)
-                    }
-                </Form.Control>
-            </InputGroup>
-        );
-    };
-}
-export const MyInputPlain = ({ label, list, ...props }) => {
-    if (label) {
-        return (
-            <Form.Group className={props.inline ? "d-inline-block ml-1 mr-2" : "ml-1 mb-2"}>
-                <Form.Label htmlFor={props.id || props.name}>{label}</Form.Label>
-                <InputGroup className="d-flex flex-column">
-                    <Form.Control
-                        {...props}
-                        list={`list${props.id}`}
-                        aria-describedby={`prep${props.id} apnd${props.id} helptext${props.id}`}
-                    />
-                    {props.prepend ? (
-                        <InputGroup.Prepend>
-                            <InputGroup.Text id={`prep${props.id}`}>{props.prepend}</InputGroup.Text>
-                        </InputGroup.Prepend>
-                    ) : null}
-                    {props.append ? (
-                        <InputGroup.Append>
-                            <InputGroup.Text id={`apnd${props.id}`}>{props.append}</InputGroup.Text>
-                        </InputGroup.Append>
-                    ) : null}
-                    {props.helptext ? <Form.Text id={`helptext${props.id}`} muted>
-                        {props.helptext}
-                    </Form.Text> : null}
-                </InputGroup>
-                {list ? (
-                    <datalist id={`list${props.id}`}>
-                        {list.map((v, i) =>
-                            <option key={i} value={v} />
-                        )}
-                    </datalist>) : null}
-            </Form.Group>
-        );
-    } else {
-        return (
-            <InputGroup className="d-flex flex-column">
-                <Form.Control
-                    {...props}
-                    list={`list${props.id}`}
-                    aria-describedby={`prep${props.id} apnd${props.id} helptext${props.id}`}
-                />
-                {props.prepend ? (
-                    <InputGroup.Prepend>
-                        <InputGroup.Text id={`prep${props.id}`}>{props.prepend}</InputGroup.Text>
-                    </InputGroup.Prepend>
-                ) : null}
-                {props.append ? (
-                    <InputGroup.Append>
-                        <InputGroup.Text id={`apnd${props.id}`}>{props.append}</InputGroup.Text>
-                    </InputGroup.Append>
-                ) : null}
-                {props.helptext ? <Form.Text id={`helptext${props.id}`} muted>
-                    {props.helptext}
-                </Form.Text> : null}
-                {list ? (
-                    <datalist id={`list${props.id}`}>
-                        {list.map((v, i) =>
-                            <option key={i} value={v} />
-                        )}
-                    </datalist>) : null}
-            </InputGroup>
+            <div className="d-inline-flex rounded-sm ml-2 mr-2 mb-2 p-2"
+                style={{ flex: flex, maxWidth: maxWidth, border: '1px solid #CED4DA', minHeight: minHeight }}>
+                <p className="small ml-1">檔案預覽:</p>
+            </div>
         )
     }
-};
-
-/***********
-
-
-
-export const MyCheckbox = ({ children, ...props }) => {
-    // React treats radios and checkbox inputs differently other input types, select, and textarea.
-    // Formik does this too! When you specify `type` to useField(), it will
-    // return the correct bag of props for you -- a `checked` prop will be included
-    // in `field` alongside `name`, `value`, `onChange`, and `onBlur`
-    const [field, meta] = useField({ ...props, type: 'checkbox' });
-    return (
-        <div>
-            <label className="checkbox-input">
-                <input type="checkbox" {...field} {...props} />
-                {children}
-            </label>
-            {meta.touched && meta.error ? (
-                <div className="error">{meta.error}</div>
-            ) : null}
-        </div>
-    );
-};
-
-export const MyInputAppendSubmit = ({label, ... props}) => {
-    const [field, meta] = useField(props);
-    return (
-    <InputGroup className="ml-1 mb-2">
-        <FormControl
-            {...field} {...props}
-            placeholder={label}
-            aria-label={label}
-            aria-describedby="basic-addon2"
-        />
-        <InputGroup.Append>
-
-        </InputGroup.Append>
-    </InputGroup>
-    );
 }
-
-
-**********/
