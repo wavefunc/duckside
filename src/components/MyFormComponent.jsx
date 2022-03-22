@@ -9,6 +9,8 @@ import { CheckSquare } from 'react-bootstrap-icons';
 import dt from "date-and-time";
 import React, { useEffect, useRef, useState } from 'react';
 import Transition from 'react-transition-group/Transition'
+import * as xlsx from "xlsx"
+import { Grid } from 'gridjs-react';
 
 // Formik
 export const MyInput = ({ label, flex, maxWidth, hidden, helptext, children, list, getList, setList, ...props }) => {
@@ -239,72 +241,84 @@ export const MyOkToastSlideUp = ({ show, ...props }) => {
 }
 
 // 純元件
-export const MyFilePreview = ({ file, flex, maxWidth, minHeight, maxHeight }) => {
+export const MyFilePreview = ({ file, flex, maxWidth, minHeight, maxHeight, placeholder }) => {
     const [loading, setLoading] = useState(false);
     const [preview, setPreview] = useState(undefined);
+    const to_json = (workbook) => {
+        var result = xlsx.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], { header: 1 });
+        return result;
+        // return JSON.stringify(result, 2, 2);
+    };
 
     useEffect(() => {
         if (!file) { return; }
         setLoading(true);
 
         let reader = new FileReader();
-        reader.onloadend = () => {
-            setLoading(false);
-            setPreview(reader.result)
-        };
-        reader.readAsDataURL(file);
-
+        if (file.type.search('image') > -1) {
+            reader.onloadend = () => {
+                let data = reader.result;
+                setPreview(data);
+                setLoading(false);
+            };
+            reader.readAsDataURL(file);
+        }
+        if (file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || file.type === "application/vnd.ms-excel") {
+            reader.onloadend = () => {
+                let data = reader.result;
+                let workbook = xlsx.read(data);
+                setPreview(to_json(workbook));
+                setLoading(false);
+            }
+            reader.readAsArrayBuffer(file);
+        }
     }, [file]);
 
     if (file) {
         return (
-            <div className="d-inline-flex rounded-sm ml-2 mr-2 mb-2 p-2"
-                style={{ flex: flex, maxWidth: maxWidth, border: '1px solid #CED4DA', minHeight: minHeight, maxHeight: maxHeight }}>
-                {loading && (<p className="small ml-1">讀取中...</p>)}
-                {!loading && file.type.search('image')>-1 && (
-                    <img src={preview}
-                        alt={file.name}
-                        className="img-thumbnail mt-2"
-                        height={200}
-                        width={200} />
+            <>
+                {loading && (<p className="small m-2">讀取中...</p>)}
+                {!loading && preview && file.type.search('image') > -1 && (
+                    <div className={"d-inline-flex rounded-sm ml-2 mr-2 mb-2"}
+                        style={{
+                            flex: flex, maxWidth: maxWidth,
+                            minHeight: minHeight, maxHeight: maxHeight, overflowY: 'auto', overflowX: 'hidden',
+                            border: '1px solid #CED4DA', font: '15px Arial'
+                        }}
+                    >
+                        <img src={preview}
+                            alt={file.name}
+                            className="img-thumbnail m-2"
+                            height={200}
+                            width={200} />
+                    </div>
                 )}
-                {!loading && (file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || file.type === "application/vnd.ms-excel") && (
-                    <table style={{
-                        borderCollapse: 'collapse',
-                        border:'1px solid #CED4DA',
-                        fontSize:'15px'
-                    }}>
-                        <thead >
-                            <tr>
-                                <th>日期</th>
-                                <th>編號</th>
-                                <th>類型</th>
-                                <th>股票</th>
-                                <th>均價</th>
-                                <th>數量</th>
-                                <th>摘要</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                {!loading && preview && (file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || file.type === "application/vnd.ms-excel") && (
+                    // <p style={{whiteSpace:'pre'}}>{preview[0]}</p>
+                    <Grid
+                        columns={preview[0]}
+                        data={[...preview].slice(1,)}
+                        className={{
+                            container: "d-inline-flex rounded-sm ml-2 mr-2 mb-2",
+                            table: 'table table-sm'
+                        }}
+                        style={{
+                            container: {
+                                flex: flex, maxWidth: maxWidth,
+                                minHeight: minHeight, maxHeight: maxHeight, overflowY: 'auto', overflowX: 'hidden',
+                                font: '15px Arial'
+                            },
+                            table: { 'border-top': '1px solid #e2e2e2', },
+                        }}
+                    />
                 )}
-            </div>
+            </>
         );
     } else {
         return (
             <div className="d-inline-flex rounded-sm ml-2 mr-2 mb-2 p-2"
                 style={{ flex: flex, maxWidth: maxWidth, border: '1px solid #CED4DA', minHeight: minHeight }}>
-                <p className="small ml-1">檔案預覽:</p>
+                <p className="small ml-1">{placeholder || '預覽'}</p>
             </div>
         )
     }

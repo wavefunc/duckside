@@ -310,22 +310,27 @@ function ManageTransaction(props) {
                            {({ setFieldValue, values }) => (
                               <Form className='form-inline align-items-start'>
                                  <MyUpload
-                                    label="接受格式 .xls .xlsx .csv"
+                                    label="接受 .xls .xlsx .csv 格式"
                                     name="uploadFile"
                                     id="uploadFile"
                                     type="file"
                                     flex='1 1 auto'
                                     maxWidth="515px"
                                     setFieldValue={setFieldValue}
-                                    fileType="xlsx"
                                  />
                                  <div style={{ width: '100%' }}></div>
                                  <MyFilePreview
                                     flex='1 1 auto'
-                                    maxWidth="515px"
-                                    minHeight="100px"
-                                    maxHeight="600px"
+                                    maxWidth="800px"
+                                    minHeight="75px"
+                                    maxHeight="300px"
                                     file={values.uploadFile}
+                                    placeholder={<p>
+                                       檔案欄位說明:<br />
+                                       1.股票以代號欄為準, 名稱非必填<br />
+                                       2.日期欄位格式yyyy-mm-dd<br />
+                                       3.<br />
+                                    </p>}
                                  />
                                  <MyButton
                                     label=""
