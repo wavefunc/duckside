@@ -5,7 +5,7 @@
 
 var express = require('express');
 var app = express();
-app.listen(3000);
+app.listen(6666);
 var { getYahoo, getTwse } = require('./twstock.js');
 
 app.use(express.static('./public'))
