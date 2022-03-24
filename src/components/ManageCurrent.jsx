@@ -12,9 +12,9 @@
 
 import { Grid } from 'gridjs-react';
 import { Card, CardDeck } from 'react-bootstrap';
-import "gridjs/dist/theme/mermaid.min.css";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import "gridjs/dist/theme/mermaid.min.css?";
 
 function MyCurrentPosition({ url, dataToServer, row, col = null, ...props }) {
     const [data, setData] = useState([]);

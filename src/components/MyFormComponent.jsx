@@ -4,7 +4,7 @@
 *********/
 
 import { useField } from 'formik';
-import { Form, InputGroup, Toast } from 'react-bootstrap';
+import { Button, Form, InputGroup, Toast } from 'react-bootstrap';
 import { CheckSquare } from 'react-bootstrap-icons';
 import dt from "date-and-time";
 import React, { useEffect, useRef, useState } from 'react';
@@ -322,4 +322,21 @@ export const MyFilePreview = ({ file, flex, maxWidth, minHeight, maxHeight, plac
             </div>
         )
     }
+}
+export const MyFileExample = ({ col, variant, value, className }) => {
+    const dataHeader = col.map((obj)=>obj['title']);
+    console.log(dataHeader);
+    let handleDownload = () => {
+        console.log('MyFileExample ready')
+
+    }
+    return (
+        <Button
+            variant={variant}
+            onClick={handleDownload}
+            className={className}
+        >
+            {value}
+        </Button>
+    )
 }

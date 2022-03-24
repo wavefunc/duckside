@@ -1,7 +1,7 @@
 /* * * * * 人豪 * * * * * 
- * 備忘:
- * const acc_email = ... 要換成localStorage
- * 要寫個總計欄位
+ * 
+ * 
+ * 
  * * * * * * * * * * * */
 
 import React, { useState } from 'react';
@@ -12,7 +12,7 @@ import { h } from "gridjs";
 import axios from 'axios';
 import dt from 'date-and-time';
 
-import { MyButton, MyInput, MyUpload, MyOkToastSlideUp, MyFilePreview } from '../components/MyFormComponent';
+import { MyButton, MyInput, MyUpload, MyOkToastSlideUp, MyFilePreview, MyFileExample } from '../components/MyFormComponent';
 import MyCurrentPosition from '../components/ManageCurrent.jsx';
 import ManageRecent from '../components/ManageRecent.jsx';
 import Breadcrumb from '../components/Breadcrumb'
@@ -230,6 +230,12 @@ function ManageTransaction(props) {
                            上傳檔案
                         </Nav.Link>
                      </Nav.Item>
+                     <Nav.Item>
+                        <MyFileExample
+                           col={col}
+                           className='ml-1' value="下載範例" variant="light"
+                        />
+                     </Nav.Item>
                   </Nav>
                   <Tab.Content className='pt-2'>
                      <Tab.Pane eventKey="single">
@@ -325,12 +331,12 @@ function ManageTransaction(props) {
                                     minHeight="75px"
                                     maxHeight="300px"
                                     file={values.uploadFile}
-                                    placeholder={<p>
+                                    placeholder={<>
                                        檔案欄位說明:<br />
                                        1.股票以代號欄為準, 名稱非必填<br />
                                        2.日期欄位格式yyyy-mm-dd<br />
                                        3.<br />
-                                    </p>}
+                                    </>}
                                  />
                                  <MyButton
                                     label=""

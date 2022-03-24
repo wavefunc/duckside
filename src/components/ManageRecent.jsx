@@ -10,8 +10,8 @@
 import { Grid, _ } from 'gridjs-react';
 import { h } from 'gridjs';
 import { PencilSquare, Trash } from 'react-bootstrap-icons';
+import "gridjs/dist/theme/mermaid.min.css?";
 
-import "gridjs/dist/theme/mermaid.min.css";
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 

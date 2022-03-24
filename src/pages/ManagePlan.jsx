@@ -62,8 +62,8 @@ const col = [
    { id: 'sec_id', name: '代號', width: '8%', },
    { id: 'sec_name', name: '名稱', width: '10%', },
    { id: 'plan_strategy', name: '類型', width: '18%', },
-   { id: 'plan_param1', name: '參數', hidden: true },
-   { id: 'plan_param2', name: '參數', hidden: true },
+   { id: 'plan_param1', name: '參數1', hidden: true },
+   { id: 'plan_param2', name: '參數2', hidden: true },
    {
       id: 'plan_anchor', name: h('b', { style: { 'float': 'right', } }, '參考'), width: '8%',
       formatter: (cell) => h('b', { style: { 'float': 'right', } }, cell.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","))
