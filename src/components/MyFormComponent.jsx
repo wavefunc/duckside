@@ -93,21 +93,21 @@ export const MyButton = ({ label, flex, maxWidth, type, className, onClick, ...p
         </div>
     )
 }
-export const MyUpload = ({ label, flex, maxWidth, hidden, helptext, placeholder, setFieldValue, preview, fileType, mutiple, ...props }) => {
+export const MyUpload = React.forwardRef(
+    ({ label, flex, maxWidth, hidden, helptext, placeholder, setFieldValue, mutiple, ...props }, ref) => {
     const [field, meta] = useField(props);
     const handleFileChange = (e) => {
         if (mutiple) {
             // 保留給未來多檔上傳功能使用
         } else {
+            console.log(field.name);
             setFieldValue(field.name, e.target.files[0]);
         }
     }
     let didChanged = useRef(false);
     useEffect(() => {
         console.log('MyUpload useEffect (field.value changed)');
-
         // 如input值改變時有一些其他的動作要執行, 也可以放這邊
-
         didChanged.current = true;
     }, [field.value]);
 
@@ -122,6 +122,7 @@ export const MyUpload = ({ label, flex, maxWidth, hidden, helptext, placeholder,
                 <Form.File.Input
                     name={props.name}
                     onChange={handleFileChange}
+                    ref={ref}
                 />
                 <Form.File.Label
                     data-browse="選擇檔案"
@@ -139,7 +140,7 @@ export const MyUpload = ({ label, flex, maxWidth, hidden, helptext, placeholder,
             </Form.File>
         </div>
     )
-};
+});
 export const MyFormikObserver = ({ onChange, value }) => {
     // 此元件用來監控Formik表單的輸入值, 在其值有變動時執行自訂的函式(以新輸入值作為參數)
     // MyFormikObserver的value屬性: 利用父元件的 Formik.values (物件) 傳入想要監控的值

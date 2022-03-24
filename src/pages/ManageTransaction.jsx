@@ -4,7 +4,7 @@
  * 
  * * * * * * * * * * * */
 
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Container, Row, Col, Tab, Nav, Modal } from 'react-bootstrap';
 import { Formik, Form } from 'formik';
 import * as yup from 'yup';
@@ -105,6 +105,7 @@ function ManageTransaction(props) {
 
    const [datalist, setDatalist] = useState([]);
    const [editingValues, setEditingValues] = useState({});
+   const inputFileRef = useRef();
 
    const [showEdit, setShowEdit] = useState(false);
    const [showDelete, setShowDelete] = useState(false);
@@ -171,14 +172,18 @@ function ManageTransaction(props) {
          }
          console.log(dataToServer);
          axios.post(urlPostUpload, dataToServer).then((res) => {
-            console.log(JSON.stringify(res.data));
             actions.resetForm();
+            inputFileRef.current.value = null;
             actions.setSubmitting(false);
-            window.setTimeout(refresh, 1000);
+            if (typeof res.data === 'string') {
+               window.setTimeout(refresh, 1000);
+            } else {
+               window.alert('新增資料失敗! 請檢查資料輸入是否正確');
+            };
          });
       }
       reader.readAsArrayBuffer(values.uploadFile);
-   }
+   };
    const setEditModal = (cells) => {
       let values = cells.map((v) => v.data);
       let dataToEdit = col.reduce((target, elm, idx) => {
@@ -330,7 +335,7 @@ function ManageTransaction(props) {
                      </Tab.Pane>
                      <Tab.Pane eventKey="file">
                         <Formik
-                           initialValues={{ uploadFile: null, uploadPreview: "" }}
+                           initialValues={{ uploadFile: "" }}
                            onSubmit={handleUpload}
                         >
                            {({ setFieldValue, values }) => (
@@ -339,7 +344,7 @@ function ManageTransaction(props) {
                                     label="接受 .xls .xlsx .csv 格式"
                                     name="uploadFile"
                                     id="uploadFile"
-                                    type="file"
+                                    ref={inputFileRef}
                                     flex='1 1 auto'
                                     maxWidth="515px"
                                     setFieldValue={setFieldValue}
