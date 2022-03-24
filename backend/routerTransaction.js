@@ -3,7 +3,6 @@
 var express = require('express');
 var router = express.Router();
 var { query, checkAccount } = require('./mysql.js');
-var { getYahoo, getTwse } = require('./twstock.js');
 
 // *******************
 // 測試: 列出資料表全部的資料
@@ -55,6 +54,26 @@ router.post('/transaction/create', async (req, res) => {
          err ? res.send(err) : res.send('Successfully added a transaction!')
       })
 });
+
+// ********************************
+// 依acc_email，新增該會員的多筆交易
+// 標題列cols(一維陣列)
+// 資料列vals(二維陣列, aoa: an array of arrays)
+// ********************************
+router.post('/transaction/upload', async (req, res) => {
+   // 透由前端傳過來的 acc_email 檢查帳號是否存在，並取得 acc_id
+   var acc_id = await checkAccount(req.body.acc_email, res);
+   // var valsWithAccId = req.body.vals.map((arr) => `(${acc_id} , ${arr.join(', ')})`);
+   var valsWithAccId = req.body.vals.map((arr) => `(${acc_id} , ${JSON.stringify(arr).replace(/[\]\[]/g,'')})`);
+   var strQuery = `INSERT INTO transaction (acc_id, ${req.body.cols.join(', ')}) VALUES ${valsWithAccId.join(', ')}`;
+   console.log(strQuery);
+   query(strQuery, [],
+      (err) => {
+         err ? res.send(err) : res.send('Successfully upload transactions!')
+      })
+});
+
+
 
 // **********************************
 // 依 acc_email，修改該會員的某一筆交易

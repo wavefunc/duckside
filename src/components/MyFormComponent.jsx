@@ -100,7 +100,6 @@ export const MyUpload = ({ label, flex, maxWidth, hidden, helptext, placeholder,
             // 保留給未來多檔上傳功能使用
         } else {
             setFieldValue(field.name, e.target.files[0]);
-            console.log(e.target.files[0]);
         }
     }
     let didChanged = useRef(false);
@@ -244,30 +243,34 @@ export const MyOkToastSlideUp = ({ show, ...props }) => {
 export const MyFilePreview = ({ file, flex, maxWidth, minHeight, maxHeight, placeholder }) => {
     const [loading, setLoading] = useState(false);
     const [preview, setPreview] = useState(undefined);
-    const to_json = (workbook) => {
-        var result = xlsx.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], { header: 1 });
-        return result;
-        // return JSON.stringify(result, 2, 2);
-    };
 
     useEffect(() => {
         if (!file) { return; }
         setLoading(true);
-
         let reader = new FileReader();
         if (file.type.search('image') > -1) {
             reader.onloadend = () => {
-                let data = reader.result;
-                setPreview(data);
+                let dataURL = reader.result;
+                setPreview(dataURL);
                 setLoading(false);
             };
             reader.readAsDataURL(file);
         }
         if (file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || file.type === "application/vnd.ms-excel") {
             reader.onloadend = () => {
-                let data = reader.result;
-                let workbook = xlsx.read(data);
-                setPreview(to_json(workbook));
+                let arrayBuffer = reader.result;
+                let workbook = xlsx.read(arrayBuffer, { type: 'base64', cellDates: true });
+                let aoa = xlsx.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], { header: 1 });
+                let dataToGrid = [...aoa];
+                dataToGrid[0] = dataToGrid[0].map((v) => v === "日期" ?
+                    {
+                        name: '日期', formatter: (cell) => {
+                            let d = new Date(cell);
+                            return isNaN(d) ? cell : dt.format(d, 'MM-DD');
+                        }
+                    } : v
+                );
+                setPreview(dataToGrid);
                 setLoading(false);
             }
             reader.readAsArrayBuffer(file);
@@ -294,10 +297,9 @@ export const MyFilePreview = ({ file, flex, maxWidth, minHeight, maxHeight, plac
                     </div>
                 )}
                 {!loading && preview && (file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || file.type === "application/vnd.ms-excel") && (
-                    // <p style={{whiteSpace:'pre'}}>{preview[0]}</p>
                     <Grid
                         columns={preview[0]}
-                        data={[...preview].slice(1,)}
+                        data={preview.slice(1,)}
                         className={{
                             container: "d-inline-flex rounded-sm ml-2 mr-2 mb-2",
                             table: 'table table-sm'
@@ -324,11 +326,15 @@ export const MyFilePreview = ({ file, flex, maxWidth, minHeight, maxHeight, plac
     }
 }
 export const MyFileExample = ({ col, variant, value, className }) => {
-    const dataHeader = col.map((obj)=>obj['title']);
-    console.log(dataHeader);
     let handleDownload = () => {
-        console.log('MyFileExample ready')
-
+        const header = col.map((obj) => typeof obj['name'] === 'string' ? obj['name'] : obj.name.props.children).filter((v) => v.indexOf('_') < 0);
+        const aoa = [];
+        aoa.push(header);
+        let workbook = xlsx.utils.book_new()
+        let worksheet = xlsx.utils.aoa_to_sheet(aoa);
+        xlsx.utils.book_append_sheet(workbook, worksheet, 'sheet1', false);
+        xlsx.writeFile(workbook, `duckside${window.location.pathname}.xlsx`);
+        console.log(workbook.Sheets['sheet1']);
     }
     return (
         <Button

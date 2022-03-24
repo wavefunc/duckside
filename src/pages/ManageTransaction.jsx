@@ -11,6 +11,7 @@ import * as yup from 'yup';
 import { h } from "gridjs";
 import axios from 'axios';
 import dt from 'date-and-time';
+import * as xlsx from "xlsx"
 
 import { MyButton, MyInput, MyUpload, MyOkToastSlideUp, MyFilePreview, MyFileExample } from '../components/MyFormComponent';
 import MyCurrentPosition from '../components/ManageCurrent.jsx';
@@ -20,6 +21,7 @@ import Breadcrumb from '../components/Breadcrumb'
 const acc_email = localStorage.getItem('loginState');
 const urlPostRecent = 'http://localhost:5000/transaction/recent';
 const urlPostCreate = 'http://localhost:5000/transaction/create';
+const urlPostUpload = 'http://localhost:5000/transaction/upload';
 const urlPutUpdate = 'http://localhost:5000/transaction/update';
 const urlDelete = 'http://localhost:5000/transaction/delete';
 const urlPostInventory = 'http://localhost:5000/transaction/inventory';
@@ -103,7 +105,6 @@ function ManageTransaction(props) {
 
    const [datalist, setDatalist] = useState([]);
    const [editingValues, setEditingValues] = useState({});
-   const [uploadPreview, setUploadPreview] = useState("");
 
    const [showEdit, setShowEdit] = useState(false);
    const [showDelete, setShowDelete] = useState(false);
@@ -125,12 +126,12 @@ function ManageTransaction(props) {
 
 
    const handleSubmit = (values, actions) => {
-      console.log('handleSubmit');
       let dataToServer = {
          sec_id: values.sec_str.split(" ")[0],
          acc_email: acc_email,
          ...values
       };
+      console.log(dataToServer);
       axios.post(urlPostCreate, dataToServer).then((res) => {
          console.log(JSON.stringify(res.data));
          let newInitValues = resetInputs({ ...values });
@@ -139,24 +140,45 @@ function ManageTransaction(props) {
          refresh();
       });
    };
-   const handleInputFileChange = () => {
+   const handleUpload = (values, actions) => {
+      let reader = new FileReader();
+      reader.onloadend = () => {
+         let arrayBuffer = reader.result;
+         let workbook = xlsx.read(arrayBuffer, { type: 'base64', cellDates: true, cellText: false });
+         let aoa = xlsx.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], { header: 1, raw: false, dateNF: "YYYY-MM-DD" });
+         let headerRow = aoa[0];
+         let aoaDataRows = aoa.slice(1,);
 
-      setUploadPreview("test")
-   }
-   const handleUpload = () => {
-      console.log('upload');
-   }
-   const handleFileChange = (setFieldValue) => {
-      return (e) => {
-         const uploadInputFile = e.target.value;
-         setFieldValue('uploadInputFile', uploadInputFile);
+         let colIds = headerRow.map((colName) => {
+            let idx = col.findIndex((obj) => {
+               let boolean = false;
+               if (typeof obj.name === 'string' && obj.name === colName) { boolean = true };
+               if (typeof obj.name !== 'string' && obj.name.props.children === colName) { boolean = true };
+               return boolean;
+            });
+            return col[idx].id;
+         });
 
-         // 將檔案處理成可供預覽的字串或表格
-         const preview = JSON.stringify(uploadInputFile);
-         // 然後呈現在textarea中
-         setFieldValue('uploadPreview', preview)
-      };
-   };
+         // 刪除後端不需要的欄位
+         let idxToRemove = colIds.indexOf("sec_name");
+         colIds = colIds.filter((v, i) => i !== idxToRemove);
+         aoaDataRows = aoaDataRows.map((arr) => arr.filter((v, i) => i !== idxToRemove));
+
+         let dataToServer = {
+            acc_email: acc_email,
+            cols: colIds,
+            vals: aoaDataRows,
+         }
+         console.log(dataToServer);
+         axios.post(urlPostUpload, dataToServer).then((res) => {
+            console.log(JSON.stringify(res.data));
+            actions.resetForm();
+            actions.setSubmitting(false);
+            window.setTimeout(refresh, 1000);
+         });
+      }
+      reader.readAsArrayBuffer(values.uploadFile);
+   }
    const setEditModal = (cells) => {
       let values = cells.map((v) => v.data);
       let dataToEdit = col.reduce((target, elm, idx) => {
@@ -230,12 +252,10 @@ function ManageTransaction(props) {
                            上傳檔案
                         </Nav.Link>
                      </Nav.Item>
-                     <Nav.Item>
-                        <MyFileExample
-                           col={col}
-                           className='ml-1' value="下載範例" variant="light"
-                        />
-                     </Nav.Item>
+                     <MyFileExample
+                        col={col}
+                        className='ml-1' value="下載範本" variant="light"
+                     />
                   </Nav>
                   <Tab.Content className='pt-2'>
                      <Tab.Pane eventKey="single">
@@ -310,7 +330,7 @@ function ManageTransaction(props) {
                      </Tab.Pane>
                      <Tab.Pane eventKey="file">
                         <Formik
-                           initialValues={{ uploadfile: null, uploadPreview: "" }}
+                           initialValues={{ uploadFile: null, uploadPreview: "" }}
                            onSubmit={handleUpload}
                         >
                            {({ setFieldValue, values }) => (
@@ -333,8 +353,8 @@ function ManageTransaction(props) {
                                     file={values.uploadFile}
                                     placeholder={<>
                                        檔案欄位說明:<br />
-                                       1.股票以代號欄為準, 名稱非必填<br />
-                                       2.日期欄位格式yyyy-mm-dd<br />
+                                       1.股票將以代號欄為準, 名稱欄將被忽略<br />
+                                       2.日期欄以excel日期值輸入即可, csv檔須存為'yyyy-mm-dd'格式<br />
                                        3.<br />
                                     </>}
                                  />

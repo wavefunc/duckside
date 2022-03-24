@@ -14,7 +14,9 @@ var pool = mysql.createPool({
    // 無可用連線時是否等待pool連線釋放(預設為true)
    waitForConnections: true,
    // 連線池可建立的總連線數上限(預設最多為10個連線數)
-   connectionLimit: 10
+   connectionLimit: 10,
+   // 設定時區
+   timezone: "08:00",
 });
 
 // 一般 sql query 使用的函式
