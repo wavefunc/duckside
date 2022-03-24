@@ -355,7 +355,6 @@ function ManageTransaction(props) {
                                        檔案欄位說明:<br />
                                        1.股票將以代號欄為準, 名稱欄將被忽略<br />
                                        2.日期欄以excel日期值輸入即可, csv檔須存為'yyyy-mm-dd'格式<br />
-                                       3.<br />
                                     </>}
                                  />
                                  <MyButton
