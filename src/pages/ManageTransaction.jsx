@@ -17,6 +17,7 @@ import { MyButton, MyInput, MyUpload, MyOkToastSlideUp, MyFilePreview, MyFileExa
 import MyCurrentPosition from '../components/ManageCurrent.jsx';
 import ManageRecent from '../components/ManageRecent.jsx';
 import Breadcrumb from '../components/Breadcrumb'
+import { CollectionsOutlined } from '@mui/icons-material';
 
 const acc_email = localStorage.getItem('loginState');
 const urlPostRecent = 'http://localhost:5000/transaction/recent';
@@ -163,8 +164,17 @@ function ManageTransaction(props) {
          // 刪除後端不需要的欄位
          let idxToRemove = colIds.indexOf("sec_name");
          colIds = colIds.filter((v, i) => i !== idxToRemove);
-         aoaDataRows = aoaDataRows.map((arr) => arr.filter((v, i) => i !== idxToRemove));
-
+         aoaDataRows = aoaDataRows.map((arr) => {
+            console.log(arr);
+            let newRow = [...arr];
+            newRow.splice(idxToRemove,1);
+            // 以下方法不可行 會篩掉空白欄位
+            // let newRow = arr.filter((v, i) => i !== idxToRemove);
+            while(newRow.length < colIds.length){
+               newRow.push("");
+            };
+            return newRow;
+         });
          let dataToServer = {
             acc_email: acc_email,
             cols: colIds,
@@ -178,6 +188,7 @@ function ManageTransaction(props) {
             if (typeof res.data === 'string') {
                window.setTimeout(refresh, 1000);
             } else {
+               console.log(res.data);
                window.alert('新增資料失敗! 請檢查資料輸入是否正確');
             };
          });
